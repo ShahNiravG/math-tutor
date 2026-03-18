@@ -279,7 +279,7 @@ Additional setup completed:
 - installed the package into that environment
 - initialized a git repository
 - created the GitHub repo
-- pushed the code to `ShahNiravG/math-tutor`
+- pushed the code to the remote GitHub repository
 
 ## Filtering And Fetch-State Revisions
 
