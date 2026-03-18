@@ -267,6 +267,102 @@ As of this log, `math_tutor/cli.py` supports:
 - OpenAI file upload and response generation
 - writing outputs and metadata locally
 
+## Project Move And Repo Setup
+
+Later in the task, the Python project was moved out of the Java repo and placed in its own standalone directory:
+
+- `/home/nshah/projects/math-tutor`
+
+Additional setup completed:
+
+- created a dedicated `.venv` in the new project
+- installed the package into that environment
+- initialized a git repository
+- created the GitHub repo
+- pushed the code to `ShahNiravG/math-tutor`
+
+## Filtering And Fetch-State Revisions
+
+The workflow was later narrowed and hardened based on new requirements.
+
+Changes made:
+
+- only PDFs whose names contain `note.docx` are considered
+- added `--fetch-only`
+- added persistent fetch-state tracking in `fetch_state.json`
+
+Behavior after this change:
+
+- fetch-only runs download matching PDFs without calling OpenAI
+- rerunning fetch-only skips files already fetched successfully
+- fetched files are reused for later OpenAI runs
+
+## OpenAI-State Revisions
+
+We then revised the OpenAI phase so it would only run once successfully per file unless explicitly forced.
+
+Changes made:
+
+- added persistent processed-state tracking in `openai_state.json`
+- added `--force-openai`
+- made normal runs skip files already processed successfully
+- made the CLI rerun OpenAI if the state says a file succeeded previously but the response file is missing
+
+Behavior after this change:
+
+- default run: fetch if needed, then run OpenAI only for files not yet processed successfully
+- `--fetch-only`: fetch only
+- `--force-openai`: rerun OpenAI for already processed files without requiring a refetch
+
+## Later Live Verifications
+
+After quota issues were resolved, we verified the newer behavior live.
+
+### Full run with `--limit 1`
+
+Observed result:
+
+- login succeeded
+- one matching PDF was found
+- the PDF was downloaded
+- the OpenAI response was generated successfully
+- the markdown output was saved locally
+
+### Fetch-only verification
+
+We then verified:
+
+- first `--fetch-only --limit 1` run downloaded the PDF and skipped OpenAI
+- second identical run skipped the already-fetched file
+- `--fetch-only --limit 3` fetched the next matching PDFs while skipping earlier ones
+- `--fetch-only --limit 10` continued expanding the fetched set while respecting prior fetch state
+
+### OpenAI-state verification
+
+We also verified:
+
+1. a normal `--limit 1` run created successful OpenAI processed state
+2. a second normal `--limit 1` run skipped OpenAI for that file
+3. a `--limit 1 --force-openai` run reran OpenAI successfully for the same file
+
+## Current Verified Outputs
+
+The project now persists state in the output directory:
+
+- `downloads/`
+- `responses/`
+- `metadata/`
+- `fetch_state.json`
+- `openai_state.json`
+
+Example downloaded file:
+
+- `math_tutor/output/downloads/4401267_alg-2trig-h-chp-5-1-note-docx.pdf`
+
+Example generated response:
+
+- `math_tutor/output/responses/4401267_alg-2trig-h-chp-5-1-note-docx.md`
+
 ## Remaining External Requirements
 
 To run the project successfully end to end, you still need:
@@ -286,4 +382,3 @@ math-tutor --username YOUR_USERNAME --password YOUR_PASSWORD --limit 1
 ```
 
 4. If needed, run with `--headful` to inspect the auth flow manually.
-

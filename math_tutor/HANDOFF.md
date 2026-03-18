@@ -20,36 +20,44 @@ The course Files page is disabled and the Canvas Files API returned `403`, so di
 3. Resolve module item links to Canvas file URLs
 4. Add `download=1` and fetch the PDF bytes with the authenticated HTTP client
 
+The CLI only keeps PDFs whose names contain `note.docx`.
+
+## Current Processing Rules
+
+- `fetch_state.json` prevents refetching files that were already downloaded successfully
+- `openai_state.json` prevents rerunning OpenAI for files that already completed successfully
+- `--fetch-only` stops after download/state update
+- `--force-openai` reruns the OpenAI step for already processed files
+
 ## Output Locations
 
 Default output root:
 
-- [math_tutor/output](/home/nshah/projects/SimpleRadixSort/math_tutor/output)
+- [math_tutor/output](/home/nshah/projects/math-tutor/math_tutor/output)
 
 Subdirectories:
 
-- [downloads](/home/nshah/projects/SimpleRadixSort/math_tutor/output/downloads)
-- [responses](/home/nshah/projects/SimpleRadixSort/math_tutor/output/responses)
-- [metadata](/home/nshah/projects/SimpleRadixSort/math_tutor/output/metadata)
+- [downloads](/home/nshah/projects/math-tutor/math_tutor/output/downloads)
+- [responses](/home/nshah/projects/math-tutor/math_tutor/output/responses)
+- [metadata](/home/nshah/projects/math-tutor/math_tutor/output/metadata)
+- [fetch_state.json](/home/nshah/projects/math-tutor/math_tutor/output/fetch_state.json)
+- [openai_state.json](/home/nshah/projects/math-tutor/math_tutor/output/openai_state.json)
 
 ## Most Important Files
 
-- [math_tutor/cli.py](/home/nshah/projects/SimpleRadixSort/math_tutor/cli.py)
-- [math_tutor/README.md](/home/nshah/projects/SimpleRadixSort/math_tutor/README.md)
-- [math_tutor/TASK_HISTORY.md](/home/nshah/projects/SimpleRadixSort/math_tutor/TASK_HISTORY.md)
+- [math_tutor/cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py)
+- [math_tutor/README.md](/home/nshah/projects/math-tutor/math_tutor/README.md)
+- [math_tutor/TASK_HISTORY.md](/home/nshah/projects/math-tutor/math_tutor/TASK_HISTORY.md)
+- [math_tutor/HANDOFF.md](/home/nshah/projects/math-tutor/math_tutor/HANDOFF.md)
 
 ## Last Verified State
 
-Live verification with `--limit 1` confirmed:
+Recent live verification confirmed:
 
-- login reached the real course flow
-- one PDF was discovered from Modules
-- the PDF downloaded successfully
-- the OpenAI request was formed correctly enough to execute
-
-The remaining blocker was external:
-
-- OpenAI returned `429 insufficient_quota`
+- `--limit 1` completed end to end successfully
+- `--fetch-only` skips OpenAI and remembers prior successful downloads
+- normal reruns skip OpenAI for files already processed successfully
+- `--force-openai` reruns the OpenAI step while reusing the downloaded PDF
 
 ## Known Risks
 
