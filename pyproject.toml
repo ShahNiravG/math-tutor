@@ -16,6 +16,7 @@ dependencies = [
 
 [project.scripts]
 math-tutor = "math_tutor.cli:main"
+math-tutor-build-site = "math_tutor.site_builder:main"
 
 [tool.setuptools]
 packages = ["math_tutor"]

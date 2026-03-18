@@ -9,6 +9,7 @@
 5. Downloads each PDF locally and remembers which files were fetched successfully
 6. Uploads each PDF to the OpenAI Responses API with a fixed prompt embedded in code
 7. Saves the model output and run metadata to disk
+8. Can build a readable HTML tutoring page from the already-saved PDFs and responses
 
 ## Requirements
 
@@ -51,10 +52,26 @@ Outputs are written under the selected output directory:
 - `metadata/`: JSON metadata for traceability
 - `fetch_state.json`: remembers which PDFs were fetched successfully
 - `openai_state.json`: remembers which PDFs completed the OpenAI step successfully
+- `site/index.html`: a browsable tutoring page built from saved local files
+
+## Build The Tutoring Page
+
+```bash
+math-tutor-build-site
+```
+
+This reads the existing saved PDFs, responses, and state files and generates:
+
+- `math_tutor/output/site/index.html`
+
+Useful flag:
+
+- `--site-dir custom/path`: write the generated HTML page to a different directory
 
 ## Notes
 
 - The prompt is stored as the `PROMPT` constant in `math_tutor/cli.py`.
 - The CLI expects the school login credentials on the command line, as requested.
 - The CLI only processes PDFs whose visible names contain `note.docx`.
+- The HTML tutoring page is built from already saved files, so it does not need to refetch PDFs or rerun OpenAI.
 - If login does not complete, rerun with `--headful` and inspect whether the site is using a different auth flow or MFA.
