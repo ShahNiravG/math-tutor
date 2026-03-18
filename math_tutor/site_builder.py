@@ -67,6 +67,14 @@ def parse_args() -> argparse.Namespace:
         default=None,
         help="Directory where the generated HTML site should be written. Defaults to <output-dir>/site.",
     )
+    parser.add_argument(
+        "--base-path",
+        default="",
+        help=(
+            "Optional deployed site prefix such as /math_tutor/. "
+            "When provided, generated links use that path instead of relative filesystem-style links."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -75,9 +83,10 @@ def main() -> None:
     output_dir = Path(args.output_dir).resolve()
     site_dir = Path(args.site_dir).resolve() if args.site_dir else output_dir / DEFAULT_SITE_DIRNAME
     site_dir.mkdir(parents=True, exist_ok=True)
+    base_path = normalize_base_path(args.base_path)
 
     records = load_records(output_dir)
-    html_text = build_html(records=records, output_dir=output_dir, site_dir=site_dir)
+    html_text = build_html(records=records, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
     index_path = site_dir / "index.html"
     index_path.write_text(html_text, encoding="utf-8")
     print(f"Built tutoring page at {index_path}")
@@ -185,13 +194,13 @@ def sort_key_from_id_and_name(
     return key
 
 
-def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Path) -> str:
+def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Path, base_path: str) -> str:
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     toc_items = "\n".join(
         f'<li><a href="#doc-{record.file_id}">{html.escape(pretty_title(record.display_name))}</a></li>'
         for record in records
     )
-    sections = "\n".join(render_record(record, output_dir, site_dir) for record in records)
+    sections = "\n".join(render_record(record, output_dir, site_dir, base_path) for record in records)
     total_prompt_outputs = sum(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
     )
@@ -333,35 +342,6 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
     .prompt-card .link-row {{
       margin-bottom: 14px;
     }}
-    .response {{
-      border-top: 1px solid var(--line);
-      padding-top: 14px;
-    }}
-    .response h3, .response h4, .response h5 {{
-      margin: 1.2em 0 0.45em;
-      color: #243645;
-    }}
-    .response p, .response li {{
-      line-height: 1.65;
-    }}
-    .response ul {{
-      padding-left: 22px;
-    }}
-    .response hr {{
-      border: 0;
-      border-top: 1px solid var(--line);
-      margin: 20px 0;
-    }}
-    .response code {{
-      background: var(--code);
-      padding: 0.1em 0.35em;
-      border-radius: 6px;
-      font-size: 0.95em;
-    }}
-    .empty {{
-      color: var(--muted);
-      font-style: italic;
-    }}
     @media (max-width: 960px) {{
       .page {{ grid-template-columns: 1fr; }}
       .sidebar {{ position: static; }}
@@ -391,13 +371,13 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
 """
 
 
-def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path) -> str:
+def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
     document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
-        document_links.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF"))
+        document_links.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF", base_path))
     if record.download_url:
         document_links.append(
-            f'<a href="{html.escape(record.download_url)}" target="_blank" rel="noreferrer">Open Canvas File</a>'
+            f'<a href="{html.escape(record.download_url)}">Open Canvas File</a>'
         )
 
     document_chips: list[str] = []
@@ -405,7 +385,7 @@ def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path) -> s
         document_chips.append(f'<span class="chip">Fetched {html.escape(record.fetched_at)}</span>')
 
     prompt_cards = "\n".join(
-        render_prompt_output(prompt_output, output_dir, site_dir) for prompt_output in record.prompt_outputs
+        render_prompt_output(prompt_output, output_dir, site_dir, base_path) for prompt_output in record.prompt_outputs
     )
     return f"""
     <section class="content-card" id="doc-{record.file_id}">
@@ -425,16 +405,12 @@ def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path) -> s
     """
 
 
-def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, site_dir: Path) -> str:
+def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
     links: list[str] = []
     if prompt_output.response_html_path and prompt_output.response_html_path.exists():
-        links.append(link_tag(prompt_output.response_html_path, output_dir, site_dir, "Open HTML Response"))
+        links.append(link_tag(prompt_output.response_html_path, output_dir, site_dir, "Open HTML", base_path))
     if prompt_output.response_pdf_path and prompt_output.response_pdf_path.exists():
-        links.append(link_tag(prompt_output.response_pdf_path, output_dir, site_dir, "Open PDF Response"))
-    if prompt_output.response_path and prompt_output.response_path.exists():
-        links.append(link_tag(prompt_output.response_path, output_dir, site_dir, "Open Markdown Response"))
-    if prompt_output.metadata_path and prompt_output.metadata_path.exists():
-        links.append(link_tag(prompt_output.metadata_path, output_dir, site_dir, "Open Metadata"))
+        links.append(link_tag(prompt_output.response_pdf_path, output_dir, site_dir, "Open PDF", base_path))
 
     chips: list[str] = []
     if prompt_output.processed_at:
@@ -442,11 +418,9 @@ def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, si
     else:
         chips.append('<span class="chip">No OpenAI response yet</span>')
 
-    response_html = (
-        markdown_to_html(prompt_output.response_markdown)
-        if prompt_output.response_markdown
-        else '<p class="empty">No saved response yet for this prompt.</p>'
-    )
+    summary_html = ""
+    if prompt_output.slug == "study-guide" and prompt_output.response_markdown:
+        summary_html = extract_study_guide_summary_html(prompt_output.response_markdown)
 
     return f"""
       <section class="prompt-card">
@@ -457,17 +431,14 @@ def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, si
         <div class="link-row">
           {' '.join(links)}
         </div>
-        <div class="response">
-          {response_html}
-        </div>
+        {summary_html}
       </section>
     """
 
 
-def link_tag(path: Path, output_dir: Path, site_dir: Path, label: str) -> str:
-    resolved_path = resolve_site_asset_path(path=path, output_dir=output_dir, site_dir=site_dir)
-    rel = Path(os.path.relpath(resolved_path, start=site_dir)).as_posix()
-    return f'<a href="{html.escape(rel)}" target="_blank" rel="noreferrer">{html.escape(label)}</a>'
+def link_tag(path: Path, output_dir: Path, site_dir: Path, label: str, base_path: str) -> str:
+    href = build_site_href(path=path, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
+    return f'<a href="{html.escape(href)}">{html.escape(label)}</a>'
 
 
 def resolve_site_asset_path(*, path: Path, output_dir: Path, site_dir: Path) -> Path:
@@ -480,6 +451,79 @@ def resolve_site_asset_path(*, path: Path, output_dir: Path, site_dir: Path) -> 
     if deployed_copy.exists():
         return deployed_copy
     return path
+
+
+def build_site_href(*, path: Path, output_dir: Path, site_dir: Path, base_path: str) -> str:
+    if base_path:
+        try:
+            relative_to_output = path.relative_to(output_dir).as_posix()
+            return f"{base_path}{relative_to_output}"
+        except ValueError:
+            pass
+
+    resolved_path = resolve_site_asset_path(path=path, output_dir=output_dir, site_dir=site_dir)
+    rel = Path(os.path.relpath(resolved_path, start=site_dir)).as_posix()
+    return rel
+
+
+def normalize_base_path(value: str) -> str:
+    if not value:
+        return ""
+    stripped = value.strip().strip("/")
+    if not stripped:
+        return ""
+    return f"/{stripped}/"
+
+
+def extract_study_guide_summary_html(markdown_text: str) -> str:
+    summary_lines = extract_study_guide_summary_lines(markdown_text)
+    if not summary_lines:
+        return ""
+
+    paragraphs = "\n".join(f"<p>{render_inline(line)}</p>" for line in summary_lines if line)
+    return f"""
+        <div class="response">
+          <h4>Short Summary</h4>
+          {paragraphs}
+        </div>
+    """
+
+
+def extract_study_guide_summary_lines(markdown_text: str) -> list[str]:
+    lines = markdown_text.splitlines()
+    in_summary = False
+    collected: list[str] = []
+
+    for raw_line in lines:
+        stripped = raw_line.strip()
+        lowered = stripped.lower()
+        normalized = re.sub(r"[*_`]", "", lowered)
+
+        if not in_summary:
+            if (
+                "short summary" in normalized
+                and re.match(r"^#{1,6}\s*", stripped)
+            ):
+                in_summary = True
+            continue
+
+        if not stripped:
+            if collected and collected[-1] != "":
+                collected.append("")
+            continue
+        if re.fullmatch(r"-{3,}", stripped):
+            break
+        next_normalized = re.sub(r"[*_`]", "", stripped.lower())
+        if re.match(r"^#{1,6}\s+", stripped) and "short summary" not in next_normalized:
+            break
+        if re.match(r"^\d+\.\s+", stripped) and "short summary" not in next_normalized:
+            break
+
+        collected.append(stripped)
+
+    while collected and collected[-1] == "":
+        collected.pop()
+    return collected
 
 
 def markdown_to_html(markdown_text: str) -> str:
