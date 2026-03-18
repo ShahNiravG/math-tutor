@@ -17,6 +17,7 @@ dependencies = [
 [project.scripts]
 math-tutor = "math_tutor.cli:main"
 math-tutor-build-site = "math_tutor.site_builder:main"
+math-tutor-backfill-response-html = "math_tutor.backfill_response_html:main"
 
 [tool.setuptools]
 packages = ["math_tutor"]

@@ -10,9 +10,33 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from math_tutor.cli import (
+    MENTAL_MATH_PROMPT,
+    STUDY_GUIDE_PROMPT,
+    PromptSpec,
+    load_openai_state,
+    pretty_title,
+)
+
 
 DEFAULT_OUTPUT_DIR = "math_tutor/output"
 DEFAULT_SITE_DIRNAME = "site"
+PROMPT_ORDER: tuple[PromptSpec, ...] = (
+    STUDY_GUIDE_PROMPT,
+    MENTAL_MATH_PROMPT,
+)
+
+
+@dataclass
+class PromptOutputRecord:
+    slug: str
+    title: str
+    response_path: Path | None
+    response_html_path: Path | None
+    response_pdf_path: Path | None
+    metadata_path: Path | None
+    processed_at: str | None
+    response_markdown: str | None
 
 
 @dataclass
@@ -20,12 +44,9 @@ class DocumentRecord:
     file_id: str
     display_name: str
     pdf_path: Path | None
-    response_path: Path | None
-    metadata_path: Path | None
     download_url: str | None
-    processed_at: str | None
     fetched_at: str | None
-    response_markdown: str | None
+    prompt_outputs: list[PromptOutputRecord]
 
 
 def parse_args() -> argparse.Namespace:
@@ -60,8 +81,7 @@ def main() -> None:
 
 def load_records(output_dir: Path) -> list[DocumentRecord]:
     fetch_state = load_state(output_dir / "fetch_state.json", "fetched")
-    openai_state = load_state(output_dir / "openai_state.json", "processed")
-    metadata_dir = output_dir / "metadata"
+    openai_state = load_openai_state(output_dir / "openai_state.json").processed
 
     file_ids = sorted(set(fetch_state) | set(openai_state), key=sort_key_from_id_and_name(fetch_state, openai_state))
     records: list[DocumentRecord] = []
@@ -69,32 +89,66 @@ def load_records(output_dir: Path) -> list[DocumentRecord]:
         fetched = fetch_state.get(file_id, {})
         processed = openai_state.get(file_id, {})
         display_name = (
-            processed.get("display_name")
+            first_prompt_value(processed, "display_name")
             or fetched.get("display_name")
             or f"File {file_id}"
         )
-        pdf_path = path_or_none(fetched.get("pdf_path"))
-        response_path = path_or_none(processed.get("response_path"))
-        metadata_path = path_or_none(processed.get("metadata_path"))
-        if metadata_path is None:
-            inferred = infer_metadata_path(metadata_dir, response_path)
-            metadata_path = inferred
-        download_url = fetched.get("download_url")
-        response_markdown = response_path.read_text(encoding="utf-8") if response_path and response_path.exists() else None
+        prompt_outputs = load_prompt_outputs(processed)
         records.append(
             DocumentRecord(
                 file_id=file_id,
                 display_name=display_name,
-                pdf_path=pdf_path,
-                response_path=response_path,
-                metadata_path=metadata_path,
-                download_url=download_url,
-                processed_at=processed.get("processed_at"),
+                pdf_path=path_or_none(fetched.get("pdf_path")),
+                download_url=fetched.get("download_url"),
                 fetched_at=fetched.get("fetched_at"),
-                response_markdown=response_markdown,
+                prompt_outputs=prompt_outputs,
             )
         )
     return records
+
+
+def load_prompt_outputs(processed: dict[str, Any]) -> list[PromptOutputRecord]:
+    outputs_by_slug: dict[str, PromptOutputRecord] = {}
+    for prompt_spec in PROMPT_ORDER:
+        prompt_entry = processed.get(prompt_spec.slug, {})
+        if not isinstance(prompt_entry, dict):
+            prompt_entry = {}
+        response_path = path_or_none(prompt_entry.get("response_path"))
+        response_html_path = path_or_none(prompt_entry.get("response_html_path"))
+        response_pdf_path = path_or_none(prompt_entry.get("response_pdf_path"))
+        metadata_path = path_or_none(prompt_entry.get("metadata_path"))
+        response_markdown = (
+            response_path.read_text(encoding="utf-8")
+            if response_path and response_path.exists()
+            else None
+        )
+        outputs_by_slug[prompt_spec.slug] = PromptOutputRecord(
+            slug=prompt_spec.slug,
+            title=prompt_entry.get("prompt_title") or prompt_spec.title,
+            response_path=response_path,
+            response_html_path=response_html_path,
+            response_pdf_path=response_pdf_path,
+            metadata_path=metadata_path,
+            processed_at=prompt_entry.get("processed_at"),
+            response_markdown=response_markdown,
+        )
+    return [outputs_by_slug[prompt_spec.slug] for prompt_spec in PROMPT_ORDER]
+
+
+def first_prompt_value(processed: dict[str, Any], key: str) -> str | None:
+    for prompt_spec in PROMPT_ORDER:
+        prompt_entry = processed.get(prompt_spec.slug, {})
+        if isinstance(prompt_entry, dict):
+            value = prompt_entry.get(key)
+            if isinstance(value, str) and value:
+                return value
+    for prompt_entry in processed.values():
+        if not isinstance(prompt_entry, dict):
+            continue
+        value = prompt_entry.get(key)
+        if isinstance(value, str) and value:
+            return value
+    return None
 
 
 def load_state(path: Path, key: str) -> dict[str, dict[str, Any]]:
@@ -111,19 +165,12 @@ def path_or_none(value: Any) -> Path | None:
     return None
 
 
-def infer_metadata_path(metadata_dir: Path, response_path: Path | None) -> Path | None:
-    if response_path is None:
-        return None
-    candidate = metadata_dir / f"{response_path.stem}.json"
-    return candidate if candidate.exists() else None
-
-
 def sort_key_from_id_and_name(
     fetch_state: dict[str, dict[str, Any]], openai_state: dict[str, dict[str, Any]]
 ):
     def key(file_id: str) -> tuple[float, str]:
         display_name = (
-            openai_state.get(file_id, {}).get("display_name")
+            first_prompt_value(openai_state.get(file_id, {}), "display_name")
             or fetch_state.get(file_id, {}).get("display_name")
             or ""
         )
@@ -141,6 +188,9 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
         for record in records
     )
     sections = "\n".join(render_record(record, site_dir) for record in records)
+    total_prompt_outputs = sum(
+        1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
+    )
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -156,7 +206,9 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
       --accent: #a14d2e;
       --accent-soft: #ead2c5;
       --line: #d8cfc2;
+      --line-strong: #cabaa4;
       --code: #f0e7db;
+      --prompt-bg: #fffef9;
     }}
     * {{ box-sizing: border-box; }}
     body {{
@@ -169,7 +221,7 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
     }}
     a {{ color: var(--accent); }}
     .page {{
-      width: min(1180px, calc(100vw - 32px));
+      width: min(1240px, calc(100vw - 32px));
       margin: 24px auto 48px;
       display: grid;
       grid-template-columns: 280px 1fr;
@@ -258,11 +310,30 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
       padding: 9px 12px;
       border-radius: 999px;
     }}
+    .prompt-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }}
+    .prompt-card {{
+      border: 1px solid var(--line-strong);
+      background: var(--prompt-bg);
+      border-radius: 16px;
+      padding: 18px;
+    }}
+    .prompt-card h3 {{
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+      color: #243645;
+    }}
+    .prompt-card .link-row {{
+      margin-bottom: 14px;
+    }}
     .response {{
       border-top: 1px solid var(--line);
-      padding-top: 18px;
+      padding-top: 14px;
     }}
-    .response h3, .response h4 {{
+    .response h3, .response h4, .response h5 {{
       margin: 1.2em 0 0.45em;
       color: #243645;
     }}
@@ -297,12 +368,13 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
   <div class="page">
     <aside class="sidebar">
       <h1>Math Tutor Library</h1>
-      <p>Browse saved class note PDFs alongside the generated tutoring responses. This page is built from local project state, so it does not require any refetch or extra OpenAI calls.</p>
+      <p>Browse saved class note PDFs alongside the generated tutoring outputs. Each document can have separate Study Guide and Mental Math responses, and this page is built entirely from local saved state.</p>
       <ol class="toc">
         {toc_items}
       </ol>
       <div class="meta">
         <div><strong>Documents:</strong> {len(records)}</div>
+        <div><strong>Saved prompt outputs:</strong> {total_prompt_outputs}</div>
         <div><strong>Built:</strong> {generated_at}</div>
         <div><strong>Output root:</strong> {html.escape(str(output_dir))}</div>
       </div>
@@ -317,60 +389,79 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
 
 
 def render_record(record: DocumentRecord, site_dir: Path) -> str:
-    links: list[str] = []
+    document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
-        links.append(link_tag(record.pdf_path, site_dir, "Open PDF"))
-    if record.response_path and record.response_path.exists():
-        links.append(link_tag(record.response_path, site_dir, "Open Markdown Response"))
-    if record.metadata_path and record.metadata_path.exists():
-        links.append(link_tag(record.metadata_path, site_dir, "Open Metadata"))
+        document_links.append(link_tag(record.pdf_path, site_dir, "Open PDF"))
     if record.download_url:
-        links.append(
+        document_links.append(
             f'<a href="{html.escape(record.download_url)}" target="_blank" rel="noreferrer">Open Canvas File</a>'
         )
 
-    chips: list[str] = []
+    document_chips: list[str] = []
     if record.fetched_at:
-        chips.append(f'<span class="chip">Fetched {html.escape(record.fetched_at)}</span>')
-    if record.processed_at:
-        chips.append(f'<span class="chip">OpenAI processed {html.escape(record.processed_at)}</span>')
-    if not record.processed_at:
-        chips.append('<span class="chip">No OpenAI response yet</span>')
+        document_chips.append(f'<span class="chip">Fetched {html.escape(record.fetched_at)}</span>')
 
-    response_html = (
-        markdown_to_html(record.response_markdown)
-        if record.response_markdown
-        else '<p class="empty">No saved tutoring response yet for this document.</p>'
-    )
-
+    prompt_cards = "\n".join(render_prompt_output(prompt_output, site_dir) for prompt_output in record.prompt_outputs)
     return f"""
     <section class="content-card" id="doc-{record.file_id}">
       <div class="doc-header">
         <h2>{html.escape(pretty_title(record.display_name))}</h2>
       </div>
       <div class="chip-row">
-        {' '.join(chips)}
+        {' '.join(document_chips)}
       </div>
       <div class="link-row">
-        {' '.join(links)}
+        {' '.join(document_links)}
       </div>
-      <div class="response">
-        {response_html}
+      <div class="prompt-grid">
+        {prompt_cards}
       </div>
     </section>
+    """
+
+
+def render_prompt_output(prompt_output: PromptOutputRecord, site_dir: Path) -> str:
+    links: list[str] = []
+    if prompt_output.response_html_path and prompt_output.response_html_path.exists():
+        links.append(link_tag(prompt_output.response_html_path, site_dir, "Open HTML Response"))
+    if prompt_output.response_pdf_path and prompt_output.response_pdf_path.exists():
+        links.append(link_tag(prompt_output.response_pdf_path, site_dir, "Open PDF Response"))
+    if prompt_output.response_path and prompt_output.response_path.exists():
+        links.append(link_tag(prompt_output.response_path, site_dir, "Open Markdown Response"))
+    if prompt_output.metadata_path and prompt_output.metadata_path.exists():
+        links.append(link_tag(prompt_output.metadata_path, site_dir, "Open Metadata"))
+
+    chips: list[str] = []
+    if prompt_output.processed_at:
+        chips.append(f'<span class="chip">OpenAI processed {html.escape(prompt_output.processed_at)}</span>')
+    else:
+        chips.append('<span class="chip">No OpenAI response yet</span>')
+
+    response_html = (
+        markdown_to_html(prompt_output.response_markdown)
+        if prompt_output.response_markdown
+        else '<p class="empty">No saved response yet for this prompt.</p>'
+    )
+
+    return f"""
+      <section class="prompt-card">
+        <h3>{html.escape(prompt_output.title)}</h3>
+        <div class="chip-row">
+          {' '.join(chips)}
+        </div>
+        <div class="link-row">
+          {' '.join(links)}
+        </div>
+        <div class="response">
+          {response_html}
+        </div>
+      </section>
     """
 
 
 def link_tag(path: Path, site_dir: Path, label: str) -> str:
     rel = Path(os.path.relpath(path, start=site_dir)).as_posix()
     return f'<a href="{html.escape(rel)}" target="_blank" rel="noreferrer">{html.escape(label)}</a>'
-
-
-def pretty_title(display_name: str) -> str:
-    cleaned = display_name.removesuffix(".pdf").replace(".docx", "")
-    cleaned = re.sub(r"\s+\(\d+\)$", "", cleaned)
-    cleaned = cleaned.replace("_", " ")
-    return cleaned
 
 
 def markdown_to_html(markdown_text: str) -> str:
@@ -407,7 +498,7 @@ def markdown_to_html(markdown_text: str) -> str:
         if heading_match:
             flush_paragraph()
             close_list()
-            level = min(len(heading_match.group(1)) + 1, 4)
+            level = min(len(heading_match.group(1)) + 1, 5)
             parts.append(f"<h{level}>{render_inline(heading_match.group(2))}</h{level}>")
             continue
         if stripped.startswith(("- ", "* ")):

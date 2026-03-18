@@ -20,7 +20,22 @@ DEFAULT_TIMEOUT_SECONDS = 60
 LOGIN_RENDER_TIMEOUT_MS = 20_000
 FILES_PAGE_TIMEOUT_MS = 30_000
 TARGET_NAME_SUBSTRING = "note.docx"
-PROMPT = """You are a careful math tutor.
+MATHJAX_SCRIPT = (
+    "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+)
+
+
+@dataclass(frozen=True)
+class PromptSpec:
+    slug: str
+    title: str
+    text: str
+
+
+STUDY_GUIDE_PROMPT = PromptSpec(
+    slug="study-guide",
+    title="Study guide",
+    text="""You are a careful math tutor.
 
 Read the attached PDF and produce:
 1. A short summary of the document.
@@ -30,7 +45,23 @@ Read the attached PDF and produce:
 5. Any assumptions or ambiguities you had to resolve.
 
 Keep the response self-contained and use clear section headings.
-"""
+""",
+)
+
+MENTAL_MATH_PROMPT = PromptSpec(
+    slug="mental-math",
+    title="Mental Math",
+    text=(
+        "Generate 10 mental math questions based on this math pdf. "
+        "These question should be answerable without paper and pencil. "
+        "The questions should test the understanding of the core concepts"
+    ),
+)
+
+PROMPTS: tuple[PromptSpec, ...] = (
+    STUDY_GUIDE_PROMPT,
+    MENTAL_MATH_PROMPT,
+)
 
 
 @dataclass(frozen=True)
@@ -52,7 +83,7 @@ class FetchState:
 @dataclass
 class OpenAIState:
     path: Path
-    processed: dict[str, dict[str, str]]
+    processed: dict[str, dict[str, dict[str, str]]]
 
 
 def parse_args() -> argparse.Namespace:
@@ -163,6 +194,7 @@ def main() -> None:
                         process_file(
                             canvas_client=canvas_client,
                             openai_client=client,
+                            pdf_browser=browser,
                             canvas_file=canvas_file,
                             downloads_dir=downloads_dir,
                             responses_dir=responses_dir,
@@ -567,6 +599,7 @@ def process_file(
     *,
     canvas_client: httpx.Client,
     openai_client: OpenAI,
+    pdf_browser: Any,
     canvas_file: CanvasFile,
     downloads_dir: Path,
     responses_dir: Path,
@@ -583,8 +616,6 @@ def process_file(
     stem = f"{canvas_file.file_id}_{slugify(Path(canvas_file.display_name).stem)}"
     extension = Path(canvas_file.display_name).suffix or ".pdf"
     pdf_path = downloads_dir / f"{stem}{extension}"
-    response_path = responses_dir / f"{stem}.md"
-    metadata_path = metadata_dir / f"{stem}.json"
 
     ensure_pdf_fetched(
         client=canvas_client,
@@ -600,44 +631,78 @@ def process_file(
         print(f"[{index}/{total}] Fetch-only mode; skipping OpenAI for {canvas_file.display_name}.")
         return
 
-    if should_skip_openai(
-        canvas_file=canvas_file,
-        response_path=response_path,
-        openai_state=openai_state,
-        force=force,
-        force_openai=force_openai,
-        index=index,
-        total=total,
-    ):
-        return
+    for prompt_spec in PROMPTS:
+        response_path, response_html_path, response_pdf_path, metadata_path = build_prompt_paths(
+            responses_dir=responses_dir,
+            metadata_dir=metadata_dir,
+            stem=stem,
+            prompt_spec=prompt_spec,
+        )
 
-    print(f"[{index}/{total}] Sending {canvas_file.display_name} to OpenAI...")
-    result = generate_tutor_response(openai_client, pdf_path, model)
+        if should_skip_openai(
+            canvas_file=canvas_file,
+            prompt_spec=prompt_spec,
+            response_path=response_path,
+            response_html_path=response_html_path,
+            response_pdf_path=response_pdf_path,
+            openai_state=openai_state,
+            force=force,
+            force_openai=force_openai,
+            index=index,
+            total=total,
+        ):
+            continue
 
-    response_path.write_text(result.output_text, encoding="utf-8")
-    metadata = {
-        "canvas_file_id": canvas_file.file_id,
-        "display_name": canvas_file.display_name,
-        "download_url": canvas_file.download_url,
-        "content_type": canvas_file.content_type,
-        "size": canvas_file.size,
-        "updated_at": canvas_file.updated_at,
-        "openai_model": model,
-        "openai_response_id": result.id,
-        "pdf_path": str(pdf_path),
-        "response_path": str(response_path),
-    }
-    metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-    openai_state.processed[str(canvas_file.file_id)] = {
-        "display_name": canvas_file.display_name,
-        "response_path": str(response_path),
-        "metadata_path": str(metadata_path),
-        "processed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-        "openai_response_id": result.id,
-        "model": model,
-    }
-    save_openai_state(openai_state)
-    print(f"[{index}/{total}] Saved output to {response_path}.")
+        print(f"[{index}/{total}] Sending {canvas_file.display_name} to OpenAI for {prompt_spec.title}...")
+        result = generate_tutor_response(openai_client, pdf_path, model, prompt_spec.text)
+
+        response_path.write_text(result.output_text, encoding="utf-8")
+        response_html_path.write_text(
+            build_response_html(
+                title=canvas_file.display_name,
+                prompt_title=prompt_spec.title,
+                markdown_text=result.output_text,
+                pdf_path=pdf_path,
+            ),
+            encoding="utf-8",
+        )
+        build_response_pdf(
+            response_html_path=response_html_path,
+            response_pdf_path=response_pdf_path,
+            browser=pdf_browser,
+        )
+        metadata = {
+            "canvas_file_id": canvas_file.file_id,
+            "display_name": canvas_file.display_name,
+            "download_url": canvas_file.download_url,
+            "content_type": canvas_file.content_type,
+            "size": canvas_file.size,
+            "updated_at": canvas_file.updated_at,
+            "openai_model": model,
+            "openai_response_id": result.id,
+            "prompt_slug": prompt_spec.slug,
+            "prompt_title": prompt_spec.title,
+            "pdf_path": str(pdf_path),
+            "response_path": str(response_path),
+            "response_html_path": str(response_html_path),
+            "response_pdf_path": str(response_pdf_path),
+        }
+        metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+        file_state = openai_state.processed.setdefault(str(canvas_file.file_id), {})
+        file_state[prompt_spec.slug] = {
+            "display_name": canvas_file.display_name,
+            "prompt_slug": prompt_spec.slug,
+            "prompt_title": prompt_spec.title,
+            "response_path": str(response_path),
+            "response_html_path": str(response_html_path),
+            "response_pdf_path": str(response_pdf_path),
+            "metadata_path": str(metadata_path),
+            "processed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "openai_response_id": result.id,
+            "model": model,
+        }
+        save_openai_state(openai_state)
+        print(f"[{index}/{total}] Saved {prompt_spec.title} output to {response_path}.")
 
 
 def ensure_pdf_fetched(
@@ -667,6 +732,23 @@ def ensure_pdf_fetched(
     save_fetch_state(fetch_state)
 
 
+def build_prompt_paths(
+    *, responses_dir: Path, metadata_dir: Path, stem: str, prompt_spec: PromptSpec
+) -> tuple[Path, Path, Path, Path]:
+    if prompt_spec.slug == STUDY_GUIDE_PROMPT.slug:
+        response_base = responses_dir / stem
+        metadata_path = metadata_dir / f"{stem}.json"
+    else:
+        response_base = responses_dir / f"{stem}__{prompt_spec.slug}"
+        metadata_path = metadata_dir / f"{stem}__{prompt_spec.slug}.json"
+    return (
+        response_base.with_suffix(".md"),
+        response_base.with_suffix(".html"),
+        response_base.with_suffix(".pdf"),
+        metadata_path,
+    )
+
+
 def download_pdf(client: httpx.Client, url: str, destination: Path) -> None:
     with client.stream("GET", url) as response:
         response.raise_for_status()
@@ -675,7 +757,7 @@ def download_pdf(client: httpx.Client, url: str, destination: Path) -> None:
                 handle.write(chunk)
 
 
-def generate_tutor_response(client: OpenAI, pdf_path: Path, model: str) -> Any:
+def generate_tutor_response(client: OpenAI, pdf_path: Path, model: str, prompt_text: str) -> Any:
     with pdf_path.open("rb") as handle:
         uploaded_file = client.files.create(file=handle, purpose="user_data")
 
@@ -685,7 +767,7 @@ def generate_tutor_response(client: OpenAI, pdf_path: Path, model: str) -> Any:
             {
                 "role": "user",
                 "content": [
-                    {"type": "input_text", "text": PROMPT},
+                    {"type": "input_text", "text": prompt_text},
                     {
                         "type": "input_file",
                         "file_id": uploaded_file.id,
@@ -716,7 +798,7 @@ def load_openai_state(path: Path) -> OpenAIState:
         payload = json.loads(path.read_text(encoding="utf-8"))
         processed = payload.get("processed", {})
         if isinstance(processed, dict):
-            return OpenAIState(path=path, processed=processed)
+            return OpenAIState(path=path, processed=normalize_openai_state(processed))
     return OpenAIState(path=path, processed={})
 
 
@@ -725,10 +807,40 @@ def save_openai_state(openai_state: OpenAIState) -> None:
     openai_state.path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def normalize_openai_state(
+    processed: dict[str, dict[str, Any]],
+) -> dict[str, dict[str, dict[str, str]]]:
+    normalized: dict[str, dict[str, dict[str, str]]] = {}
+    for file_id, entry in processed.items():
+        if not isinstance(entry, dict):
+            continue
+        if "response_path" in entry:
+            prompt_entry = dict(entry)
+            prompt_entry.setdefault("prompt_slug", STUDY_GUIDE_PROMPT.slug)
+            prompt_entry.setdefault("prompt_title", STUDY_GUIDE_PROMPT.title)
+            normalized[file_id] = {STUDY_GUIDE_PROMPT.slug: prompt_entry}
+            continue
+
+        prompt_map: dict[str, dict[str, str]] = {}
+        for prompt_slug, prompt_entry in entry.items():
+            if not isinstance(prompt_entry, dict):
+                continue
+            prompt_entry_copy = dict(prompt_entry)
+            prompt_entry_copy.setdefault("prompt_slug", prompt_slug)
+            prompt_entry_copy.setdefault("prompt_title", prompt_title_from_slug(prompt_slug))
+            prompt_map[prompt_slug] = prompt_entry_copy
+        if prompt_map:
+            normalized[file_id] = prompt_map
+    return normalized
+
+
 def should_skip_openai(
     *,
     canvas_file: CanvasFile,
+    prompt_spec: PromptSpec,
     response_path: Path,
+    response_html_path: Path,
+    response_pdf_path: Path,
     openai_state: OpenAIState,
     force: bool,
     force_openai: bool,
@@ -741,18 +853,249 @@ def should_skip_openai(
     state_key = str(canvas_file.file_id)
     if state_key not in openai_state.processed:
         return False
+    prompt_state = openai_state.processed[state_key].get(prompt_spec.slug)
+    if prompt_state is None:
+        return False
 
-    if response_path.exists():
+    if response_path.exists() and response_html_path.exists() and response_pdf_path.exists():
         print(
-            f"[{index}/{total}] Skipping OpenAI for {canvas_file.display_name}; already processed successfully."
+            f"[{index}/{total}] Skipping OpenAI for {canvas_file.display_name} ({prompt_spec.title}); already processed successfully."
         )
         return True
 
     print(
-        f"[{index}/{total}] Prior OpenAI success recorded for {canvas_file.display_name}, "
-        "but the response file is missing; rerunning OpenAI."
+        f"[{index}/{total}] Prior OpenAI success recorded for {canvas_file.display_name} ({prompt_spec.title}), "
+        "but a saved response artifact is missing; rerunning OpenAI."
     )
     return False
+
+
+def prompt_title_from_slug(prompt_slug: str) -> str:
+    for prompt_spec in PROMPTS:
+        if prompt_spec.slug == prompt_slug:
+            return prompt_spec.title
+    return prompt_slug.replace("-", " ").title()
+
+
+def build_response_html(*, title: str, prompt_title: str, markdown_text: str, pdf_path: Path) -> str:
+    rendered = markdown_to_html(markdown_text)
+    pdf_name = html_escape(pretty_title(title))
+    prompt_name = html_escape(prompt_title)
+    pdf_rel = html_escape(pdf_path.name)
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{pdf_name} - {prompt_name}</title>
+  <script>
+    window.MathJax = {{
+      tex: {{
+        inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
+        displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']]
+      }}
+    }};
+  </script>
+  <script defer src="{MATHJAX_SCRIPT}"></script>
+  <style>
+    :root {{
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }}
+    * {{ box-sizing: border-box; }}
+    body {{
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }}
+    .page {{
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }}
+    header {{
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }}
+    header h1 {{
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }}
+    header p {{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }}
+    main {{
+      padding: 24px 28px 32px;
+    }}
+    a {{ color: var(--accent); }}
+    h2, h3, h4 {{
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }}
+    p, li {{
+      line-height: 1.7;
+    }}
+    ul {{
+      padding-left: 24px;
+    }}
+    hr {{
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }}
+    code {{
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }}
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>{pdf_name}</h1>
+      <p><strong>{prompt_name}</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="{pdf_rel}">{html_escape(pdf_path.name)}</a></p>
+    </header>
+    <main>
+      {rendered}
+    </main>
+  </article>
+</body>
+</html>
+"""
+
+
+def build_response_pdf(*, response_html_path: Path, response_pdf_path: Path, browser: Any | None = None) -> None:
+    if browser is None:
+        with sync_playwright() as playwright:
+            owned_browser = playwright.chromium.launch(headless=True)
+            try:
+                render_response_pdf(
+                    browser=owned_browser,
+                    response_html_path=response_html_path,
+                    response_pdf_path=response_pdf_path,
+                )
+            finally:
+                owned_browser.close()
+        return
+
+    render_response_pdf(
+        browser=browser,
+        response_html_path=response_html_path,
+        response_pdf_path=response_pdf_path,
+    )
+
+
+def render_response_pdf(*, browser: Any, response_html_path: Path, response_pdf_path: Path) -> None:
+    page = browser.new_page()
+    try:
+        page.goto(response_html_path.resolve().as_uri(), wait_until="networkidle")
+        try:
+            page.wait_for_function("window.MathJax && window.MathJax.typesetPromise")
+            page.evaluate("() => window.MathJax.typesetPromise()")
+        except PlaywrightTimeoutError:
+            pass
+        page.pdf(
+            path=str(response_pdf_path),
+            format="Letter",
+            print_background=True,
+            margin={"top": "0.5in", "right": "0.5in", "bottom": "0.6in", "left": "0.5in"},
+        )
+    finally:
+        page.close()
+
+
+def markdown_to_html(markdown_text: str) -> str:
+    lines = markdown_text.splitlines()
+    parts: list[str] = []
+    paragraph: list[str] = []
+    in_list = False
+
+    def flush_paragraph() -> None:
+        nonlocal paragraph
+        if paragraph:
+            parts.append(f"<p>{render_inline(' '.join(paragraph).strip())}</p>")
+            paragraph = []
+
+    def close_list() -> None:
+        nonlocal in_list
+        if in_list:
+            parts.append("</ul>")
+            in_list = False
+
+    for raw_line in lines:
+        stripped = raw_line.strip()
+        if not stripped:
+            flush_paragraph()
+            close_list()
+            continue
+        if re.fullmatch(r"-{3,}", stripped):
+            flush_paragraph()
+            close_list()
+            parts.append("<hr>")
+            continue
+        heading_match = re.match(r"^(#{1,4})\s+(.*)$", stripped)
+        if heading_match:
+            flush_paragraph()
+            close_list()
+            level = min(len(heading_match.group(1)) + 1, 4)
+            parts.append(f"<h{level}>{render_inline(heading_match.group(2))}</h{level}>")
+            continue
+        if stripped.startswith(("- ", "* ")):
+            flush_paragraph()
+            if not in_list:
+                parts.append("<ul>")
+                in_list = True
+            parts.append(f"<li>{render_inline(stripped[2:].strip())}</li>")
+            continue
+        close_list()
+        paragraph.append(stripped)
+
+    flush_paragraph()
+    close_list()
+    return "\n".join(parts)
+
+
+def render_inline(text: str) -> str:
+    escaped = html_escape(text)
+    escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+    escaped = re.sub(r"`(.+?)`", r"<code>\1</code>", escaped)
+    return escaped
+
+
+def pretty_title(display_name: str) -> str:
+    cleaned = display_name.removesuffix(".pdf").replace(".docx", "")
+    cleaned = re.sub(r"\s+\(\d+\)$", "", cleaned)
+    cleaned = cleaned.replace("_", " ")
+    return cleaned
+
+
+def html_escape(value: str) -> str:
+    return (
+        value.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+    )
 
 
 def slugify(value: str) -> str:

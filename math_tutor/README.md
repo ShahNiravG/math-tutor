@@ -7,8 +7,9 @@
 3. Finds only PDFs whose names contain `note.docx`
 4. Uses the authenticated course pages to discover those PDFs
 5. Downloads each PDF locally and remembers which files were fetched successfully
-6. Uploads each PDF to the OpenAI Responses API with a fixed prompt embedded in code
-7. Saves the model output and run metadata to disk
+6. Uploads each PDF to the OpenAI Responses API once per prompt, with the prompts embedded in code
+7. Saves each prompt-specific model output in Markdown, MathJax-enabled HTML, and PDF
+8. Saves run metadata to disk
 8. Can build a readable HTML tutoring page from the already-saved PDFs and responses
 
 ## Requirements
@@ -48,10 +49,10 @@ Useful flags:
 Outputs are written under the selected output directory:
 
 - `downloads/`: fetched PDFs
-- `responses/`: ChatGPT/OpenAI markdown output for each PDF
+- `responses/`: ChatGPT/OpenAI output for each PDF and prompt in `.md`, `.html`, and `.pdf`
 - `metadata/`: JSON metadata for traceability
 - `fetch_state.json`: remembers which PDFs were fetched successfully
-- `openai_state.json`: remembers which PDFs completed the OpenAI step successfully
+- `openai_state.json`: remembers which PDFs completed each prompt's OpenAI step successfully
 - `site/index.html`: a browsable tutoring page built from saved local files
 
 ## Build The Tutoring Page
@@ -68,10 +69,22 @@ Useful flag:
 
 - `--site-dir custom/path`: write the generated HTML page to a different directory
 
+## Backfill HTML Responses
+
+If you already have saved Study Guide Markdown responses from earlier runs, you can generate matching HTML and PDF response files and normalize the saved state without rerunning OpenAI:
+
+```bash
+math-tutor-backfill-response-html
+```
+
 ## Notes
 
-- The prompt is stored as the `PROMPT` constant in `math_tutor/cli.py`.
+- The prompts are stored as `STUDY_GUIDE_PROMPT` and `MENTAL_MATH_PROMPT` in [cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py).
 - The CLI expects the school login credentials on the command line, as requested.
 - The CLI only processes PDFs whose visible names contain `note.docx`.
+- The Study Guide prompt keeps the original legacy filenames, so already completed Study Guide runs are preserved and not repeated.
+- The CLI tracks OpenAI success per PDF and per prompt, so it only calls OpenAI again when that specific prompt output is missing or forced.
 - The HTML tutoring page is built from already saved files, so it does not need to refetch PDFs or rerun OpenAI.
+- Math formulas render better in the saved `.html` response files than in plain Markdown viewers, and the generated PDF responses are convenient for printing or sharing.
+- The tutoring page groups each document into two prompt-specific sections: `Study guide` and `Mental Math`.
 - If login does not complete, rerun with `--headful` and inspect whether the site is using a different auth flow or MFA.
