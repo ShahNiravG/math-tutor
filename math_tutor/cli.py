@@ -19,6 +19,7 @@ DEFAULT_MODEL = "gpt-4.1"
 DEFAULT_TIMEOUT_SECONDS = 60
 LOGIN_RENDER_TIMEOUT_MS = 20_000
 FILES_PAGE_TIMEOUT_MS = 30_000
+TARGET_NAME_SUBSTRING = "note.docx"
 PROMPT = """You are a careful math tutor.
 
 Read the attached PDF and produce:
@@ -40,6 +41,18 @@ class CanvasFile:
     content_type: str
     size: int | None
     updated_at: str | None
+
+
+@dataclass
+class FetchState:
+    path: Path
+    fetched: dict[str, dict[str, str]]
+
+
+@dataclass
+class OpenAIState:
+    path: Path
+    processed: dict[str, dict[str, str]]
 
 
 def parse_args() -> argparse.Namespace:
@@ -84,6 +97,16 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Reprocess files even if an output already exists.",
     )
+    parser.add_argument(
+        "--fetch-only",
+        action="store_true",
+        help="Only fetch matching PDFs and update fetch state; skip the OpenAI processing phase.",
+    )
+    parser.add_argument(
+        "--force-openai",
+        action="store_true",
+        help="Run the OpenAI processing step again even for files already marked as successfully processed.",
+    )
     return parser.parse_args()
 
 
@@ -94,14 +117,18 @@ def main() -> None:
         downloads_dir = output_dir / "downloads"
         responses_dir = output_dir / "responses"
         metadata_dir = output_dir / "metadata"
+        fetch_state = load_fetch_state(output_dir / "fetch_state.json")
+        openai_state = load_openai_state(output_dir / "openai_state.json")
 
         downloads_dir.mkdir(parents=True, exist_ok=True)
         responses_dir.mkdir(parents=True, exist_ok=True)
         metadata_dir.mkdir(parents=True, exist_ok=True)
 
-        api_key = os.environ.get("OPENAI_API_KEY")
-        if not api_key:
-            raise SystemExit("OPENAI_API_KEY must be set in the environment.")
+        api_key = None
+        if not args.fetch_only:
+            api_key = os.environ.get("OPENAI_API_KEY")
+            if not api_key:
+                raise SystemExit("OPENAI_API_KEY must be set in the environment unless --fetch-only is used.")
 
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=not args.headful)
@@ -129,8 +156,8 @@ def main() -> None:
                             "No PDF files were found on the course pages. Confirm that the account can access module attachments or course files."
                         )
 
-                    client = OpenAI(api_key=api_key)
                     print(f"Found {len(files)} PDF file(s).")
+                    client = OpenAI(api_key=api_key) if not args.fetch_only else None
 
                     for index, canvas_file in enumerate(files, start=1):
                         process_file(
@@ -140,8 +167,12 @@ def main() -> None:
                             downloads_dir=downloads_dir,
                             responses_dir=responses_dir,
                             metadata_dir=metadata_dir,
+                            fetch_state=fetch_state,
+                            openai_state=openai_state,
                             model=args.model,
                             force=args.force,
+                            fetch_only=args.fetch_only,
+                            force_openai=args.force_openai,
                             index=index,
                             total=len(files),
                         )
@@ -428,7 +459,7 @@ def list_canvas_pdfs_from_modules_page(
         anchor = anchors.nth(index)
         href = anchor.get_attribute("href")
         display_name = (anchor.inner_text() or "").strip()
-        if not href or not display_name.lower().endswith(".pdf"):
+        if not href or not matches_target_pdf(display_name):
             continue
         if "/modules/items/" not in href:
             continue
@@ -462,7 +493,7 @@ def extract_pdf_links_from_page(page: Page, course_url: str) -> list[CanvasFile]
             continue
         absolute_url = urljoin(course_url, href)
         display_name = (anchor.inner_text() or "").strip()
-        if not is_pdf(display_name, "", absolute_url):
+        if not matches_target_pdf(display_name) or not is_pdf(display_name, "", absolute_url):
             continue
         file_id = extract_file_id(absolute_url)
         if file_id is None:
@@ -505,6 +536,10 @@ def is_pdf(display_name: str, content_type: str, url: str) -> bool:
     )
 
 
+def matches_target_pdf(display_name: str) -> bool:
+    return TARGET_NAME_SUBSTRING in display_name.lower()
+
+
 def extract_file_id(url: str) -> int | None:
     match = re.search(r"/files/(\d+)", url)
     if not match:
@@ -536,8 +571,12 @@ def process_file(
     downloads_dir: Path,
     responses_dir: Path,
     metadata_dir: Path,
+    fetch_state: FetchState,
+    openai_state: OpenAIState,
     model: str,
     force: bool,
+    fetch_only: bool,
+    force_openai: bool,
     index: int,
     total: int,
 ) -> None:
@@ -547,12 +586,31 @@ def process_file(
     response_path = responses_dir / f"{stem}.md"
     metadata_path = metadata_dir / f"{stem}.json"
 
-    if response_path.exists() and not force:
-        print(f"[{index}/{total}] Skipping {canvas_file.display_name}; output already exists.")
+    ensure_pdf_fetched(
+        client=canvas_client,
+        canvas_file=canvas_file,
+        destination=pdf_path,
+        fetch_state=fetch_state,
+        force=force,
+        index=index,
+        total=total,
+    )
+
+    if fetch_only:
+        print(f"[{index}/{total}] Fetch-only mode; skipping OpenAI for {canvas_file.display_name}.")
         return
 
-    print(f"[{index}/{total}] Downloading {canvas_file.display_name}...")
-    download_pdf(canvas_client, canvas_file.download_url, pdf_path)
+    if should_skip_openai(
+        canvas_file=canvas_file,
+        response_path=response_path,
+        openai_state=openai_state,
+        force=force,
+        force_openai=force_openai,
+        index=index,
+        total=total,
+    ):
+        return
+
     print(f"[{index}/{total}] Sending {canvas_file.display_name} to OpenAI...")
     result = generate_tutor_response(openai_client, pdf_path, model)
 
@@ -570,7 +628,43 @@ def process_file(
         "response_path": str(response_path),
     }
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    openai_state.processed[str(canvas_file.file_id)] = {
+        "display_name": canvas_file.display_name,
+        "response_path": str(response_path),
+        "metadata_path": str(metadata_path),
+        "processed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "openai_response_id": result.id,
+        "model": model,
+    }
+    save_openai_state(openai_state)
     print(f"[{index}/{total}] Saved output to {response_path}.")
+
+
+def ensure_pdf_fetched(
+    *,
+    client: httpx.Client,
+    canvas_file: CanvasFile,
+    destination: Path,
+    fetch_state: FetchState,
+    force: bool,
+    index: int,
+    total: int,
+) -> None:
+    state_key = str(canvas_file.file_id)
+    previously_fetched = state_key in fetch_state.fetched and destination.exists()
+    if previously_fetched and not force:
+        print(f"[{index}/{total}] Skipping download for {canvas_file.display_name}; already fetched.")
+        return
+
+    print(f"[{index}/{total}] Downloading {canvas_file.display_name}...")
+    download_pdf(client, canvas_file.download_url, destination)
+    fetch_state.fetched[state_key] = {
+        "display_name": canvas_file.display_name,
+        "download_url": canvas_file.download_url,
+        "pdf_path": str(destination),
+        "fetched_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+    }
+    save_fetch_state(fetch_state)
 
 
 def download_pdf(client: httpx.Client, url: str, destination: Path) -> None:
@@ -601,6 +695,64 @@ def generate_tutor_response(client: OpenAI, pdf_path: Path, model: str) -> Any:
         ],
     )
     return response
+
+
+def load_fetch_state(path: Path) -> FetchState:
+    if path.exists():
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        fetched = payload.get("fetched", {})
+        if isinstance(fetched, dict):
+            return FetchState(path=path, fetched=fetched)
+    return FetchState(path=path, fetched={})
+
+
+def save_fetch_state(fetch_state: FetchState) -> None:
+    payload = {"fetched": fetch_state.fetched}
+    fetch_state.path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def load_openai_state(path: Path) -> OpenAIState:
+    if path.exists():
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        processed = payload.get("processed", {})
+        if isinstance(processed, dict):
+            return OpenAIState(path=path, processed=processed)
+    return OpenAIState(path=path, processed={})
+
+
+def save_openai_state(openai_state: OpenAIState) -> None:
+    payload = {"processed": openai_state.processed}
+    openai_state.path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+
+
+def should_skip_openai(
+    *,
+    canvas_file: CanvasFile,
+    response_path: Path,
+    openai_state: OpenAIState,
+    force: bool,
+    force_openai: bool,
+    index: int,
+    total: int,
+) -> bool:
+    if force or force_openai:
+        return False
+
+    state_key = str(canvas_file.file_id)
+    if state_key not in openai_state.processed:
+        return False
+
+    if response_path.exists():
+        print(
+            f"[{index}/{total}] Skipping OpenAI for {canvas_file.display_name}; already processed successfully."
+        )
+        return True
+
+    print(
+        f"[{index}/{total}] Prior OpenAI success recorded for {canvas_file.display_name}, "
+        "but the response file is missing; rerunning OpenAI."
+    )
+    return False
 
 
 def slugify(value: str) -> str:

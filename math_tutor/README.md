@@ -4,10 +4,11 @@
 
 1. Starts from the Canvas course at `https://mitty.instructure.com/courses/4187`
 2. Follows the school's configured login redirect flow, including OneLogin if Canvas sends the browser there
-3. Uses the authenticated course files pages to find PDF documents in that course
-4. Downloads each PDF locally
-5. Uploads each PDF to the OpenAI Responses API with a fixed prompt embedded in code
-6. Saves the model output and run metadata to disk
+3. Finds only PDFs whose names contain `note.docx`
+4. Uses the authenticated course pages to discover those PDFs
+5. Downloads each PDF locally and remembers which files were fetched successfully
+6. Uploads each PDF to the OpenAI Responses API with a fixed prompt embedded in code
+7. Saves the model output and run metadata to disk
 
 ## Requirements
 
@@ -37,7 +38,9 @@ Useful flags:
 
 - `--headful`: opens the browser so you can watch or debug login
 - `--limit 3`: process only the first three PDFs
+- `--fetch-only`: only download matching PDFs and update fetch state
 - `--force`: reprocess files even if output already exists
+- `--force-openai`: rerun the OpenAI step even for files already processed successfully
 - `--output-dir custom/path`: choose a different output directory
 - `--login-url URL`: override the initial login entry URL if you need to bypass the course redirect flow
 
@@ -46,9 +49,12 @@ Outputs are written under the selected output directory:
 - `downloads/`: fetched PDFs
 - `responses/`: ChatGPT/OpenAI markdown output for each PDF
 - `metadata/`: JSON metadata for traceability
+- `fetch_state.json`: remembers which PDFs were fetched successfully
+- `openai_state.json`: remembers which PDFs completed the OpenAI step successfully
 
 ## Notes
 
 - The prompt is stored as the `PROMPT` constant in `math_tutor/cli.py`.
 - The CLI expects the school login credentials on the command line, as requested.
+- The CLI only processes PDFs whose visible names contain `note.docx`.
 - If login does not complete, rerun with `--headful` and inspect whether the site is using a different auth flow or MFA.
