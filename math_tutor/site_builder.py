@@ -12,6 +12,8 @@ from typing import Any
 
 from math_tutor.cli import (
     MENTAL_MATH_PROMPT,
+    OLYMPIAD_PROBLEMS_PROMPT,
+    OLYMPIAD_SOLUTIONS_PROMPT,
     STUDY_GUIDE_PROMPT,
     PromptSpec,
     load_openai_state,
@@ -24,6 +26,8 @@ DEFAULT_SITE_DIRNAME = "site"
 PROMPT_ORDER: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
     MENTAL_MATH_PROMPT,
+    OLYMPIAD_PROBLEMS_PROMPT,
+    OLYMPIAD_SOLUTIONS_PROMPT,
 )
 
 
@@ -187,7 +191,7 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
         f'<li><a href="#doc-{record.file_id}">{html.escape(pretty_title(record.display_name))}</a></li>'
         for record in records
     )
-    sections = "\n".join(render_record(record, site_dir) for record in records)
+    sections = "\n".join(render_record(record, output_dir, site_dir) for record in records)
     total_prompt_outputs = sum(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
     )
@@ -368,7 +372,7 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
   <div class="page">
     <aside class="sidebar">
       <h1>Math Tutor Library</h1>
-      <p>Browse saved class note PDFs alongside the generated tutoring outputs. Each document can have separate Study Guide and Mental Math responses, and this page is built entirely from local saved state.</p>
+      <p>Browse saved class note PDFs alongside the generated tutoring outputs. Each document can have separate Study Guide, Mental Math, Olympiad Problems, and Olympiad Solutions responses, and this page is built entirely from local saved state.</p>
       <ol class="toc">
         {toc_items}
       </ol>
@@ -376,7 +380,6 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
         <div><strong>Documents:</strong> {len(records)}</div>
         <div><strong>Saved prompt outputs:</strong> {total_prompt_outputs}</div>
         <div><strong>Built:</strong> {generated_at}</div>
-        <div><strong>Output root:</strong> {html.escape(str(output_dir))}</div>
       </div>
     </aside>
     <main class="main">
@@ -388,10 +391,10 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
 """
 
 
-def render_record(record: DocumentRecord, site_dir: Path) -> str:
+def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path) -> str:
     document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
-        document_links.append(link_tag(record.pdf_path, site_dir, "Open PDF"))
+        document_links.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF"))
     if record.download_url:
         document_links.append(
             f'<a href="{html.escape(record.download_url)}" target="_blank" rel="noreferrer">Open Canvas File</a>'
@@ -401,7 +404,9 @@ def render_record(record: DocumentRecord, site_dir: Path) -> str:
     if record.fetched_at:
         document_chips.append(f'<span class="chip">Fetched {html.escape(record.fetched_at)}</span>')
 
-    prompt_cards = "\n".join(render_prompt_output(prompt_output, site_dir) for prompt_output in record.prompt_outputs)
+    prompt_cards = "\n".join(
+        render_prompt_output(prompt_output, output_dir, site_dir) for prompt_output in record.prompt_outputs
+    )
     return f"""
     <section class="content-card" id="doc-{record.file_id}">
       <div class="doc-header">
@@ -420,16 +425,16 @@ def render_record(record: DocumentRecord, site_dir: Path) -> str:
     """
 
 
-def render_prompt_output(prompt_output: PromptOutputRecord, site_dir: Path) -> str:
+def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, site_dir: Path) -> str:
     links: list[str] = []
     if prompt_output.response_html_path and prompt_output.response_html_path.exists():
-        links.append(link_tag(prompt_output.response_html_path, site_dir, "Open HTML Response"))
+        links.append(link_tag(prompt_output.response_html_path, output_dir, site_dir, "Open HTML Response"))
     if prompt_output.response_pdf_path and prompt_output.response_pdf_path.exists():
-        links.append(link_tag(prompt_output.response_pdf_path, site_dir, "Open PDF Response"))
+        links.append(link_tag(prompt_output.response_pdf_path, output_dir, site_dir, "Open PDF Response"))
     if prompt_output.response_path and prompt_output.response_path.exists():
-        links.append(link_tag(prompt_output.response_path, site_dir, "Open Markdown Response"))
+        links.append(link_tag(prompt_output.response_path, output_dir, site_dir, "Open Markdown Response"))
     if prompt_output.metadata_path and prompt_output.metadata_path.exists():
-        links.append(link_tag(prompt_output.metadata_path, site_dir, "Open Metadata"))
+        links.append(link_tag(prompt_output.metadata_path, output_dir, site_dir, "Open Metadata"))
 
     chips: list[str] = []
     if prompt_output.processed_at:
@@ -459,9 +464,22 @@ def render_prompt_output(prompt_output: PromptOutputRecord, site_dir: Path) -> s
     """
 
 
-def link_tag(path: Path, site_dir: Path, label: str) -> str:
-    rel = Path(os.path.relpath(path, start=site_dir)).as_posix()
+def link_tag(path: Path, output_dir: Path, site_dir: Path, label: str) -> str:
+    resolved_path = resolve_site_asset_path(path=path, output_dir=output_dir, site_dir=site_dir)
+    rel = Path(os.path.relpath(resolved_path, start=site_dir)).as_posix()
     return f'<a href="{html.escape(rel)}" target="_blank" rel="noreferrer">{html.escape(label)}</a>'
+
+
+def resolve_site_asset_path(*, path: Path, output_dir: Path, site_dir: Path) -> Path:
+    try:
+        relative_to_output = path.relative_to(output_dir)
+    except ValueError:
+        return path
+
+    deployed_copy = site_dir / relative_to_output
+    if deployed_copy.exists():
+        return deployed_copy
+    return path
 
 
 def markdown_to_html(markdown_text: str) -> str:

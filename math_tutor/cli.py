@@ -30,6 +30,8 @@ class PromptSpec:
     slug: str
     title: str
     text: str
+    source_prompt_slug: str | None = None
+    source_placeholder: str = "{{previous_output}}"
 
 
 STUDY_GUIDE_PROMPT = PromptSpec(
@@ -54,14 +56,55 @@ MENTAL_MATH_PROMPT = PromptSpec(
     text=(
         "Generate 10 mental math questions based on this math pdf. "
         "These question should be answerable without paper and pencil. "
-        "The questions should test the understanding of the core concepts"
+        "The questions should test the understanding of the core concepts. "
+        "Give only the questions, with short titles if helpful."
     ),
+)
+
+OLYMPIAD_PROBLEMS_PROMPT = PromptSpec(
+    slug="olympiad-problems",
+    title="Olympiad Problems",
+    text="""You are designing elegant Olympiad-style mental math problems from the attached PDF.
+
+Generate 6 challenging problems inspired by the core ideas in the PDF.
+
+Requirements:
+1. The problems should be harder than the normal mental math set.
+2. They should reward insight, pattern recognition, symmetry, invariants, estimation, or clever algebraic/trigonometric manipulation.
+3. They should still be solvable mentally or with very light scratch work.
+4. Do not provide solutions yet.
+5. Keep the statements concise and polished.
+6. Output only a numbered list of problems under the heading "Problems".
+""",
+)
+
+OLYMPIAD_SOLUTIONS_PROMPT = PromptSpec(
+    slug="olympiad-solutions",
+    title="Olympiad Solutions",
+    text="""You are writing elegant Olympiad-style solutions.
+
+Use the exact problem list below and provide step-by-step solutions for each problem.
+
+Requirements:
+1. Preserve the original numbering and wording of the problems.
+2. Give concise but rigorous reasoning.
+3. Prefer elegant observations over brute force.
+4. Make each solution self-contained.
+5. Format the response under the heading "Solutions".
+
+Problem list to solve:
+{{previous_output}}
+""",
+    source_prompt_slug="olympiad-problems",
 )
 
 PROMPTS: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
     MENTAL_MATH_PROMPT,
+    OLYMPIAD_PROBLEMS_PROMPT,
+    OLYMPIAD_SOLUTIONS_PROMPT,
 )
+PROMPTS_BY_SLUG: dict[str, PromptSpec] = {prompt_spec.slug: prompt_spec for prompt_spec in PROMPTS}
 
 
 @dataclass(frozen=True)
@@ -138,6 +181,17 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Run the OpenAI processing step again even for files already marked as successfully processed.",
     )
+    parser.add_argument(
+        "--prompt",
+        dest="prompt_slugs",
+        action="append",
+        choices=sorted(PROMPTS_BY_SLUG),
+        help=(
+            "Limit OpenAI processing to a specific prompt slug. "
+            "Repeat the flag to run multiple prompts, for example "
+            "--prompt study-guide --prompt mental-math. Defaults to all prompts."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -150,6 +204,7 @@ def main() -> None:
         metadata_dir = output_dir / "metadata"
         fetch_state = load_fetch_state(output_dir / "fetch_state.json")
         openai_state = load_openai_state(output_dir / "openai_state.json")
+        selected_prompts = resolve_selected_prompts(args.prompt_slugs)
 
         downloads_dir.mkdir(parents=True, exist_ok=True)
         responses_dir.mkdir(parents=True, exist_ok=True)
@@ -202,6 +257,7 @@ def main() -> None:
                             fetch_state=fetch_state,
                             openai_state=openai_state,
                             model=args.model,
+                            prompts=selected_prompts,
                             force=args.force,
                             fetch_only=args.fetch_only,
                             force_openai=args.force_openai,
@@ -607,6 +663,7 @@ def process_file(
     fetch_state: FetchState,
     openai_state: OpenAIState,
     model: str,
+    prompts: tuple[PromptSpec, ...],
     force: bool,
     fetch_only: bool,
     force_openai: bool,
@@ -616,6 +673,7 @@ def process_file(
     stem = f"{canvas_file.file_id}_{slugify(Path(canvas_file.display_name).stem)}"
     extension = Path(canvas_file.display_name).suffix or ".pdf"
     pdf_path = downloads_dir / f"{stem}{extension}"
+    prompt_outputs_cache: dict[str, str] = {}
 
     ensure_pdf_fetched(
         client=canvas_client,
@@ -631,78 +689,24 @@ def process_file(
         print(f"[{index}/{total}] Fetch-only mode; skipping OpenAI for {canvas_file.display_name}.")
         return
 
-    for prompt_spec in PROMPTS:
-        response_path, response_html_path, response_pdf_path, metadata_path = build_prompt_paths(
+    for prompt_spec in prompts:
+        run_prompt(
+            canvas_file=canvas_file,
+            openai_client=openai_client,
+            pdf_browser=pdf_browser,
+            pdf_path=pdf_path,
             responses_dir=responses_dir,
             metadata_dir=metadata_dir,
+            openai_state=openai_state,
+            model=model,
             stem=stem,
             prompt_spec=prompt_spec,
-        )
-
-        if should_skip_openai(
-            canvas_file=canvas_file,
-            prompt_spec=prompt_spec,
-            response_path=response_path,
-            response_html_path=response_html_path,
-            response_pdf_path=response_pdf_path,
-            openai_state=openai_state,
+            prompt_outputs_cache=prompt_outputs_cache,
             force=force,
             force_openai=force_openai,
             index=index,
             total=total,
-        ):
-            continue
-
-        print(f"[{index}/{total}] Sending {canvas_file.display_name} to OpenAI for {prompt_spec.title}...")
-        result = generate_tutor_response(openai_client, pdf_path, model, prompt_spec.text)
-
-        response_path.write_text(result.output_text, encoding="utf-8")
-        response_html_path.write_text(
-            build_response_html(
-                title=canvas_file.display_name,
-                prompt_title=prompt_spec.title,
-                markdown_text=result.output_text,
-                pdf_path=pdf_path,
-            ),
-            encoding="utf-8",
         )
-        build_response_pdf(
-            response_html_path=response_html_path,
-            response_pdf_path=response_pdf_path,
-            browser=pdf_browser,
-        )
-        metadata = {
-            "canvas_file_id": canvas_file.file_id,
-            "display_name": canvas_file.display_name,
-            "download_url": canvas_file.download_url,
-            "content_type": canvas_file.content_type,
-            "size": canvas_file.size,
-            "updated_at": canvas_file.updated_at,
-            "openai_model": model,
-            "openai_response_id": result.id,
-            "prompt_slug": prompt_spec.slug,
-            "prompt_title": prompt_spec.title,
-            "pdf_path": str(pdf_path),
-            "response_path": str(response_path),
-            "response_html_path": str(response_html_path),
-            "response_pdf_path": str(response_pdf_path),
-        }
-        metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
-        file_state = openai_state.processed.setdefault(str(canvas_file.file_id), {})
-        file_state[prompt_spec.slug] = {
-            "display_name": canvas_file.display_name,
-            "prompt_slug": prompt_spec.slug,
-            "prompt_title": prompt_spec.title,
-            "response_path": str(response_path),
-            "response_html_path": str(response_html_path),
-            "response_pdf_path": str(response_pdf_path),
-            "metadata_path": str(metadata_path),
-            "processed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            "openai_response_id": result.id,
-            "model": model,
-        }
-        save_openai_state(openai_state)
-        print(f"[{index}/{total}] Saved {prompt_spec.title} output to {response_path}.")
 
 
 def ensure_pdf_fetched(
@@ -749,12 +753,196 @@ def build_prompt_paths(
     )
 
 
+def run_prompt(
+    *,
+    canvas_file: CanvasFile,
+    openai_client: OpenAI,
+    pdf_browser: Any,
+    pdf_path: Path,
+    responses_dir: Path,
+    metadata_dir: Path,
+    openai_state: OpenAIState,
+    model: str,
+    stem: str,
+    prompt_spec: PromptSpec,
+    prompt_outputs_cache: dict[str, str],
+    force: bool,
+    force_openai: bool,
+    index: int,
+    total: int,
+) -> str:
+    response_path, response_html_path, response_pdf_path, metadata_path = build_prompt_paths(
+        responses_dir=responses_dir,
+        metadata_dir=metadata_dir,
+        stem=stem,
+        prompt_spec=prompt_spec,
+    )
+
+    if should_skip_openai(
+        canvas_file=canvas_file,
+        prompt_spec=prompt_spec,
+        response_path=response_path,
+        response_html_path=response_html_path,
+        response_pdf_path=response_pdf_path,
+        openai_state=openai_state,
+        force=force,
+        force_openai=force_openai,
+        index=index,
+        total=total,
+    ):
+        if response_path.exists():
+            cached_output = response_path.read_text(encoding="utf-8")
+            prompt_outputs_cache[prompt_spec.slug] = cached_output
+            return cached_output
+        return ""
+
+    source_output = resolve_source_output(
+        canvas_file=canvas_file,
+        openai_client=openai_client,
+        pdf_browser=pdf_browser,
+        pdf_path=pdf_path,
+        responses_dir=responses_dir,
+        metadata_dir=metadata_dir,
+        openai_state=openai_state,
+        model=model,
+        stem=stem,
+        prompt_spec=prompt_spec,
+        prompt_outputs_cache=prompt_outputs_cache,
+        index=index,
+        total=total,
+    )
+
+    print(f"[{index}/{total}] Sending {canvas_file.display_name} to OpenAI for {prompt_spec.title}...")
+    result = generate_prompt_response(
+        client=openai_client,
+        pdf_path=pdf_path,
+        model=model,
+        prompt_spec=prompt_spec,
+        source_output=source_output,
+    )
+
+    response_path.write_text(result.output_text, encoding="utf-8")
+    response_html_path.write_text(
+        build_response_html(
+            title=canvas_file.display_name,
+            prompt_title=prompt_spec.title,
+            markdown_text=result.output_text,
+            pdf_label=pdf_path.name,
+            pdf_href=Path(os.path.relpath(pdf_path, start=response_html_path.parent)).as_posix(),
+        ),
+        encoding="utf-8",
+    )
+    build_response_pdf(
+        response_html_path=response_html_path,
+        response_pdf_path=response_pdf_path,
+        browser=pdf_browser,
+    )
+    metadata = {
+        "canvas_file_id": canvas_file.file_id,
+        "display_name": canvas_file.display_name,
+        "download_url": canvas_file.download_url,
+        "content_type": canvas_file.content_type,
+        "size": canvas_file.size,
+        "updated_at": canvas_file.updated_at,
+        "openai_model": model,
+        "openai_response_id": result.response_id,
+        "prompt_slug": prompt_spec.slug,
+        "prompt_title": prompt_spec.title,
+        "source_prompt_slug": prompt_spec.source_prompt_slug,
+        "pdf_path": str(pdf_path),
+        "response_path": str(response_path),
+        "response_html_path": str(response_html_path),
+        "response_pdf_path": str(response_pdf_path),
+    }
+    metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    file_state = openai_state.processed.setdefault(str(canvas_file.file_id), {})
+    file_state[prompt_spec.slug] = {
+        "display_name": canvas_file.display_name,
+        "prompt_slug": prompt_spec.slug,
+        "prompt_title": prompt_spec.title,
+        "response_path": str(response_path),
+        "response_html_path": str(response_html_path),
+        "response_pdf_path": str(response_pdf_path),
+        "metadata_path": str(metadata_path),
+        "processed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "openai_response_id": result.response_id,
+        "source_prompt_slug": prompt_spec.source_prompt_slug or "",
+        "model": model,
+    }
+    save_openai_state(openai_state)
+    prompt_outputs_cache[prompt_spec.slug] = result.output_text
+    print(f"[{index}/{total}] Saved {prompt_spec.title} output to {response_path}.")
+    return result.output_text
+
+
+def resolve_source_output(
+    *,
+    canvas_file: CanvasFile,
+    openai_client: OpenAI,
+    pdf_browser: Any,
+    pdf_path: Path,
+    responses_dir: Path,
+    metadata_dir: Path,
+    openai_state: OpenAIState,
+    model: str,
+    stem: str,
+    prompt_spec: PromptSpec,
+    prompt_outputs_cache: dict[str, str],
+    index: int,
+    total: int,
+) -> str | None:
+    if prompt_spec.source_prompt_slug is None:
+        return None
+
+    if prompt_spec.source_prompt_slug in prompt_outputs_cache:
+        return prompt_outputs_cache[prompt_spec.source_prompt_slug]
+
+    source_prompt = PROMPTS_BY_SLUG[prompt_spec.source_prompt_slug]
+    source_response_path, _, _, _ = build_prompt_paths(
+        responses_dir=responses_dir,
+        metadata_dir=metadata_dir,
+        stem=stem,
+        prompt_spec=source_prompt,
+    )
+    if source_response_path.exists():
+        source_output = source_response_path.read_text(encoding="utf-8")
+        prompt_outputs_cache[source_prompt.slug] = source_output
+        return source_output
+
+    print(
+        f"[{index}/{total}] {prompt_spec.title} needs {source_prompt.title} first; generating the prerequisite output."
+    )
+    return run_prompt(
+        canvas_file=canvas_file,
+        openai_client=openai_client,
+        pdf_browser=pdf_browser,
+        pdf_path=pdf_path,
+        responses_dir=responses_dir,
+        metadata_dir=metadata_dir,
+        openai_state=openai_state,
+        model=model,
+        stem=stem,
+        prompt_spec=source_prompt,
+        prompt_outputs_cache=prompt_outputs_cache,
+        force=False,
+        force_openai=False,
+        index=index,
+        total=total,
+    )
+
+
 def download_pdf(client: httpx.Client, url: str, destination: Path) -> None:
     with client.stream("GET", url) as response:
         response.raise_for_status()
         with destination.open("wb") as handle:
             for chunk in response.iter_bytes():
                 handle.write(chunk)
+
+
+@dataclass(frozen=True)
+class PromptResponseResult:
+    output_text: str
+    response_id: str
 
 
 def generate_tutor_response(client: OpenAI, pdf_path: Path, model: str, prompt_text: str) -> Any:
@@ -777,6 +965,40 @@ def generate_tutor_response(client: OpenAI, pdf_path: Path, model: str, prompt_t
         ],
     )
     return response
+
+
+def generate_text_only_response(client: OpenAI, model: str, prompt_text: str) -> Any:
+    response = client.responses.create(
+        model=model,
+        input=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "input_text", "text": prompt_text},
+                ],
+            }
+        ],
+    )
+    return response
+
+
+def generate_prompt_response(
+    *,
+    client: OpenAI,
+    pdf_path: Path,
+    model: str,
+    prompt_spec: PromptSpec,
+    source_output: str | None,
+) -> PromptResponseResult:
+    if prompt_spec.source_prompt_slug is None:
+        response = generate_tutor_response(client, pdf_path, model, prompt_spec.text)
+    else:
+        if source_output is None:
+            raise RuntimeError(f"{prompt_spec.title} requires a source prompt output.")
+        prompt_text = prompt_spec.text.replace(prompt_spec.source_placeholder, source_output)
+        response = generate_text_only_response(client, model, prompt_text)
+
+    return PromptResponseResult(output_text=response.output_text, response_id=response.id)
 
 
 def load_fetch_state(path: Path) -> FetchState:
@@ -871,17 +1093,35 @@ def should_skip_openai(
 
 
 def prompt_title_from_slug(prompt_slug: str) -> str:
-    for prompt_spec in PROMPTS:
-        if prompt_spec.slug == prompt_slug:
-            return prompt_spec.title
+    prompt_spec = PROMPTS_BY_SLUG.get(prompt_slug)
+    if prompt_spec is not None:
+        return prompt_spec.title
     return prompt_slug.replace("-", " ").title()
 
 
-def build_response_html(*, title: str, prompt_title: str, markdown_text: str, pdf_path: Path) -> str:
+def resolve_selected_prompts(prompt_slugs: list[str] | None) -> tuple[PromptSpec, ...]:
+    if not prompt_slugs:
+        return PROMPTS
+
+    selected: list[PromptSpec] = []
+    seen: set[str] = set()
+    for prompt_slug in prompt_slugs:
+        if prompt_slug in seen:
+            continue
+        prompt_spec = PROMPTS_BY_SLUG[prompt_slug]
+        selected.append(prompt_spec)
+        seen.add(prompt_slug)
+    return tuple(selected)
+
+
+def build_response_html(
+    *, title: str, prompt_title: str, markdown_text: str, pdf_label: str, pdf_href: str
+) -> str:
     rendered = markdown_to_html(markdown_text)
     pdf_name = html_escape(pretty_title(title))
     prompt_name = html_escape(prompt_title)
-    pdf_rel = html_escape(pdf_path.name)
+    pdf_rel = html_escape(pdf_href)
+    pdf_link_label = html_escape(pdf_label)
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -973,7 +1213,7 @@ def build_response_html(*, title: str, prompt_title: str, markdown_text: str, pd
     <header>
       <h1>{pdf_name}</h1>
       <p><strong>{prompt_name}</strong></p>
-      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="{pdf_rel}">{html_escape(pdf_path.name)}</a></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="{pdf_rel}">{pdf_link_label}</a></p>
     </header>
     <main>
       {rendered}

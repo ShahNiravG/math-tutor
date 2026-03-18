@@ -40,6 +40,10 @@ Useful flags:
 
 - `--headful`: opens the browser so you can watch or debug login
 - `--limit 3`: process only the first three PDFs
+- `--prompt study-guide`: run only the Study Guide prompt for each matched PDF
+- `--prompt mental-math`: run only the Mental Math prompt for each matched PDF
+- `--prompt olympiad-problems`: generate the harder Olympiad-style problem set
+- `--prompt olympiad-solutions`: generate step-by-step solutions for the exact saved Olympiad problem set
 - `--fetch-only`: only download matching PDFs and update fetch state
 - `--force`: reprocess files even if output already exists
 - `--force-openai`: rerun the OpenAI step even for files already processed successfully
@@ -79,12 +83,14 @@ math-tutor-backfill-response-html
 
 ## Notes
 
-- The prompts are stored as `STUDY_GUIDE_PROMPT` and `MENTAL_MATH_PROMPT` in [cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py).
+ - The prompts are stored in [cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py), including Study Guide, Mental Math, Olympiad Problems, and Olympiad Solutions.
 - The CLI expects the school login credentials on the command line, as requested.
 - The CLI only processes PDFs whose visible names contain `note.docx`.
 - The Study Guide prompt keeps the original legacy filenames, so already completed Study Guide runs are preserved and not repeated.
 - The CLI tracks OpenAI success per PDF and per prompt, so it only calls OpenAI again when that specific prompt output is missing or forced.
+- You can target one or more prompts with repeated `--prompt` flags, and `--force-openai` applies to the selected prompts only.
+- `Olympiad Solutions` depends on the exact saved `Olympiad Problems` output for that PDF. If the problems do not exist yet, the CLI generates them first and then saves the solutions separately.
 - The HTML tutoring page is built from already saved files, so it does not need to refetch PDFs or rerun OpenAI.
 - Math formulas render better in the saved `.html` response files than in plain Markdown viewers, and the generated PDF responses are convenient for printing or sharing.
-- The tutoring page groups each document into two prompt-specific sections: `Study guide` and `Mental Math`.
+- The tutoring page groups each document into prompt-specific sections so students can open problems first and solutions later.
 - If login does not complete, rerun with `--headful` and inspect whether the site is using a different auth flow or MFA.

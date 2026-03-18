@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from math_tutor.cli import (
+    PROMPTS_BY_SLUG,
     STUDY_GUIDE_PROMPT,
     build_prompt_paths,
     build_response_html,
@@ -25,26 +27,28 @@ def main() -> None:
 
     generated = 0
     for response_path in sorted(responses_dir.glob("*.md")):
-        if "__" in response_path.stem:
-            continue
-
         metadata_path = metadata_dir / f"{response_path.stem}.json"
         if not metadata_path.exists():
             continue
 
         metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         prompt_slug = metadata.get("prompt_slug") or STUDY_GUIDE_PROMPT.slug
-        if prompt_slug != STUDY_GUIDE_PROMPT.slug:
+        prompt_spec = PROMPTS_BY_SLUG.get(prompt_slug)
+        if prompt_spec is None:
             continue
 
-        expected_md_path, html_path, pdf_response_path, expected_metadata_path = build_prompt_paths(
-            responses_dir=responses_dir,
-            metadata_dir=metadata_dir,
-            stem=response_path.stem,
-            prompt_spec=STUDY_GUIDE_PROMPT,
-        )
-        if expected_md_path != response_path or expected_metadata_path != metadata_path:
-            continue
+        if prompt_slug == STUDY_GUIDE_PROMPT.slug and "__" not in response_path.stem:
+            expected_md_path, html_path, pdf_response_path, expected_metadata_path = build_prompt_paths(
+                responses_dir=responses_dir,
+                metadata_dir=metadata_dir,
+                stem=response_path.stem,
+                prompt_spec=STUDY_GUIDE_PROMPT,
+            )
+            if expected_md_path != response_path or expected_metadata_path != metadata_path:
+                continue
+        else:
+            html_path = response_path.with_suffix(".html")
+            pdf_response_path = response_path.with_suffix(".pdf")
 
         pdf_path = Path(metadata["pdf_path"])
         display_name = metadata["display_name"]
@@ -52,26 +56,27 @@ def main() -> None:
         html_path.write_text(
             build_response_html(
                 title=display_name,
-                prompt_title=STUDY_GUIDE_PROMPT.title,
+                prompt_title=metadata.get("prompt_title") or prompt_spec.title,
                 markdown_text=markdown_text,
-                pdf_path=pdf_path,
+                pdf_label=pdf_path.name,
+                pdf_href=Path(os.path.relpath(pdf_path, start=html_path.parent)).as_posix(),
             ),
             encoding="utf-8",
         )
         build_response_pdf(response_html_path=html_path, response_pdf_path=pdf_response_path)
 
-        metadata["prompt_slug"] = STUDY_GUIDE_PROMPT.slug
-        metadata["prompt_title"] = STUDY_GUIDE_PROMPT.title
+        metadata["prompt_slug"] = prompt_spec.slug
+        metadata["prompt_title"] = metadata.get("prompt_title") or prompt_spec.title
         metadata["response_html_path"] = str(html_path)
         metadata["response_pdf_path"] = str(pdf_response_path)
         metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
         file_id = str(metadata["canvas_file_id"])
         file_state = openai_state.processed.setdefault(file_id, {})
-        prompt_state = file_state.setdefault(STUDY_GUIDE_PROMPT.slug, {})
+        prompt_state = file_state.setdefault(prompt_spec.slug, {})
         prompt_state["display_name"] = display_name
-        prompt_state["prompt_slug"] = STUDY_GUIDE_PROMPT.slug
-        prompt_state["prompt_title"] = STUDY_GUIDE_PROMPT.title
+        prompt_state["prompt_slug"] = prompt_spec.slug
+        prompt_state["prompt_title"] = metadata["prompt_title"]
         prompt_state["response_path"] = str(response_path)
         prompt_state["response_html_path"] = str(html_path)
         prompt_state["response_pdf_path"] = str(pdf_response_path)
@@ -84,7 +89,7 @@ def main() -> None:
         generated += 1
 
     save_openai_state(openai_state)
-    print(f"Generated {generated} Study Guide HTML/PDF response file set(s).")
+    print(f"Generated {generated} HTML/PDF response file set(s).")
 
 
 if __name__ == "__main__":
