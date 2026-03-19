@@ -58,17 +58,22 @@ def main() -> None:
                 title=display_name,
                 prompt_title=metadata.get("prompt_title") or prompt_spec.title,
                 markdown_text=markdown_text,
-                pdf_label=pdf_path.name,
-                pdf_href=Path(os.path.relpath(pdf_path, start=html_path.parent)).as_posix(),
+                pdf_label=pdf_path.name if prompt_spec.include_source_pdf_link else None,
+                pdf_href=(
+                    Path(os.path.relpath(pdf_path, start=html_path.parent)).as_posix()
+                    if prompt_spec.include_source_pdf_link
+                    else None
+                ),
             ),
             encoding="utf-8",
         )
-        build_response_pdf(response_html_path=html_path, response_pdf_path=pdf_response_path)
+        if prompt_spec.generate_response_pdf:
+            build_response_pdf(response_html_path=html_path, response_pdf_path=pdf_response_path)
 
         metadata["prompt_slug"] = prompt_spec.slug
         metadata["prompt_title"] = metadata.get("prompt_title") or prompt_spec.title
         metadata["response_html_path"] = str(html_path)
-        metadata["response_pdf_path"] = str(pdf_response_path)
+        metadata["response_pdf_path"] = str(pdf_response_path) if prompt_spec.generate_response_pdf else ""
         metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
 
         file_id = str(metadata["canvas_file_id"])
@@ -79,7 +84,9 @@ def main() -> None:
         prompt_state["prompt_title"] = metadata["prompt_title"]
         prompt_state["response_path"] = str(response_path)
         prompt_state["response_html_path"] = str(html_path)
-        prompt_state["response_pdf_path"] = str(pdf_response_path)
+        prompt_state["response_pdf_path"] = (
+            str(pdf_response_path) if prompt_spec.generate_response_pdf else ""
+        )
         prompt_state["metadata_path"] = str(metadata_path)
         if isinstance(metadata.get("openai_response_id"), str):
             prompt_state["openai_response_id"] = metadata["openai_response_id"]

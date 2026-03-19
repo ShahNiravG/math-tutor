@@ -12,9 +12,11 @@ from pathlib import Path
 from typing import Any
 
 from math_tutor.cli import (
+    INSPIRING_VIDEOS_PROMPT,
     MENTAL_MATH_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
+    PROMPTS_BY_SLUG,
     STUDY_GUIDE_PROMPT,
     PromptSpec,
     load_openai_state,
@@ -26,6 +28,7 @@ DEFAULT_OUTPUT_DIR = "math_tutor/output"
 DEFAULT_SITE_DIRNAME = "site"
 PROMPT_ORDER: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
+    INSPIRING_VIDEOS_PROMPT,
     MENTAL_MATH_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
@@ -408,9 +411,15 @@ def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path, base
 
 def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
     links: list[str] = []
+    prompt_spec = PROMPTS_BY_SLUG.get(prompt_output.slug)
     if prompt_output.response_html_path and prompt_output.response_html_path.exists():
         links.append(link_tag(prompt_output.response_html_path, output_dir, site_dir, "Open HTML", base_path))
-    if prompt_output.response_pdf_path and prompt_output.response_pdf_path.exists():
+    if (
+        prompt_spec is not None
+        and prompt_spec.generate_response_pdf
+        and prompt_output.response_pdf_path
+        and prompt_output.response_pdf_path.exists()
+    ):
         links.append(link_tag(prompt_output.response_pdf_path, output_dir, site_dir, "Open PDF", base_path))
 
     chips: list[str] = []
@@ -454,10 +463,9 @@ def resolve_site_asset_path(*, path: Path, output_dir: Path, site_dir: Path, dep
             return deployed_copy
         return path
 
-    if deployed_copy.exists():
-        return deployed_copy
     deployed_copy.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(path, deployed_copy)
+    if not deployed_copy.exists() or path.stat().st_mtime_ns != deployed_copy.stat().st_mtime_ns:
+        shutil.copy2(path, deployed_copy)
     return deployed_copy
 
 
@@ -612,7 +620,18 @@ def markdown_to_html(markdown_text: str) -> str:
 
 def render_inline(text: str) -> str:
     escaped = html.escape(text)
+    escaped = re.sub(
+        r"\[([^\]]+)\]\((https?://[^\s)]+)\)",
+        r'<a href="\2">\1</a>',
+        escaped,
+    )
+    escaped = re.sub(
+        r"(?<![\"'=>])(https?://[^\s<]+)",
+        r'<a href="\1">\1</a>',
+        escaped,
+    )
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+    escaped = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", escaped)
     escaped = re.sub(r"`(.+?)`", r"<code>\1</code>", escaped)
     return escaped
 

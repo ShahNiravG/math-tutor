@@ -23,6 +23,8 @@ TARGET_NAME_SUBSTRINGS = ("note.docx", "note.pdf")
 MATHJAX_SCRIPT = (
     "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 )
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_ENV_PATH = PROJECT_ROOT / ".env"
 
 
 @dataclass(frozen=True)
@@ -32,6 +34,8 @@ class PromptSpec:
     text: str
     source_prompt_slug: str | None = None
     source_placeholder: str = "{{previous_output}}"
+    include_source_pdf_link: bool = True
+    generate_response_pdf: bool = True
 
 
 STUDY_GUIDE_PROMPT = PromptSpec(
@@ -48,6 +52,29 @@ Read the attached PDF and produce:
 
 Keep the response self-contained and use clear section headings.
 """,
+)
+
+INSPIRING_VIDEOS_PROMPT = PromptSpec(
+    slug="inspiring-videos",
+    title="Inspiring Videos",
+    text="""I have a 14-year-old student studying the math topics in the attached PDF.
+
+For the topics in the PDF, recommend 1-2 highly engaging and visually intuitive YouTube videos from reputable math creators that inspire curiosity rather than focus on procedural problem solving.
+
+Requirements:
+1. Prefer videos that build deep conceptual understanding, such as geometric or visual intuition.
+2. Keep the recommendations appropriate for a motivated beginner.
+3. Avoid overly technical, competition-focused, or Olympiad-level content.
+4. Do not provide a direct YouTube watch URL, since those are often hallucinated or stale.
+5. Instead, provide a Google search link that is likely to find the exact video, using the video title, creator name, and the word YouTube in the query.
+6. Make the search query specific enough that a student can quickly find the intended video from the results.
+7. For each recommendation, briefly explain why it is inspiring and why it matches the topics in the PDF.
+8. If the PDF spans several distinct topics, choose the 1-2 videos that best cover the most central ideas.
+
+Format the response as a short list with the video title, creator, Google search link, and a brief explanation.
+""",
+    include_source_pdf_link=False,
+    generate_response_pdf=False,
 )
 
 MENTAL_MATH_PROMPT = PromptSpec(
@@ -100,6 +127,7 @@ Problem list to solve:
 
 PROMPTS: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
+    INSPIRING_VIDEOS_PROMPT,
     MENTAL_MATH_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
@@ -127,6 +155,26 @@ class FetchState:
 class OpenAIState:
     path: Path
     processed: dict[str, dict[str, dict[str, str]]]
+
+
+def load_dotenv_if_present(path: Path = DEFAULT_ENV_PATH) -> None:
+    if not path.exists():
+        return
+
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+
+        key, value = line.split("=", 1)
+        key = key.strip()
+        if not key or key in os.environ:
+            continue
+
+        value = value.strip()
+        if len(value) >= 2 and value[0] == value[-1] and value[0] in {'"', "'"}:
+            value = value[1:-1]
+        os.environ[key] = value
 
 
 def parse_args() -> argparse.Namespace:
@@ -182,6 +230,17 @@ def parse_args() -> argparse.Namespace:
         help="Run the OpenAI processing step again even for files already marked as successfully processed.",
     )
     parser.add_argument(
+        "--force-prompt",
+        dest="force_prompt_slugs",
+        action="append",
+        choices=sorted(PROMPTS_BY_SLUG),
+        help=(
+            "Force the OpenAI step for a specific prompt slug. "
+            "Repeat the flag to force multiple prompts, for example "
+            "--force-prompt study-guide --force-prompt inspiring-videos."
+        ),
+    )
+    parser.add_argument(
         "--prompt",
         dest="prompt_slugs",
         action="append",
@@ -196,6 +255,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    load_dotenv_if_present()
     args = parse_args()
     try:
         output_dir = Path(args.output_dir).resolve()
@@ -205,6 +265,7 @@ def main() -> None:
         fetch_state = load_fetch_state(output_dir / "fetch_state.json")
         openai_state = load_openai_state(output_dir / "openai_state.json")
         selected_prompts = resolve_selected_prompts(args.prompt_slugs)
+        forced_prompt_slugs = resolve_prompt_slug_set(args.force_prompt_slugs)
 
         downloads_dir.mkdir(parents=True, exist_ok=True)
         responses_dir.mkdir(parents=True, exist_ok=True)
@@ -258,6 +319,7 @@ def main() -> None:
                             openai_state=openai_state,
                             model=args.model,
                             prompts=selected_prompts,
+                            forced_prompt_slugs=forced_prompt_slugs,
                             force=args.force,
                             fetch_only=args.fetch_only,
                             force_openai=args.force_openai,
@@ -665,6 +727,7 @@ def process_file(
     openai_state: OpenAIState,
     model: str,
     prompts: tuple[PromptSpec, ...],
+    forced_prompt_slugs: set[str],
     force: bool,
     fetch_only: bool,
     force_openai: bool,
@@ -704,7 +767,7 @@ def process_file(
             prompt_spec=prompt_spec,
             prompt_outputs_cache=prompt_outputs_cache,
             force=force,
-            force_openai=force_openai,
+            force_openai=force_openai or prompt_spec.slug in forced_prompt_slugs,
             index=index,
             total=total,
         )
@@ -828,16 +891,21 @@ def run_prompt(
             title=canvas_file.display_name,
             prompt_title=prompt_spec.title,
             markdown_text=result.output_text,
-            pdf_label=pdf_path.name,
-            pdf_href=Path(os.path.relpath(pdf_path, start=response_html_path.parent)).as_posix(),
+            pdf_label=pdf_path.name if prompt_spec.include_source_pdf_link else None,
+            pdf_href=(
+                Path(os.path.relpath(pdf_path, start=response_html_path.parent)).as_posix()
+                if prompt_spec.include_source_pdf_link
+                else None
+            ),
         ),
         encoding="utf-8",
     )
-    build_response_pdf(
-        response_html_path=response_html_path,
-        response_pdf_path=response_pdf_path,
-        browser=pdf_browser,
-    )
+    if prompt_spec.generate_response_pdf:
+        build_response_pdf(
+            response_html_path=response_html_path,
+            response_pdf_path=response_pdf_path,
+            browser=pdf_browser,
+        )
     metadata = {
         "canvas_file_id": canvas_file.file_id,
         "display_name": canvas_file.display_name,
@@ -853,7 +921,7 @@ def run_prompt(
         "pdf_path": str(pdf_path),
         "response_path": str(response_path),
         "response_html_path": str(response_html_path),
-        "response_pdf_path": str(response_pdf_path),
+        "response_pdf_path": str(response_pdf_path) if prompt_spec.generate_response_pdf else "",
     }
     metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     file_state = openai_state.processed.setdefault(str(canvas_file.file_id), {})
@@ -863,7 +931,7 @@ def run_prompt(
         "prompt_title": prompt_spec.title,
         "response_path": str(response_path),
         "response_html_path": str(response_html_path),
-        "response_pdf_path": str(response_pdf_path),
+        "response_pdf_path": str(response_pdf_path) if prompt_spec.generate_response_pdf else "",
         "metadata_path": str(metadata_path),
         "processed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "openai_response_id": result.response_id,
@@ -1080,7 +1148,11 @@ def should_skip_openai(
     if prompt_state is None:
         return False
 
-    if response_path.exists() and response_html_path.exists() and response_pdf_path.exists():
+    has_all_artifacts = response_path.exists() and response_html_path.exists()
+    if prompt_spec.generate_response_pdf:
+        has_all_artifacts = has_all_artifacts and response_pdf_path.exists()
+
+    if has_all_artifacts:
         print(
             f"[{index}/{total}] Skipping OpenAI for {canvas_file.display_name} ({prompt_spec.title}); already processed successfully."
         )
@@ -1115,14 +1187,28 @@ def resolve_selected_prompts(prompt_slugs: list[str] | None) -> tuple[PromptSpec
     return tuple(selected)
 
 
+def resolve_prompt_slug_set(prompt_slugs: list[str] | None) -> set[str]:
+    if not prompt_slugs:
+        return set()
+    return set(prompt_slugs)
+
+
 def build_response_html(
-    *, title: str, prompt_title: str, markdown_text: str, pdf_label: str, pdf_href: str
+    *, title: str, prompt_title: str, markdown_text: str, pdf_label: str | None, pdf_href: str | None
 ) -> str:
     rendered = markdown_to_html(markdown_text)
     pdf_name = html_escape(pretty_title(title))
     prompt_name = html_escape(prompt_title)
-    pdf_rel = html_escape(pdf_href)
-    pdf_link_label = html_escape(pdf_label)
+    pdf_note = ""
+    if pdf_label and pdf_href:
+        pdf_rel = html_escape(pdf_href)
+        pdf_link_label = html_escape(pdf_label)
+        pdf_note = (
+            f'<p>Saved tutoring response with MathJax rendering. Original PDF file: '
+            f'<a href="{pdf_rel}">{pdf_link_label}</a></p>'
+        )
+    else:
+        pdf_note = "<p>Saved tutoring response with MathJax rendering.</p>"
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1214,7 +1300,7 @@ def build_response_html(
     <header>
       <h1>{pdf_name}</h1>
       <p><strong>{prompt_name}</strong></p>
-      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="{pdf_rel}">{pdf_link_label}</a></p>
+      {pdf_note}
     </header>
     <main>
       {rendered}
@@ -1318,7 +1404,18 @@ def markdown_to_html(markdown_text: str) -> str:
 
 def render_inline(text: str) -> str:
     escaped = html_escape(text)
+    escaped = re.sub(
+        r"\[([^\]]+)\]\((https?://[^\s)]+)\)",
+        r'<a href="\2">\1</a>',
+        escaped,
+    )
+    escaped = re.sub(
+        r"(?<![\"'=>])(https?://[^\s<]+)",
+        r'<a href="\1">\1</a>',
+        escaped,
+    )
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+    escaped = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", escaped)
     escaped = re.sub(r"`(.+?)`", r"<code>\1</code>", escaped)
     return escaped
 

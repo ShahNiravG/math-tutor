@@ -30,11 +30,13 @@ playwright install chromium
 ## Usage
 
 ```bash
-export OPENAI_API_KEY=your_key_here
+cp ../.env.example ../.env
 math-tutor \
   --username your_canvas_username \
   --password your_canvas_password
 ```
+
+The CLI automatically loads environment variables from `../.env` when present, so you usually do not need to `export OPENAI_API_KEY` manually first.
 
 Useful flags:
 
@@ -44,6 +46,7 @@ Useful flags:
 - `--prompt mental-math`: run only the Mental Math prompt for each matched PDF
 - `--prompt olympiad-problems`: generate the harder Olympiad-style problem set
 - `--prompt olympiad-solutions`: generate step-by-step solutions for the exact saved Olympiad problem set
+- `--force-prompt inspiring-videos`: rerun OpenAI for just that prompt while leaving other prompts alone
 - `--fetch-only`: only download matching PDFs and update fetch state
 - `--force`: reprocess files even if output already exists
 - `--force-openai`: rerun the OpenAI step even for files already processed successfully
@@ -92,6 +95,7 @@ math-tutor-backfill-response-html
 - The Study Guide prompt keeps the original legacy filenames, so already completed Study Guide runs are preserved and not repeated.
 - The CLI tracks OpenAI success per PDF and per prompt, so it only calls OpenAI again when that specific prompt output is missing or forced.
 - You can target one or more prompts with repeated `--prompt` flags, and `--force-openai` applies to the selected prompts only.
+- You can also target reruns more explicitly with repeated `--force-prompt` flags, such as `--prompt inspiring-videos --force-prompt inspiring-videos --limit 1`.
 - `Olympiad Solutions` depends on the exact saved `Olympiad Problems` output for that PDF. If the problems do not exist yet, the CLI generates them first and then saves the solutions separately.
 - The HTML tutoring page is built from already saved files, so it does not need to refetch PDFs or rerun OpenAI.
 - Math formulas render better in the saved `.html` response files than in plain Markdown viewers, and the generated PDF responses are convenient for printing or sharing.
