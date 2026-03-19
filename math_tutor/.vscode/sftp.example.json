@@ -1,0 +1,17 @@
+{
+    "name": "Example SFTP",
+    "context": "output/deploy/math_tutor",
+    "host": "your-hostname.example.com",
+    "protocol": "sftp",
+    "port": 22,
+    "username": "your-username",
+    "remotePath": "public_html/math_tutor/",
+    "ignore": [
+        "fetch_state.json",
+        "openai_state.json",
+        "metadata/**"
+    ],
+    "uploadOnSave": false,
+    "useTempFile": false,
+    "openSsh": false
+}
