@@ -19,7 +19,7 @@ DEFAULT_MODEL = "gpt-4.1"
 DEFAULT_TIMEOUT_SECONDS = 60
 LOGIN_RENDER_TIMEOUT_MS = 20_000
 FILES_PAGE_TIMEOUT_MS = 30_000
-TARGET_NAME_SUBSTRING = "note.docx"
+TARGET_NAME_SUBSTRINGS = ("note.docx", "note.pdf")
 MATHJAX_SCRIPT = (
     "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 )
@@ -625,7 +625,8 @@ def is_pdf(display_name: str, content_type: str, url: str) -> bool:
 
 
 def matches_target_pdf(display_name: str) -> bool:
-    return TARGET_NAME_SUBSTRING in display_name.lower()
+    lowered_name = display_name.lower()
+    return any(substring in lowered_name for substring in TARGET_NAME_SUBSTRINGS)
 
 
 def extract_file_id(url: str) -> int | None:

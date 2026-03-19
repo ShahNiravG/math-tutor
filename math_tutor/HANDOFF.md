@@ -20,7 +20,7 @@ The course Files page is disabled and the Canvas Files API returned `403`, so di
 3. Resolve module item links to Canvas file URLs
 4. Add `download=1` and fetch the PDF bytes with the authenticated HTTP client
 
-The CLI only keeps PDFs whose names contain `note.docx`.
+The CLI only keeps PDFs whose names contain `note.docx` or `note.pdf`.
 
 ## Current Processing Rules
 

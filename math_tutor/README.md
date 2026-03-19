@@ -4,7 +4,7 @@
 
 1. Starts from the Canvas course at `https://mitty.instructure.com/courses/4187`
 2. Follows the school's configured login redirect flow, including OneLogin if Canvas sends the browser there
-3. Finds only PDFs whose names contain `note.docx`
+3. Finds only PDFs whose names contain `note.docx` or `note.pdf`
 4. Uses the authenticated course pages to discover those PDFs
 5. Downloads each PDF locally and remembers which files were fetched successfully
 6. Uploads each PDF to the OpenAI Responses API once per prompt, with the prompts embedded in code
@@ -72,6 +72,9 @@ This reads the existing saved PDFs, responses, and state files and generates:
 Useful flag:
 
 - `--site-dir custom/path`: write the generated HTML page to a different directory
+- `--base-path /math_tutor/`: generate deploy-ready links such as `/math_tutor/downloads/...`
+
+If you build directly into a directory named `math_tutor` outside the output tree, such as `~/public_html/math_tutor`, the site builder now copies the referenced PDFs and response files into that directory and automatically generates `/math_tutor/...` links for deployment.
 
 ## Backfill HTML Responses
 
@@ -85,7 +88,7 @@ math-tutor-backfill-response-html
 
  - The prompts are stored in [cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py), including Study Guide, Mental Math, Olympiad Problems, and Olympiad Solutions.
 - The CLI expects the school login credentials on the command line, as requested.
-- The CLI only processes PDFs whose visible names contain `note.docx`.
+- The CLI only processes PDFs whose visible names contain `note.docx` or `note.pdf`.
 - The Study Guide prompt keeps the original legacy filenames, so already completed Study Guide runs are preserved and not repeated.
 - The CLI tracks OpenAI success per PDF and per prompt, so it only calls OpenAI again when that specific prompt output is missing or forced.
 - You can target one or more prompts with repeated `--prompt` flags, and `--force-openai` applies to the selected prompts only.

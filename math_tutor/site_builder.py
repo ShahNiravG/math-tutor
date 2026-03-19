@@ -5,6 +5,7 @@ import html
 import json
 import os
 import re
+import shutil
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -83,7 +84,7 @@ def main() -> None:
     output_dir = Path(args.output_dir).resolve()
     site_dir = Path(args.site_dir).resolve() if args.site_dir else output_dir / DEFAULT_SITE_DIRNAME
     site_dir.mkdir(parents=True, exist_ok=True)
-    base_path = normalize_base_path(args.base_path)
+    base_path = determine_base_path(raw_base_path=args.base_path, output_dir=output_dir, site_dir=site_dir)
 
     records = load_records(output_dir)
     html_text = build_html(records=records, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
@@ -441,29 +442,52 @@ def link_tag(path: Path, output_dir: Path, site_dir: Path, label: str, base_path
     return f'<a href="{html.escape(href)}">{html.escape(label)}</a>'
 
 
-def resolve_site_asset_path(*, path: Path, output_dir: Path, site_dir: Path) -> Path:
+def resolve_site_asset_path(*, path: Path, output_dir: Path, site_dir: Path, deploy_assets: bool) -> Path:
     try:
         relative_to_output = path.relative_to(output_dir)
     except ValueError:
         return path
 
     deployed_copy = site_dir / relative_to_output
+    if not deploy_assets:
+        if deployed_copy.exists():
+            return deployed_copy
+        return path
+
     if deployed_copy.exists():
         return deployed_copy
-    return path
+    deployed_copy.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(path, deployed_copy)
+    return deployed_copy
 
 
 def build_site_href(*, path: Path, output_dir: Path, site_dir: Path, base_path: str) -> str:
+    deploy_assets = should_copy_site_assets(output_dir=output_dir, site_dir=site_dir, base_path=base_path)
+    resolved_path = resolve_site_asset_path(
+        path=path,
+        output_dir=output_dir,
+        site_dir=site_dir,
+        deploy_assets=deploy_assets,
+    )
+
     if base_path:
         try:
-            relative_to_output = path.relative_to(output_dir).as_posix()
-            return f"{base_path}{relative_to_output}"
+            relative_to_site = resolved_path.relative_to(site_dir).as_posix()
+            return f"{base_path}{relative_to_site}"
         except ValueError:
             pass
 
-    resolved_path = resolve_site_asset_path(path=path, output_dir=output_dir, site_dir=site_dir)
     rel = Path(os.path.relpath(resolved_path, start=site_dir)).as_posix()
     return rel
+
+
+def determine_base_path(*, raw_base_path: str, output_dir: Path, site_dir: Path) -> str:
+    normalized = normalize_base_path(raw_base_path)
+    if normalized:
+        return normalized
+    if should_use_math_tutor_base_path(output_dir=output_dir, site_dir=site_dir):
+        return "/math_tutor/"
+    return ""
 
 
 def normalize_base_path(value: str) -> str:
@@ -473,6 +497,14 @@ def normalize_base_path(value: str) -> str:
     if not stripped:
         return ""
     return f"/{stripped}/"
+
+
+def should_use_math_tutor_base_path(*, output_dir: Path, site_dir: Path) -> bool:
+    return site_dir.name == "math_tutor" and not site_dir.is_relative_to(output_dir)
+
+
+def should_copy_site_assets(*, output_dir: Path, site_dir: Path, base_path: str) -> bool:
+    return bool(base_path) or not site_dir.is_relative_to(output_dir)
 
 
 def extract_study_guide_summary_html(markdown_text: str) -> str:
