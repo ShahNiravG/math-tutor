@@ -1231,7 +1231,7 @@ def build_response_html(
     *, title: str, prompt_title: str, markdown_text: str, pdf_label: str | None, pdf_href: str | None
 ) -> str:
     rendered = markdown_to_html(markdown_text)
-    pdf_name = html_escape(pretty_title(title))
+    pdf_name = html_escape(response_document_title(title))
     prompt_name = html_escape(prompt_title)
     pdf_note = ""
     if pdf_label and pdf_href:
@@ -1459,6 +1459,14 @@ def pretty_title(display_name: str) -> str:
     cleaned = re.sub(r"\s+\(\d+\)$", "", cleaned)
     cleaned = cleaned.replace("_", " ")
     return cleaned
+
+
+def response_document_title(display_name: str) -> str:
+    match = re.search(r"chp\s+(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)", display_name.lower())
+    if match:
+        chapter = re.sub(r"\s+", " ", match.group(1).strip())
+        return f"Algebra II with Trigonometry Chapter {chapter}"
+    return pretty_title(display_name)
 
 
 def html_escape(value: str) -> str:
