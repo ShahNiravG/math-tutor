@@ -25,9 +25,11 @@ from math_tutor.cli import (
 )
 
 
-DEFAULT_OUTPUT_DIR = "math_tutor/output"
+PACKAGE_DIR = Path(__file__).resolve().parent
+DEFAULT_OUTPUT_DIR = str(PACKAGE_DIR / "output")
 DEFAULT_SITE_DIRNAME = "site"
 SITE_TITLE = "Algebra II with Trigonometry Tutor"
+SIDEBAR_TITLE = "Algebra II Trig Tutor"
 PROMPT_ORDER: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
     INSPIRING_VIDEOS_PROMPT,
@@ -417,6 +419,25 @@ def render_page_shell(
       font-size: 1.8rem;
       line-height: 1.05;
     }}
+    .brand-head {{
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }}
+    .brand-mark {{
+      width: 56px;
+      height: 56px;
+      flex: 0 0 56px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(78, 55, 32, 0.12);
+    }}
+    .brand-mark svg {{
+      display: block;
+      width: 100%;
+      height: 100%;
+    }}
     .sidebar p {{
       color: var(--muted);
       margin: 0 0 18px;
@@ -581,7 +602,27 @@ def render_page_shell(
 <body>
   <div class="page">
     <aside class="sidebar">
-      <h1>{html.escape(SITE_TITLE)}</h1>
+      <div class="brand-head">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="brandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fff5da"/>
+                <stop offset="55%" stop-color="#f3c98f"/>
+                <stop offset="100%" stop-color="#cf7c43"/>
+              </linearGradient>
+            </defs>
+            <rect width="72" height="72" rx="16" fill="url(#brandGlow)"/>
+            <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
+            <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
+            <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
+            <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
+            <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
+            <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
+          </svg>
+        </div>
+        <h1>{html.escape(SIDEBAR_TITLE)}</h1>
+      </div>
       <p>Browse saved class note PDFs alongside the generated tutoring outputs. Each document now has its own page, so picking a link on the left only loads that document on the right.</p>
       <a class="sidebar-home" href="{html.escape(home_href)}">Library Overview</a>
       <ol class="toc">
