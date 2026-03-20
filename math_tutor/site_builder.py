@@ -642,7 +642,7 @@ def render_index_card(
     prompt_count = sum(1 for prompt_output in record.prompt_outputs if prompt_output.processed_at)
     links = [f'<a href="{html.escape(site_page_href(record_page_filename(record), base_path))}">Enter the Lab</a>']
     if record.pdf_path and record.pdf_path.exists():
-        links.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF", base_path))
+        links.append(link_tag(record.pdf_path, output_dir, site_dir, "Class Note PDF", base_path))
     summary_html = ""
     if include_guided_learning:
         summary_html = f"<p>{render_inline(build_guided_learning_prompt(record))}</p>"
@@ -692,7 +692,7 @@ def render_record(
 ) -> str:
     document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
-        document_links.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF", base_path))
+        document_links.append(link_tag(record.pdf_path, output_dir, site_dir, "Class Note PDF", base_path))
     if record.download_url:
         document_links.append(
             f'<a href="{html.escape(record.download_url)}">Open Canvas File</a>'
@@ -741,7 +741,7 @@ def render_guided_learning(record: DocumentRecord, output_dir: Path, site_dir: P
         ),
     ]
     if record.pdf_path and record.pdf_path.exists():
-        buttons.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF", base_path))
+        buttons.append(link_tag(record.pdf_path, output_dir, site_dir, "Class Note PDF", base_path))
 
     return f"""
       <section class="guided-card">
@@ -765,7 +765,7 @@ def build_guided_learning_prompt(record: DocumentRecord) -> str:
             continue
         summary_lines = extract_study_guide_summary_lines(prompt_output.response_markdown)
         if summary_lines:
-            return "\n".join(summary_lines)
+            return normalize_summary_text("\n".join(summary_lines))
     return pretty_title(record.display_name)
 
 
@@ -775,7 +775,7 @@ def render_record_summary(record: DocumentRecord) -> str:
         return ""
     return f"""
       <section class="guided-card">
-        <h3>Short Summary</h3>
+        <h3>Summary</h3>
         {summary_html}
       </section>
     """
@@ -901,14 +901,18 @@ def extract_study_guide_summary_html(markdown_text: str, *, include_heading: boo
     if not summary_lines:
         return ""
 
-    summary_html = markdown_to_html("\n".join(summary_lines))
-    heading_html = "<h4>Short Summary</h4>" if include_heading else ""
+    summary_html = markdown_to_html(normalize_summary_text("\n".join(summary_lines)))
+    heading_html = "<h4>Summary</h4>" if include_heading else ""
     return f"""
         <div class="response">
           {heading_html}
           {summary_html}
         </div>
     """
+
+
+def normalize_summary_text(text: str) -> str:
+    return re.sub(r"^This document\b", "This chapter", text.strip(), count=1, flags=re.IGNORECASE)
 
 
 def extract_study_guide_summary_lines(markdown_text: str) -> list[str]:
