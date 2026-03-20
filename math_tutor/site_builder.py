@@ -623,7 +623,7 @@ def render_page_shell(
         </div>
         <h1>{html.escape(SIDEBAR_TITLE)}</h1>
       </div>
-      <p>Browse saved class note PDFs alongside the generated tutoring outputs. Each document now has its own page, so picking a link on the left only loads that document on the right.</p>
+      <p>Browse saved class note PDFs alongside the generated tutoring outputs.</p>
       <a class="sidebar-home" href="{html.escape(home_href)}">Library Overview</a>
       <ol class="toc">
         {toc_items}
@@ -691,7 +691,7 @@ def render_index_card(
       <section class="prompt-card">
         <h3>{html.escape(document_label(record))}</h3>
         <div class="chip-row">
-          <span class="chip">{prompt_count} saved response(s)</span>
+          <span class="chip">{prompt_count} AI generated section(s)</span>
         </div>
         <div class="link-row">
           {' '.join(links)}
@@ -734,10 +734,6 @@ def render_record(
     document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
         document_links.append(link_tag(record.pdf_path, output_dir, site_dir, "Class Note PDF", base_path))
-    if record.download_url:
-        document_links.append(
-            f'<a href="{html.escape(record.download_url)}">Open Canvas File</a>'
-        )
 
     document_chips: list[str] = []
     if record.fetched_at:
