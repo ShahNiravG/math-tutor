@@ -251,6 +251,25 @@ def parse_args() -> argparse.Namespace:
             "--prompt study-guide --prompt mental-math. Defaults to all prompts."
         ),
     )
+    parser.add_argument(
+        "--build-site-guided-learning",
+        action="store_true",
+        help=(
+            "After processing, build the tutoring page and add a Guided Learning section for each PDF processed in this run."
+        ),
+    )
+    parser.add_argument(
+        "--site-dir",
+        default=None,
+        help="Optional output directory for the generated tutoring page when --build-site-guided-learning is used.",
+    )
+    parser.add_argument(
+        "--site-base-path",
+        default="",
+        help=(
+            "Optional deployed site prefix such as /math_tutor/ when --build-site-guided-learning is used."
+        ),
+    )
     return parser.parse_args()
 
 
@@ -266,6 +285,7 @@ def main() -> None:
         openai_state = load_openai_state(output_dir / "openai_state.json")
         selected_prompts = resolve_selected_prompts(args.prompt_slugs)
         forced_prompt_slugs = resolve_prompt_slug_set(args.force_prompt_slugs)
+        processed_file_ids: set[str] = set()
 
         downloads_dir.mkdir(parents=True, exist_ok=True)
         responses_dir.mkdir(parents=True, exist_ok=True)
@@ -326,9 +346,23 @@ def main() -> None:
                             index=index,
                             total=len(files),
                         )
+                        processed_file_ids.add(str(canvas_file.file_id))
             finally:
                 maybe_prompt_before_exit(args.headful)
                 browser.close()
+
+        if args.build_site_guided_learning:
+            from math_tutor.site_builder import build_site
+
+            index_path = build_site(
+                output_dir=output_dir,
+                site_dir=Path(args.site_dir).resolve() if args.site_dir else None,
+                base_path=args.site_base_path,
+                limit=args.limit,
+                include_guided_learning=True,
+                file_ids=processed_file_ids,
+            )
+            print(f"Built tutoring page with Guided Learning at {index_path}")
     except KeyboardInterrupt:
         raise SystemExit(130)
 

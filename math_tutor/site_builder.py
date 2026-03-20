@@ -26,6 +26,7 @@ from math_tutor.cli import (
 
 DEFAULT_OUTPUT_DIR = "math_tutor/output"
 DEFAULT_SITE_DIRNAME = "site"
+SITE_TITLE = "Algebra II with Trigonometry Tutor"
 PROMPT_ORDER: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
     INSPIRING_VIDEOS_PROMPT,
@@ -79,21 +80,79 @@ def parse_args() -> argparse.Namespace:
             "When provided, generated links use that path instead of relative filesystem-style links."
         ),
     )
+    parser.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Optional limit on number of saved PDFs to include in the generated page.",
+    )
+    parser.add_argument(
+        "--include-guided-learning",
+        action="store_true",
+        help=(
+            "Add a Guided Learning section for each PDF with a ChatGPT Study Mode helper button and prompt copy action."
+        ),
+    )
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    output_dir = Path(args.output_dir).resolve()
-    site_dir = Path(args.site_dir).resolve() if args.site_dir else output_dir / DEFAULT_SITE_DIRNAME
-    site_dir.mkdir(parents=True, exist_ok=True)
-    base_path = determine_base_path(raw_base_path=args.base_path, output_dir=output_dir, site_dir=site_dir)
+    index_path = build_site(
+        output_dir=Path(args.output_dir).resolve(),
+        site_dir=Path(args.site_dir).resolve() if args.site_dir else None,
+        base_path=args.base_path,
+        limit=args.limit,
+        include_guided_learning=args.include_guided_learning,
+    )
+    print(f"Built tutoring page at {index_path}")
+
+
+def build_site(
+    *,
+    output_dir: Path,
+    site_dir: Path | None = None,
+    base_path: str = "",
+    limit: int | None = None,
+    include_guided_learning: bool = False,
+    file_ids: set[str] | None = None,
+) -> Path:
+    resolved_site_dir = site_dir.resolve() if site_dir else output_dir / DEFAULT_SITE_DIRNAME
+    resolved_site_dir.mkdir(parents=True, exist_ok=True)
+    resolved_base_path = determine_base_path(
+        raw_base_path=base_path,
+        output_dir=output_dir,
+        site_dir=resolved_site_dir,
+    )
 
     records = load_records(output_dir)
-    html_text = build_html(records=records, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
-    index_path = site_dir / "index.html"
+    if file_ids is not None:
+        records = [record for record in records if record.file_id in file_ids]
+    if limit is not None:
+        records = records[:limit]
+    html_text = build_index_html(
+        records=records,
+        output_dir=output_dir,
+        site_dir=resolved_site_dir,
+        base_path=resolved_base_path,
+        include_guided_learning=include_guided_learning,
+    )
+    index_path = resolved_site_dir / "index.html"
     index_path.write_text(html_text, encoding="utf-8")
-    print(f"Built tutoring page at {index_path}")
+    for record in records:
+        record_path = resolved_site_dir / record_page_filename(record)
+        record_path.write_text(
+            build_record_page_html(
+                record=record,
+                records=records,
+                output_dir=output_dir,
+                site_dir=resolved_site_dir,
+                base_path=resolved_base_path,
+                include_guided_learning=include_guided_learning,
+            ),
+            encoding="utf-8",
+        )
+    return index_path
 
 
 def load_records(output_dir: Path) -> list[DocumentRecord]:
@@ -198,22 +257,104 @@ def sort_key_from_id_and_name(
     return key
 
 
-def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Path, base_path: str) -> str:
+def build_index_html(
+    *,
+    records: list[DocumentRecord],
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+    include_guided_learning: bool,
+) -> str:
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    toc_items = "\n".join(
-        f'<li><a href="#doc-{record.file_id}">{html.escape(pretty_title(record.display_name))}</a></li>'
-        for record in records
-    )
-    sections = "\n".join(render_record(record, output_dir, site_dir, base_path) for record in records)
     total_prompt_outputs = sum(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
+    )
+    overview_cards = "\n".join(
+        render_index_card(
+            record,
+            output_dir,
+            site_dir,
+            base_path,
+            include_guided_learning=include_guided_learning,
+        )
+        for record in records
+    )
+    body_html = f"""
+    <section class="content-card">
+      <div class="doc-header">
+        <h2>Library Overview</h2>
+      </div>
+      <p class="page-intro">Choose a document from the left to view only that document's sections on the right.</p>
+      <div class="prompt-grid">
+        {overview_cards}
+      </div>
+    </section>
+    """
+    return render_page_shell(
+        title=SITE_TITLE,
+        records=records,
+        active_record=None,
+        body_html=body_html,
+        total_prompt_outputs=total_prompt_outputs,
+        generated_at=generated_at,
+        base_path=base_path,
+    )
+
+
+def build_record_page_html(
+    *,
+    record: DocumentRecord,
+    records: list[DocumentRecord],
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+    include_guided_learning: bool,
+) -> str:
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    total_prompt_outputs = sum(
+        1 for doc in records for prompt_output in doc.prompt_outputs if prompt_output.processed_at
+    )
+    body_html = render_record(
+        record,
+        output_dir,
+        site_dir,
+        base_path,
+        include_guided_learning=include_guided_learning,
+    )
+    return render_page_shell(
+        title=f"{document_label(record)} - {SITE_TITLE}",
+        records=records,
+        active_record=record,
+        body_html=body_html,
+        total_prompt_outputs=total_prompt_outputs,
+        generated_at=generated_at,
+        base_path=base_path,
+    )
+
+
+def render_page_shell(
+    *,
+    title: str,
+    records: list[DocumentRecord],
+    active_record: DocumentRecord | None,
+    body_html: str,
+    total_prompt_outputs: int,
+    generated_at: str,
+    base_path: str,
+) -> str:
+    toc_items = "\n".join(render_sidebar_item(record, active_record, base_path) for record in records)
+    home_href = site_page_href("index.html", base_path)
+    active_label = (
+        html.escape(document_label(active_record))
+        if active_record is not None
+        else "Library Overview"
     )
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Math Tutor Library</title>
+  <title>{html.escape(title)}</title>
   <style>
     :root {{
       --bg: #f5f1e8;
@@ -255,6 +396,8 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
       position: sticky;
       top: 20px;
       align-self: start;
+      max-height: calc(100vh - 40px);
+      overflow: auto;
     }}
     .sidebar h1 {{
       margin: 0 0 8px;
@@ -266,11 +409,36 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
       margin: 0 0 18px;
       line-height: 1.45;
     }}
+    .sidebar-home {{
+      display: inline-block;
+      margin-bottom: 14px;
+      font-weight: 600;
+      text-decoration: none;
+    }}
     .toc {{
+      list-style: none;
       margin: 0;
-      padding-left: 18px;
+      padding: 0;
       display: grid;
       gap: 8px;
+    }}
+    .toc a {{
+      display: block;
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      color: var(--ink);
+    }}
+    .toc a:hover {{
+      border-color: var(--line);
+      background: rgba(255, 255, 255, 0.6);
+    }}
+    .toc a.active {{
+      background: var(--accent-soft);
+      border-color: var(--line-strong);
+      color: #6a2e16;
+      font-weight: 700;
     }}
     .meta {{
       margin-top: 18px;
@@ -298,6 +466,11 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
       margin: 0;
       font-size: 1.7rem;
       line-height: 1.1;
+    }}
+    .page-intro {{
+      color: var(--muted);
+      line-height: 1.5;
+      margin: 0 0 18px;
     }}
     .chip-row {{
       display: flex;
@@ -332,6 +505,46 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
       grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
       gap: 16px;
     }}
+    .guided-card {{
+      border: 1px solid var(--line-strong);
+      background: linear-gradient(180deg, #fff7ec 0%, #fffdf8 100%);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 18px;
+    }}
+    .guided-card h3 {{
+      margin: 0 0 10px;
+      font-size: 1.25rem;
+      color: #243645;
+    }}
+    .guided-card p {{
+      margin: 0 0 12px;
+      line-height: 1.5;
+      color: var(--muted);
+    }}
+    .button-row {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 12px;
+    }}
+    .button-row button,
+    .button-row a {{
+      appearance: none;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--accent);
+      text-decoration: none;
+      font: inherit;
+      font-weight: 600;
+      padding: 9px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+    }}
+    .guided-note {{
+      font-size: 0.95rem;
+      color: var(--muted);
+    }}
     .prompt-card {{
       border: 1px solid var(--line-strong);
       background: var(--prompt-bg);
@@ -348,34 +561,122 @@ def build_html(*, records: list[DocumentRecord], output_dir: Path, site_dir: Pat
     }}
     @media (max-width: 960px) {{
       .page {{ grid-template-columns: 1fr; }}
-      .sidebar {{ position: static; }}
+      .sidebar {{ position: static; max-height: none; }}
     }}
   </style>
 </head>
 <body>
   <div class="page">
     <aside class="sidebar">
-      <h1>Math Tutor Library</h1>
-      <p>Browse saved class note PDFs alongside the generated tutoring outputs. Each document can have separate Study Guide, Mental Math, Olympiad Problems, and Olympiad Solutions responses, and this page is built entirely from local saved state.</p>
+      <h1>{html.escape(SITE_TITLE)}</h1>
+      <p>Browse saved class note PDFs alongside the generated tutoring outputs. Each document now has its own page, so picking a link on the left only loads that document on the right.</p>
+      <a class="sidebar-home" href="{html.escape(home_href)}">Library Overview</a>
       <ol class="toc">
         {toc_items}
       </ol>
       <div class="meta">
+        <div><strong>Viewing:</strong> {active_label}</div>
         <div><strong>Documents:</strong> {len(records)}</div>
         <div><strong>Saved prompt outputs:</strong> {total_prompt_outputs}</div>
         <div><strong>Built:</strong> {generated_at}</div>
       </div>
     </aside>
     <main class="main">
-      {sections}
+      {body_html}
     </main>
   </div>
+  <script>
+    async function copyChatgptPrompt(button) {{
+      const prompt = button.dataset.chatgptPrompt || "";
+      const status = button.parentElement && button.parentElement.nextElementSibling;
+      if (!prompt || !navigator.clipboard || !navigator.clipboard.writeText) {{
+        if (status) {{
+          status.textContent = "Copy failed in this browser. Use the prompt text shown below.";
+        }}
+        return;
+      }}
+      try {{
+        await navigator.clipboard.writeText(prompt);
+        if (status) {{
+          status.textContent = "Prompt copied.";
+        }}
+      }} catch (error) {{
+        if (status) {{
+          status.textContent = "Copy failed in this browser. Use the prompt text shown below.";
+        }}
+      }}
+    }}
+  </script>
 </body>
 </html>
 """
 
 
-def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
+def render_sidebar_item(record: DocumentRecord, active_record: DocumentRecord | None, base_path: str) -> str:
+    href = site_page_href(record_page_filename(record), base_path)
+    classes = "active" if active_record and active_record.file_id == record.file_id else ""
+    return f'<li><a class="{classes}" href="{html.escape(href)}">{html.escape(document_label(record))}</a></li>'
+
+
+def render_index_card(
+    record: DocumentRecord,
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+    *,
+    include_guided_learning: bool,
+) -> str:
+    prompt_count = sum(1 for prompt_output in record.prompt_outputs if prompt_output.processed_at)
+    links = [f'<a href="{html.escape(site_page_href(record_page_filename(record), base_path))}">Open Document Page</a>']
+    if record.pdf_path and record.pdf_path.exists():
+        links.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF", base_path))
+    summary_html = ""
+    if include_guided_learning:
+        summary_html = f"<p>{render_inline(build_guided_learning_prompt(record))}</p>"
+    return f"""
+      <section class="prompt-card">
+        <h3>{html.escape(document_label(record))}</h3>
+        <div class="chip-row">
+          <span class="chip">{prompt_count} saved response(s)</span>
+        </div>
+        <div class="link-row">
+          {' '.join(links)}
+        </div>
+        {summary_html}
+      </section>
+    """
+
+
+def site_page_href(filename: str, base_path: str) -> str:
+    return f"{base_path}{filename}" if base_path else filename
+
+
+def record_page_filename(record: DocumentRecord) -> str:
+    return f"doc-{record.file_id}.html"
+
+
+def document_label(record: DocumentRecord) -> str:
+    chapter = extract_chapter_label(record.display_name)
+    if chapter:
+        return f"Chapter {chapter}"
+    return pretty_title(record.display_name)
+
+
+def extract_chapter_label(display_name: str) -> str | None:
+    match = re.search(r"chp\s+(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)", display_name.lower())
+    if not match:
+        return None
+    return re.sub(r"\s+", " ", match.group(1).strip())
+
+
+def render_record(
+    record: DocumentRecord,
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+    *,
+    include_guided_learning: bool,
+) -> str:
     document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
         document_links.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF", base_path))
@@ -391,10 +692,13 @@ def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path, base
     prompt_cards = "\n".join(
         render_prompt_output(prompt_output, output_dir, site_dir, base_path) for prompt_output in record.prompt_outputs
     )
+    guided_learning_html = ""
+    if include_guided_learning:
+        guided_learning_html = render_guided_learning(record, output_dir, site_dir, base_path)
     return f"""
     <section class="content-card" id="doc-{record.file_id}">
       <div class="doc-header">
-        <h2>{html.escape(pretty_title(record.display_name))}</h2>
+        <h2>{html.escape(document_label(record))}</h2>
       </div>
       <div class="chip-row">
         {' '.join(document_chips)}
@@ -402,11 +706,52 @@ def render_record(record: DocumentRecord, output_dir: Path, site_dir: Path, base
       <div class="link-row">
         {' '.join(document_links)}
       </div>
+      {guided_learning_html}
       <div class="prompt-grid">
         {prompt_cards}
       </div>
     </section>
     """
+
+
+def render_guided_learning(record: DocumentRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
+    prompt_text = build_guided_learning_prompt(record)
+    escaped_prompt = html.escape(prompt_text, quote=True)
+    buttons: list[str] = [
+        '<a href="https://gemini.google.com/guided-learning" target="_blank" rel="noopener noreferrer">Open Gemini</a>',
+        '<a href="https://chatgpt.com/studymode" target="_blank" rel="noopener noreferrer">Open ChatGPT</a>',
+        (
+            f'<button type="button" data-chatgpt-prompt="{escaped_prompt}" '
+            f'onclick="copyChatgptPrompt(this)">Copy Prompt</button>'
+        ),
+    ]
+    if record.pdf_path and record.pdf_path.exists():
+        buttons.append(link_tag(record.pdf_path, output_dir, site_dir, "Open PDF", base_path))
+
+    return f"""
+      <section class="guided-card">
+        <h3>Guided Learning</h3>
+        <p>Open Gemini or ChatGPT Study Mode, then paste the summary prompt below to begin.</p>
+        <div class="button-row">
+          {' '.join(buttons)}
+        </div>
+        <p class="guided-note">Use the copied Short Summary text as your starting prompt. In Gemini, switch to Guided Learning. In ChatGPT, use Study Mode.</p>
+        <details>
+          <summary>Show prompt</summary>
+          <pre>{html.escape(prompt_text)}</pre>
+        </details>
+      </section>
+    """
+
+
+def build_guided_learning_prompt(record: DocumentRecord) -> str:
+    for prompt_output in record.prompt_outputs:
+        if prompt_output.slug != "study-guide" or not prompt_output.response_markdown:
+            continue
+        summary_lines = extract_study_guide_summary_lines(prompt_output.response_markdown)
+        if summary_lines:
+            return "\n".join(summary_lines)
+    return pretty_title(record.display_name)
 
 
 def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
@@ -493,8 +838,6 @@ def determine_base_path(*, raw_base_path: str, output_dir: Path, site_dir: Path)
     normalized = normalize_base_path(raw_base_path)
     if normalized:
         return normalized
-    if should_use_math_tutor_base_path(output_dir=output_dir, site_dir=site_dir):
-        return "/math_tutor/"
     return ""
 
 
@@ -507,12 +850,20 @@ def normalize_base_path(value: str) -> str:
     return f"/{stripped}/"
 
 
-def should_use_math_tutor_base_path(*, output_dir: Path, site_dir: Path) -> bool:
-    return site_dir.name == "math_tutor" and not site_dir.is_relative_to(output_dir)
+def is_deploy_site_dir(*, output_dir: Path, site_dir: Path) -> bool:
+    if site_dir.name != "math_tutor":
+        return False
+    if not site_dir.is_relative_to(output_dir):
+        return True
+    try:
+        relative_parts = site_dir.relative_to(output_dir).parts
+    except ValueError:
+        return False
+    return "deploy" in relative_parts
 
 
 def should_copy_site_assets(*, output_dir: Path, site_dir: Path, base_path: str) -> bool:
-    return bool(base_path) or not site_dir.is_relative_to(output_dir)
+    return bool(base_path) or is_deploy_site_dir(output_dir=output_dir, site_dir=site_dir)
 
 
 def extract_study_guide_summary_html(markdown_text: str) -> str:

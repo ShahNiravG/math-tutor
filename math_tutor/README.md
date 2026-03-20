@@ -52,6 +52,9 @@ Useful flags:
 - `--force-openai`: rerun the OpenAI step even for files already processed successfully
 - `--output-dir custom/path`: choose a different output directory
 - `--login-url URL`: override the initial login entry URL if you need to bypass the course redirect flow
+- `--build-site-guided-learning`: after processing, build the tutoring page with a `Guided Learning` section for each PDF processed in that run
+- `--site-dir custom/path`: choose where that generated tutoring page is written
+- `--site-base-path /subpath/`: optionally generate subpath-aware links for the auto-built tutoring page when deploying below the domain root
 
 Outputs are written under the selected output directory:
 
@@ -60,7 +63,8 @@ Outputs are written under the selected output directory:
 - `metadata/`: JSON metadata for traceability
 - `fetch_state.json`: remembers which PDFs were fetched successfully
 - `openai_state.json`: remembers which PDFs completed each prompt's OpenAI step successfully
-- `site/index.html`: a browsable tutoring page built from saved local files
+- `site/index.html`: a browsable tutoring library landing page built from saved local files
+- `site/doc-<file_id>.html`: per-document pages with shared left navigation
 
 ## Build The Tutoring Page
 
@@ -75,9 +79,13 @@ This reads the existing saved PDFs, responses, and state files and generates:
 Useful flag:
 
 - `--site-dir custom/path`: write the generated HTML page to a different directory
-- `--base-path /math_tutor/`: generate deploy-ready links such as `/math_tutor/downloads/...`
+- `--base-path /subpath/`: generate deploy-ready links such as `/subpath/downloads/...` when deploying below the domain root
+- `--limit 1`: build the page for only the first saved PDF so you can test changes safely
+- `--include-guided-learning`: add a `Guided Learning` section for each PDF with Gemini and ChatGPT helper buttons
 
-If you build directly into a directory named `math_tutor` outside the output tree, such as `~/public_html/math_tutor`, the site builder now copies the referenced PDFs and response files into that directory and automatically generates `/math_tutor/...` links for deployment.
+If you build into a deploy directory such as `~/public_html` or another publish target, the site builder copies the referenced PDFs and response files into that directory. By default it keeps links relative, which works well for root-domain deployments like `https://mathdelight.com/`. Use `--base-path` only when the site will live under a subpath.
+
+The `Guided Learning` helper adds plain buttons for Gemini and ChatGPT Study Mode, plus a copy button for the `Short Summary` text from the document's Study Guide so it can be pasted into either tool.
 
 ## Backfill HTML Responses
 
@@ -97,7 +105,8 @@ math-tutor-backfill-response-html
 - You can target one or more prompts with repeated `--prompt` flags, and `--force-openai` applies to the selected prompts only.
 - You can also target reruns more explicitly with repeated `--force-prompt` flags, such as `--prompt inspiring-videos --force-prompt inspiring-videos --limit 1`.
 - `Olympiad Solutions` depends on the exact saved `Olympiad Problems` output for that PDF. If the problems do not exist yet, the CLI generates them first and then saves the solutions separately.
-- The HTML tutoring page is built from already saved files, so it does not need to refetch PDFs or rerun OpenAI.
+- The HTML tutoring site is built from already saved files, so it does not need to refetch PDFs or rerun OpenAI.
 - Math formulas render better in the saved `.html` response files than in plain Markdown viewers, and the generated PDF responses are convenient for printing or sharing.
-- The tutoring page groups each document into prompt-specific sections so students can open problems first and solutions later.
+- The tutoring site uses a multi-page layout so each document opens on its own page while the left navigation remains available throughout.
+- `math-tutor --build-site-guided-learning --limit 1` builds the page for exactly the PDF processed in that run, which makes Guided Learning easy to test before generating the full library.
 - If login does not complete, rerun with `--headful` and inspect whether the site is using a different auth flow or MFA.
