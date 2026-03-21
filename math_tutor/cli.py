@@ -4,6 +4,7 @@ import argparse
 import json
 import os
 import re
+import subprocess
 import time
 from dataclasses import dataclass
 from pathlib import Path
@@ -133,6 +134,14 @@ PROMPTS: tuple[PromptSpec, ...] = (
     OLYMPIAD_SOLUTIONS_PROMPT,
 )
 PROMPTS_BY_SLUG: dict[str, PromptSpec] = {prompt_spec.slug: prompt_spec for prompt_spec in PROMPTS}
+CLASS_NOTE_PRINT_SLUG = "class-note"
+PRINTABLE_PROMPT_SLUGS: tuple[str, ...] = (
+    CLASS_NOTE_PRINT_SLUG,
+    STUDY_GUIDE_PROMPT.slug,
+    MENTAL_MATH_PROMPT.slug,
+    OLYMPIAD_PROBLEMS_PROMPT.slug,
+    OLYMPIAD_SOLUTIONS_PROMPT.slug,
+)
 
 
 @dataclass(frozen=True)
@@ -155,6 +164,16 @@ class FetchState:
 class OpenAIState:
     path: Path
     processed: dict[str, dict[str, dict[str, str]]]
+
+
+@dataclass(frozen=True)
+class PrintTarget:
+    file_id: str
+    chapter_label: str
+    display_name: str
+    prompt_slug: str
+    prompt_title: str
+    pdf_path: Path
 
 
 def load_dotenv_if_present(path: Path = DEFAULT_ENV_PATH) -> None:
@@ -181,8 +200,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Download PDFs from a Canvas course and process them with OpenAI."
     )
-    parser.add_argument("--username", required=True, help="Canvas login username or email.")
-    parser.add_argument("--password", required=True, help="Canvas login password.")
+    parser.add_argument("--username", required=False, help="Canvas login username or email.")
+    parser.add_argument("--password", required=False, help="Canvas login password.")
     parser.add_argument(
         "--course-url",
         default=COURSE_URL,
@@ -270,6 +289,31 @@ def parse_args() -> argparse.Namespace:
             "Optional deployed site prefix such as /math_tutor/ when --build-site-guided-learning is used."
         ),
     )
+    parser.add_argument(
+        "--print-prompt",
+        dest="print_prompt_slugs",
+        action="append",
+        choices=sorted(PRINTABLE_PROMPT_SLUGS),
+        help=(
+            "Print saved generated PDFs for a prompt without rerunning fetch or OpenAI. "
+            "Repeat the flag to print multiple prompt types, for example "
+            "--print-prompt class-note --print-prompt study-guide."
+        ),
+    )
+    parser.add_argument(
+        "--chapter",
+        dest="chapter_filters",
+        action="append",
+        help=(
+            "Optional chapter filter for --print-prompt, such as 6.3 or 7.4 & 7.5. "
+            "Repeat the flag to print multiple chapters. If omitted, all chapters are printed."
+        ),
+    )
+    parser.add_argument(
+        "--printer",
+        default="Brother",
+        help="Printer name to use with --print-prompt. Defaults to Brother.",
+    )
     return parser.parse_args()
 
 
@@ -278,6 +322,20 @@ def main() -> None:
     args = parse_args()
     try:
         output_dir = Path(args.output_dir).resolve()
+        if args.print_prompt_slugs:
+            print_saved_prompt_pdfs(
+                output_dir=output_dir,
+                prompt_slugs=tuple(args.print_prompt_slugs),
+                chapter_filters=args.chapter_filters or [],
+                printer=args.printer,
+            )
+            return
+
+        if not args.username or not args.password:
+            raise SystemExit(
+                "--username and --password are required unless --print-prompt is used."
+            )
+
         downloads_dir = output_dir / "downloads"
         responses_dir = output_dir / "responses"
         metadata_dir = output_dir / "metadata"
@@ -1157,6 +1215,172 @@ def normalize_openai_state(
         if prompt_map:
             normalized[file_id] = prompt_map
     return normalized
+
+
+def print_saved_prompt_pdfs(
+    *,
+    output_dir: Path,
+    prompt_slugs: tuple[str, ...],
+    chapter_filters: list[str],
+    printer: str,
+) -> None:
+    fetch_state = load_fetch_state(output_dir / "fetch_state.json")
+    openai_state = load_openai_state(output_dir / "openai_state.json")
+    targets = collect_print_targets(
+        fetch_state=fetch_state,
+        openai_state=openai_state,
+        prompt_slugs=prompt_slugs,
+        chapter_filters=chapter_filters,
+    )
+    if not targets:
+        chapter_text = f" for chapters {', '.join(chapter_filters)}" if chapter_filters else ""
+        raise SystemExit(
+            f"No printable PDFs were found for prompts {', '.join(prompt_slugs)}{chapter_text}."
+        )
+
+    print(f"Sending {len(targets)} PDF(s) to printer {printer}...")
+    for target in targets:
+        try:
+            subprocess.run(
+                ["lp", "-d", printer, "-o", "sides=two-sided-long-edge", str(target.pdf_path)],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        except FileNotFoundError as exc:
+            raise SystemExit("The 'lp' command is not available on this system.") from exc
+        except subprocess.CalledProcessError as exc:
+            details = (exc.stderr or exc.stdout or "").strip()
+            if details:
+                raise SystemExit(f"Printing failed for {target.pdf_path.name}: {details}") from exc
+            raise SystemExit(f"Printing failed for {target.pdf_path.name}.") from exc
+
+        print(
+            f"Printed {target.chapter_label} - {target.prompt_title}: {target.pdf_path}"
+        )
+
+
+def collect_print_targets(
+    *,
+    fetch_state: FetchState,
+    openai_state: OpenAIState,
+    prompt_slugs: tuple[str, ...],
+    chapter_filters: list[str],
+) -> list[PrintTarget]:
+    chapter_filters_normalized = [normalize_chapter_filter(value) for value in chapter_filters if value.strip()]
+    file_ids = sorted(
+        set(fetch_state.fetched) | set(openai_state.processed),
+        key=sort_key_from_states(fetch_state.fetched, openai_state.processed),
+    )
+    targets: list[PrintTarget] = []
+    for file_id in file_ids:
+        processed = openai_state.processed.get(file_id, {})
+        if not processed:
+            continue
+        display_name = (
+            first_processed_value(processed, "display_name")
+            or fetch_state.fetched.get(file_id, {}).get("display_name")
+            or f"File {file_id}"
+        )
+        chapter_label = extract_chapter_label(display_name) or pretty_title(display_name)
+        if chapter_filters_normalized and not chapter_matches_filters(chapter_label, display_name, chapter_filters_normalized):
+            continue
+        for prompt_slug in prompt_slugs:
+            if prompt_slug == CLASS_NOTE_PRINT_SLUG:
+                pdf_value = fetch_state.fetched.get(file_id, {}).get("pdf_path", "")
+                if not pdf_value:
+                    continue
+                pdf_path = Path(pdf_value)
+                if not pdf_path.exists():
+                    continue
+                targets.append(
+                    PrintTarget(
+                        file_id=file_id,
+                        chapter_label=f"Chapter {chapter_label}" if extract_chapter_label(display_name) else chapter_label,
+                        display_name=display_name,
+                        prompt_slug=prompt_slug,
+                        prompt_title="Class Note",
+                        pdf_path=pdf_path,
+                    )
+                )
+                continue
+            prompt_state = processed.get(prompt_slug, {})
+            pdf_value = prompt_state.get("response_pdf_path", "")
+            if not pdf_value:
+                continue
+            pdf_path = Path(pdf_value)
+            if not pdf_path.exists():
+                continue
+            targets.append(
+                PrintTarget(
+                    file_id=file_id,
+                    chapter_label=f"Chapter {chapter_label}" if extract_chapter_label(display_name) else chapter_label,
+                    display_name=display_name,
+                    prompt_slug=prompt_slug,
+                    prompt_title=prompt_state.get("prompt_title") or prompt_title_from_slug(prompt_slug),
+                    pdf_path=pdf_path,
+                )
+            )
+    return targets
+
+
+def first_processed_value(processed: dict[str, dict[str, str]], key: str) -> str | None:
+    for prompt_slug in PROMPTS_BY_SLUG:
+        prompt_entry = processed.get(prompt_slug, {})
+        if isinstance(prompt_entry, dict):
+            value = prompt_entry.get(key)
+            if isinstance(value, str) and value:
+                return value
+    return None
+
+
+def extract_chapter_label(display_name: str) -> str | None:
+    match = re.search(r"chp\s+(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)", display_name.lower())
+    if not match:
+        return None
+    return re.sub(r"\s+", " ", match.group(1).strip())
+
+
+def normalize_chapter_filter(value: str) -> str:
+    return re.sub(r"\s+", " ", value.strip().lower())
+
+
+def chapter_matches_filters(chapter_label: str, display_name: str, chapter_filters: list[str]) -> bool:
+    chapter_text = normalize_chapter_filter(chapter_label)
+    display_text = normalize_chapter_filter(display_name)
+    for chapter_filter in chapter_filters:
+        if chapter_filter == chapter_text:
+            return True
+        if chapter_filter in display_text:
+            return True
+        if f"chapter {chapter_filter}" == f"chapter {chapter_text}":
+            return True
+    return False
+
+
+def sort_key_from_states(
+    fetch_state: dict[str, dict[str, Any]],
+    openai_state: dict[str, dict[str, Any]],
+):
+    def key(file_id: str) -> tuple[float, str]:
+        display_name = (
+            first_processed_value(openai_state.get(file_id, {}), "display_name")
+            or fetch_state.get(file_id, {}).get("display_name")
+            or ""
+        )
+        chapter_label = extract_chapter_label(display_name)
+        chapter_value = parse_chapter_sort_value(chapter_label) if chapter_label else 10_000.0
+        return (chapter_value, display_name.lower())
+
+    return key
+
+
+def parse_chapter_sort_value(chapter_label: str) -> float:
+    first_part = chapter_label.split("&", 1)[0].strip()
+    try:
+        return float(first_part)
+    except ValueError:
+        return 10_000.0
 
 
 def should_skip_openai(
