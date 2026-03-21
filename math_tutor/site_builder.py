@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.parse import quote
 
 from math_tutor.cli import (
     INSPIRING_VIDEOS_PROMPT,
@@ -769,8 +770,9 @@ def render_record(
 def render_guided_learning(record: DocumentRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
     prompt_text = build_guided_learning_prompt(record)
     escaped_prompt = html.escape(prompt_text, quote=True)
+    gemini_href = f"https://gemini.google.com/guided-learning?query={quote(prompt_text)}"
     buttons: list[str] = [
-        '<a href="https://gemini.google.com/guided-learning" target="_blank" rel="noopener noreferrer">Open Gemini</a>',
+        f'<a href="{html.escape(gemini_href, quote=True)}" target="_blank" rel="noopener noreferrer">Open Gemini</a>',
         '<a href="https://chatgpt.com/studymode" target="_blank" rel="noopener noreferrer">Open ChatGPT</a>',
         (
             f'<button type="button" data-chatgpt-prompt="{escaped_prompt}" '
