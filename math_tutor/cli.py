@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import html as html_module
 import json
 import os
 import re
@@ -8,7 +9,7 @@ import subprocess
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 from urllib.parse import urljoin, urlparse
 
 import httpx
@@ -21,6 +22,7 @@ DEFAULT_TIMEOUT_SECONDS = 60
 LOGIN_RENDER_TIMEOUT_MS = 20_000
 FILES_PAGE_TIMEOUT_MS = 30_000
 TARGET_NAME_SUBSTRINGS = ("note.docx", "note.pdf")
+ASSIGNMENT_NAME_PATTERN = re.compile(r"^\d+\.\d+", re.IGNORECASE)
 MATHJAX_SCRIPT = (
     "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 )
@@ -135,8 +137,10 @@ PROMPTS: tuple[PromptSpec, ...] = (
 )
 PROMPTS_BY_SLUG: dict[str, PromptSpec] = {prompt_spec.slug: prompt_spec for prompt_spec in PROMPTS}
 CLASS_NOTE_PRINT_SLUG = "class-note"
+ASSIGNMENT_PRINT_SLUG = "assignment"
 PRINTABLE_PROMPT_SLUGS: tuple[str, ...] = (
     CLASS_NOTE_PRINT_SLUG,
+    ASSIGNMENT_PRINT_SLUG,
     STUDY_GUIDE_PROMPT.slug,
     MENTAL_MATH_PROMPT.slug,
     OLYMPIAD_PROBLEMS_PROMPT.slug,
@@ -244,6 +248,25 @@ def parse_args() -> argparse.Namespace:
         help="Only fetch matching PDFs and update fetch state; skip the OpenAI processing phase.",
     )
     parser.add_argument(
+        "--list-files",
+        action="store_true",
+        help="List all PDF file names found on the course pages and exit (useful for debugging name patterns).",
+    )
+    parser.add_argument(
+        "--fetch-assignments",
+        action="store_true",
+        help=(
+            "Fetch assignment PDFs (chapter-numbered files like '5.1.pdf' or '7.4 and 7.5.pdf') "
+            "instead of class notes."
+        ),
+    )
+    parser.add_argument(
+        "--assignment-limit",
+        type=int,
+        default=None,
+        help="Maximum number of assignment PDFs to fetch when --fetch-assignments is used.",
+    )
+    parser.add_argument(
         "--force-openai",
         action="store_true",
         help="Run the OpenAI processing step again even for files already marked as successfully processed.",
@@ -314,6 +337,16 @@ def parse_args() -> argparse.Namespace:
         default="Brother",
         help="Printer name to use with --print-prompt. Defaults to Brother.",
     )
+    parser.add_argument(
+        "--print-all",
+        action="store_true",
+        help="Print all prompt types (class note, assignments, and all generated PDFs) for the given --chapter.",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="With --print-prompt or --print-all, list what would be printed without sending to the printer.",
+    )
     return parser.parse_args()
 
 
@@ -322,21 +355,26 @@ def main() -> None:
     args = parse_args()
     try:
         output_dir = Path(args.output_dir).resolve()
-        if args.print_prompt_slugs:
+        if args.print_all or args.print_prompt_slugs:
+            slugs = PRINTABLE_PROMPT_SLUGS if args.print_all else tuple(args.print_prompt_slugs)
             print_saved_prompt_pdfs(
                 output_dir=output_dir,
-                prompt_slugs=tuple(args.print_prompt_slugs),
+                prompt_slugs=slugs,
                 chapter_filters=args.chapter_filters or [],
                 printer=args.printer,
+                dry_run=args.dry_run,
             )
             return
 
-        if not args.username or not args.password:
+        username = args.username or os.environ.get("MATH_TUTOR_USERNAME")
+        password = args.password or os.environ.get("MATH_TUTOR_PASSWORD")
+        if not username or not password:
             raise SystemExit(
-                "--username and --password are required unless --print-prompt is used."
+                "--username and --password are required (or set MATH_TUTOR_USERNAME / MATH_TUTOR_PASSWORD in .env)."
             )
 
         downloads_dir = output_dir / "downloads"
+        assignments_dir = output_dir / "downloads" / "assignments"
         responses_dir = output_dir / "responses"
         metadata_dir = output_dir / "metadata"
         fetch_state = load_fetch_state(output_dir / "fetch_state.json")
@@ -346,11 +384,12 @@ def main() -> None:
         processed_file_ids: set[str] = set()
 
         downloads_dir.mkdir(parents=True, exist_ok=True)
+        assignments_dir.mkdir(parents=True, exist_ok=True)
         responses_dir.mkdir(parents=True, exist_ok=True)
         metadata_dir.mkdir(parents=True, exist_ok=True)
 
         api_key = None
-        if not args.fetch_only:
+        if not args.fetch_only and not args.fetch_assignments:
             api_key = os.environ.get("OPENAI_API_KEY")
             if not api_key:
                 raise SystemExit("OPENAI_API_KEY must be set in the environment unless --fetch-only is used.")
@@ -367,44 +406,113 @@ def main() -> None:
                     page=page,
                     login_url=login_entry_url,
                     course_url=args.course_url,
-                    username=args.username,
-                    password=args.password,
+                    username=username,
+                    password=password,
                 )
 
                 with build_canvas_client(context, args.course_url) as canvas_client:
-                    files = list_canvas_pdfs_from_ui(page, canvas_client, args.course_url)
-                    if args.limit is not None:
-                        files = files[: args.limit]
-
-                    if not files:
-                        raise RuntimeError(
-                            "No PDF files were found on the course pages. Confirm that the account can access module attachments or course files."
+                    if args.list_files:
+                        all_files = list_canvas_pdfs_from_ui(
+                            page, canvas_client, args.course_url, name_matcher=is_pdf_by_name
                         )
+                        print(f"All PDF files found on course pages ({len(all_files)}):")
+                        for f in all_files:
+                            print(f"  {f.display_name!r}")
+                        return
 
-                    print(f"Found {len(files)} PDF file(s).")
-                    client = OpenAI(api_key=api_key) if not args.fetch_only else None
-
-                    for index, canvas_file in enumerate(files, start=1):
-                        process_file(
-                            canvas_client=canvas_client,
-                            openai_client=client,
-                            pdf_browser=browser,
-                            canvas_file=canvas_file,
-                            downloads_dir=downloads_dir,
-                            responses_dir=responses_dir,
-                            metadata_dir=metadata_dir,
-                            fetch_state=fetch_state,
-                            openai_state=openai_state,
-                            model=args.model,
-                            prompts=selected_prompts,
-                            forced_prompt_slugs=forced_prompt_slugs,
-                            force=args.force,
-                            fetch_only=args.fetch_only,
-                            force_openai=args.force_openai,
-                            index=index,
-                            total=len(files),
+                    if args.fetch_assignments:
+                        # Explicit assignment-only mode.
+                        files = list_canvas_pdfs_from_assignments(
+                            page, canvas_client, args.course_url, limit=args.assignment_limit
                         )
-                        processed_file_ids.add(str(canvas_file.file_id))
+                        if not files:
+                            raise RuntimeError(
+                                "No assignment files were found on the course pages. Confirm that the account can access module attachments or course files."
+                            )
+                        print(f"Found {len(files)} assignment file(s).")
+                        for index, canvas_file in enumerate(files, start=1):
+                            process_file(
+                                canvas_client=canvas_client,
+                                openai_client=None,
+                                pdf_browser=browser,
+                                canvas_file=canvas_file,
+                                downloads_dir=assignments_dir,
+                                responses_dir=responses_dir,
+                                metadata_dir=metadata_dir,
+                                fetch_state=fetch_state,
+                                openai_state=openai_state,
+                                model=args.model,
+                                prompts=selected_prompts,
+                                forced_prompt_slugs=forced_prompt_slugs,
+                                force=args.force,
+                                fetch_only=True,
+                                force_openai=False,
+                                index=index,
+                                total=len(files),
+                            )
+                            processed_file_ids.add(str(canvas_file.file_id))
+                    else:
+                        # Normal mode: fetch class notes with OpenAI, then fetch assignments (no OpenAI).
+                        files = list_canvas_pdfs_from_ui(
+                            page, canvas_client, args.course_url, name_matcher=matches_target_pdf
+                        )
+                        if args.limit is not None:
+                            files = files[:args.limit]
+                        if not files:
+                            raise RuntimeError(
+                                "No PDF files were found on the course pages. Confirm that the account can access module attachments or course files."
+                            )
+                        print(f"Found {len(files)} class note file(s).")
+                        client = OpenAI(api_key=api_key) if not args.fetch_only else None
+                        for index, canvas_file in enumerate(files, start=1):
+                            process_file(
+                                canvas_client=canvas_client,
+                                openai_client=client,
+                                pdf_browser=browser,
+                                canvas_file=canvas_file,
+                                downloads_dir=downloads_dir,
+                                responses_dir=responses_dir,
+                                metadata_dir=metadata_dir,
+                                fetch_state=fetch_state,
+                                openai_state=openai_state,
+                                model=args.model,
+                                prompts=selected_prompts,
+                                forced_prompt_slugs=forced_prompt_slugs,
+                                force=args.force,
+                                fetch_only=args.fetch_only,
+                                force_openai=args.force_openai,
+                                index=index,
+                                total=len(files),
+                            )
+                            processed_file_ids.add(str(canvas_file.file_id))
+
+                        # Also fetch assignments (never sent to OpenAI).
+                        assignment_files = list_canvas_pdfs_from_assignments(
+                            page, canvas_client, args.course_url
+                        )
+                        if assignment_files:
+                            print(f"Found {len(assignment_files)} assignment file(s).")
+                            for index, canvas_file in enumerate(assignment_files, start=1):
+                                process_file(
+                                    canvas_client=canvas_client,
+                                    openai_client=None,
+                                    pdf_browser=browser,
+                                    canvas_file=canvas_file,
+                                    downloads_dir=assignments_dir,
+                                    responses_dir=responses_dir,
+                                    metadata_dir=metadata_dir,
+                                    fetch_state=fetch_state,
+                                    openai_state=openai_state,
+                                    model=args.model,
+                                    prompts=selected_prompts,
+                                    forced_prompt_slugs=forced_prompt_slugs,
+                                    force=args.force,
+                                    fetch_only=True,
+                                    force_openai=False,
+                                    index=index,
+                                    total=len(assignment_files),
+                                )
+                                processed_file_ids.add(str(canvas_file.file_id))
             finally:
                 maybe_prompt_before_exit(args.headful)
                 browser.close()
@@ -657,39 +765,63 @@ def build_canvas_client(context: Any, course_url: str) -> httpx.Client:
     )
 
 
-def list_canvas_pdfs_from_ui(page: Page, client: httpx.Client, course_url: str) -> list[CanvasFile]:
-    files = list_canvas_pdfs_from_files_page(page, course_url)
+def list_canvas_pdfs_from_ui(
+    page: Page,
+    client: httpx.Client,
+    course_url: str,
+    name_matcher: Callable[[str], bool] | None = None,
+) -> list[CanvasFile]:
+    matcher = name_matcher or matches_target_pdf
+    files = list_canvas_pdfs_from_files_page(page, course_url, name_matcher=matcher)
     if files:
         return files
-    return list_canvas_pdfs_from_modules_page(page, client, course_url)
+    return list_canvas_pdfs_from_modules_page(page, client, course_url, name_matcher=matcher)
 
 
-def list_canvas_pdfs_from_files_page(page: Page, course_url: str) -> list[CanvasFile]:
+def list_canvas_pdfs_from_files_page(
+    page: Page,
+    course_url: str,
+    name_matcher: Callable[[str], bool] | None = None,
+) -> list[CanvasFile]:
+    matcher = name_matcher or matches_target_pdf
     files_page_url = urljoin(course_url.rstrip("/") + "/", "files")
     seen_page_urls: set[str] = set()
     seen_file_ids: set[int] = set()
     results: list[CanvasFile] = []
-    next_page_url: str | None = files_page_url
+    queue: list[str] = [files_page_url]
 
-    while next_page_url and next_page_url not in seen_page_urls:
-        seen_page_urls.add(next_page_url)
-        page.goto(next_page_url, wait_until="networkidle", timeout=FILES_PAGE_TIMEOUT_MS)
+    while queue:
+        current_url = queue.pop(0)
+        if current_url in seen_page_urls:
+            continue
+        seen_page_urls.add(current_url)
+        page.goto(current_url, wait_until="networkidle", timeout=FILES_PAGE_TIMEOUT_MS)
         page.wait_for_timeout(1000)
 
-        for candidate in extract_pdf_links_from_page(page, course_url):
+        for candidate in extract_pdf_links_from_page(page, course_url, name_matcher=matcher):
             if candidate.file_id in seen_file_ids:
                 continue
             seen_file_ids.add(candidate.file_id)
             results.append(candidate)
 
+        for folder_url in find_subfolder_urls(page, course_url):
+            if folder_url not in seen_page_urls:
+                queue.append(folder_url)
+
         next_page_url = find_next_files_page(page, course_url)
+        if next_page_url and next_page_url not in seen_page_urls:
+            queue.insert(0, next_page_url)
 
     return results
 
 
 def list_canvas_pdfs_from_modules_page(
-    page: Page, client: httpx.Client, course_url: str
+    page: Page,
+    client: httpx.Client,
+    course_url: str,
+    name_matcher: Callable[[str], bool] | None = None,
 ) -> list[CanvasFile]:
+    matcher = name_matcher or matches_target_pdf
     modules_url = urljoin(course_url.rstrip("/") + "/", "modules")
     page.goto(modules_url, wait_until="networkidle", timeout=FILES_PAGE_TIMEOUT_MS)
     page.wait_for_timeout(1000)
@@ -701,7 +833,7 @@ def list_canvas_pdfs_from_modules_page(
         anchor = anchors.nth(index)
         href = anchor.get_attribute("href")
         display_name = (anchor.inner_text() or "").strip()
-        if not href or not matches_target_pdf(display_name):
+        if not href or not matcher(display_name):
             continue
         if "/modules/items/" not in href:
             continue
@@ -725,7 +857,12 @@ def list_canvas_pdfs_from_modules_page(
     return results
 
 
-def extract_pdf_links_from_page(page: Page, course_url: str) -> list[CanvasFile]:
+def extract_pdf_links_from_page(
+    page: Page,
+    course_url: str,
+    name_matcher: Callable[[str], bool] | None = None,
+) -> list[CanvasFile]:
+    matcher = name_matcher or matches_target_pdf
     anchors = page.locator("a")
     results: list[CanvasFile] = []
     for index in range(anchors.count()):
@@ -735,10 +872,10 @@ def extract_pdf_links_from_page(page: Page, course_url: str) -> list[CanvasFile]
             continue
         absolute_url = urljoin(course_url, href)
         display_name = (anchor.inner_text() or "").strip()
-        if not matches_target_pdf(display_name) or not is_pdf(display_name, "", absolute_url):
-            continue
         file_id = extract_file_id(absolute_url)
         if file_id is None:
+            continue
+        if not matcher(display_name):
             continue
         results.append(
             CanvasFile(
@@ -750,6 +887,19 @@ def extract_pdf_links_from_page(page: Page, course_url: str) -> list[CanvasFile]
                 updated_at=None,
             )
         )
+    return results
+
+
+def find_subfolder_urls(page: Page, course_url: str) -> list[str]:
+    """Return URLs for subfolders visible on the current Canvas files page."""
+    anchors = page.locator("a")
+    results: list[str] = []
+    for index in range(anchors.count()):
+        anchor = anchors.nth(index)
+        href = anchor.get_attribute("href") or ""
+        if "/files/folder/" in href or re.search(r"/files\?folder_id=\d+", href):
+            absolute = urljoin(course_url, href)
+            results.append(absolute)
     return results
 
 
@@ -769,6 +919,82 @@ def find_next_files_page(page: Page, course_url: str) -> str | None:
     return None
 
 
+def _parse_link_next(link_header: str) -> str | None:
+    """Extract the 'next' URL from an RFC 5988 Link header."""
+    for part in link_header.split(","):
+        part = part.strip()
+        if 'rel="next"' in part:
+            url_match = re.match(r"<([^>]+)>", part)
+            if url_match:
+                return url_match.group(1)
+    return None
+
+
+def list_canvas_pdfs_from_assignments(
+    page: Page,
+    client: httpx.Client,
+    course_url: str,
+    limit: int | None = None,
+) -> list[CanvasFile]:
+    """Navigate each assignment page with Playwright and extract PDF download links."""
+    course_id_match = re.search(r"/courses/(\d+)", course_url)
+    if not course_id_match:
+        return []
+    course_id = course_id_match.group(1)
+
+    # Collect all assignment HTML URLs from the API.
+    assignment_entries: list[tuple[str, str]] = []  # (name, html_url)
+    next_url: str | None = f"/api/v1/courses/{course_id}/assignments?per_page=100"
+    while next_url:
+        try:
+            response = client.get(next_url)
+            response.raise_for_status()
+        except httpx.HTTPStatusError:
+            break
+        data = response.json()
+        if not isinstance(data, list):
+            break
+        for assignment in data:
+            name = assignment.get("name") or f"assignment-{assignment.get('id', 'unknown')}"
+            html_url = assignment.get("html_url") or ""
+            if html_url:
+                assignment_entries.append((name, html_url))
+        next_url = _parse_link_next(response.headers.get("link", ""))
+
+    results: list[CanvasFile] = []
+    seen_file_ids: set[int] = set()
+
+    for assignment_name, assignment_url in assignment_entries:
+        if limit is not None and len(results) >= limit:
+            break
+        page.goto(assignment_url, wait_until="networkidle", timeout=FILES_PAGE_TIMEOUT_MS)
+        page.wait_for_timeout(500)
+
+        anchors = page.locator("a")
+        for i in range(anchors.count()):
+            href = anchors.nth(i).get_attribute("href") or ""
+            if "/files/" not in href or "/download" not in href:
+                continue
+            file_id = extract_file_id(href)
+            if file_id is None or file_id in seen_file_ids:
+                continue
+            seen_file_ids.add(file_id)
+            absolute_url = urljoin(course_url, href)
+            safe_name = assignment_name if assignment_name.lower().endswith(".pdf") else f"{assignment_name}.pdf"
+            results.append(
+                CanvasFile(
+                    file_id=file_id,
+                    display_name=safe_name,
+                    download_url=absolute_url,
+                    content_type="application/pdf",
+                    size=None,
+                    updated_at=None,
+                )
+            )
+
+    return results
+
+
 def is_pdf(display_name: str, content_type: str, url: str) -> bool:
     return (
         display_name.lower().endswith(".pdf")
@@ -778,9 +1004,24 @@ def is_pdf(display_name: str, content_type: str, url: str) -> bool:
     )
 
 
+def is_pdf_by_name(display_name: str) -> bool:
+    """Match any file with a .pdf extension (used for --list-files discovery)."""
+    return display_name.lower().endswith(".pdf")
+
+
 def matches_target_pdf(display_name: str) -> bool:
     lowered_name = display_name.lower()
     return any(substring in lowered_name for substring in TARGET_NAME_SUBSTRINGS)
+
+
+def matches_assignment_pdf(display_name: str) -> bool:
+    """Return True for chapter-numbered assignment PDFs.
+
+    Matches names like '5.1', '5.1.pdf', '7.4 & 7.5.pdf', or '7.4 and 7.5.pdf'.
+    Only the leading chapter number pattern is required; Canvas sometimes strips
+    the .pdf extension from anchor text, so we don't require it here.
+    """
+    return bool(ASSIGNMENT_NAME_PATTERN.match(display_name))
 
 
 def extract_file_id(url: str) -> int | None:
@@ -798,8 +1039,11 @@ def normalize_download_url(url: str) -> str:
 
 
 def resolve_module_attachment_url(client: httpx.Client, module_item_url: str) -> str | None:
-    response = client.get(module_item_url)
-    response.raise_for_status()
+    try:
+        response = client.get(module_item_url)
+        response.raise_for_status()
+    except httpx.HTTPStatusError:
+        return None
     resolved_url = str(response.url)
     if "/files/" not in resolved_url:
         return None
@@ -1223,6 +1467,7 @@ def print_saved_prompt_pdfs(
     prompt_slugs: tuple[str, ...],
     chapter_filters: list[str],
     printer: str,
+    dry_run: bool = False,
 ) -> None:
     fetch_state = load_fetch_state(output_dir / "fetch_state.json")
     openai_state = load_openai_state(output_dir / "openai_state.json")
@@ -1237,6 +1482,12 @@ def print_saved_prompt_pdfs(
         raise SystemExit(
             f"No printable PDFs were found for prompts {', '.join(prompt_slugs)}{chapter_text}."
         )
+
+    if dry_run:
+        print(f"Dry run — {len(targets)} PDF(s) would be sent to printer {printer}:")
+        for target in targets:
+            print(f"  {target.chapter_label} - {target.prompt_title}: {target.pdf_path.name}")
+        return
 
     print(f"Sending {len(targets)} PDF(s) to printer {printer}...")
     for target in targets:
@@ -1274,20 +1525,39 @@ def collect_print_targets(
     )
     targets: list[PrintTarget] = []
     for file_id in file_ids:
+        fetched = fetch_state.fetched.get(file_id, {})
         processed = openai_state.processed.get(file_id, {})
-        if not processed:
-            continue
         display_name = (
             first_processed_value(processed, "display_name")
-            or fetch_state.fetched.get(file_id, {}).get("display_name")
+            or fetched.get("display_name")
             or f"File {file_id}"
         )
         chapter_label = extract_chapter_label(display_name) or pretty_title(display_name)
         if chapter_filters_normalized and not chapter_matches_filters(chapter_label, display_name, chapter_filters_normalized):
             continue
         for prompt_slug in prompt_slugs:
+            if prompt_slug == ASSIGNMENT_PRINT_SLUG:
+                pdf_value = fetched.get("pdf_path", "")
+                if not pdf_value or "/assignments/" not in pdf_value:
+                    continue
+                pdf_path = Path(pdf_value)
+                if not pdf_path.exists():
+                    continue
+                targets.append(
+                    PrintTarget(
+                        file_id=file_id,
+                        chapter_label=f"Chapter {chapter_label}" if extract_chapter_label(display_name) else chapter_label,
+                        display_name=display_name,
+                        prompt_slug=prompt_slug,
+                        prompt_title="Assignment",
+                        pdf_path=pdf_path,
+                    )
+                )
+                continue
+            if not processed:
+                continue
             if prompt_slug == CLASS_NOTE_PRINT_SLUG:
-                pdf_value = fetch_state.fetched.get(file_id, {}).get("pdf_path", "")
+                pdf_value = fetched.get("pdf_path", "")
                 if not pdf_value:
                     continue
                 pdf_path = Path(pdf_value)
@@ -1335,7 +1605,7 @@ def first_processed_value(processed: dict[str, dict[str, str]], key: str) -> str
 
 
 def extract_chapter_label(display_name: str) -> str | None:
-    match = re.search(r"chp\s+(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)", display_name.lower())
+    match = re.search(r"chp[.\s]+(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)", display_name.lower())
     if not match:
         return None
     return re.sub(r"\s+", " ", match.group(1).strip())
@@ -1347,13 +1617,14 @@ def normalize_chapter_filter(value: str) -> str:
 
 def chapter_matches_filters(chapter_label: str, display_name: str, chapter_filters: list[str]) -> bool:
     chapter_text = normalize_chapter_filter(chapter_label)
-    display_text = normalize_chapter_filter(display_name)
     for chapter_filter in chapter_filters:
         if chapter_filter == chapter_text:
             return True
-        if chapter_filter in display_text:
+        # "5" matches sections "5.1", "5.2", etc.
+        if chapter_text.startswith(chapter_filter + "."):
             return True
-        if f"chapter {chapter_filter}" == f"chapter {chapter_text}":
+        # "7.4" matches compound "7.4 & 7.5"
+        if chapter_text.startswith(chapter_filter + " "):
             return True
     return False
 
@@ -1686,7 +1957,7 @@ def pretty_title(display_name: str) -> str:
 
 
 def response_document_title(display_name: str) -> str:
-    match = re.search(r"chp\s+(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)", display_name.lower())
+    match = re.search(r"chp[.\s]+(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)", display_name.lower())
     if match:
         chapter = re.sub(r"\s+", " ", match.group(1).strip())
         return f"Algebra II with Trigonometry Chapter {chapter}"

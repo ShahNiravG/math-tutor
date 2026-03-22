@@ -167,6 +167,9 @@ def load_records(output_dir: Path) -> list[DocumentRecord]:
     records: list[DocumentRecord] = []
     for file_id in file_ids:
         fetched = fetch_state.get(file_id, {})
+        pdf_path_str = fetched.get("pdf_path") or ""
+        if "/downloads/assignments/" in pdf_path_str:
+            continue
         processed = openai_state.get(file_id, {})
         display_name = (
             first_prompt_value(processed, "display_name")
