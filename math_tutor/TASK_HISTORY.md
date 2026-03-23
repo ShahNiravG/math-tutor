@@ -480,3 +480,78 @@ The original `.md` files (raw OpenAI markdown output) were lost and not fully re
 - Chp 5.1 additionally processed with GPT-5.4 (mental math + both olympiad prompts)
 - 26 assignment PDFs fetched in `output/downloads/assignments/`
 - Deploy site at `output/deploy/math_tutor/` ready for SFTP sync
+
+---
+
+## Session: Gemini 3.1 Pro Preview Support and Card Layout Redesign
+
+### Goals
+
+1. Add Gemini 3.1 Pro Preview as a third model alongside GPT-4.1 and GPT-5.4
+2. Show all three model versions per prompt card on the per-document pages
+3. Redesign prompt cards to group by model with inline HTML + [PDF] links
+4. Merge Olympiad Problems and Solutions into a single card
+
+### Gemini Integration
+
+Added `google-genai>=1.0.0` to `pyproject.toml`. Added `GEMINI_MODEL = "gemini-3.1-pro-preview"` constant and five Gemini `PromptSpec` instances in `cli.py`:
+
+- `study-guide-gemini`
+- `inspiring-videos-gemini`
+- `mental-math-gemini`
+- `olympiad-problems-gemini`
+- `olympiad-solutions-gemini` (depends on `olympiad-problems-gemini` output)
+
+Added `generate_gemini_tutor_response` and `generate_gemini_text_only_response` using the `google-genai` SDK:
+
+- File upload via `client.files.upload(file=handle, config=UploadFileConfig(mime_type="application/pdf", ...))`
+- Generation via `client.models.generate_content(model=..., contents=[Content(...)])`
+- Response text via `response.text` (not `.output_text`); no response ID (stored as `None`)
+
+Dispatch added in `generate_prompt_response`: if `effective_model.startswith("gemini")`, use the Gemini generate functions; otherwise use the existing OpenAI path.
+
+`gemini_client` is created in `main()` from `GEMINI_API_KEY` env var and threaded through `process_file` → `run_prompt` → `resolve_source_output` → `generate_prompt_response`.
+
+### Bug Fix: Default Output Directory
+
+The default `--output-dir` was `"math_tutor/output"` (a relative path), which resolved incorrectly when the CLI was invoked from a different working directory, doubling the path to `math_tutor/math_tutor/output/`. Fixed to use `str(PACKAGE_DIR / "output")` — an absolute path derived from the package file's location — so it is cwd-independent.
+
+During the first Gemini run, files landed in the doubled path and had to be moved manually and merged into the main `openai_state.json`.
+
+### Site: Three-Model Cards
+
+Updated `site_builder.py` to show all three model variants per prompt card:
+
+- `PROMPT_GROUPS` expanded to 3-tuples `(base, gpt5, gemini)` for each prompt type
+- `render_prompt_group` updated to accept three `PromptOutputRecord` arguments and render links for each available model
+- Added green `chip-gemini` CSS badge for Gemini variants
+- Gemini display label strips the `-preview` suffix (`gemini-3.1-pro-preview` → `gemini-3.1-pro`) via `_model_label`
+
+### Card Layout Redesign
+
+All four prompt card types were redesigned to show one row per model with inline links:
+
+- **Study Guide**: `Open Guide [PDF]` per model row
+- **Inspiring Videos**: `Watch Picks` per model row (no PDF — that prompt never generates one)
+- **Mental Math**: `Mental Math [PDF]` per model row
+- **Olympiad Problems & Solutions**: single combined card with one row per model showing `Problems [PDF]   Solutions [PDF]`
+
+The Olympiad card change eliminates the previously separate "Olympiad Problems" and "Olympiad Solutions" cards. A shared `render_single_model_row_card` helper handles the Study Guide, Inspiring Videos, and Mental Math cards. The earlier `render_prompt_group` function is retained as a reference but no longer called.
+
+The `render_record` loop now iterates `STUDY_GUIDE_SPECS`, `INSPIRING_VIDEOS_SPECS`, `MENTAL_MATH_SPECS`, and `OLYMPIAD_PROBLEMS/SOLUTIONS_SPECS` directly instead of going through `PROMPT_GROUPS`.
+
+### Verified Runs
+
+Ran `--limit 1 --prompt mental-math-gemini --prompt olympiad-problems-gemini --prompt olympiad-solutions-gemini`:
+
+- Gemini client initialized from `GEMINI_API_KEY`
+- PDF uploaded and processed for all three prompts on Chp 5.1
+- HTML and PDF response files saved to `output/responses/`
+- Site rebuilt with all three model links visible on `doc-4401267.html`
+
+### Current State
+
+- 16 class note chapters processed with GPT-4.1 (all 5 prompts)
+- Chp 5.1 additionally processed with GPT-5.4 (mental math + both olympiad prompts) and Gemini (mental math + both olympiad prompts)
+- 26 assignment PDFs fetched in `output/downloads/assignments/`
+- Deploy site at `output/deploy/math_tutor/` with redesigned model-row card layout
