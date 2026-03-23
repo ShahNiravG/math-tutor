@@ -59,11 +59,11 @@ PROMPT_ORDER: tuple[PromptSpec, ...] = (
     OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
     OLYMPIAD_SOLUTIONS_GEMINI_PROMPT,
 )
-PROMPT_GROUPS: tuple[tuple[PromptSpec, PromptSpec, PromptSpec], ...] = (
-    (INSPIRING_VIDEOS_PROMPT, INSPIRING_VIDEOS_GPT5_PROMPT, INSPIRING_VIDEOS_GEMINI_PROMPT),
-)
 STUDY_GUIDE_SPECS: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT, STUDY_GUIDE_GPT5_PROMPT, STUDY_GUIDE_GEMINI_PROMPT
+)
+INSPIRING_VIDEOS_SPECS: tuple[PromptSpec, ...] = (
+    INSPIRING_VIDEOS_PROMPT, INSPIRING_VIDEOS_GPT5_PROMPT, INSPIRING_VIDEOS_GEMINI_PROMPT
 )
 MENTAL_MATH_SPECS: tuple[PromptSpec, ...] = (
     MENTAL_MATH_PROMPT, MENTAL_MATH_GPT5_PROMPT, MENTAL_MATH_GEMINI_PROMPT
@@ -940,33 +940,20 @@ def render_record(
     rendered_slugs: set[str] = set()
     cards: list[str] = []
 
-    study_guide_card = render_single_model_row_card(
-        "Study Guide", STUDY_GUIDE_SPECS, outputs_by_slug, "Open Guide", output_dir, site_dir, base_path
-    )
-    if study_guide_card:
-        cards.append(study_guide_card)
-
-    for base_spec, gpt5_spec, gemini_spec in PROMPT_GROUPS:
-        base_out = outputs_by_slug.get(base_spec.slug)
-        gpt5_out = outputs_by_slug.get(gpt5_spec.slug)
-        gemini_out = outputs_by_slug.get(gemini_spec.slug)
-        if base_out or gpt5_out or gemini_out:
-            cards.append(render_prompt_group(base_out, gpt5_out, gemini_out, base_spec, output_dir, site_dir, base_path))
-            rendered_slugs.add(base_spec.slug)
-            rendered_slugs.add(gpt5_spec.slug)
-            rendered_slugs.add(gemini_spec.slug)
-
-    mental_math_card = render_single_model_row_card(
-        "Mental Math", MENTAL_MATH_SPECS, outputs_by_slug, "Mental Math", output_dir, site_dir, base_path
-    )
-    if mental_math_card:
-        cards.append(mental_math_card)
+    for title, specs, label in (
+        ("Study Guide", STUDY_GUIDE_SPECS, "Open Guide"),
+        ("Inspiring Videos", INSPIRING_VIDEOS_SPECS, "Watch Picks"),
+        ("Mental Math", MENTAL_MATH_SPECS, "Mental Math"),
+    ):
+        card = render_single_model_row_card(title, specs, outputs_by_slug, label, output_dir, site_dir, base_path)
+        if card:
+            cards.append(card)
 
     olympiad_card = render_olympiad_combined(outputs_by_slug, output_dir, site_dir, base_path)
     if olympiad_card:
         cards.append(olympiad_card)
 
-    for spec in (*STUDY_GUIDE_SPECS, *MENTAL_MATH_SPECS, *OLYMPIAD_PROBLEMS_SPECS, *OLYMPIAD_SOLUTIONS_SPECS):
+    for spec in (*STUDY_GUIDE_SPECS, *INSPIRING_VIDEOS_SPECS, *MENTAL_MATH_SPECS, *OLYMPIAD_PROBLEMS_SPECS, *OLYMPIAD_SOLUTIONS_SPECS):
         rendered_slugs.add(spec.slug)
     for prompt_output in record.prompt_outputs:
         if prompt_output.slug not in rendered_slugs:
