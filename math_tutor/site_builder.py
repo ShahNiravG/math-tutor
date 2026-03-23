@@ -859,10 +859,29 @@ def render_record_summary(record: DocumentRecord) -> str:
 
 
 def extract_record_summary_html(record: DocumentRecord) -> str:
+    """Extract the Short Summary section from the study-guide HTML response file.
+
+    Reads directly from the HTML file to preserve bullet points, math notation,
+    and other rich formatting that would be lost going through the markdown stub.
+    Falls back to the markdown-based extraction if no HTML file is available.
+    """
     for prompt_output in record.prompt_outputs:
-        if prompt_output.slug != "study-guide" or not prompt_output.response_markdown:
+        if prompt_output.slug != "study-guide":
             continue
-        return extract_study_guide_summary_html(prompt_output.response_markdown, include_heading=False)
+        # Prefer reading directly from the HTML response file
+        if prompt_output.response_html_path and prompt_output.response_html_path.exists():
+            content = prompt_output.response_html_path.read_text(encoding="utf-8")
+            # Find the Short Summary heading (may have nested tags like <strong>)
+            m = re.search(
+                r'<h[2-4][^>]*>.*?[Ss]hort\s+[Ss]ummary.*?</h[2-4]>(.*?)(?=<h[2-4]|<hr\s*/?>)',
+                content,
+                re.DOTALL,
+            )
+            if m:
+                return m.group(1).strip()
+        # Fallback: derive from markdown stub
+        if prompt_output.response_markdown:
+            return extract_study_guide_summary_html(prompt_output.response_markdown, include_heading=False)
     return ""
 
 
