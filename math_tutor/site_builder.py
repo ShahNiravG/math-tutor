@@ -362,7 +362,7 @@ def build_record_page_html(
         output_dir,
         site_dir,
         base_path,
-        include_guided_learning=include_guided_learning,
+        include_guided_learning=True,  # always show on per-document pages
     )
     return render_page_shell(
         title=f"{document_label(record)} - {SITE_TITLE}",
