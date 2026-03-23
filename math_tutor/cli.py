@@ -39,6 +39,8 @@ class PromptSpec:
     source_placeholder: str = "{{previous_output}}"
     include_source_pdf_link: bool = True
     generate_response_pdf: bool = True
+    model: str | None = None
+    reasoning_effort: str | None = None
 
 
 STUDY_GUIDE_PROMPT = PromptSpec(
@@ -128,12 +130,25 @@ Problem list to solve:
     source_prompt_slug="olympiad-problems",
 )
 
+GPT5_MODEL = "gpt-5.4"
+
+STUDY_GUIDE_GPT5_PROMPT = PromptSpec(slug="study-guide-gpt5", title="Study Guide (GPT-5.4)", text=STUDY_GUIDE_PROMPT.text, model=GPT5_MODEL)
+INSPIRING_VIDEOS_GPT5_PROMPT = PromptSpec(slug="inspiring-videos-gpt5", title="Inspiring Videos (GPT-5.4)", text=INSPIRING_VIDEOS_PROMPT.text, include_source_pdf_link=False, generate_response_pdf=False, model=GPT5_MODEL)
+MENTAL_MATH_GPT5_PROMPT = PromptSpec(slug="mental-math-gpt5", title="Mental Math (GPT-5.4)", text=MENTAL_MATH_PROMPT.text, model=GPT5_MODEL)
+OLYMPIAD_PROBLEMS_GPT5_PROMPT = PromptSpec(slug="olympiad-problems-gpt5", title="Olympiad Problems (GPT-5.4)", text=OLYMPIAD_PROBLEMS_PROMPT.text, model=GPT5_MODEL)
+OLYMPIAD_SOLUTIONS_GPT5_PROMPT = PromptSpec(slug="olympiad-solutions-gpt5", title="Olympiad Solutions (GPT-5.4)", text=OLYMPIAD_SOLUTIONS_PROMPT.text, source_prompt_slug="olympiad-problems-gpt5", source_placeholder=OLYMPIAD_SOLUTIONS_PROMPT.source_placeholder, model=GPT5_MODEL)
+
 PROMPTS: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
+    STUDY_GUIDE_GPT5_PROMPT,
     INSPIRING_VIDEOS_PROMPT,
+    INSPIRING_VIDEOS_GPT5_PROMPT,
     MENTAL_MATH_PROMPT,
+    MENTAL_MATH_GPT5_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
+    OLYMPIAD_PROBLEMS_GPT5_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
+    OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
 )
 PROMPTS_BY_SLUG: dict[str, PromptSpec] = {prompt_spec.slug: prompt_spec for prompt_spec in PROMPTS}
 CLASS_NOTE_PRINT_SLUG = "class-note"
@@ -142,9 +157,13 @@ PRINTABLE_PROMPT_SLUGS: tuple[str, ...] = (
     CLASS_NOTE_PRINT_SLUG,
     ASSIGNMENT_PRINT_SLUG,
     STUDY_GUIDE_PROMPT.slug,
+    STUDY_GUIDE_GPT5_PROMPT.slug,
     MENTAL_MATH_PROMPT.slug,
+    MENTAL_MATH_GPT5_PROMPT.slug,
     OLYMPIAD_PROBLEMS_PROMPT.slug,
+    OLYMPIAD_PROBLEMS_GPT5_PROMPT.slug,
     OLYMPIAD_SOLUTIONS_PROMPT.slug,
+    OLYMPIAD_SOLUTIONS_GPT5_PROMPT.slug,
 )
 
 
@@ -1350,41 +1369,39 @@ class PromptResponseResult:
     response_id: str
 
 
-def generate_tutor_response(client: OpenAI, pdf_path: Path, model: str, prompt_text: str) -> Any:
+def generate_tutor_response(
+    client: OpenAI, pdf_path: Path, model: str, prompt_text: str, reasoning_effort: str | None = None
+) -> Any:
     with pdf_path.open("rb") as handle:
         uploaded_file = client.files.create(file=handle, purpose="user_data")
 
-    response = client.responses.create(
+    kwargs: dict[str, Any] = dict(
         model=model,
         input=[
             {
                 "role": "user",
                 "content": [
                     {"type": "input_text", "text": prompt_text},
-                    {
-                        "type": "input_file",
-                        "file_id": uploaded_file.id,
-                    },
+                    {"type": "input_file", "file_id": uploaded_file.id},
                 ],
             }
         ],
     )
-    return response
+    if reasoning_effort:
+        kwargs["reasoning"] = {"effort": reasoning_effort}
+    return client.responses.create(**kwargs)
 
 
-def generate_text_only_response(client: OpenAI, model: str, prompt_text: str) -> Any:
-    response = client.responses.create(
+def generate_text_only_response(
+    client: OpenAI, model: str, prompt_text: str, reasoning_effort: str | None = None
+) -> Any:
+    kwargs: dict[str, Any] = dict(
         model=model,
-        input=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "input_text", "text": prompt_text},
-                ],
-            }
-        ],
+        input=[{"role": "user", "content": [{"type": "input_text", "text": prompt_text}]}],
     )
-    return response
+    if reasoning_effort:
+        kwargs["reasoning"] = {"effort": reasoning_effort}
+    return client.responses.create(**kwargs)
 
 
 def generate_prompt_response(
@@ -1395,13 +1412,15 @@ def generate_prompt_response(
     prompt_spec: PromptSpec,
     source_output: str | None,
 ) -> PromptResponseResult:
+    effective_model = prompt_spec.model or model
+    reasoning_effort = prompt_spec.reasoning_effort
     if prompt_spec.source_prompt_slug is None:
-        response = generate_tutor_response(client, pdf_path, model, prompt_spec.text)
+        response = generate_tutor_response(client, pdf_path, effective_model, prompt_spec.text, reasoning_effort)
     else:
         if source_output is None:
             raise RuntimeError(f"{prompt_spec.title} requires a source prompt output.")
         prompt_text = prompt_spec.text.replace(prompt_spec.source_placeholder, source_output)
-        response = generate_text_only_response(client, model, prompt_text)
+        response = generate_text_only_response(client, effective_model, prompt_text, reasoning_effort)
 
     return PromptResponseResult(output_text=response.output_text, response_id=response.id)
 

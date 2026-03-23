@@ -13,12 +13,18 @@ from typing import Any
 from urllib.parse import quote
 
 from math_tutor.cli import (
+    DEFAULT_MODEL,
+    INSPIRING_VIDEOS_GPT5_PROMPT,
     INSPIRING_VIDEOS_PROMPT,
     MATHJAX_SCRIPT,
+    MENTAL_MATH_GPT5_PROMPT,
     MENTAL_MATH_PROMPT,
+    OLYMPIAD_PROBLEMS_GPT5_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
+    OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
     PROMPTS_BY_SLUG,
+    STUDY_GUIDE_GPT5_PROMPT,
     STUDY_GUIDE_PROMPT,
     PromptSpec,
     load_openai_state,
@@ -33,10 +39,22 @@ SITE_TITLE = "Algebra II with Trigonometry Tutor"
 SIDEBAR_TITLE = "Algebra II Trig Tutor"
 PROMPT_ORDER: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
+    STUDY_GUIDE_GPT5_PROMPT,
     INSPIRING_VIDEOS_PROMPT,
+    INSPIRING_VIDEOS_GPT5_PROMPT,
     MENTAL_MATH_PROMPT,
+    MENTAL_MATH_GPT5_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
+    OLYMPIAD_PROBLEMS_GPT5_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
+    OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
+)
+PROMPT_PAIRS: tuple[tuple[PromptSpec, PromptSpec], ...] = (
+    (STUDY_GUIDE_PROMPT, STUDY_GUIDE_GPT5_PROMPT),
+    (INSPIRING_VIDEOS_PROMPT, INSPIRING_VIDEOS_GPT5_PROMPT),
+    (MENTAL_MATH_PROMPT, MENTAL_MATH_GPT5_PROMPT),
+    (OLYMPIAD_PROBLEMS_PROMPT, OLYMPIAD_PROBLEMS_GPT5_PROMPT),
+    (OLYMPIAD_SOLUTIONS_PROMPT, OLYMPIAD_SOLUTIONS_GPT5_PROMPT),
 )
 
 
@@ -524,6 +542,11 @@ def render_page_shell(
       color: #6a2e16;
       font-size: 0.88rem;
     }}
+    .chip-model {{
+      background: #dbeafe;
+      color: #1e40af;
+      font-weight: 600;
+    }}
     .link-row {{
       display: flex;
       flex-wrap: wrap;
@@ -688,8 +711,9 @@ def render_index_card(
     links = [f'<a href="{html.escape(site_page_href(record_page_filename(record), base_path))}">Enter the Lab</a>']
     if record.pdf_path and record.pdf_path.exists():
         links.append(link_tag(record.pdf_path, output_dir, site_dir, "Class Note PDF", base_path))
-    summary_html = ""
-    if include_guided_learning:
+    record_summary_html = extract_record_summary_html(record)
+    summary_html = f'<div class="card-summary">{record_summary_html}</div>' if record_summary_html else ""
+    if include_guided_learning and not summary_html:
         summary_html = f"<p>{render_inline(build_guided_learning_prompt(record))}</p>"
     return f"""
       <section class="prompt-card">
@@ -744,9 +768,20 @@ def render_record(
         document_chips.append(f'<span class="chip">Fetched {html.escape(record.fetched_at)}</span>')
 
     summary_html = render_record_summary(record)
-    prompt_cards = "\n".join(
-        render_prompt_output(prompt_output, output_dir, site_dir, base_path) for prompt_output in record.prompt_outputs
-    )
+    outputs_by_slug = {po.slug: po for po in record.prompt_outputs}
+    rendered_slugs: set[str] = set()
+    cards: list[str] = []
+    for base_spec, gpt5_spec in PROMPT_PAIRS:
+        base_out = outputs_by_slug.get(base_spec.slug)
+        gpt5_out = outputs_by_slug.get(gpt5_spec.slug)
+        if base_out and gpt5_out:
+            cards.append(render_paired_prompt_outputs(base_out, gpt5_out, output_dir, site_dir, base_path))
+            rendered_slugs.add(base_spec.slug)
+            rendered_slugs.add(gpt5_spec.slug)
+    for prompt_output in record.prompt_outputs:
+        if prompt_output.slug not in rendered_slugs:
+            cards.append(render_prompt_output(prompt_output, output_dir, site_dir, base_path))
+    prompt_cards = "\n".join(cards)
     guided_learning_html = ""
     if include_guided_learning:
         guided_learning_html = render_guided_learning(record, output_dir, site_dir, base_path)
@@ -831,6 +866,70 @@ def extract_record_summary_html(record: DocumentRecord) -> str:
     return ""
 
 
+def _model_label(prompt_spec: PromptSpec) -> str:
+    return prompt_spec.model or DEFAULT_MODEL
+
+
+def _prompt_output_links(
+    prompt_output: PromptOutputRecord,
+    prompt_spec: PromptSpec,
+    model_label: str,
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+) -> list[str]:
+    links = []
+    if prompt_output.response_html_path and prompt_output.response_html_path.exists():
+        links.append(link_tag(prompt_output.response_html_path, output_dir, site_dir, f"{model_label} HTML", base_path))
+    if (
+        prompt_spec.generate_response_pdf
+        and prompt_output.response_pdf_path
+        and prompt_output.response_pdf_path.exists()
+    ):
+        links.append(link_tag(prompt_output.response_pdf_path, output_dir, site_dir, f"{model_label} PDF", base_path))
+    return links
+
+
+def render_paired_prompt_outputs(
+    base_output: PromptOutputRecord,
+    gpt5_output: PromptOutputRecord,
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+) -> str:
+    base_spec = PROMPTS_BY_SLUG[base_output.slug]
+    gpt5_spec = PROMPTS_BY_SLUG[gpt5_output.slug]
+    base_label = _model_label(base_spec)
+    gpt5_label = _model_label(gpt5_spec)
+
+    links = (
+        _prompt_output_links(base_output, base_spec, base_label, output_dir, site_dir, base_path)
+        + _prompt_output_links(gpt5_output, gpt5_spec, gpt5_label, output_dir, site_dir, base_path)
+    )
+
+    chips: list[str] = []
+    if base_output.processed_at:
+        chips.append(f'<span class="chip">{html.escape(base_label)} generated {html.escape(base_output.processed_at)}</span>')
+    if gpt5_output.processed_at:
+        chips.append(f'<span class="chip chip-model">{html.escape(gpt5_label)} generated {html.escape(gpt5_output.processed_at)}</span>')
+    if not base_output.processed_at and not gpt5_output.processed_at:
+        chips.append('<span class="chip">No AI response yet</span>')
+
+    no_links_note = "" if links else '<span class="chip">No output files yet</span>'
+
+    return f"""
+      <section class="prompt-card">
+        <h3>{html.escape(base_spec.title)}</h3>
+        <div class="chip-row">
+          {' '.join(chips)}
+        </div>
+        <div class="link-row">
+          {' '.join(links)}{no_links_note}
+        </div>
+      </section>
+    """
+
+
 def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
     links: list[str] = []
     prompt_spec = PROMPTS_BY_SLUG.get(prompt_output.slug)
@@ -845,6 +944,8 @@ def render_prompt_output(prompt_output: PromptOutputRecord, output_dir: Path, si
         links.append(link_tag(prompt_output.response_pdf_path, output_dir, site_dir, "Open PDF", base_path))
 
     chips: list[str] = []
+    if prompt_spec is not None and prompt_spec.model:
+        chips.append(f'<span class="chip chip-model">{html.escape(prompt_spec.model)}</span>')
     if prompt_output.processed_at:
         chips.append(f'<span class="chip">Generated by AI {html.escape(prompt_output.processed_at)}</span>')
     else:
