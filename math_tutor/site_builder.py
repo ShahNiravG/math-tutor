@@ -14,16 +14,21 @@ from urllib.parse import quote
 
 from math_tutor.cli import (
     DEFAULT_MODEL,
+    INSPIRING_VIDEOS_GEMINI_PROMPT,
     INSPIRING_VIDEOS_GPT5_PROMPT,
     INSPIRING_VIDEOS_PROMPT,
     MATHJAX_SCRIPT,
+    MENTAL_MATH_GEMINI_PROMPT,
     MENTAL_MATH_GPT5_PROMPT,
     MENTAL_MATH_PROMPT,
+    OLYMPIAD_PROBLEMS_GEMINI_PROMPT,
     OLYMPIAD_PROBLEMS_GPT5_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
+    OLYMPIAD_SOLUTIONS_GEMINI_PROMPT,
     OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
     PROMPTS_BY_SLUG,
+    STUDY_GUIDE_GEMINI_PROMPT,
     STUDY_GUIDE_GPT5_PROMPT,
     STUDY_GUIDE_PROMPT,
     PromptSpec,
@@ -40,21 +45,26 @@ SIDEBAR_TITLE = "Algebra II Trig Tutor"
 PROMPT_ORDER: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
     STUDY_GUIDE_GPT5_PROMPT,
+    STUDY_GUIDE_GEMINI_PROMPT,
     INSPIRING_VIDEOS_PROMPT,
     INSPIRING_VIDEOS_GPT5_PROMPT,
+    INSPIRING_VIDEOS_GEMINI_PROMPT,
     MENTAL_MATH_PROMPT,
     MENTAL_MATH_GPT5_PROMPT,
+    MENTAL_MATH_GEMINI_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
     OLYMPIAD_PROBLEMS_GPT5_PROMPT,
+    OLYMPIAD_PROBLEMS_GEMINI_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
     OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
+    OLYMPIAD_SOLUTIONS_GEMINI_PROMPT,
 )
-PROMPT_PAIRS: tuple[tuple[PromptSpec, PromptSpec], ...] = (
-    (STUDY_GUIDE_PROMPT, STUDY_GUIDE_GPT5_PROMPT),
-    (INSPIRING_VIDEOS_PROMPT, INSPIRING_VIDEOS_GPT5_PROMPT),
-    (MENTAL_MATH_PROMPT, MENTAL_MATH_GPT5_PROMPT),
-    (OLYMPIAD_PROBLEMS_PROMPT, OLYMPIAD_PROBLEMS_GPT5_PROMPT),
-    (OLYMPIAD_SOLUTIONS_PROMPT, OLYMPIAD_SOLUTIONS_GPT5_PROMPT),
+PROMPT_GROUPS: tuple[tuple[PromptSpec, PromptSpec, PromptSpec], ...] = (
+    (STUDY_GUIDE_PROMPT, STUDY_GUIDE_GPT5_PROMPT, STUDY_GUIDE_GEMINI_PROMPT),
+    (INSPIRING_VIDEOS_PROMPT, INSPIRING_VIDEOS_GPT5_PROMPT, INSPIRING_VIDEOS_GEMINI_PROMPT),
+    (MENTAL_MATH_PROMPT, MENTAL_MATH_GPT5_PROMPT, MENTAL_MATH_GEMINI_PROMPT),
+    (OLYMPIAD_PROBLEMS_PROMPT, OLYMPIAD_PROBLEMS_GPT5_PROMPT, OLYMPIAD_PROBLEMS_GEMINI_PROMPT),
+    (OLYMPIAD_SOLUTIONS_PROMPT, OLYMPIAD_SOLUTIONS_GPT5_PROMPT, OLYMPIAD_SOLUTIONS_GEMINI_PROMPT),
 )
 
 
@@ -547,6 +557,11 @@ def render_page_shell(
       color: #1e40af;
       font-weight: 600;
     }}
+    .chip-gemini {{
+      background: #dcfce7;
+      color: #166534;
+      font-weight: 600;
+    }}
     .link-row {{
       display: flex;
       flex-wrap: wrap;
@@ -771,13 +786,15 @@ def render_record(
     outputs_by_slug = {po.slug: po for po in record.prompt_outputs}
     rendered_slugs: set[str] = set()
     cards: list[str] = []
-    for base_spec, gpt5_spec in PROMPT_PAIRS:
+    for base_spec, gpt5_spec, gemini_spec in PROMPT_GROUPS:
         base_out = outputs_by_slug.get(base_spec.slug)
         gpt5_out = outputs_by_slug.get(gpt5_spec.slug)
-        if base_out and gpt5_out:
-            cards.append(render_paired_prompt_outputs(base_out, gpt5_out, output_dir, site_dir, base_path))
+        gemini_out = outputs_by_slug.get(gemini_spec.slug)
+        if base_out or gpt5_out or gemini_out:
+            cards.append(render_prompt_group(base_out, gpt5_out, gemini_out, base_spec, output_dir, site_dir, base_path))
             rendered_slugs.add(base_spec.slug)
             rendered_slugs.add(gpt5_spec.slug)
+            rendered_slugs.add(gemini_spec.slug)
     for prompt_output in record.prompt_outputs:
         if prompt_output.slug not in rendered_slugs:
             cards.append(render_prompt_output(prompt_output, output_dir, site_dir, base_path))
@@ -909,29 +926,38 @@ def _prompt_output_links(
     return links
 
 
-def render_paired_prompt_outputs(
-    base_output: PromptOutputRecord,
-    gpt5_output: PromptOutputRecord,
+def render_prompt_group(
+    base_output: PromptOutputRecord | None,
+    gpt5_output: PromptOutputRecord | None,
+    gemini_output: PromptOutputRecord | None,
+    base_spec: PromptSpec,
     output_dir: Path,
     site_dir: Path,
     base_path: str,
 ) -> str:
-    base_spec = PROMPTS_BY_SLUG[base_output.slug]
-    gpt5_spec = PROMPTS_BY_SLUG[gpt5_output.slug]
-    base_label = _model_label(base_spec)
-    gpt5_label = _model_label(gpt5_spec)
+    gpt5_spec = PROMPTS_BY_SLUG.get(gpt5_output.slug) if gpt5_output else None
+    gemini_spec = PROMPTS_BY_SLUG.get(gemini_output.slug) if gemini_output else None
 
-    links = (
-        _prompt_output_links(base_output, base_spec, base_label, output_dir, site_dir, base_path)
-        + _prompt_output_links(gpt5_output, gpt5_spec, gpt5_label, output_dir, site_dir, base_path)
-    )
+    base_label = _model_label(base_spec)
+    gpt5_label = _model_label(gpt5_spec) if gpt5_spec else "gpt-5.4"
+    gemini_label = _model_label(gemini_spec) if gemini_spec else "gemini"
+
+    links: list[str] = []
+    if base_output:
+        links += _prompt_output_links(base_output, base_spec, base_label, output_dir, site_dir, base_path)
+    if gpt5_output and gpt5_spec:
+        links += _prompt_output_links(gpt5_output, gpt5_spec, gpt5_label, output_dir, site_dir, base_path)
+    if gemini_output and gemini_spec:
+        links += _prompt_output_links(gemini_output, gemini_spec, gemini_label, output_dir, site_dir, base_path)
 
     chips: list[str] = []
-    if base_output.processed_at:
+    if base_output and base_output.processed_at:
         chips.append(f'<span class="chip">{html.escape(base_label)} generated {html.escape(base_output.processed_at)}</span>')
-    if gpt5_output.processed_at:
+    if gpt5_output and gpt5_output.processed_at:
         chips.append(f'<span class="chip chip-model">{html.escape(gpt5_label)} generated {html.escape(gpt5_output.processed_at)}</span>')
-    if not base_output.processed_at and not gpt5_output.processed_at:
+    if gemini_output and gemini_output.processed_at:
+        chips.append(f'<span class="chip chip-gemini">{html.escape(gemini_label)} generated {html.escape(gemini_output.processed_at)}</span>')
+    if not chips:
         chips.append('<span class="chip">No AI response yet</span>')
 
     no_links_note = "" if links else '<span class="chip">No output files yet</span>'

@@ -138,17 +138,30 @@ MENTAL_MATH_GPT5_PROMPT = PromptSpec(slug="mental-math-gpt5", title="Mental Math
 OLYMPIAD_PROBLEMS_GPT5_PROMPT = PromptSpec(slug="olympiad-problems-gpt5", title="Olympiad Problems (GPT-5.4)", text=OLYMPIAD_PROBLEMS_PROMPT.text, model=GPT5_MODEL)
 OLYMPIAD_SOLUTIONS_GPT5_PROMPT = PromptSpec(slug="olympiad-solutions-gpt5", title="Olympiad Solutions (GPT-5.4)", text=OLYMPIAD_SOLUTIONS_PROMPT.text, source_prompt_slug="olympiad-problems-gpt5", source_placeholder=OLYMPIAD_SOLUTIONS_PROMPT.source_placeholder, model=GPT5_MODEL)
 
+GEMINI_MODEL = "gemini-3.1-pro-preview"
+
+STUDY_GUIDE_GEMINI_PROMPT = PromptSpec(slug="study-guide-gemini", title="Study Guide (Gemini)", text=STUDY_GUIDE_PROMPT.text, model=GEMINI_MODEL)
+INSPIRING_VIDEOS_GEMINI_PROMPT = PromptSpec(slug="inspiring-videos-gemini", title="Inspiring Videos (Gemini)", text=INSPIRING_VIDEOS_PROMPT.text, include_source_pdf_link=False, generate_response_pdf=False, model=GEMINI_MODEL)
+MENTAL_MATH_GEMINI_PROMPT = PromptSpec(slug="mental-math-gemini", title="Mental Math (Gemini)", text=MENTAL_MATH_PROMPT.text, model=GEMINI_MODEL)
+OLYMPIAD_PROBLEMS_GEMINI_PROMPT = PromptSpec(slug="olympiad-problems-gemini", title="Olympiad Problems (Gemini)", text=OLYMPIAD_PROBLEMS_PROMPT.text, model=GEMINI_MODEL)
+OLYMPIAD_SOLUTIONS_GEMINI_PROMPT = PromptSpec(slug="olympiad-solutions-gemini", title="Olympiad Solutions (Gemini)", text=OLYMPIAD_SOLUTIONS_PROMPT.text, source_prompt_slug="olympiad-problems-gemini", source_placeholder=OLYMPIAD_SOLUTIONS_PROMPT.source_placeholder, model=GEMINI_MODEL)
+
 PROMPTS: tuple[PromptSpec, ...] = (
     STUDY_GUIDE_PROMPT,
     STUDY_GUIDE_GPT5_PROMPT,
+    STUDY_GUIDE_GEMINI_PROMPT,
     INSPIRING_VIDEOS_PROMPT,
     INSPIRING_VIDEOS_GPT5_PROMPT,
+    INSPIRING_VIDEOS_GEMINI_PROMPT,
     MENTAL_MATH_PROMPT,
     MENTAL_MATH_GPT5_PROMPT,
+    MENTAL_MATH_GEMINI_PROMPT,
     OLYMPIAD_PROBLEMS_PROMPT,
     OLYMPIAD_PROBLEMS_GPT5_PROMPT,
+    OLYMPIAD_PROBLEMS_GEMINI_PROMPT,
     OLYMPIAD_SOLUTIONS_PROMPT,
     OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
+    OLYMPIAD_SOLUTIONS_GEMINI_PROMPT,
 )
 PROMPTS_BY_SLUG: dict[str, PromptSpec] = {prompt_spec.slug: prompt_spec for prompt_spec in PROMPTS}
 CLASS_NOTE_PRINT_SLUG = "class-note"
@@ -158,12 +171,16 @@ PRINTABLE_PROMPT_SLUGS: tuple[str, ...] = (
     ASSIGNMENT_PRINT_SLUG,
     STUDY_GUIDE_PROMPT.slug,
     STUDY_GUIDE_GPT5_PROMPT.slug,
+    STUDY_GUIDE_GEMINI_PROMPT.slug,
     MENTAL_MATH_PROMPT.slug,
     MENTAL_MATH_GPT5_PROMPT.slug,
+    MENTAL_MATH_GEMINI_PROMPT.slug,
     OLYMPIAD_PROBLEMS_PROMPT.slug,
     OLYMPIAD_PROBLEMS_GPT5_PROMPT.slug,
+    OLYMPIAD_PROBLEMS_GEMINI_PROMPT.slug,
     OLYMPIAD_SOLUTIONS_PROMPT.slug,
     OLYMPIAD_SOLUTIONS_GPT5_PROMPT.slug,
+    OLYMPIAD_SOLUTIONS_GEMINI_PROMPT.slug,
 )
 
 
@@ -237,7 +254,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output-dir",
-        default="math_tutor/output",
+        default=str(PACKAGE_DIR / "output"),
         help="Directory for downloads, responses, and metadata.",
     )
     parser.add_argument(
@@ -408,10 +425,19 @@ def main() -> None:
         metadata_dir.mkdir(parents=True, exist_ok=True)
 
         api_key = None
+        gemini_client = None
         if not args.fetch_only and not args.fetch_assignments:
             api_key = os.environ.get("OPENAI_API_KEY")
             if not api_key:
                 raise SystemExit("OPENAI_API_KEY must be set in the environment unless --fetch-only is used.")
+            gemini_api_key = os.environ.get("GEMINI_API_KEY")
+            if gemini_api_key:
+                try:
+                    from google import genai as google_genai
+                    gemini_client = google_genai.Client(api_key=gemini_api_key)
+                    print("Gemini client initialized.")
+                except ImportError:
+                    print("Warning: GEMINI_API_KEY is set but google-genai is not installed. Gemini prompts will be skipped.")
 
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=not args.headful)
@@ -453,6 +479,7 @@ def main() -> None:
                             process_file(
                                 canvas_client=canvas_client,
                                 openai_client=None,
+                                gemini_client=None,
                                 pdf_browser=browser,
                                 canvas_file=canvas_file,
                                 downloads_dir=assignments_dir,
@@ -487,6 +514,7 @@ def main() -> None:
                             process_file(
                                 canvas_client=canvas_client,
                                 openai_client=client,
+                                gemini_client=gemini_client,
                                 pdf_browser=browser,
                                 canvas_file=canvas_file,
                                 downloads_dir=downloads_dir,
@@ -515,6 +543,7 @@ def main() -> None:
                                 process_file(
                                     canvas_client=canvas_client,
                                     openai_client=None,
+                                    gemini_client=None,
                                     pdf_browser=browser,
                                     canvas_file=canvas_file,
                                     downloads_dir=assignments_dir,
@@ -1073,6 +1102,7 @@ def process_file(
     *,
     canvas_client: httpx.Client,
     openai_client: OpenAI,
+    gemini_client: Any,
     pdf_browser: Any,
     canvas_file: CanvasFile,
     downloads_dir: Path,
@@ -1112,6 +1142,7 @@ def process_file(
         run_prompt(
             canvas_file=canvas_file,
             openai_client=openai_client,
+            gemini_client=gemini_client,
             pdf_browser=pdf_browser,
             pdf_path=pdf_path,
             responses_dir=responses_dir,
@@ -1176,6 +1207,7 @@ def run_prompt(
     *,
     canvas_file: CanvasFile,
     openai_client: OpenAI,
+    gemini_client: Any,
     pdf_browser: Any,
     pdf_path: Path,
     responses_dir: Path,
@@ -1218,6 +1250,7 @@ def run_prompt(
     source_output = resolve_source_output(
         canvas_file=canvas_file,
         openai_client=openai_client,
+        gemini_client=gemini_client,
         pdf_browser=pdf_browser,
         pdf_path=pdf_path,
         responses_dir=responses_dir,
@@ -1231,9 +1264,11 @@ def run_prompt(
         total=total,
     )
 
-    print(f"[{index}/{total}] Sending {canvas_file.display_name} to OpenAI for {prompt_spec.title}...")
+    effective_model = prompt_spec.model or model
+    print(f"[{index}/{total}] Sending {canvas_file.display_name} to {effective_model} for {prompt_spec.title}...")
     result = generate_prompt_response(
         client=openai_client,
+        gemini_client=gemini_client,
         pdf_path=pdf_path,
         model=model,
         prompt_spec=prompt_spec,
@@ -1303,6 +1338,7 @@ def resolve_source_output(
     *,
     canvas_file: CanvasFile,
     openai_client: OpenAI,
+    gemini_client: Any,
     pdf_browser: Any,
     pdf_path: Path,
     responses_dir: Path,
@@ -1339,6 +1375,7 @@ def resolve_source_output(
     return run_prompt(
         canvas_file=canvas_file,
         openai_client=openai_client,
+        gemini_client=gemini_client,
         pdf_browser=pdf_browser,
         pdf_path=pdf_path,
         responses_dir=responses_dir,
@@ -1366,7 +1403,7 @@ def download_pdf(client: httpx.Client, url: str, destination: Path) -> None:
 @dataclass(frozen=True)
 class PromptResponseResult:
     output_text: str
-    response_id: str
+    response_id: str | None
 
 
 def generate_tutor_response(
@@ -1404,15 +1441,69 @@ def generate_text_only_response(
     return client.responses.create(**kwargs)
 
 
+def generate_gemini_tutor_response(
+    client: Any, pdf_path: Path, model: str, prompt_text: str
+) -> PromptResponseResult:
+    from google.genai import types as genai_types
+    with pdf_path.open("rb") as handle:
+        uploaded_file = client.files.upload(
+            file=handle,
+            config=genai_types.UploadFileConfig(
+                mime_type="application/pdf",
+                display_name=pdf_path.name,
+            ),
+        )
+    response = client.models.generate_content(
+        model=model,
+        contents=[
+            genai_types.Content(
+                role="user",
+                parts=[
+                    genai_types.Part(text=prompt_text),
+                    genai_types.Part(
+                        file_data=genai_types.FileData(
+                            mime_type="application/pdf",
+                            file_uri=uploaded_file.uri,
+                        )
+                    ),
+                ],
+            )
+        ],
+    )
+    return PromptResponseResult(output_text=response.text, response_id=None)
+
+
+def generate_gemini_text_only_response(
+    client: Any, model: str, prompt_text: str
+) -> PromptResponseResult:
+    from google.genai import types as genai_types
+    response = client.models.generate_content(
+        model=model,
+        contents=[genai_types.Content(role="user", parts=[genai_types.Part(text=prompt_text)])],
+    )
+    return PromptResponseResult(output_text=response.text, response_id=None)
+
+
 def generate_prompt_response(
     *,
     client: OpenAI,
+    gemini_client: Any,
     pdf_path: Path,
     model: str,
     prompt_spec: PromptSpec,
     source_output: str | None,
 ) -> PromptResponseResult:
     effective_model = prompt_spec.model or model
+    if effective_model.startswith("gemini"):
+        if gemini_client is None:
+            raise RuntimeError("GEMINI_API_KEY must be set to run Gemini prompts.")
+        if prompt_spec.source_prompt_slug is None:
+            return generate_gemini_tutor_response(gemini_client, pdf_path, effective_model, prompt_spec.text)
+        if source_output is None:
+            raise RuntimeError(f"{prompt_spec.title} requires a source prompt output.")
+        prompt_text = prompt_spec.text.replace(prompt_spec.source_placeholder, source_output)
+        return generate_gemini_text_only_response(gemini_client, effective_model, prompt_text)
+
     reasoning_effort = prompt_spec.reasoning_effort
     if prompt_spec.source_prompt_slug is None:
         response = generate_tutor_response(client, pdf_path, effective_model, prompt_spec.text, reasoning_effort)
@@ -1421,7 +1512,6 @@ def generate_prompt_response(
             raise RuntimeError(f"{prompt_spec.title} requires a source prompt output.")
         prompt_text = prompt_spec.text.replace(prompt_spec.source_placeholder, source_output)
         response = generate_text_only_response(client, effective_model, prompt_text, reasoning_effort)
-
     return PromptResponseResult(output_text=response.output_text, response_id=response.id)
 
 
