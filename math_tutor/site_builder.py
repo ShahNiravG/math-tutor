@@ -1015,11 +1015,30 @@ def render_guided_learning(record: DocumentRecord, output_dir: Path, site_dir: P
 
 def build_guided_learning_prompt(record: DocumentRecord) -> str:
     for prompt_output in record.prompt_outputs:
-        if prompt_output.slug != "study-guide" or not prompt_output.response_markdown:
+        if prompt_output.slug != "study-guide":
             continue
-        summary_lines = extract_study_guide_summary_lines(prompt_output.response_markdown)
-        if summary_lines:
-            return normalize_summary_text("\n".join(summary_lines))
+        # Prefer reading from the HTML file to get full summary including bullets and math.
+        if prompt_output.response_html_path and prompt_output.response_html_path.exists():
+            content = prompt_output.response_html_path.read_text(encoding="utf-8")
+            m = re.search(
+                r'<h[2-4][^>]*>.*?[Ss]hort\s+[Ss]ummary.*?</h[2-4]>(.*?)(?=<h[2-4]|<hr\s*/?>)',
+                content,
+                re.DOTALL,
+            )
+            if m:
+                raw_html = m.group(1).strip()
+                # Convert <li> items to "- item" plain text, then strip remaining tags.
+                plain = re.sub(r'<li[^>]*>(.*?)</li>', lambda mo: f"- {mo.group(1).strip()}\n", raw_html, flags=re.DOTALL)
+                plain = re.sub(r'<[^>]+>', ' ', plain)
+                plain = re.sub(r'[ \t]+', ' ', plain)
+                plain = re.sub(r'\n{3,}', '\n\n', plain).strip()
+                if plain:
+                    return normalize_summary_text(plain)
+        # Fallback: use the markdown stub.
+        if prompt_output.response_markdown:
+            summary_lines = extract_study_guide_summary_lines(prompt_output.response_markdown)
+            if summary_lines:
+                return normalize_summary_text("\n".join(summary_lines))
     return pretty_title(record.display_name)
 
 
