@@ -60,11 +60,19 @@ PROMPT_ORDER: tuple[PromptSpec, ...] = (
     OLYMPIAD_SOLUTIONS_GEMINI_PROMPT,
 )
 PROMPT_GROUPS: tuple[tuple[PromptSpec, PromptSpec, PromptSpec], ...] = (
-    (STUDY_GUIDE_PROMPT, STUDY_GUIDE_GPT5_PROMPT, STUDY_GUIDE_GEMINI_PROMPT),
     (INSPIRING_VIDEOS_PROMPT, INSPIRING_VIDEOS_GPT5_PROMPT, INSPIRING_VIDEOS_GEMINI_PROMPT),
-    (MENTAL_MATH_PROMPT, MENTAL_MATH_GPT5_PROMPT, MENTAL_MATH_GEMINI_PROMPT),
-    (OLYMPIAD_PROBLEMS_PROMPT, OLYMPIAD_PROBLEMS_GPT5_PROMPT, OLYMPIAD_PROBLEMS_GEMINI_PROMPT),
-    (OLYMPIAD_SOLUTIONS_PROMPT, OLYMPIAD_SOLUTIONS_GPT5_PROMPT, OLYMPIAD_SOLUTIONS_GEMINI_PROMPT),
+)
+STUDY_GUIDE_SPECS: tuple[PromptSpec, ...] = (
+    STUDY_GUIDE_PROMPT, STUDY_GUIDE_GPT5_PROMPT, STUDY_GUIDE_GEMINI_PROMPT
+)
+MENTAL_MATH_SPECS: tuple[PromptSpec, ...] = (
+    MENTAL_MATH_PROMPT, MENTAL_MATH_GPT5_PROMPT, MENTAL_MATH_GEMINI_PROMPT
+)
+OLYMPIAD_PROBLEMS_SPECS: tuple[PromptSpec, ...] = (
+    OLYMPIAD_PROBLEMS_PROMPT, OLYMPIAD_PROBLEMS_GPT5_PROMPT, OLYMPIAD_PROBLEMS_GEMINI_PROMPT
+)
+OLYMPIAD_SOLUTIONS_SPECS: tuple[PromptSpec, ...] = (
+    OLYMPIAD_SOLUTIONS_PROMPT, OLYMPIAD_SOLUTIONS_GPT5_PROMPT, OLYMPIAD_SOLUTIONS_GEMINI_PROMPT
 )
 
 
@@ -562,6 +570,38 @@ def render_page_shell(
       color: #166534;
       font-weight: 600;
     }}
+    .olympiad-model-row {{
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }}
+    .olympiad-model-row .chip {{
+      white-space: nowrap;
+      min-width: 120px;
+      text-align: center;
+    }}
+    .olympiad-links {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }}
+    .olympiad-links a {{
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 9px 12px;
+      border-radius: 999px;
+    }}
+    .olympiad-links a.pdf-link {{
+      font-weight: 400;
+      font-size: 0.85rem;
+      padding: 6px 8px;
+      border-color: transparent;
+      background: none;
+      color: var(--accent);
+    }}
     .link-row {{
       display: flex;
       flex-wrap: wrap;
@@ -766,6 +806,119 @@ def extract_chapter_label(display_name: str) -> str | None:
     return re.sub(r"\s+", " ", match.group(1).strip())
 
 
+def _model_chip(spec: PromptSpec) -> str:
+    label = _model_label(spec)
+    if spec.model is None:
+        css = "chip"
+    elif spec.model.startswith("gemini"):
+        css = "chip chip-gemini"
+    else:
+        css = "chip chip-model"
+    return f'<span class="{css}">{html.escape(label)}</span>'
+
+
+def render_single_model_row_card(
+    title: str,
+    specs: tuple[PromptSpec, ...],
+    outputs_by_slug: dict[str, PromptOutputRecord],
+    link_label: str,
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+) -> str:
+    model_rows: list[str] = []
+    header_chips: list[str] = []
+
+    for spec in specs:
+        out = outputs_by_slug.get(spec.slug)
+        if not out or not out.processed_at:
+            continue
+        parts: list[str] = []
+        if out.response_html_path and out.response_html_path.exists():
+            href = build_site_href(path=out.response_html_path, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
+            parts.append(f'<a href="{html.escape(href)}">{html.escape(link_label)}</a>')
+        if spec.generate_response_pdf and out.response_pdf_path and out.response_pdf_path.exists():
+            href = build_site_href(path=out.response_pdf_path, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
+            parts.append(f'<a href="{html.escape(href)}" class="pdf-link">[PDF]</a>')
+        header_chips.append(_model_chip(spec))
+        model_rows.append(f"""
+      <div class="olympiad-model-row">
+        {_model_chip(spec)}
+        <div class="olympiad-links">
+          {' '.join(parts)}
+        </div>
+      </div>""")
+
+    if not model_rows:
+        return ""
+
+    return f"""
+      <section class="prompt-card">
+        <h3>{html.escape(title)}</h3>
+        <div class="chip-row">
+          {' '.join(header_chips)}
+        </div>
+        {''.join(model_rows)}
+      </section>
+    """
+
+
+def render_olympiad_combined(
+    outputs_by_slug: dict[str, PromptOutputRecord],
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+) -> str:
+    model_rows: list[str] = []
+    header_chips: list[str] = []
+
+    for prob_spec, sol_spec in zip(OLYMPIAD_PROBLEMS_SPECS, OLYMPIAD_SOLUTIONS_SPECS):
+        prob_out = outputs_by_slug.get(prob_spec.slug)
+        sol_out = outputs_by_slug.get(sol_spec.slug)
+        has_data = (prob_out and prob_out.processed_at) or (sol_out and sol_out.processed_at)
+        if not has_data:
+            continue
+
+        def _inline_links(out: PromptOutputRecord | None, spec: PromptSpec, label: str) -> str:
+            if not out:
+                return ""
+            parts: list[str] = []
+            if out.response_html_path and out.response_html_path.exists():
+                href = build_site_href(path=out.response_html_path, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
+                parts.append(f'<a href="{html.escape(href)}">{html.escape(label)}</a>')
+            if spec.generate_response_pdf and out.response_pdf_path and out.response_pdf_path.exists():
+                href = build_site_href(path=out.response_pdf_path, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
+                parts.append(f'<a href="{html.escape(href)}" class="pdf-link">[PDF]</a>')
+            return " ".join(parts)
+
+        prob_part = _inline_links(prob_out, prob_spec, "Problems")
+        sol_part = _inline_links(sol_out, sol_spec, "Solutions")
+        item_parts = [p for p in [prob_part, sol_part] if p]
+        items_html = "   ".join(item_parts)
+
+        header_chips.append(_model_chip(prob_spec))
+        model_rows.append(f"""
+      <div class="olympiad-model-row">
+        {_model_chip(prob_spec)}
+        <div class="olympiad-links">
+          {items_html}
+        </div>
+      </div>""")
+
+    if not model_rows:
+        return ""
+
+    return f"""
+      <section class="prompt-card">
+        <h3>Olympiad Problems &amp; Solutions</h3>
+        <div class="chip-row">
+          {' '.join(header_chips)}
+        </div>
+        {''.join(model_rows)}
+      </section>
+    """
+
+
 def render_record(
     record: DocumentRecord,
     output_dir: Path,
@@ -786,6 +939,13 @@ def render_record(
     outputs_by_slug = {po.slug: po for po in record.prompt_outputs}
     rendered_slugs: set[str] = set()
     cards: list[str] = []
+
+    study_guide_card = render_single_model_row_card(
+        "Study Guide", STUDY_GUIDE_SPECS, outputs_by_slug, "Open Guide", output_dir, site_dir, base_path
+    )
+    if study_guide_card:
+        cards.append(study_guide_card)
+
     for base_spec, gpt5_spec, gemini_spec in PROMPT_GROUPS:
         base_out = outputs_by_slug.get(base_spec.slug)
         gpt5_out = outputs_by_slug.get(gpt5_spec.slug)
@@ -795,6 +955,19 @@ def render_record(
             rendered_slugs.add(base_spec.slug)
             rendered_slugs.add(gpt5_spec.slug)
             rendered_slugs.add(gemini_spec.slug)
+
+    mental_math_card = render_single_model_row_card(
+        "Mental Math", MENTAL_MATH_SPECS, outputs_by_slug, "Mental Math", output_dir, site_dir, base_path
+    )
+    if mental_math_card:
+        cards.append(mental_math_card)
+
+    olympiad_card = render_olympiad_combined(outputs_by_slug, output_dir, site_dir, base_path)
+    if olympiad_card:
+        cards.append(olympiad_card)
+
+    for spec in (*STUDY_GUIDE_SPECS, *MENTAL_MATH_SPECS, *OLYMPIAD_PROBLEMS_SPECS, *OLYMPIAD_SOLUTIONS_SPECS):
+        rendered_slugs.add(spec.slug)
     for prompt_output in record.prompt_outputs:
         if prompt_output.slug not in rendered_slugs:
             cards.append(render_prompt_output(prompt_output, output_dir, site_dir, base_path))
@@ -903,7 +1076,8 @@ def extract_record_summary_html(record: DocumentRecord) -> str:
 
 
 def _model_label(prompt_spec: PromptSpec) -> str:
-    return prompt_spec.model or DEFAULT_MODEL
+    raw = prompt_spec.model or DEFAULT_MODEL
+    return raw.replace("-preview", "")
 
 
 def _prompt_output_links(
