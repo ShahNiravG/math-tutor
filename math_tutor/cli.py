@@ -254,7 +254,7 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output-dir",
-        default=str(PACKAGE_DIR / "output"),
+        default=str(Path(__file__).resolve().parent / "output"),
         help="Directory for downloads, responses, and metadata.",
     )
     parser.add_argument(
@@ -427,9 +427,11 @@ def main() -> None:
         api_key = None
         gemini_client = None
         if not args.fetch_only and not args.fetch_assignments:
-            api_key = os.environ.get("OPENAI_API_KEY")
-            if not api_key:
-                raise SystemExit("OPENAI_API_KEY must be set in the environment unless --fetch-only is used.")
+            needs_openai = any(not (p.model or "").startswith("gemini") for p in selected_prompts)
+            if needs_openai:
+                api_key = os.environ.get("OPENAI_API_KEY")
+                if not api_key:
+                    raise SystemExit("OPENAI_API_KEY must be set in the environment unless --fetch-only is used.")
             gemini_api_key = os.environ.get("GEMINI_API_KEY")
             if gemini_api_key:
                 try:
