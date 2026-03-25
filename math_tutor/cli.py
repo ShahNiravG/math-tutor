@@ -364,8 +364,10 @@ def parse_args() -> argparse.Namespace:
         dest="chapter_filters",
         action="append",
         help=(
-            "Optional chapter filter for --print-prompt, such as 6.3 or 7.4 & 7.5. "
-            "Repeat the flag to print multiple chapters. If omitted, all chapters are printed."
+            "Optional chapter filter, such as 6.3 or 7.4 & 7.5. "
+            "Repeat the flag to include multiple chapters. "
+            "Applies to both --print-prompt and the main processing pipeline. "
+            "If omitted, all chapters are processed."
         ),
     )
     parser.add_argument(
@@ -504,6 +506,13 @@ def main() -> None:
                         files = list_canvas_pdfs_from_ui(
                             page, canvas_client, args.course_url, name_matcher=matches_target_pdf
                         )
+                        if args.chapter_filters:
+                            chapter_filters_normalized = [normalize_chapter_filter(c) for c in args.chapter_filters]
+                            files = [
+                                f for f in files
+                                if (lbl := extract_chapter_label(f.display_name)) and
+                                chapter_matches_filters(lbl, f.display_name, chapter_filters_normalized)
+                            ]
                         if args.limit is not None:
                             files = files[:args.limit]
                         if not files:
