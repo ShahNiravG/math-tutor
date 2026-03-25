@@ -1411,9 +1411,10 @@ class PromptResponseResult:
 def generate_tutor_response(
     client: OpenAI, pdf_path: Path, model: str, prompt_text: str, reasoning_effort: str | None = None
 ) -> Any:
+    print(f"  -> Uploading {pdf_path.name} to OpenAI...", flush=True)
     with pdf_path.open("rb") as handle:
         uploaded_file = client.files.create(file=handle, purpose="user_data")
-
+    print(f"  -> Waiting for OpenAI ({model}) response...", flush=True)
     kwargs: dict[str, Any] = dict(
         model=model,
         input=[
@@ -1434,6 +1435,7 @@ def generate_tutor_response(
 def generate_text_only_response(
     client: OpenAI, model: str, prompt_text: str, reasoning_effort: str | None = None
 ) -> Any:
+    print(f"  -> Waiting for OpenAI ({model}) response (text-only)...", flush=True)
     kwargs: dict[str, Any] = dict(
         model=model,
         input=[{"role": "user", "content": [{"type": "input_text", "text": prompt_text}]}],
@@ -1447,6 +1449,7 @@ def generate_gemini_tutor_response(
     client: Any, pdf_path: Path, model: str, prompt_text: str
 ) -> PromptResponseResult:
     from google.genai import types as genai_types
+    print(f"  -> Uploading {pdf_path.name} to Gemini...", flush=True)
     with pdf_path.open("rb") as handle:
         uploaded_file = client.files.upload(
             file=handle,
@@ -1455,6 +1458,7 @@ def generate_gemini_tutor_response(
                 display_name=pdf_path.name,
             ),
         )
+    print(f"  -> Waiting for Gemini ({model}) response...", flush=True)
     response = client.models.generate_content(
         model=model,
         contents=[
@@ -1479,6 +1483,7 @@ def generate_gemini_text_only_response(
     client: Any, model: str, prompt_text: str
 ) -> PromptResponseResult:
     from google.genai import types as genai_types
+    print(f"  -> Waiting for Gemini ({model}) response (text-only)...", flush=True)
     response = client.models.generate_content(
         model=model,
         contents=[genai_types.Content(role="user", parts=[genai_types.Part(text=prompt_text)])],
