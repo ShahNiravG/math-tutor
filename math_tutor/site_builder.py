@@ -668,6 +668,13 @@ def render_page_shell(
       font-size: 0.95rem;
       color: var(--muted);
     }}
+    details pre {{
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      max-width: 100%;
+      overflow: hidden;
+    }}
     .prompt-card {{
       border: 1px solid var(--line-strong);
       background: var(--prompt-bg);
