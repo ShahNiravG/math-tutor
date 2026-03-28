@@ -19,10 +19,10 @@ MM_PER_EXAM = 5
 OP_PER_EXAM = 5
 
 SOURCE_SUFFIXES = [
-    ("__mental-math-gpt5.md",         "mm", "gpt54", "GPT-5.4"),
-    ("__mental-math-gemini.md",        "mm", "gem",   "Gemini 3.1 Pro"),
-    ("__olympiad-problems-gpt5.md",    "op", "gpt54", "GPT-5.4"),
-    ("__olympiad-problems-gemini.md",  "op", "gem",   "Gemini 3.1 Pro"),
+    ("__mental-math-gpt5.md",         "mm", "gpt54", "GPT-5.4",       "__mental-math-gpt5-mcq.md"),
+    ("__mental-math-gemini.md",        "mm", "gem",   "Gemini 3.1 Pro","__mental-math-gemini-mcq.md"),
+    ("__olympiad-problems-gpt5.md",    "op", "gpt54", "GPT-5.4",       "__olympiad-problems-gpt5-mcq.md"),
+    ("__olympiad-problems-gemini.md",  "op", "gem",   "Gemini 3.1 Pro","__olympiad-problems-gemini-mcq.md"),
 ]
 
 
@@ -83,18 +83,44 @@ def _extract_from_file(path: Path) -> list[str]:
     return []
 
 
+def _parse_mcq_file(path: Path) -> dict[int, dict]:
+    """Parse an MCQ file and return {question_number: {options, correct}}."""
+    text = path.read_text(encoding="utf-8")
+    result: dict[int, dict] = {}
+    # Split on blocks starting with a bare number line (e.g. "1." or "1\n")
+    blocks = re.split(r"(?m)^(\d+)[.\s]*$", text)
+    # blocks: [preamble, "1", block1_text, "2", block2_text, ...]
+    i = 1
+    while i + 1 < len(blocks):
+        q_num = int(blocks[i])
+        block = blocks[i + 1]
+        options = re.findall(r"^\(([A-D])\)\s*(.+)$", block, re.MULTILINE)
+        answer_match = re.search(r"^Answer:\s*([A-D])", block, re.MULTILINE)
+        if options and answer_match:
+            result[q_num] = {
+                "options": [f"({letter}) {text.strip()}" for letter, text in options],
+                "correct": answer_match.group(1),
+            }
+        i += 2
+    return result
+
+
 def load_all_questions(output_dir: Path) -> list[dict]:
     responses_dir = output_dir / "responses"
     if not responses_dir.exists():
         return []
     questions: list[dict] = []
-    for suffix, q_type, model, model_label in SOURCE_SUFFIXES:
+    for suffix, q_type, model, model_label, mcq_suffix in SOURCE_SUFFIXES:
         type_label = "Mental Math" if q_type == "mm" else "Olympiad Problems"
         for path in sorted(responses_dir.glob(f"*{suffix}")):
             chapter = _chapter_from_stem(path.stem)
+            # Load MCQ options if available
+            base = path.stem[: path.stem.rfind("__")]
+            mcq_path = responses_dir / f"{base}{mcq_suffix}"
+            mcq_data = _parse_mcq_file(mcq_path) if mcq_path.exists() else {}
             for i, text in enumerate(_extract_from_file(path), 1):
                 q_id = f"chp{chapter.replace(' & ', '-').replace('.', '')}-{q_type}-{model}-q{i}"
-                questions.append({
+                q: dict = {
                     "id": q_id,
                     "chapter": chapter,
                     "type": q_type,
@@ -103,7 +129,11 @@ def load_all_questions(output_dir: Path) -> list[dict]:
                     "source_label": f"Chapter {chapter} / {type_label} / {model_label} / Q{i}",
                     "question_number": i,
                     "text": text,
-                })
+                }
+                if i in mcq_data:
+                    q["options"] = mcq_data[i]["options"]
+                    q["correct"] = mcq_data[i]["correct"]
+                questions.append(q)
     return questions
 
 

@@ -20,6 +20,7 @@ math-tutor = "math_tutor.cli:main"
 math-tutor-build-site = "math_tutor.site_builder:main"
 math-tutor-backfill-response-html = "math_tutor.backfill_response_html:main"
 math-tutor-build-challenges = "math_tutor.challenge_builder:main"
+math-tutor-generate-mcq = "math_tutor.mcq_generator:main"
 
 [tool.setuptools]
 packages = ["math_tutor"]
