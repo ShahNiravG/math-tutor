@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Challenge Exams</title>
+  <style>
+    :root { --bg:#f5f1e8; --paper:#fffaf2; --ink:#1f2a33; --muted:#5b6a74;
+            --accent:#a14d2e; --accent-soft:#ead2c5; --line:#d8cfc2; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Georgia,"Times New Roman",serif; color:var(--ink);
+           background:radial-gradient(circle at top left,#f8dfc8 0,transparent 28%),
+                      linear-gradient(180deg,#f6efe3 0%,var(--bg) 100%);
+           min-height:100vh; }
+    .page { width:min(1000px,calc(100vw - 32px)); margin:0 auto; padding:32px 0 64px; }
+    .top-bar { display:flex; align-items:center; gap:16px; margin-bottom:36px; flex-wrap:wrap; }
+    .back-link { color:var(--accent); text-decoration:none; font-weight:600; font-size:.95rem; }
+    h1 { margin:0; font-size:2rem; flex:1; }
+    .subtitle { color:var(--muted); margin:0; font-size:1rem; }
+    .stats { font-size:.9rem; color:var(--muted); background:var(--paper);
+             border:1px solid var(--line); border-radius:999px; padding:6px 16px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+    .card { background:var(--paper); border:1px solid var(--line); border-radius:16px;
+            padding:22px; box-shadow:0 6px 18px rgba(78,55,32,.07);
+            display:flex; flex-direction:column; gap:10px; }
+    .card-title { font-size:1.15rem; font-weight:700; margin:0; }
+    .card-meta { font-size:.85rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    .tag-row { display:flex; flex-wrap:wrap; gap:6px; }
+    .tag { display:inline-block; padding:3px 9px; border-radius:999px; font-size:.78rem;
+           font-weight:600; font-family:system-ui,sans-serif; }
+    .tag-mm { background:#dbeafe; color:#1e40af; }
+    .tag-op { background:#dcfce7; color:#166534; }
+    .start-btn { margin-top:auto; display:block; text-align:center; text-decoration:none;
+                 background:var(--accent); color:#fff; font:inherit; font-weight:700;
+                 padding:11px; border-radius:999px; border:none; cursor:pointer;
+                 transition:opacity .15s; }
+    .start-btn:hover { opacity:.85; }
+    .loading { text-align:center; padding:60px; color:var(--muted); font-size:1.1rem; }
+    .error { background:#fee2e2; color:#991b1b; border-radius:12px; padding:20px; margin:20px 0; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="top-bar">
+    <a class="back-link" href="../index.html">&#8592; Back to Library</a>
+  </div>
+  <h1>Challenge Exams</h1>
+  <p class="subtitle">Each exam has 10 questions — a mix of Mental Math and Olympiad Problems across all chapters.</p>
+  <br>
+  <div id="root"><div class="loading">Loading exams&hellip;</div></div>
+</div>
+<script>
+(async function() {
+  const root = document.getElementById('root');
+  let data;
+  try {
+    const res = await fetch('exams.json');
+    data = await res.json();
+  } catch(e) {
+    root.innerHTML = '<div class="error">Could not load exams. Make sure exams.json exists.</div>';
+    return;
+  }
+
+  const exams = data.exams || [];
+  const statsEl = document.createElement('div');
+  statsEl.className = 'stats';
+  statsEl.textContent = `${exams.length} exams available`;
+  document.querySelector('.top-bar').appendChild(statsEl);
+
+  if (!exams.length) {
+    root.innerHTML = '<div class="error">No exams found in exams.json.</div>';
+    return;
+  }
+
+  const grid = document.createElement('div');
+  grid.className = 'grid';
+
+  exams.forEach(function(exam) {
+    const mm = exam.questions.filter(q => q.type === 'mm').length;
+    const op = exam.questions.filter(q => q.type === 'op').length;
+    const chapters = [...new Set(exam.questions.map(q => q.chapter))].sort(function(a,b){
+      return parseFloat(a) - parseFloat(b);
+    });
+    const chapterText = chapters.length > 4
+      ? chapters.slice(0,3).join(', ') + ` +${chapters.length-3} more`
+      : chapters.join(', ');
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <p class="card-title">${exam.title}</p>
+      <p class="card-meta">Chapters: ${chapterText}</p>
+      <div class="tag-row">
+        <span class="tag tag-mm">${mm} Mental Math</span>
+        <span class="tag tag-op">${op} Olympiad</span>
+      </div>
+      <a class="start-btn" href="exam.html?id=${encodeURIComponent(exam.id)}">Start Exam &rarr;</a>
+    `;
+    grid.appendChild(card);
+  });
+
+  root.innerHTML = '';
+  root.appendChild(grid);
+})();
+</script>
+</body>
+</html>
