@@ -16,23 +16,8 @@ from math_tutor.challenge_builder import build_challenges
 from math_tutor.cli import (
     load_dotenv_if_present,
     DEFAULT_MODEL,
-    INSPIRING_VIDEOS_GEMINI_PROMPT,
-    INSPIRING_VIDEOS_GPT5_PROMPT,
-    INSPIRING_VIDEOS_PROMPT,
     MATHJAX_SCRIPT,
-    MENTAL_MATH_GEMINI_PROMPT,
-    MENTAL_MATH_GPT5_PROMPT,
-    MENTAL_MATH_PROMPT,
-    OLYMPIAD_PROBLEMS_GEMINI_PROMPT,
-    OLYMPIAD_PROBLEMS_GPT5_PROMPT,
-    OLYMPIAD_PROBLEMS_PROMPT,
-    OLYMPIAD_SOLUTIONS_GEMINI_PROMPT,
-    OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
-    OLYMPIAD_SOLUTIONS_PROMPT,
     PROMPTS_BY_SLUG,
-    STUDY_GUIDE_GEMINI_PROMPT,
-    STUDY_GUIDE_GPT5_PROMPT,
-    STUDY_GUIDE_PROMPT,
     PromptSpec,
     load_openai_state,
     pretty_title,
@@ -44,37 +29,21 @@ DEFAULT_OUTPUT_DIR = str(PACKAGE_DIR / "output")
 DEFAULT_SITE_DIRNAME = "site"
 SITE_TITLE = "Algebra II with Trigonometry Tutor"
 SIDEBAR_TITLE = "Algebra II Trig Tutor"
+def _specs(*slugs: str) -> tuple[PromptSpec, ...]:
+    return tuple(PROMPTS_BY_SLUG[s] for s in slugs if s in PROMPTS_BY_SLUG)
+
+
+STUDY_GUIDE_SPECS    = _specs("study-guide", "study-guide-gpt5", "study-guide-gemini")
+INSPIRING_VIDEOS_SPECS = _specs("inspiring-videos", "inspiring-videos-gpt5", "inspiring-videos-gemini")
+MENTAL_MATH_SPECS    = _specs("mental-math", "mental-math-gpt5", "mental-math-gemini")
+OLYMPIAD_PROBLEMS_SPECS = _specs("olympiad-problems", "olympiad-problems-gpt5", "olympiad-problems-gemini")
+OLYMPIAD_SOLUTIONS_SPECS = _specs("olympiad-solutions", "olympiad-solutions-gpt5", "olympiad-solutions-gemini")
 PROMPT_ORDER: tuple[PromptSpec, ...] = (
-    STUDY_GUIDE_PROMPT,
-    STUDY_GUIDE_GPT5_PROMPT,
-    STUDY_GUIDE_GEMINI_PROMPT,
-    INSPIRING_VIDEOS_PROMPT,
-    INSPIRING_VIDEOS_GPT5_PROMPT,
-    INSPIRING_VIDEOS_GEMINI_PROMPT,
-    MENTAL_MATH_PROMPT,
-    MENTAL_MATH_GPT5_PROMPT,
-    MENTAL_MATH_GEMINI_PROMPT,
-    OLYMPIAD_PROBLEMS_PROMPT,
-    OLYMPIAD_PROBLEMS_GPT5_PROMPT,
-    OLYMPIAD_PROBLEMS_GEMINI_PROMPT,
-    OLYMPIAD_SOLUTIONS_PROMPT,
-    OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
-    OLYMPIAD_SOLUTIONS_GEMINI_PROMPT,
-)
-STUDY_GUIDE_SPECS: tuple[PromptSpec, ...] = (
-    STUDY_GUIDE_PROMPT, STUDY_GUIDE_GPT5_PROMPT, STUDY_GUIDE_GEMINI_PROMPT
-)
-INSPIRING_VIDEOS_SPECS: tuple[PromptSpec, ...] = (
-    INSPIRING_VIDEOS_PROMPT, INSPIRING_VIDEOS_GPT5_PROMPT, INSPIRING_VIDEOS_GEMINI_PROMPT
-)
-MENTAL_MATH_SPECS: tuple[PromptSpec, ...] = (
-    MENTAL_MATH_PROMPT, MENTAL_MATH_GPT5_PROMPT, MENTAL_MATH_GEMINI_PROMPT
-)
-OLYMPIAD_PROBLEMS_SPECS: tuple[PromptSpec, ...] = (
-    OLYMPIAD_PROBLEMS_PROMPT, OLYMPIAD_PROBLEMS_GPT5_PROMPT, OLYMPIAD_PROBLEMS_GEMINI_PROMPT
-)
-OLYMPIAD_SOLUTIONS_SPECS: tuple[PromptSpec, ...] = (
-    OLYMPIAD_SOLUTIONS_PROMPT, OLYMPIAD_SOLUTIONS_GPT5_PROMPT, OLYMPIAD_SOLUTIONS_GEMINI_PROMPT
+    *STUDY_GUIDE_SPECS,
+    *INSPIRING_VIDEOS_SPECS,
+    *MENTAL_MATH_SPECS,
+    *OLYMPIAD_PROBLEMS_SPECS,
+    *OLYMPIAD_SOLUTIONS_SPECS,
 )
 
 
@@ -1386,8 +1355,6 @@ def normalize_base_path(value: str) -> str:
 
 
 def is_deploy_site_dir(*, output_dir: Path, site_dir: Path) -> bool:
-    if site_dir.name != "math_tutor":
-        return False
     if not site_dir.is_relative_to(output_dir):
         return True
     try:

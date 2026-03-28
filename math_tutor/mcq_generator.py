@@ -97,7 +97,7 @@ def _call_gpt(client: Any, prompt: str) -> str:
     response = client.responses.create(
         model=GPT_MODEL,
         input=[{"role": "user", "content": [{"type": "input_text", "text": prompt}]}],
-        reasoning={"effort": "medium"},
+
     )
     return response.output_text
 
@@ -234,6 +234,8 @@ def main() -> None:
                         help="Regenerate even if MCQ output already exists.")
     parser.add_argument("--dry-run", action="store_true",
                         help="Show what would be processed without making API calls.")
+    parser.add_argument("--limit", type=int, default=0,
+                        help="Stop after processing this many files (0 = no limit).")
     args = parser.parse_args()
 
     responses_dir = Path(args.responses_dir).resolve()
@@ -287,5 +289,10 @@ def main() -> None:
                 force=args.force,
             )
             processed += 1
+            if args.limit and processed >= args.limit:
+                print(f"\nReached --limit {args.limit}, stopping.")
+                break
+        if args.limit and processed >= args.limit:
+            break
 
     print(f"\nDone. {processed} processed, {skipped} skipped, {total} total.")

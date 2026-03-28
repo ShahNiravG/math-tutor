@@ -41,12 +41,39 @@ class PromptSpec:
     generate_response_pdf: bool = True
     model: str | None = None
     reasoning_effort: str | None = None
+    generate: bool = True  # False = recognized for display but never sent to an API
 
 
-STUDY_GUIDE_PROMPT = PromptSpec(
-    slug="study-guide",
-    title="Study guide",
-    text="""You are a careful math tutor.
+@dataclass(frozen=True)
+class PromptTemplate:
+    slug: str
+    title: str
+    text: str
+    source_template_slug: str | None = None
+    include_source_pdf_link: bool = True
+    generate_response_pdf: bool = True
+    slug_suffix: str = ""  # appended after the model slug, e.g. "mcq" → mental-math-gpt5-mcq
+    generate_models: tuple[str, ...] | None = None  # None = all models; tuple = allowlist of ModelConfig slugs that trigger API calls
+
+
+@dataclass(frozen=True)
+class ModelConfig:
+    slug: str    # used in generated PromptSpec slugs (empty string = default/no suffix)
+    label: str   # used in generated titles (empty string = no parenthetical)
+    model: str   # API model identifier
+
+
+_MODEL_CONFIGS: tuple[ModelConfig, ...] = (
+    ModelConfig(slug="",       label="",        model="gpt-4.1"),
+    ModelConfig(slug="gpt5",   label="GPT-5.4", model="gpt-5.4"),
+    ModelConfig(slug="gemini", label="Gemini",  model="gemini-3.1-pro-preview"),
+)
+
+_PROMPT_TEMPLATES: tuple[PromptTemplate, ...] = (
+    PromptTemplate(
+        slug="study-guide",
+        title="Study Guide",
+        text="""You are a careful math tutor.
 
 Read the attached PDF and produce:
 1. A short summary of the document.
@@ -57,12 +84,12 @@ Read the attached PDF and produce:
 
 Keep the response self-contained and use clear section headings.
 """,
-)
-
-INSPIRING_VIDEOS_PROMPT = PromptSpec(
-    slug="inspiring-videos",
-    title="Inspiring Videos",
-    text="""I have a 14-year-old student studying the math topics in the attached PDF.
+        generate_models=("",),
+    ),
+    PromptTemplate(
+        slug="inspiring-videos",
+        title="Inspiring Videos",
+        text="""I have a 14-year-old student studying the math topics in the attached PDF.
 
 For the topics in the PDF, recommend 1-2 highly engaging and visually intuitive YouTube videos from reputable math creators that inspire curiosity rather than focus on procedural problem solving.
 
@@ -78,25 +105,62 @@ Requirements:
 
 Format the response as a short list with the video title, creator, Google search link, and a brief explanation.
 """,
-    include_source_pdf_link=False,
-    generate_response_pdf=False,
-)
-
-MENTAL_MATH_PROMPT = PromptSpec(
-    slug="mental-math",
-    title="Mental Math",
-    text=(
-        "Generate 10 mental math questions based on this math pdf. "
-        "These question should be answerable without paper and pencil. "
-        "The questions should test the understanding of the core concepts. "
-        "Give only the questions, with short titles if helpful."
+        include_source_pdf_link=False,
+        generate_response_pdf=False,
+        generate_models=("",),
     ),
-)
+    PromptTemplate(
+        slug="mental-math",
+        title="Mental Math",
+        text=(
+            "Generate 10 mental math questions based on this math pdf. "
+            "These question should be answerable without paper and pencil. "
+            "The questions should test the understanding of the core concepts. "
+            "Give only the questions, with short titles if helpful."
+        ),
+        generate_models=("gpt5", "gemini"),
+    ),
+    PromptTemplate(
+        slug="mental-math-mcq",
+        title="Mental Math MCQ",
+        text="""\
+Below are mental math questions on a math topic. For each question, provide exactly 4 \
+multiple-choice options (A, B, C, D). One must be the mathematically correct answer; \
+the other three must be plausible but incorrect — use common errors such as sign mistakes, \
+degree/radian confusion, off-by-one errors, or arithmetic slips.
 
-OLYMPIAD_PROBLEMS_PROMPT = PromptSpec(
-    slug="olympiad-problems",
-    title="Olympiad Problems",
-    text="""You are designing elegant Olympiad-style mental math problems from the attached PDF.
+Rules:
+- Options must be concise: a single number, fraction, expression, or short phrase.
+- The correct answer must be verified.
+- Distractors must reflect realistic student mistakes, not random values.
+- Randomly vary which letter (A/B/C/D) holds the correct answer across questions.
+- Number the blocks to match the question numbers in the input.
+- Output ONLY the answer blocks below — no explanations, no restating questions, no extra text.
+
+Format (one block per question):
+
+1.
+(A) ...
+(B) ...
+(C) ...
+(D) ...
+Answer: [letter]
+
+2.
+...
+
+Here are the questions:
+
+{{previous_output}}
+""",
+        source_template_slug="mental-math",
+        slug_suffix="mcq",
+        generate_models=("gpt5", "gemini"),
+    ),
+    PromptTemplate(
+        slug="olympiad-problems",
+        title="Olympiad Problems",
+        text="""You are designing elegant Olympiad-style mental math problems from the attached PDF.
 
 Generate 6 challenging problems inspired by the core ideas in the PDF.
 
@@ -108,12 +172,12 @@ Requirements:
 5. Keep the statements concise and polished.
 6. Output only a numbered list of problems under the heading "Problems".
 """,
-)
-
-OLYMPIAD_SOLUTIONS_PROMPT = PromptSpec(
-    slug="olympiad-solutions",
-    title="Olympiad Solutions",
-    text="""You are writing elegant Olympiad-style solutions.
+        generate_models=("gpt5", "gemini"),
+    ),
+    PromptTemplate(
+        slug="olympiad-solutions",
+        title="Olympiad Solutions",
+        text="""You are writing elegant Olympiad-style solutions.
 
 Use the exact problem list below and provide step-by-step solutions for each problem.
 
@@ -127,60 +191,111 @@ Requirements:
 Problem list to solve:
 {{previous_output}}
 """,
-    source_prompt_slug="olympiad-problems",
+        source_template_slug="olympiad-problems",
+        generate_models=("gpt5", "gemini"),
+    ),
+    PromptTemplate(
+        slug="olympiad-problems-mcq",
+        title="Olympiad Problems MCQ",
+        text="""\
+Below are Olympiad-style math problems. For each problem, provide exactly 4 multiple-choice \
+options (A, B, C, D). One must be the mathematically correct answer; the other three should \
+be plausible — use values that arise from partial progress, sign errors, missing factors, \
+or near-correct approaches.
+
+Rules:
+- Options must be concise: a single value, expression, angle measure, or short result. \
+LaTeX is fine for mathematical expressions.
+- The correct answer must be mathematically verified.
+- Distractors should reflect genuine mathematical mistakes, not arbitrary values.
+- Randomly vary which letter (A/B/C/D) holds the correct answer across problems.
+- Number the blocks to match the problem numbers in the input.
+- Output ONLY the answer blocks below — no explanations, no restating problems, no extra text.
+
+Format (one block per problem):
+
+1.
+(A) ...
+(B) ...
+(C) ...
+(D) ...
+Answer: [letter]
+
+2.
+...
+
+Here are the problems:
+
+{{previous_output}}
+""",
+        source_template_slug="olympiad-problems",
+        slug_suffix="mcq",
+        generate_models=("gpt5", "gemini"),
+    ),
 )
 
-GPT5_MODEL = "gpt-5.4"
 
-STUDY_GUIDE_GPT5_PROMPT = PromptSpec(slug="study-guide-gpt5", title="Study Guide (GPT-5.4)", text=STUDY_GUIDE_PROMPT.text, model=GPT5_MODEL)
-INSPIRING_VIDEOS_GPT5_PROMPT = PromptSpec(slug="inspiring-videos-gpt5", title="Inspiring Videos (GPT-5.4)", text=INSPIRING_VIDEOS_PROMPT.text, include_source_pdf_link=False, generate_response_pdf=False, model=GPT5_MODEL)
-MENTAL_MATH_GPT5_PROMPT = PromptSpec(slug="mental-math-gpt5", title="Mental Math (GPT-5.4)", text=MENTAL_MATH_PROMPT.text, model=GPT5_MODEL)
-OLYMPIAD_PROBLEMS_GPT5_PROMPT = PromptSpec(slug="olympiad-problems-gpt5", title="Olympiad Problems (GPT-5.4)", text=OLYMPIAD_PROBLEMS_PROMPT.text, model=GPT5_MODEL)
-OLYMPIAD_SOLUTIONS_GPT5_PROMPT = PromptSpec(slug="olympiad-solutions-gpt5", title="Olympiad Solutions (GPT-5.4)", text=OLYMPIAD_SOLUTIONS_PROMPT.text, source_prompt_slug="olympiad-problems-gpt5", source_placeholder=OLYMPIAD_SOLUTIONS_PROMPT.source_placeholder, model=GPT5_MODEL)
+def _build_prompt_spec(template: PromptTemplate, mc: ModelConfig) -> PromptSpec:
+    if template.slug_suffix and mc.slug:
+        base = template.slug[: -(len(template.slug_suffix) + 1)]  # strip "-{suffix}"
+        slug = f"{base}-{mc.slug}-{template.slug_suffix}"
+    elif mc.slug:
+        slug = f"{template.slug}-{mc.slug}"
+    else:
+        slug = template.slug
+    title = template.title if not mc.label else f"{template.title} ({mc.label})"
+    source_slug = None
+    if template.source_template_slug:
+        source_slug = (template.source_template_slug if not mc.slug
+                       else f"{template.source_template_slug}-{mc.slug}")
+    generate = template.generate_models is None or mc.slug in template.generate_models
+    return PromptSpec(
+        slug=slug,
+        title=title,
+        text=template.text,
+        source_prompt_slug=source_slug,
+        include_source_pdf_link=template.include_source_pdf_link,
+        generate_response_pdf=template.generate_response_pdf,
+        model=mc.model if mc.slug else None,
+        generate=generate,
+    )
 
-GEMINI_MODEL = "gemini-3.1-pro-preview"
 
-STUDY_GUIDE_GEMINI_PROMPT = PromptSpec(slug="study-guide-gemini", title="Study Guide (Gemini)", text=STUDY_GUIDE_PROMPT.text, model=GEMINI_MODEL)
-INSPIRING_VIDEOS_GEMINI_PROMPT = PromptSpec(slug="inspiring-videos-gemini", title="Inspiring Videos (Gemini)", text=INSPIRING_VIDEOS_PROMPT.text, include_source_pdf_link=False, generate_response_pdf=False, model=GEMINI_MODEL)
-MENTAL_MATH_GEMINI_PROMPT = PromptSpec(slug="mental-math-gemini", title="Mental Math (Gemini)", text=MENTAL_MATH_PROMPT.text, model=GEMINI_MODEL)
-OLYMPIAD_PROBLEMS_GEMINI_PROMPT = PromptSpec(slug="olympiad-problems-gemini", title="Olympiad Problems (Gemini)", text=OLYMPIAD_PROBLEMS_PROMPT.text, model=GEMINI_MODEL)
-OLYMPIAD_SOLUTIONS_GEMINI_PROMPT = PromptSpec(slug="olympiad-solutions-gemini", title="Olympiad Solutions (Gemini)", text=OLYMPIAD_SOLUTIONS_PROMPT.text, source_prompt_slug="olympiad-problems-gemini", source_placeholder=OLYMPIAD_SOLUTIONS_PROMPT.source_placeholder, model=GEMINI_MODEL)
+def _order_prompts(prompts: tuple[PromptSpec, ...]) -> tuple[PromptSpec, ...]:
+    """Re-order prompts so each prompt's dependents immediately follow it."""
+    by_slug = {p.slug: p for p in prompts}
+    ordered: list[PromptSpec] = []
+    seen: set[str] = set()
 
-PROMPTS: tuple[PromptSpec, ...] = (
-    STUDY_GUIDE_PROMPT,
-    STUDY_GUIDE_GPT5_PROMPT,
-    STUDY_GUIDE_GEMINI_PROMPT,
-    INSPIRING_VIDEOS_PROMPT,
-    INSPIRING_VIDEOS_GPT5_PROMPT,
-    INSPIRING_VIDEOS_GEMINI_PROMPT,
-    MENTAL_MATH_PROMPT,
-    MENTAL_MATH_GPT5_PROMPT,
-    MENTAL_MATH_GEMINI_PROMPT,
-    OLYMPIAD_PROBLEMS_PROMPT,
-    OLYMPIAD_PROBLEMS_GPT5_PROMPT,
-    OLYMPIAD_PROBLEMS_GEMINI_PROMPT,
-    OLYMPIAD_SOLUTIONS_PROMPT,
-    OLYMPIAD_SOLUTIONS_GPT5_PROMPT,
-    OLYMPIAD_SOLUTIONS_GEMINI_PROMPT,
+    def _add(slug: str) -> None:
+        if slug in seen:
+            return
+        seen.add(slug)
+        ordered.append(by_slug[slug])
+        for p in prompts:
+            if p.source_prompt_slug == slug:
+                _add(p.slug)
+
+    for p in prompts:
+        if p.source_prompt_slug is None:
+            _add(p.slug)
+
+    return tuple(ordered)
+
+
+_RAW_PROMPTS: tuple[PromptSpec, ...] = tuple(
+    _build_prompt_spec(t, mc)
+    for t in _PROMPT_TEMPLATES
+    for mc in _MODEL_CONFIGS
 )
-PROMPTS_BY_SLUG: dict[str, PromptSpec] = {prompt_spec.slug: prompt_spec for prompt_spec in PROMPTS}
+PROMPTS: tuple[PromptSpec, ...] = _order_prompts(_RAW_PROMPTS)
+PROMPTS_BY_SLUG: dict[str, PromptSpec] = {p.slug: p for p in PROMPTS}
 CLASS_NOTE_PRINT_SLUG = "class-note"
 ASSIGNMENT_PRINT_SLUG = "assignment"
 PRINTABLE_PROMPT_SLUGS: tuple[str, ...] = (
     CLASS_NOTE_PRINT_SLUG,
     ASSIGNMENT_PRINT_SLUG,
-    STUDY_GUIDE_PROMPT.slug,
-    STUDY_GUIDE_GPT5_PROMPT.slug,
-    STUDY_GUIDE_GEMINI_PROMPT.slug,
-    MENTAL_MATH_PROMPT.slug,
-    MENTAL_MATH_GPT5_PROMPT.slug,
-    MENTAL_MATH_GEMINI_PROMPT.slug,
-    OLYMPIAD_PROBLEMS_PROMPT.slug,
-    OLYMPIAD_PROBLEMS_GPT5_PROMPT.slug,
-    OLYMPIAD_PROBLEMS_GEMINI_PROMPT.slug,
-    OLYMPIAD_SOLUTIONS_PROMPT.slug,
-    OLYMPIAD_SOLUTIONS_GPT5_PROMPT.slug,
-    OLYMPIAD_SOLUTIONS_GEMINI_PROMPT.slug,
+    *(p.slug for p in PROMPTS),
 )
 
 
@@ -282,6 +397,11 @@ def parse_args() -> argparse.Namespace:
         "--fetch-only",
         action="store_true",
         help="Only fetch matching PDFs and update fetch state; skip the OpenAI processing phase.",
+    )
+    parser.add_argument(
+        "--skip-fetch",
+        action="store_true",
+        help="Skip Canvas login and fetching entirely; use already-downloaded PDFs from fetch_state.json.",
     )
     parser.add_argument(
         "--list-files",
@@ -404,12 +524,13 @@ def main() -> None:
             )
             return
 
-        username = args.username or os.environ.get("MATH_TUTOR_USERNAME")
-        password = args.password or os.environ.get("MATH_TUTOR_PASSWORD")
-        if not username or not password:
-            raise SystemExit(
-                "--username and --password are required (or set MATH_TUTOR_USERNAME / MATH_TUTOR_PASSWORD in .env)."
-            )
+        if not args.skip_fetch:
+            username = args.username or os.environ.get("MATH_TUTOR_USERNAME")
+            password = args.password or os.environ.get("MATH_TUTOR_PASSWORD")
+            if not username or not password:
+                raise SystemExit(
+                    "--username and --password are required (or set MATH_TUTOR_USERNAME / MATH_TUTOR_PASSWORD in .env)."
+                )
 
         downloads_dir = output_dir / "downloads"
         assignments_dir = output_dir / "downloads" / "assignments"
@@ -443,114 +564,96 @@ def main() -> None:
                 except ImportError:
                     print("Warning: GEMINI_API_KEY is set but google-genai is not installed. Gemini prompts will be skipped.")
 
-        with sync_playwright() as playwright:
-            browser = playwright.chromium.launch(headless=not args.headful)
-            try:
-                context = browser.new_context(accept_downloads=False)
-                page = context.new_page()
-
-                login_entry_url = args.login_url or args.course_url
-                print(f"Starting login flow at {login_entry_url}...")
-                perform_login(
-                    page=page,
-                    login_url=login_entry_url,
-                    course_url=args.course_url,
-                    username=username,
-                    password=password,
-                )
-
-                with build_canvas_client(context, args.course_url) as canvas_client:
-                    if args.list_files:
-                        all_files = list_canvas_pdfs_from_ui(
-                            page, canvas_client, args.course_url, name_matcher=is_pdf_by_name
+        if args.skip_fetch:
+            # Build CanvasFile objects from already-downloaded fetch_state entries
+            skip_fetch_files: list[CanvasFile] = []
+            for fid, info in fetch_state.fetched.items():
+                pdf_path_check = Path(info["pdf_path"])
+                if pdf_path_check.is_relative_to(assignments_dir.resolve()):
+                    continue
+                display_name = info["display_name"]
+                if args.chapter_filters:
+                    chapter_filters_normalized = [normalize_chapter_filter(c) for c in args.chapter_filters]
+                    lbl = extract_chapter_label(display_name)
+                    if not lbl or not chapter_matches_filters(lbl, display_name, chapter_filters_normalized):
+                        continue
+                skip_fetch_files.append(CanvasFile(
+                    file_id=int(fid),
+                    display_name=display_name,
+                    download_url=info.get("download_url") or "",
+                    content_type=info.get("content_type", "application/pdf"),
+                    size=None,
+                    updated_at=None,
+                ))
+            if args.limit is not None:
+                skip_fetch_files = skip_fetch_files[:args.limit]
+            print(f"Found {len(skip_fetch_files)} already-fetched class note file(s).")
+            client = OpenAI(api_key=api_key) if api_key else None
+            with sync_playwright() as playwright:
+                browser = playwright.chromium.launch(headless=not args.headful)
+                try:
+                    for index, canvas_file in enumerate(skip_fetch_files, start=1):
+                        process_file(
+                            canvas_client=None,
+                            openai_client=client,
+                            gemini_client=gemini_client,
+                            pdf_browser=browser,
+                            canvas_file=canvas_file,
+                            downloads_dir=downloads_dir,
+                            responses_dir=responses_dir,
+                            metadata_dir=metadata_dir,
+                            fetch_state=fetch_state,
+                            openai_state=openai_state,
+                            model=args.model,
+                            prompts=selected_prompts,
+                            forced_prompt_slugs=forced_prompt_slugs,
+                            force=args.force,
+                            fetch_only=False,
+                            force_openai=args.force_openai,
+                            index=index,
+                            total=len(skip_fetch_files),
                         )
-                        print(f"All PDF files found on course pages ({len(all_files)}):")
-                        for f in all_files:
-                            print(f"  {f.display_name!r}")
-                        return
+                        processed_file_ids.add(str(canvas_file.file_id))
+                finally:
+                    browser.close()
+        else:
+            with sync_playwright() as playwright:
+                browser = playwright.chromium.launch(headless=not args.headful)
+                try:
+                    context = browser.new_context(accept_downloads=False)
+                    page = context.new_page()
 
-                    if args.fetch_assignments:
-                        # Explicit assignment-only mode.
-                        files = list_canvas_pdfs_from_assignments(
-                            page, canvas_client, args.course_url, limit=args.assignment_limit
-                        )
-                        if not files:
-                            raise RuntimeError(
-                                "No assignment files were found on the course pages. Confirm that the account can access module attachments or course files."
-                            )
-                        print(f"Found {len(files)} assignment file(s).")
-                        for index, canvas_file in enumerate(files, start=1):
-                            process_file(
-                                canvas_client=canvas_client,
-                                openai_client=None,
-                                gemini_client=None,
-                                pdf_browser=browser,
-                                canvas_file=canvas_file,
-                                downloads_dir=assignments_dir,
-                                responses_dir=responses_dir,
-                                metadata_dir=metadata_dir,
-                                fetch_state=fetch_state,
-                                openai_state=openai_state,
-                                model=args.model,
-                                prompts=selected_prompts,
-                                forced_prompt_slugs=forced_prompt_slugs,
-                                force=args.force,
-                                fetch_only=True,
-                                force_openai=False,
-                                index=index,
-                                total=len(files),
-                            )
-                            processed_file_ids.add(str(canvas_file.file_id))
-                    else:
-                        # Normal mode: fetch class notes with OpenAI, then fetch assignments (no OpenAI).
-                        files = list_canvas_pdfs_from_ui(
-                            page, canvas_client, args.course_url, name_matcher=matches_target_pdf
-                        )
-                        if args.chapter_filters:
-                            chapter_filters_normalized = [normalize_chapter_filter(c) for c in args.chapter_filters]
-                            files = [
-                                f for f in files
-                                if (lbl := extract_chapter_label(f.display_name)) and
-                                chapter_matches_filters(lbl, f.display_name, chapter_filters_normalized)
-                            ]
-                        if args.limit is not None:
-                            files = files[:args.limit]
-                        if not files:
-                            raise RuntimeError(
-                                "No PDF files were found on the course pages. Confirm that the account can access module attachments or course files."
-                            )
-                        print(f"Found {len(files)} class note file(s).")
-                        client = OpenAI(api_key=api_key) if not args.fetch_only else None
-                        for index, canvas_file in enumerate(files, start=1):
-                            process_file(
-                                canvas_client=canvas_client,
-                                openai_client=client,
-                                gemini_client=gemini_client,
-                                pdf_browser=browser,
-                                canvas_file=canvas_file,
-                                downloads_dir=downloads_dir,
-                                responses_dir=responses_dir,
-                                metadata_dir=metadata_dir,
-                                fetch_state=fetch_state,
-                                openai_state=openai_state,
-                                model=args.model,
-                                prompts=selected_prompts,
-                                forced_prompt_slugs=forced_prompt_slugs,
-                                force=args.force,
-                                fetch_only=args.fetch_only,
-                                force_openai=args.force_openai,
-                                index=index,
-                                total=len(files),
-                            )
-                            processed_file_ids.add(str(canvas_file.file_id))
+                    login_entry_url = args.login_url or args.course_url
+                    print(f"Starting login flow at {login_entry_url}...")
+                    perform_login(
+                        page=page,
+                        login_url=login_entry_url,
+                        course_url=args.course_url,
+                        username=username,
+                        password=password,
+                    )
 
-                        # Also fetch assignments (never sent to OpenAI).
-                        assignment_files = list_canvas_pdfs_from_assignments(
-                            page, canvas_client, args.course_url
-                        )
-                        if assignment_files:
-                            print(f"Found {len(assignment_files)} assignment file(s).")
-                            for index, canvas_file in enumerate(assignment_files, start=1):
+                    with build_canvas_client(context, args.course_url) as canvas_client:
+                        if args.list_files:
+                            all_files = list_canvas_pdfs_from_ui(
+                                page, canvas_client, args.course_url, name_matcher=is_pdf_by_name
+                            )
+                            print(f"All PDF files found on course pages ({len(all_files)}):")
+                            for f in all_files:
+                                print(f"  {f.display_name!r}")
+                            return
+
+                        if args.fetch_assignments:
+                            # Explicit assignment-only mode.
+                            files = list_canvas_pdfs_from_assignments(
+                                page, canvas_client, args.course_url, limit=args.assignment_limit
+                            )
+                            if not files:
+                                raise RuntimeError(
+                                    "No assignment files were found on the course pages. Confirm that the account can access module attachments or course files."
+                                )
+                            print(f"Found {len(files)} assignment file(s).")
+                            for index, canvas_file in enumerate(files, start=1):
                                 process_file(
                                     canvas_client=canvas_client,
                                     openai_client=None,
@@ -569,12 +672,83 @@ def main() -> None:
                                     fetch_only=True,
                                     force_openai=False,
                                     index=index,
-                                    total=len(assignment_files),
+                                    total=len(files),
                                 )
                                 processed_file_ids.add(str(canvas_file.file_id))
-            finally:
-                maybe_prompt_before_exit(args.headful)
-                browser.close()
+                        else:
+                            # Normal mode: fetch class notes with OpenAI, then fetch assignments (no OpenAI).
+                            files = list_canvas_pdfs_from_ui(
+                                page, canvas_client, args.course_url, name_matcher=matches_target_pdf
+                            )
+                            if args.chapter_filters:
+                                chapter_filters_normalized = [normalize_chapter_filter(c) for c in args.chapter_filters]
+                                files = [
+                                    f for f in files
+                                    if (lbl := extract_chapter_label(f.display_name)) and
+                                    chapter_matches_filters(lbl, f.display_name, chapter_filters_normalized)
+                                ]
+                            if args.limit is not None:
+                                files = files[:args.limit]
+                            if not files:
+                                raise RuntimeError(
+                                    "No PDF files were found on the course pages. Confirm that the account can access module attachments or course files."
+                                )
+                            print(f"Found {len(files)} class note file(s).")
+                            client = OpenAI(api_key=api_key) if not args.fetch_only else None
+                            for index, canvas_file in enumerate(files, start=1):
+                                process_file(
+                                    canvas_client=canvas_client,
+                                    openai_client=client,
+                                    gemini_client=gemini_client,
+                                    pdf_browser=browser,
+                                    canvas_file=canvas_file,
+                                    downloads_dir=downloads_dir,
+                                    responses_dir=responses_dir,
+                                    metadata_dir=metadata_dir,
+                                    fetch_state=fetch_state,
+                                    openai_state=openai_state,
+                                    model=args.model,
+                                    prompts=selected_prompts,
+                                    forced_prompt_slugs=forced_prompt_slugs,
+                                    force=args.force,
+                                    fetch_only=args.fetch_only,
+                                    force_openai=args.force_openai,
+                                    index=index,
+                                    total=len(files),
+                                )
+                                processed_file_ids.add(str(canvas_file.file_id))
+
+                            # Also fetch assignments (never sent to OpenAI).
+                            assignment_files = list_canvas_pdfs_from_assignments(
+                                page, canvas_client, args.course_url
+                            )
+                            if assignment_files:
+                                print(f"Found {len(assignment_files)} assignment file(s).")
+                                for index, canvas_file in enumerate(assignment_files, start=1):
+                                    process_file(
+                                        canvas_client=canvas_client,
+                                        openai_client=None,
+                                        gemini_client=None,
+                                        pdf_browser=browser,
+                                        canvas_file=canvas_file,
+                                        downloads_dir=assignments_dir,
+                                        responses_dir=responses_dir,
+                                        metadata_dir=metadata_dir,
+                                        fetch_state=fetch_state,
+                                        openai_state=openai_state,
+                                        model=args.model,
+                                        prompts=selected_prompts,
+                                        forced_prompt_slugs=forced_prompt_slugs,
+                                        force=args.force,
+                                        fetch_only=True,
+                                        force_openai=False,
+                                        index=index,
+                                        total=len(assignment_files),
+                                    )
+                                    processed_file_ids.add(str(canvas_file.file_id))
+                finally:
+                    maybe_prompt_before_exit(args.headful)
+                    browser.close()
 
         if args.build_site_guided_learning:
             from math_tutor.site_builder import build_site
@@ -1200,7 +1374,7 @@ def ensure_pdf_fetched(
 def build_prompt_paths(
     *, responses_dir: Path, metadata_dir: Path, stem: str, prompt_spec: PromptSpec
 ) -> tuple[Path, Path, Path, Path]:
-    if prompt_spec.slug == STUDY_GUIDE_PROMPT.slug:
+    if prompt_spec.slug == "study-guide":
         response_base = responses_dir / stem
         metadata_path = metadata_dir / f"{stem}.json"
     else:
@@ -1233,6 +1407,9 @@ def run_prompt(
     index: int,
     total: int,
 ) -> str:
+    if not prompt_spec.generate:
+        return ""
+
     response_path, response_html_path, response_pdf_path, metadata_path = build_prompt_paths(
         responses_dir=responses_dir,
         metadata_dir=metadata_dir,
@@ -1240,7 +1417,7 @@ def run_prompt(
         prompt_spec=prompt_spec,
     )
 
-    if should_skip_openai(
+    if should_skip_generation(
         canvas_file=canvas_file,
         prompt_spec=prompt_spec,
         response_path=response_path,
@@ -1568,9 +1745,9 @@ def normalize_openai_state(
             continue
         if "response_path" in entry:
             prompt_entry = dict(entry)
-            prompt_entry.setdefault("prompt_slug", STUDY_GUIDE_PROMPT.slug)
-            prompt_entry.setdefault("prompt_title", STUDY_GUIDE_PROMPT.title)
-            normalized[file_id] = {STUDY_GUIDE_PROMPT.slug: prompt_entry}
+            prompt_entry.setdefault("prompt_slug", "study-guide")
+            prompt_entry.setdefault("prompt_title", PROMPTS_BY_SLUG["study-guide"].title)
+            normalized[file_id] = {"study-guide": prompt_entry}
             continue
 
         prompt_map: dict[str, dict[str, str]] = {}
@@ -1779,7 +1956,7 @@ def parse_chapter_sort_value(chapter_label: str) -> float:
         return 10_000.0
 
 
-def should_skip_openai(
+def should_skip_generation(
     *,
     canvas_file: CanvasFile,
     prompt_spec: PromptSpec,
@@ -1795,27 +1972,16 @@ def should_skip_openai(
     if force or force_openai:
         return False
 
-    state_key = str(canvas_file.file_id)
-    if state_key not in openai_state.processed:
-        return False
-    prompt_state = openai_state.processed[state_key].get(prompt_spec.slug)
-    if prompt_state is None:
-        return False
-
     has_all_artifacts = response_path.exists() and response_html_path.exists()
     if prompt_spec.generate_response_pdf:
         has_all_artifacts = has_all_artifacts and response_pdf_path.exists()
 
     if has_all_artifacts:
         print(
-            f"[{index}/{total}] Skipping OpenAI for {canvas_file.display_name} ({prompt_spec.title}); already processed successfully."
+            f"[{index}/{total}] Skipping {canvas_file.display_name} ({prompt_spec.title}); output files already exist."
         )
         return True
 
-    print(
-        f"[{index}/{total}] Prior OpenAI success recorded for {canvas_file.display_name} ({prompt_spec.title}), "
-        "but a saved response artifact is missing; rerunning OpenAI."
-    )
     return False
 
 
@@ -1832,12 +1998,21 @@ def resolve_selected_prompts(prompt_slugs: list[str] | None) -> tuple[PromptSpec
 
     selected: list[PromptSpec] = []
     seen: set[str] = set()
-    for prompt_slug in prompt_slugs:
-        if prompt_slug in seen:
-            continue
-        prompt_spec = PROMPTS_BY_SLUG[prompt_slug]
+
+    def _add(slug: str) -> None:
+        if slug in seen:
+            return
+        prompt_spec = PROMPTS_BY_SLUG[slug]
         selected.append(prompt_spec)
-        seen.add(prompt_slug)
+        seen.add(slug)
+        # Auto-include any prompts whose source is this one (e.g. mcq, solutions)
+        for p in PROMPTS:
+            if p.source_prompt_slug == slug:
+                _add(p.slug)
+
+    for prompt_slug in prompt_slugs:
+        _add(prompt_slug)
+
     return tuple(selected)
 
 
