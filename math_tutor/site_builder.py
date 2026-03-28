@@ -159,6 +159,17 @@ def build_site(
     )
     index_path = resolved_site_dir / "index.html"
     index_path.write_text(html_text, encoding="utf-8")
+    library_path = resolved_site_dir / "library.html"
+    library_path.write_text(
+        build_library_page_html(
+            records=records,
+            output_dir=output_dir,
+            site_dir=resolved_site_dir,
+            base_path=resolved_base_path,
+            include_guided_learning=include_guided_learning,
+        ),
+        encoding="utf-8",
+    )
     for record in records:
         record_path = resolved_site_dir / record_page_filename(record)
         record_path.write_text(
@@ -294,7 +305,9 @@ def build_index_html(
     total_prompt_outputs = sum(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
     )
-    overview_cards = "\n".join(
+    library_href = site_page_href("library.html", base_path)
+    challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
+    library_preview_cards = "\n".join(
         render_index_card(
             record,
             output_dir,
@@ -302,17 +315,56 @@ def build_index_html(
             base_path,
             include_guided_learning=include_guided_learning,
         )
-        for record in records
+        for record in records[:6]
     )
+    library_preview = f"""
+      <div class="library-preview-grid">
+        {library_preview_cards}
+      </div>
+    """ if library_preview_cards else ""
     body_html = f"""
-    <section class="content-card">
-      <div class="doc-header">
-        <h2>Library Overview</h2>
+    <section class="landing-hero">
+      <div class="landing-copy">
+        <span class="eyebrow">Algebra II with Trigonometry</span>
+        <h2>Choose how you want to study today.</h2>
+        <p class="page-intro">Start in the class-note library, jump into a timed challenge exam, or use the future live tutor once it is ready.</p>
       </div>
-      <p class="page-intro">Choose a document from the left to view only that document's sections on the right.</p>
-      <div class="prompt-grid">
-        {overview_cards}
+      <div class="landing-stats">
+        <div class="stat-pill"><strong>{len(records)}</strong><span>chapters</span></div>
+        <div class="stat-pill"><strong>{total_prompt_outputs}</strong><span>saved outputs</span></div>
+        <div class="stat-pill"><strong>{generated_at}</strong><span>last build</span></div>
       </div>
+    </section>
+    <section class="landing-grid">
+      <a class="destination-card destination-library" href="{html.escape(library_href)}">
+        <span class="destination-kicker">01</span>
+        <h3>Library</h3>
+        <p>Browse chapter notes, summaries, guided study prompts, and AI-generated practice resources.</p>
+        <span class="destination-link">Open library</span>
+      </a>
+      <a class="destination-card destination-challenges" href="{html.escape(challenges_href)}">
+        <span class="destination-kicker">02</span>
+        <h3>Challenge Exams</h3>
+        <p>Work through mixed mental-math and olympiad sets with the focused exam flow already built into the site.</p>
+        <span class="destination-link">Start an exam</span>
+      </a>
+      <section class="destination-card destination-live">
+        <span class="destination-kicker">03</span>
+        <h3>Live Tutor</h3>
+        <p>Reserved for the upcoming real-time tutoring experience so the homepage already reflects the full product direction.</p>
+        <span class="destination-soon">Coming later</span>
+      </section>
+    </section>
+    <section class="content-card section-card">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Library Preview</span>
+          <h3>Recent chapters</h3>
+        </div>
+        <a class="section-link" href="{html.escape(library_href)}">See full library</a>
+      </div>
+      <p class="page-intro">A quick glance at the first few note pages so the landing page still feels alive.</p>
+      {library_preview}
     </section>
     """
     return render_page_shell(
@@ -323,6 +375,7 @@ def build_index_html(
         total_prompt_outputs=total_prompt_outputs,
         generated_at=generated_at,
         base_path=base_path,
+        page_kind="home",
     )
 
 
@@ -356,6 +409,7 @@ def build_record_page_html(
         total_prompt_outputs=total_prompt_outputs,
         generated_at=generated_at,
         base_path=base_path,
+        page_kind="record",
     )
 
 
@@ -368,15 +422,71 @@ def render_page_shell(
     total_prompt_outputs: int,
     generated_at: str,
     base_path: str,
+    page_kind: str = "record",
 ) -> str:
     toc_items = "\n".join(render_sidebar_item(record, active_record, base_path) for record in records)
     home_href = site_page_href("index.html", base_path)
+    library_href = site_page_href("library.html", base_path)
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
     active_label = (
         html.escape(document_label(active_record))
         if active_record is not None
         else "Library Overview"
     )
+    page_class = "page-home" if page_kind == "home" else "page-doc"
+    home_active = " active" if page_kind == "home" else ""
+    library_active = " active" if page_kind in {"library", "record"} else ""
+    shell_html = f"""
+  <div class="page {page_class}">
+    <aside class="sidebar">
+      <div class="brand-head">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="brandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fff5da"/>
+                <stop offset="55%" stop-color="#f3c98f"/>
+                <stop offset="100%" stop-color="#cf7c43"/>
+              </linearGradient>
+            </defs>
+            <rect width="72" height="72" rx="16" fill="url(#brandGlow)"/>
+            <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
+            <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
+            <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
+            <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
+            <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
+            <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
+          </svg>
+        </div>
+        <h1>{html.escape(SIDEBAR_TITLE)}</h1>
+      </div>
+      <p>Browse saved class note PDFs alongside the generated tutoring outputs.</p>
+      <nav class="global-nav" aria-label="Site sections">
+        <a class="nav-pill{home_active}" href="{html.escape(home_href)}">Home</a>
+        <a class="nav-pill{library_active}" href="{html.escape(library_href)}">Library</a>
+        <a class="nav-pill" href="{html.escape(challenges_href)}">Challenge Exams</a>
+      </nav>
+      <ol class="toc">
+        {toc_items}
+      </ol>
+      <div class="meta">
+        <div><strong>Viewing:</strong> {active_label}</div>
+        <div><strong>Documents:</strong> {len(records)}</div>
+        <div><strong>Saved prompt outputs:</strong> {total_prompt_outputs}</div>
+        <div><strong>Built:</strong> {generated_at}</div>
+      </div>
+    </aside>
+    <main class="main">
+      {body_html}
+    </main>
+  </div>
+    """ if page_kind != "home" else f"""
+  <div class="page page-home">
+    <main class="main">
+      {body_html}
+    </main>
+  </div>
+    """
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -422,8 +532,12 @@ def render_page_shell(
       width: min(1240px, calc(100vw - 32px));
       margin: 24px auto 48px;
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 220px 1fr;
       gap: 24px;
+    }}
+    .page-home {{
+      width: min(1240px, calc(100vw - 32px));
+      display: block;
     }}
     .sidebar, .content-card {{
       background: color-mix(in srgb, var(--panel) 94%, white);
@@ -432,7 +546,7 @@ def render_page_shell(
       box-shadow: 0 12px 30px rgba(78, 55, 32, 0.08);
     }}
     .sidebar {{
-      padding: 20px;
+      padding: 18px;
       position: sticky;
       top: 20px;
       align-self: start;
@@ -473,6 +587,26 @@ def render_page_shell(
       margin-bottom: 14px;
       font-weight: 600;
       text-decoration: none;
+    }}
+    .global-nav {{
+      display: grid;
+      gap: 8px;
+      margin: 0 0 16px;
+    }}
+    .nav-pill {{
+      display: block;
+      text-decoration: none;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.72);
+      color: var(--ink);
+      font-weight: 600;
+    }}
+    .nav-pill.active {{
+      background: var(--accent-soft);
+      border-color: var(--line-strong);
+      color: #6a2e16;
     }}
     .toc {{
       list-style: none;
@@ -527,6 +661,150 @@ def render_page_shell(
     }}
     .content-card {{
       padding: 24px;
+    }}
+    .landing-hero {{
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(243, 201, 143, 0.42), transparent 30%),
+        linear-gradient(135deg, rgba(255, 248, 238, 0.96), rgba(253, 245, 232, 0.96));
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 38px 34px;
+      box-shadow: 0 16px 34px rgba(78, 55, 32, 0.1);
+    }}
+    .landing-copy h2 {{
+      margin: 8px 0 14px;
+      font-size: clamp(2.3rem, 6vw, 4rem);
+      line-height: 0.98;
+      max-width: 10ch;
+    }}
+    .eyebrow {{
+      display: inline-block;
+      font-size: 0.78rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
+    }}
+    .landing-stats {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+    }}
+    .stat-pill {{
+      min-width: 148px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(202, 186, 164, 0.9);
+      background: rgba(255,255,255,0.72);
+      display: grid;
+      gap: 4px;
+    }}
+    .stat-pill strong {{
+      font-size: 1.05rem;
+      color: #243645;
+    }}
+    .stat-pill span {{
+      color: var(--muted);
+      font-size: 0.88rem;
+    }}
+    .landing-grid {{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }}
+    .destination-card {{
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 260px;
+      padding: 26px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      text-decoration: none;
+      color: var(--ink);
+      box-shadow: 0 16px 34px rgba(78, 55, 32, 0.08);
+      transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+    }}
+    .destination-card:hover {{
+      transform: translateY(-4px);
+      box-shadow: 0 22px 38px rgba(78, 55, 32, 0.13);
+      border-color: var(--line-strong);
+    }}
+    .destination-library {{
+      background: linear-gradient(160deg, #fffaf2 0%, #f8efe2 100%);
+    }}
+    .destination-challenges {{
+      background: linear-gradient(160deg, #eef7f7 0%, #e4f0ef 100%);
+    }}
+    .destination-live {{
+      background: linear-gradient(160deg, #f8f0e7 0%, #f3e4d6 100%);
+    }}
+    .destination-kicker {{
+      font-family: system-ui, sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+    }}
+    .destination-card h3 {{
+      margin: 0;
+      font-size: 1.75rem;
+      line-height: 1.05;
+    }}
+    .destination-card p {{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 30ch;
+    }}
+    .destination-link,
+    .destination-soon {{
+      margin-top: auto;
+      align-self: flex-start;
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-family: system-ui, sans-serif;
+      font-size: 0.92rem;
+      font-weight: 700;
+    }}
+    .destination-link {{
+      background: rgba(255,255,255,0.82);
+      border: 1px solid rgba(202, 186, 164, 0.9);
+    }}
+    .destination-soon {{
+      background: rgba(255,255,255,0.58);
+      border: 1px dashed rgba(161, 77, 46, 0.45);
+      color: var(--accent);
+    }}
+    .section-card {{
+      padding: 28px;
+    }}
+    .section-head {{
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }}
+    .section-head h3 {{
+      margin: 6px 0 0;
+      font-size: 1.5rem;
+    }}
+    .section-link {{
+      text-decoration: none;
+      font-weight: 700;
+    }}
+    .library-preview-grid {{
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
     }}
     .doc-header {{
       display: flex;
@@ -694,56 +972,22 @@ def render_page_shell(
     .prompt-card .link-row {{
       margin-bottom: 14px;
     }}
+    .card-summary {{
+      color: var(--muted);
+      line-height: 1.55;
+    }}
+    .card-summary p {{
+      margin: 0;
+    }}
     @media (max-width: 960px) {{
       .page {{ grid-template-columns: 1fr; }}
       .sidebar {{ position: static; max-height: none; }}
+      .landing-grid {{ grid-template-columns: 1fr; }}
     }}
   </style>
 </head>
 <body>
-  <div class="page">
-    <aside class="sidebar">
-      <div class="brand-head">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="brandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#fff5da"/>
-                <stop offset="55%" stop-color="#f3c98f"/>
-                <stop offset="100%" stop-color="#cf7c43"/>
-              </linearGradient>
-            </defs>
-            <rect width="72" height="72" rx="16" fill="url(#brandGlow)"/>
-            <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
-            <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
-            <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
-            <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
-            <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
-            <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
-          </svg>
-        </div>
-        <h1>{html.escape(SIDEBAR_TITLE)}</h1>
-      </div>
-      <p>Browse saved class note PDFs alongside the generated tutoring outputs.</p>
-      <a class="sidebar-home" href="{html.escape(home_href)}">Library Overview</a>
-      <ol class="toc">
-        {toc_items}
-      </ol>
-      <div class="meta">
-        <div><strong>Viewing:</strong> {active_label}</div>
-        <div><strong>Documents:</strong> {len(records)}</div>
-        <div><strong>Saved prompt outputs:</strong> {total_prompt_outputs}</div>
-        <div><strong>Built:</strong> {generated_at}</div>
-      </div>
-      <div class="sidebar-challenges">
-        <a href="{html.escape(challenges_href)}" class="challenges-nav-link">&#127942; Challenge Exams</a>
-        <span class="chip chip-lock" style="font-size:.75rem;padding:2px 8px;">Login Required</span>
-      </div>
-    </aside>
-    <main class="main">
-      {body_html}
-    </main>
-  </div>
+{shell_html}
   <script>
     async function copyChatgptPrompt(button) {{
       const prompt = button.dataset.chatgptPrompt || "";
@@ -775,6 +1019,55 @@ def render_sidebar_item(record: DocumentRecord, active_record: DocumentRecord | 
     href = site_page_href(record_page_filename(record), base_path)
     classes = "active" if active_record and active_record.file_id == record.file_id else ""
     return f'<li><a class="{classes}" href="{html.escape(href)}">{html.escape(document_label(record))}</a></li>'
+
+
+def build_library_page_html(
+    *,
+    records: list[DocumentRecord],
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+    include_guided_learning: bool,
+) -> str:
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    total_prompt_outputs = sum(
+        1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
+    )
+    overview_cards = "\n".join(
+        render_index_card(
+            record,
+            output_dir,
+            site_dir,
+            base_path,
+            include_guided_learning=include_guided_learning,
+        )
+        for record in records
+    )
+    body_html = f"""
+    <section class="content-card section-card">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Library</span>
+          <h3>Chapter collection</h3>
+        </div>
+        <a class="section-link" href="{html.escape(site_page_href('index.html', base_path))}">Back to home</a>
+      </div>
+      <p class="page-intro">Choose a chapter to open its study guide, practice tools, assignments, and guided learning links.</p>
+      <div class="prompt-grid">
+        {overview_cards}
+      </div>
+    </section>
+    """
+    return render_page_shell(
+        title=f"Library - {SITE_TITLE}",
+        records=records,
+        active_record=None,
+        body_html=body_html,
+        total_prompt_outputs=total_prompt_outputs,
+        generated_at=generated_at,
+        base_path=base_path,
+        page_kind="library",
+    )
 
 
 def render_index_card(
