@@ -230,8 +230,13 @@ def build_challenges(
         print(f"  Copied {src_file.name}")
 
     # Always generate a lightweight exams-index.json for the picker page (no question text)
+    # and individual per-exam JSON files so exam.html only fetches ~4KB instead of 194KB.
     full = json.loads((challenges_dir / "exams.json").read_text(encoding="utf-8"))
+    generated_at = full.get("generated_at")
     index_entries = []
+    exams_subdir = challenges_dir / "exams"
+    exams_subdir.mkdir(exist_ok=True)
+    total_individual_kb = 0
     for exam in full.get("exams", []):
         mm = sum(1 for q in exam["questions"] if q["type"] == "mm")
         op = sum(1 for q in exam["questions"] if q["type"] == "op")
@@ -246,14 +251,25 @@ def build_challenges(
             "op": op,
             "chapters": chapters,
         })
+        # Write individual exam file: exams/{exam-id}.json
+        individual_path = exams_subdir / f"{exam['id']}.json"
+        individual_path.write_text(
+            json.dumps({"generated_at": generated_at, **exam}),
+            encoding="utf-8",
+        )
+        total_individual_kb += individual_path.stat().st_size
     index_json_path = challenges_dir / "exams-index.json"
     index_json_path.write_text(
-        json.dumps({"generated_at": full.get("generated_at"), "exams": index_entries}),
+        json.dumps({"generated_at": generated_at, "exams": index_entries}),
         encoding="utf-8",
     )
+    full_kb = (challenges_dir / "exams.json").stat().st_size // 1024
+    avg_kb = (total_individual_kb // len(index_entries)) if index_entries else 0
     print(f"  Wrote exams-index.json ({len(index_entries)} exams, "
-          f"{index_json_path.stat().st_size // 1024}KB vs "
-          f"{(challenges_dir / 'exams.json').stat().st_size // 1024}KB full)")
+          f"{index_json_path.stat().st_size // 1024}KB vs {full_kb}KB full)")
+    print(f"  Wrote {len(index_entries)} individual exam files to exams/ "
+          f"(avg {avg_kb // 1024 if avg_kb >= 1024 else avg_kb}{'KB' if avg_kb >= 1024 else 'B'} each, "
+          f"vs {full_kb}KB full bundle)")
 
     # Always regenerate config.php from current env vars
     config_path = challenges_dir / "config.php"

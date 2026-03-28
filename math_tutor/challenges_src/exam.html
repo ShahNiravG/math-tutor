@@ -353,18 +353,12 @@ function escHtml(s) {
     return;
   }
 
-  var data;
   try {
-    var res = await fetch('exams.json');
-    data = await res.json();
+    var res = await fetch('exams/' + encodeURIComponent(examId) + '.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    S.exam = await res.json();
   } catch(e) {
-    document.getElementById('root').innerHTML = '<div class="error-box">Could not load exams.json.</div>';
-    return;
-  }
-
-  S.exam = (data.exams || []).find(function(e){ return e.id === examId; });
-  if (!S.exam) {
-    document.getElementById('root').innerHTML = '<div class="error-box">Exam "'+escHtml(examId)+'" not found. <a href="index.html">Back to exams</a></div>';
+    document.getElementById('root').innerHTML = '<div class="error-box">Could not load exam "'+escHtml(examId)+'". <a href="index.html">Back to exams</a></div>';
     return;
   }
 
