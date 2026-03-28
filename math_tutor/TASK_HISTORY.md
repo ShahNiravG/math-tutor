@@ -608,3 +608,75 @@ Using `--base-path /math_tutor/` breaks relative links.
 - 18 class note chapters fully processed with all prompts across GPT-4.1, GPT-5.4, and Gemini 3.1 Pro
 - All state file paths verified to match files on disk (no stale paths)
 - Deploy site at `output/deploy/math_tutor/` rebuilt and up to date
+
+---
+
+## Session: 2026-03-28 — Challenge Exam App, Cloudflare Auth, Resume, and Build Fixes
+
+### Challenge Exam UI Redesign
+
+The existing challenge exam app showed all 43 exams as a grid. Redesigned to be kid-friendly and less overwhelming:
+
+- **Random picker**: `challenges/index.html` now shows a single randomly selected exam with a bouncing trophy icon, "Ready for a Challenge?" hero, and a "Try a Different Challenge" button that picks a new exam without repeating recent ones
+- **Sidebar nav link**: Removed the Challenge Exams card from the homepage. Added a "🏆 Challenge Exams" link at the bottom of the sidebar with a "Login Required" chip, consistent with the assignments card style
+- **Bundle info**: The picker page shows the bundle generation date (e.g. "43 exams · Bundle generated Mar 28, 2026")
+
+### Cloudflare Access Integration
+
+Cloudflare Access was configured to protect `mathdelight.com/math_tutor/site/challenges/*`. Only authorized Google accounts can access the challenges.
+
+- `submit.php` reads `HTTP_CF_ACCESS_AUTHENTICATED_USER_EMAIL` and saves the authenticated user's email to the `user_email` column in the DB
+- `result.php` displays the email as a chip on the result page
+- Schema migration: `ALTER TABLE` adds `user_email` column if upgrading from an old schema
+
+### Stable Challenge Exam Bundle
+
+Previously, `exams.json` was regenerated on every build, changing which questions appeared in which exam. Fixed:
+
+- Canonical `exams.json` is now written to `challenges_src/` (tracked in git) rather than the ignored `output/` directory
+- Build skips regeneration if `challenges_src/exams.json` already exists
+- Added `--force-challenges` flag to `math-tutor-build-site` and `--force` to `math-tutor-build-challenges` to force regeneration
+- `exams.json` committed to git preserves the exact exam set across deploys and fresh clones
+
+### Build Integration
+
+`math-tutor-build-site` previously did not copy challenge files — they had to be deployed separately with `math-tutor-build-challenges`. Fixed:
+
+- `site_builder.py` now imports and calls `build_challenges()` at the end of every `build_site()` run
+- Static files (`index.html`, `exam.html`, `submit.php`, `result.php`) are always copied from `challenges_src/`; only `exams.json` generation is skipped when already present
+- `load_dotenv_if_present()` added to `site_builder.main()` so MySQL credentials from `.env` are available when `generate_config_php` runs
+
+### DB Credentials Bug Fix
+
+`config.php` was being generated with empty DB credentials because `site_builder.main()` did not call `load_dotenv_if_present()`. Symptom: `Access denied for user ''@'localhost' (using password: NO)`. Fixed by loading `.env` before building. Also updated `submit.php` to expose the actual PDO exception message instead of generic "Database error".
+
+### Fast Loading: Split exams JSON
+
+`exams.json` is 194KB (full question text for all 43 exams). The picker page was fetching this on every load, causing a visible "Loading..." flash. Fixed by splitting into two files:
+
+- `exams-index.json` (5KB): metadata only (id, title, mm count, op count, chapters) — used by `index.html`
+- `exams.json` (194KB): full question text — only fetched by `exam.html` when actually starting an exam
+
+`exams-index.json` is generated automatically on every build.
+
+### Resume Capability
+
+Added `localStorage`-based session persistence so users can resume a challenge where they left off:
+
+- **Autosave**: Progress (question index, all typed answers, elapsed time) is saved on every navigation and every 30 seconds via the timer
+- **Restore**: On load, `exam.html` checks localStorage for a matching session and restores position, answers, and timer
+- **Resume card**: `index.html` shows a green "Resume where you left off" card if a saved session exists, with exam title, question position, answers count, and elapsed time. "Continue Challenge →" resumes; "Discard & start fresh" clears the session
+- **Clear on submit**: Session is cleared from localStorage on successful submission
+
+### Exam UX Improvements
+
+- **Copy question button**: Each question has a "📋 Copy Question" button that copies the raw question text (including math notation) to clipboard, flashing "✓ Copied!" for 2 seconds
+- **Larger question font**: Question text increased from `1.05rem` to `1.35rem` with `1.85` line-height for readability; textarea bumped to `1.05rem`
+
+### Current State
+
+- Challenge exam app fully deployed at `mathdelight.com/math_tutor/site/challenges/`
+- Protected by Cloudflare Access (Google login required)
+- 43 exams in stable git-tracked bundle (generated 2026-03-28)
+- Resume, copy-question, and fast loading all working
+- Single build command (`math-tutor-build-site`) handles everything including challenges
