@@ -46,24 +46,29 @@ Each prompt generates a separate output file. Supported slugs:
 | Slug | Model | Description |
 |---|---|---|
 | `study-guide` | GPT-4.1 | Study guide with short summary, key concepts, and practice problems |
-| `study-guide-gemini` | Gemini 3.1 Pro | Same study guide prompt via Gemini |
+| `study-guide-gemini` | Gemini 3.1 Pro | Same study guide prompt via Gemini (display-only — no new API calls) |
 | `inspiring-videos` | GPT-4.1 | Curated YouTube search suggestions |
-| `inspiring-videos-gemini` | Gemini 3.1 Pro | Same inspiring videos prompt via Gemini |
-| `mental-math` | GPT-4.1 | Mental math drill set |
-| `mental-math-gemini` | Gemini 3.1 Pro | Same mental math prompt via Gemini |
-| `olympiad-problems` | GPT-5.4 | Olympiad-style hard problem set |
-| `olympiad-problems-gemini` | Gemini 3.1 Pro | Same olympiad problems via Gemini |
-| `olympiad-solutions` | GPT-5.4 | Step-by-step solutions for the saved olympiad problem set |
-| `olympiad-solutions-gemini` | Gemini 3.1 Pro | Same olympiad solutions via Gemini |
+| `inspiring-videos-gemini` | Gemini 3.1 Pro | Same inspiring videos prompt via Gemini (display-only — no new API calls) |
+| `mental-math-gpt5` | GPT-5.4 | Mental math drill set |
+| `mental-math-gpt5-mcq` | GPT-5.4 | Multiple-choice options for the GPT-5.4 mental math questions |
+| `mental-math-gemini` | Gemini 3.1 Pro | Mental math drill set via Gemini |
+| `mental-math-gemini-mcq` | Gemini 3.1 Pro | Multiple-choice options for the Gemini mental math questions |
+| `olympiad-problems-gpt5` | GPT-5.4 | Olympiad-style hard problem set |
+| `olympiad-solutions-gpt5` | GPT-5.4 | Step-by-step solutions for the saved GPT-5.4 olympiad problem set |
+| `olympiad-problems-gpt5-mcq` | GPT-5.4 | Multiple-choice options for the GPT-5.4 olympiad problems |
+| `olympiad-problems-gemini` | Gemini 3.1 Pro | Olympiad-style hard problem set via Gemini |
+| `olympiad-solutions-gemini` | Gemini 3.1 Pro | Step-by-step solutions for the saved Gemini olympiad problem set |
+| `olympiad-problems-gemini-mcq` | Gemini 3.1 Pro | Multiple-choice options for the Gemini olympiad problems |
 
 ### Useful flags
 
 - `--headful`: opens the browser so you can watch or debug login
 - `--limit 3`: process only the first three PDFs
-- `--prompt mental-math`: run only that prompt slug for each matched PDF (repeatable)
-- `--prompt mental-math-gemini --prompt olympiad-problems-gemini`: run multiple Gemini prompts in one pass
+- `--prompt mental-math-gpt5`: run only that prompt slug for each matched PDF (repeatable; auto-includes dependent MCQ prompts)
 - `--force-prompt inspiring-videos`: rerun just that prompt while leaving other prompts alone
 - `--fetch-only`: only download matching PDFs and update fetch state
+- `--skip-fetch`: skip Canvas login and use already-downloaded PDFs from `fetch_state.json`
+- `--chapter 11.4`: filter to a specific chapter (repeatable; works with `--skip-fetch`)
 - `--force`: reprocess files even if output already exists
 - `--force-openai`: rerun the AI step even for files already processed successfully
 - `--output-dir custom/path`: choose a different output directory

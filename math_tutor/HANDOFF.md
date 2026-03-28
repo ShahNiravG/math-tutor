@@ -2,7 +2,7 @@
 
 ## What This Project Does
 
-`math_tutor` logs into the Canvas course, finds PDF attachments, downloads them, sends them to OpenAI with a fixed prompt, and saves the generated output plus metadata locally.
+`math_tutor` logs into the Canvas course, finds PDF attachments, downloads them, sends them to OpenAI/Gemini with structured prompts, and saves the generated output plus metadata locally. It also builds a browsable HTML tutoring site from those outputs.
 
 ## Current Login Flow
 
@@ -10,6 +10,7 @@
 - The site redirects through the school's real SSO flow
 - The implementation supports OneLogin's two-step username/password flow
 - `--headful` keeps the browser open until you press Enter
+- `--skip-fetch` bypasses Canvas entirely and uses already-downloaded PDFs from `fetch_state.json`
 
 ## Current Document Discovery Flow
 
@@ -22,57 +23,83 @@ The course Files page is disabled and the Canvas Files API returned `403`, so di
 
 The CLI only keeps PDFs whose names contain `note.docx` or `note.pdf`.
 
+## Prompt Architecture
+
+Prompts are defined via two dataclasses in `cli.py`:
+
+- **`PromptTemplate`**: slug, title, prompt text, optional `source_template_slug` dependency, `generate_models` allowlist
+- **`ModelConfig`**: slug (`""` = default/GPT-4.1, `"gpt5"` = GPT-5.4, `"gemini"` = Gemini 3.1 Pro)
+
+`_build_prompt_spec()` creates `PromptSpec` instances from template × model cross-products. `_order_prompts()` topologically sorts them so dependents follow their source. PROMPTS has 21 entries.
+
+**Bundled generation**: mental-math and olympiad prompts include MCQ as part of their bundle. Specifying `--prompt mental-math-gpt5` automatically includes `mental-math-gpt5-mcq`.
+
+**Display-only prompts**: `study-guide-gemini` and `inspiring-videos-gemini` have `generate=False` — they are shown in the site but no API calls are made for them.
+
 ## Current Processing Rules
 
 - `fetch_state.json` prevents refetching files that were already downloaded successfully
-- `openai_state.json` prevents rerunning OpenAI for files that already completed successfully
+- `openai_state.json` tracks completion state (used for display, not for skip logic)
+- Skip logic is **file-existence only**: if all output artifacts (`.md`, `.html`, optionally `.pdf`) exist, the prompt is skipped
 - `--fetch-only` stops after download/state update
-- `--force-openai` reruns the OpenAI step for already processed files
+- `--skip-fetch` uses `fetch_state.json` directly; no Canvas login needed
+- `--force-openai` reruns the AI step for already processed files
 
 ## Output Locations
 
-Default output root:
+Default output root: `math_tutor/output/`
 
-- [math_tutor/output](/home/nshah/projects/math-tutor/math_tutor/output)
+- `downloads/` — fetched PDFs
+- `responses/` — AI output per PDF per prompt (`.md`, `.html`, `.pdf`)
+- `metadata/` — JSON metadata for traceability
+- `fetch_state.json` — remembers fetched PDFs
+- `openai_state.json` — remembers completed prompt steps
+- `site/` — local browsable HTML site (default build target)
 
-Subdirectories:
+Deploy output: `math_tutor/output/deploy/math_tutor/site/`
 
-- [downloads](/home/nshah/projects/math-tutor/math_tutor/output/downloads)
-- [responses](/home/nshah/projects/math-tutor/math_tutor/output/responses)
-- [metadata](/home/nshah/projects/math-tutor/math_tutor/output/metadata)
-- [fetch_state.json](/home/nshah/projects/math-tutor/math_tutor/output/fetch_state.json)
-- [openai_state.json](/home/nshah/projects/math-tutor/math_tutor/output/openai_state.json)
+- `responses/` — copied from `output/responses/` during build
+- `doc-<file_id>.html` — per-document pages
+- `challenges/` — challenge exam app (Cloudflare Access protected)
+- `assignments/` — assignment PDFs (Cloudflare Access protected)
 
 ## Most Important Files
 
 - [math_tutor/cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py)
+- [math_tutor/site_builder.py](/home/nshah/projects/math-tutor/math_tutor/site_builder.py)
+- [math_tutor/mcq_generator.py](/home/nshah/projects/math-tutor/math_tutor/mcq_generator.py)
 - [math_tutor/README.md](/home/nshah/projects/math-tutor/math_tutor/README.md)
 - [math_tutor/TASK_HISTORY.md](/home/nshah/projects/math-tutor/math_tutor/TASK_HISTORY.md)
-- [math_tutor/HANDOFF.md](/home/nshah/projects/math-tutor/math_tutor/HANDOFF.md)
+
+## Common Commands
+
+```bash
+# Full run (fetch + generate all prompts)
+.venv/bin/math-tutor --username EMAIL --password PASS
+
+# Skip fetch, generate for a specific chapter
+.venv/bin/math-tutor --skip-fetch --chapter 11.4
+
+# Fetch only (no AI)
+.venv/bin/math-tutor --username EMAIL --password PASS --fetch-only
+
+# Build and deploy site
+.venv/bin/math-tutor-build-site --site-dir math_tutor/output/deploy/math_tutor/site
+
+# Backfill MCQ for existing notes (skips already-done)
+.venv/bin/math-tutor-generate-mcq
+```
 
 ## Last Verified State
 
-Recent live verification confirmed:
-
-- `--limit 1` completed end to end successfully
-- `--fetch-only` skips OpenAI and remembers prior successful downloads
-- normal reruns skip OpenAI for files already processed successfully
-- `--force-openai` reruns the OpenAI step while reusing the downloaded PDF
+- 19 class note chapters fully processed (through chapter 11.4)
+- All prompts: study-guide, inspiring-videos, mental-math-gpt5 + MCQ, mental-math-gemini + MCQ, olympiad-problems/solutions-gpt5 + MCQ, olympiad-problems/solutions-gemini + MCQ
+- Deploy site at `output/deploy/math_tutor/site/` rebuilt and up to date
+- Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 
 ## Known Risks
 
 - The school SSO flow could change and require selector updates
 - The Modules page structure could change
-- OpenAI runs require a valid key with available quota
-
-## Recommended Next Command
-
-```bash
-math-tutor --username YOUR_USERNAME --password YOUR_PASSWORD --limit 1
-```
-
-If the login flow changes or needs manual confirmation:
-
-```bash
-math-tutor --username YOUR_USERNAME --password YOUR_PASSWORD --limit 1 --headful
-```
+- OpenAI and Gemini runs require valid API keys with available quota
+- Challenge exam app requires MySQL DB credentials in `.env`
