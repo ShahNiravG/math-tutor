@@ -170,6 +170,7 @@ def build_site(
         records = [record for record in records if record.file_id in file_ids]
     if limit is not None:
         records = records[:limit]
+    assignments = load_assignment_files(output_dir)
     html_text = build_index_html(
         records=records,
         output_dir=output_dir,
@@ -189,6 +190,7 @@ def build_site(
                 site_dir=resolved_site_dir,
                 base_path=resolved_base_path,
                 include_guided_learning=include_guided_learning,
+                assignments=assignments,
             ),
             encoding="utf-8",
         )
@@ -352,6 +354,7 @@ def build_record_page_html(
     site_dir: Path,
     base_path: str,
     include_guided_learning: bool,
+    assignments: list[Path] | None = None,
 ) -> str:
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     total_prompt_outputs = sum(
@@ -363,6 +366,7 @@ def build_record_page_html(
         site_dir,
         base_path,
         include_guided_learning=True,  # always show on per-document pages
+        assignments=assignments or [],
     )
     return render_page_shell(
         title=f"{document_label(record)} - {SITE_TITLE}",
@@ -575,6 +579,11 @@ def render_page_shell(
       background: #e2e8f0;
       color: #334155;
       font-weight: 400;
+    }}
+    .chip-lock {{
+      background: #fef9c3;
+      color: #854d0e;
+      font-weight: 600;
     }}
     .olympiad-model-row {{
       display: flex;
@@ -820,6 +829,80 @@ def extract_chapter_label(display_name: str) -> str | None:
     return re.sub(r"\s+", " ", match.group(1).strip())
 
 
+def extract_chapters_from_assignment_name(filename: str) -> set[str]:
+    """Extract chapter numbers from assignment filename like 'chp-5-1-note' or 'chp-6-1-6-2-work'."""
+    stem = re.sub(r'^\d+_', '', Path(filename).stem)
+    m = re.match(r'chp-([\d][\d-]*)', stem)
+    if not m:
+        return set()
+    chapter_part = m.group(1).rstrip('-')
+    digits = chapter_part.split('-')
+    chapters: set[str] = set()
+    i = 0
+    while i + 1 < len(digits):
+        chapters.add(f"{digits[i]}.{digits[i + 1]}")
+        i += 2
+    return chapters
+
+
+def assignment_display_name(path: Path) -> str:
+    """Format assignment filename into a readable label like 'Chp 5.1 Note'."""
+    stem = re.sub(r'^\d+_', '', path.stem)
+    parts = stem.split('-')
+    result: list[str] = []
+    i = 0
+    if parts and parts[0].lower() == 'chp':
+        result.append('Chp')
+        i = 1
+        while i + 1 < len(parts) and parts[i].isdigit() and parts[i + 1].isdigit():
+            result.append(f"{parts[i]}.{parts[i + 1]}")
+            i += 2
+    while i < len(parts):
+        result.append(parts[i].capitalize())
+        i += 1
+    return ' '.join(result)
+
+
+def load_assignment_files(output_dir: Path) -> list[Path]:
+    assignments_dir = output_dir / "downloads" / "assignments"
+    if not assignments_dir.exists():
+        return []
+    return sorted(assignments_dir.glob("*.pdf"))
+
+
+def match_assignments_to_record(assignments: list[Path], record: DocumentRecord) -> list[Path]:
+    record_chapter = extract_chapter_label(record.display_name)
+    if not record_chapter:
+        return []
+    return sorted(
+        (p for p in assignments if any(ch in record_chapter for ch in extract_chapters_from_assignment_name(p.name))),
+        key=lambda p: p.name,
+    )
+
+
+def render_assignments_card(assignments: list[Path], site_dir: Path, base_path: str) -> str:
+    if not assignments:
+        return ""
+    assignments_dir = site_dir / "assignments"
+    assignments_dir.mkdir(parents=True, exist_ok=True)
+    links: list[str] = []
+    for src in assignments:
+        dest = assignments_dir / src.name
+        if not dest.exists() or src.stat().st_mtime_ns != dest.stat().st_mtime_ns:
+            shutil.copy2(src, dest)
+        href = f"{base_path}assignments/{src.name}" if base_path else f"assignments/{src.name}"
+        links.append(f'<a href="{html.escape(href)}">{html.escape(assignment_display_name(src))}</a>')
+    return f"""
+      <section class="prompt-card">
+        <h3>Assignments</h3>
+        <div class="chip-row"><span class="chip chip-lock">Login Required</span></div>
+        <div class="link-row">
+          {' '.join(links)}
+        </div>
+      </section>
+    """
+
+
 def _model_chip(spec: PromptSpec) -> str:
     label = _model_label(spec)
     if spec.model is None:
@@ -935,6 +1018,7 @@ def render_record(
     base_path: str,
     *,
     include_guided_learning: bool,
+    assignments: list[Path] | None = None,
 ) -> str:
     document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
@@ -961,6 +1045,12 @@ def render_record(
     olympiad_card = render_olympiad_combined(outputs_by_slug, output_dir, site_dir, base_path)
     if olympiad_card:
         cards.append(olympiad_card)
+
+    # Assignments card hidden until Cloudflare Access is configured
+    # record_assignments = match_assignments_to_record(assignments or [], record)
+    # assignments_card = render_assignments_card(record_assignments, site_dir, base_path)
+    # if assignments_card:
+    #     cards.append(assignments_card)
 
     for spec in (*STUDY_GUIDE_SPECS, *INSPIRING_VIDEOS_SPECS, *MENTAL_MATH_SPECS, *OLYMPIAD_PROBLEMS_SPECS, *OLYMPIAD_SOLUTIONS_SPECS):
         rendered_slugs.add(spec.slug)
