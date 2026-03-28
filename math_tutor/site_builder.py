@@ -170,6 +170,16 @@ def build_site(
         ),
         encoding="utf-8",
     )
+    live_tutor_path = resolved_site_dir / "live-tutor.html"
+    live_tutor_path.write_text(
+        build_live_tutor_page_html(
+            records=records,
+            output_dir=output_dir,
+            site_dir=resolved_site_dir,
+            base_path=resolved_base_path,
+        ),
+        encoding="utf-8",
+    )
     for record in records:
         record_path = resolved_site_dir / record_page_filename(record)
         record_path.write_text(
@@ -307,6 +317,7 @@ def build_index_html(
     )
     library_href = site_page_href("library.html", base_path)
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
+    live_tutor_href = site_page_href("live-tutor.html", base_path)
     library_preview_cards = "\n".join(
         render_index_card(
             record,
@@ -348,12 +359,12 @@ def build_index_html(
         <p>Work through mixed mental-math and olympiad sets with the focused exam flow already built into the site.</p>
         <span class="destination-link">Start an exam</span>
       </a>
-      <section class="destination-card destination-live">
+      <a class="destination-card destination-live" href="{html.escape(live_tutor_href)}">
         <span class="destination-kicker">03</span>
         <h3>Live Tutor</h3>
-        <p>Reserved for the upcoming real-time tutoring experience so the homepage already reflects the full product direction.</p>
-        <span class="destination-soon">Coming later</span>
-      </section>
+        <p>Launch a full-curriculum guided learning session with one prompt that covers every chapter and can generate custom exams on demand.</p>
+        <span class="destination-link">Open live tutor</span>
+      </a>
     </section>
     <section class="content-card section-card">
       <div class="section-head">
@@ -427,6 +438,7 @@ def render_page_shell(
     toc_items = "\n".join(render_sidebar_item(record, active_record, base_path) for record in records)
     home_href = site_page_href("index.html", base_path)
     library_href = site_page_href("library.html", base_path)
+    live_tutor_href = site_page_href("live-tutor.html", base_path)
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
     active_label = (
         html.escape(document_label(active_record))
@@ -436,6 +448,7 @@ def render_page_shell(
     page_class = "page-home" if page_kind == "home" else "page-doc"
     home_active = " active" if page_kind == "home" else ""
     library_active = " active" if page_kind in {"library", "record"} else ""
+    live_tutor_active = " active" if page_kind == "live-tutor" else ""
     shell_html = f"""
   <div class="page {page_class}">
     <aside class="sidebar">
@@ -464,6 +477,7 @@ def render_page_shell(
       <nav class="global-nav" aria-label="Site sections">
         <a class="nav-pill{home_active}" href="{html.escape(home_href)}">Home</a>
         <a class="nav-pill{library_active}" href="{html.escape(library_href)}">Library</a>
+        <a class="nav-pill{live_tutor_active}" href="{html.escape(live_tutor_href)}">Live Tutor</a>
         <a class="nav-pill" href="{html.escape(challenges_href)}">Challenge Exams</a>
       </nav>
       <ol class="toc">
@@ -1070,6 +1084,48 @@ def build_library_page_html(
     )
 
 
+def build_live_tutor_page_html(
+    *,
+    records: list[DocumentRecord],
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+) -> str:
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    total_prompt_outputs = sum(
+        1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
+    )
+    curriculum_prompt = build_curriculum_guided_learning_prompt(records)
+    body_html = f"""
+    <section class="content-card section-card">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Live Tutor</span>
+          <h3>Whole-course guided learning</h3>
+        </div>
+        <a class="section-link" href="{html.escape(site_page_href('index.html', base_path))}">Back to home</a>
+      </div>
+      <p class="page-intro">This uses the same guided-learning launch pattern as the chapter pages, but with a single prompt covering the full Algebra II with Trigonometry curriculum.</p>
+      {render_guided_learning_card(
+          title="Live Tutor",
+          description="Open Gemini or ChatGPT Study Mode, then use the curriculum-wide prompt below. Students can ask for a live exam at any difficulty after the session starts.",
+          prompt_text=curriculum_prompt,
+          extra_links=[],
+      )}
+    </section>
+    """
+    return render_page_shell(
+        title=f"Live Tutor - {SITE_TITLE}",
+        records=records,
+        active_record=None,
+        body_html=body_html,
+        total_prompt_outputs=total_prompt_outputs,
+        generated_at=generated_at,
+        base_path=base_path,
+        page_kind="live-tutor",
+    )
+
+
 def render_index_card(
     record: DocumentRecord,
     output_dir: Path,
@@ -1375,6 +1431,24 @@ def render_record(
 
 def render_guided_learning(record: DocumentRecord, output_dir: Path, site_dir: Path, base_path: str) -> str:
     prompt_text = build_guided_learning_prompt(record)
+    extra_links: list[str] = []
+    if record.pdf_path and record.pdf_path.exists():
+        extra_links.append(link_tag(record.pdf_path, output_dir, site_dir, "Class Note PDF", base_path))
+    return render_guided_learning_card(
+        title="Guided Learning",
+        description="Open Gemini or ChatGPT Study Mode, then paste the summary prompt below to begin.",
+        prompt_text=prompt_text,
+        extra_links=extra_links,
+    )
+
+
+def render_guided_learning_card(
+    *,
+    title: str,
+    description: str,
+    prompt_text: str,
+    extra_links: list[str],
+) -> str:
     escaped_prompt = html.escape(prompt_text, quote=True)
     gemini_href = f"https://gemini.google.com/guided-learning?query={quote(prompt_text)}"
     buttons: list[str] = [
@@ -1385,17 +1459,16 @@ def render_guided_learning(record: DocumentRecord, output_dir: Path, site_dir: P
             f'onclick="copyChatgptPrompt(this)">Copy Prompt</button>'
         ),
     ]
-    if record.pdf_path and record.pdf_path.exists():
-        buttons.append(link_tag(record.pdf_path, output_dir, site_dir, "Class Note PDF", base_path))
+    buttons.extend(extra_links)
 
     return f"""
       <section class="guided-card">
-        <h3>Guided Learning</h3>
-        <p>Open Gemini or ChatGPT Study Mode, then paste the summary prompt below to begin.</p>
+        <h3>{html.escape(title)}</h3>
+        <p>{html.escape(description)}</p>
         <div class="button-row">
           {' '.join(buttons)}
         </div>
-        <p class="guided-note">Use the copied Short Summary text as your starting prompt. In Gemini, switch to Guided Learning. In ChatGPT, use Study Mode.</p>
+        <p class="guided-note">Use the copied prompt as your starting context. In Gemini, switch to Guided Learning. In ChatGPT, use Study Mode.</p>
         <details>
           <summary>Show prompt</summary>
           <pre>{html.escape(prompt_text)}</pre>
@@ -1431,6 +1504,63 @@ def build_guided_learning_prompt(record: DocumentRecord) -> str:
             if summary_lines:
                 return normalize_summary_text("\n".join(summary_lines))
     return pretty_title(record.display_name)
+
+
+def build_curriculum_guided_learning_prompt(records: list[DocumentRecord]) -> str:
+    chapter_summaries: list[str] = []
+    for record in records:
+        summary_text = extract_record_summary_text(record)
+        if not summary_text:
+            continue
+        chapter_summaries.append(f"{document_label(record)}\n{summary_text}")
+
+    if not chapter_summaries:
+        return (
+            "You are my live Algebra II with Trigonometry tutor. Help me review the full course, "
+            "adapt to my level, and generate practice or exams at any difficulty I request."
+        )
+
+    joined_summaries = "\n\n".join(chapter_summaries)
+    return (
+        "You are my live Algebra II with Trigonometry tutor. Use the curriculum notes below as the course context for this session.\n\n"
+        "How to tutor me:\n"
+        "- Diagnose my current level first with a short warm-up if I do not specify a topic.\n"
+        "- Teach with guided learning, not just final answers.\n"
+        "- When I ask for practice, create problems at easy, medium, hard, honors, or olympiad difficulty.\n"
+        "- When I ask for a live exam, generate a balanced exam from the full curriculum or from the units I specify, wait for my answers, then grade and coach me.\n"
+        "- Keep explanations concise at first, then expand only if I ask.\n"
+        "- Prioritize exact math notation and clearly labeled steps.\n\n"
+        "Curriculum notes:\n"
+        f"{joined_summaries}\n\n"
+        "Start by greeting me as my live tutor and asking whether I want concept review, targeted practice, or a live exam."
+    )
+
+
+def extract_record_summary_text(record: DocumentRecord) -> str:
+    for prompt_output in record.prompt_outputs:
+        if prompt_output.slug != "study-guide":
+            continue
+        if prompt_output.response_html_path and prompt_output.response_html_path.exists():
+            content = prompt_output.response_html_path.read_text(encoding="utf-8")
+            m = re.search(
+                r'<h[2-4][^>]*>.*?[Ss]hort\s+[Ss]ummary.*?</h[2-4]>(.*?)(?=<h[2-4]|<hr\s*/?>)',
+                content,
+                re.DOTALL,
+            )
+            if m:
+                raw_html = m.group(1).strip()
+                plain = re.sub(r'<li[^>]*>(.*?)</li>', lambda mo: f"- {mo.group(1).strip()}\n", raw_html, flags=re.DOTALL)
+                plain = re.sub(r'<[^>]+>', ' ', plain)
+                plain = html.unescape(plain)
+                plain = re.sub(r'[ \t]+', ' ', plain)
+                plain = re.sub(r'\n{3,}', '\n\n', plain).strip()
+                if plain:
+                    return normalize_summary_text(plain)
+        if prompt_output.response_markdown:
+            summary_lines = extract_study_guide_summary_lines(prompt_output.response_markdown)
+            if summary_lines:
+                return normalize_summary_text("\n".join(summary_lines))
+    return ""
 
 
 def render_record_summary(record: DocumentRecord) -> str:
