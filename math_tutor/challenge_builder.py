@@ -224,14 +224,17 @@ def build_challenges(
         print(f"  Wrote {canonical_exams_json}")
 
     # Always copy static PHP + HTML source files (picks up UI changes)
+    # Skip exams.json — it's only needed to generate individual exam files, not served directly.
     for src_file in CHALLENGES_SRC_DIR.glob("*"):
+        if src_file.name == "exams.json":
+            continue
         dest = challenges_dir / src_file.name
         shutil.copy2(src_file, dest)
         print(f"  Copied {src_file.name}")
 
     # Always generate a lightweight exams-index.json for the picker page (no question text)
     # and individual per-exam JSON files so exam.html only fetches ~4KB instead of 194KB.
-    full = json.loads((challenges_dir / "exams.json").read_text(encoding="utf-8"))
+    full = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
     generated_at = full.get("generated_at")
     index_entries = []
     exams_subdir = challenges_dir / "exams"
@@ -263,7 +266,7 @@ def build_challenges(
         json.dumps({"generated_at": generated_at, "exams": index_entries}),
         encoding="utf-8",
     )
-    full_kb = (challenges_dir / "exams.json").stat().st_size // 1024
+    full_kb = canonical_exams_json.stat().st_size // 1024
     avg_kb = (total_individual_kb // len(index_entries)) if index_entries else 0
     print(f"  Wrote exams-index.json ({len(index_entries)} exams, "
           f"{index_json_path.stat().st_size // 1024}KB vs {full_kb}KB full)")
