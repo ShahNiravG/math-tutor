@@ -31,6 +31,7 @@ $submitted   = htmlspecialchars($row['submitted_at']);
 $secs        = (int)$row['time_seconds'];
 $time_fmt    = sprintf('%d:%02d', intdiv($secs, 60), $secs % 60);
 $answers     = json_decode($row['answers_json'], true) ?: [];
+$user_email  = htmlspecialchars($row['user_email'] ?? '');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +94,9 @@ $answers     = json_decode($row['answers_json'], true) ?: [];
       <span class="chip">&#10003; <?= count($answers) ?> questions</span>
       <span class="chip chip-time">&#9201; <?= $time_fmt ?></span>
       <span class="chip chip-date"><?= $submitted ?></span>
+      <?php if ($user_email): ?>
+      <span class="chip chip-date">&#128100; <?= $user_email ?></span>
+      <?php endif; ?>
     </div>
     <div class="actions">
       <a class="btn" href="index.html">&#8592; All Exams</a>

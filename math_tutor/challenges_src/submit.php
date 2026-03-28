@@ -20,6 +20,7 @@ $exam_title  = substr($input['exam_title'], 0, 64);
 $answers     = json_encode($input['answers']);
 $time_secs   = max(0, (int)$input['time_seconds']);
 $token       = bin2hex(random_bytes(6)); // 12-char hex
+$user_email  = substr($_SERVER['HTTP_CF_ACCESS_AUTHENTICATED_USER_EMAIL'] ?? '', 0, 255);
 
 try {
     $pdo = new PDO(
@@ -35,14 +36,20 @@ try {
         exam_title   VARCHAR(64) NOT NULL,
         answers_json MEDIUMTEXT NOT NULL,
         time_seconds INT NOT NULL,
+        user_email   VARCHAR(255) DEFAULT NULL,
         submitted_at DATETIME NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    // Add user_email column if upgrading from old schema
+    try {
+        $pdo->exec("ALTER TABLE challenge_results ADD COLUMN user_email VARCHAR(255) DEFAULT NULL");
+    } catch (PDOException $e) { /* column already exists */ }
+
     $stmt = $pdo->prepare(
-        "INSERT INTO challenge_results (token, exam_id, exam_title, answers_json, time_seconds, submitted_at)
-         VALUES (?, ?, ?, ?, ?, NOW())"
+        "INSERT INTO challenge_results (token, exam_id, exam_title, answers_json, time_seconds, user_email, submitted_at)
+         VALUES (?, ?, ?, ?, ?, ?, NOW())"
     );
-    $stmt->execute([$token, $exam_id, $exam_title, $answers, $time_secs]);
+    $stmt->execute([$token, $exam_id, $exam_title, $answers, $time_secs, $user_email ?: null]);
 
     echo json_encode(['token' => $token]);
 } catch (PDOException $e) {

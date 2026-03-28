@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import quote
 
+from math_tutor.challenge_builder import build_challenges
 from math_tutor.cli import (
     DEFAULT_MODEL,
     INSPIRING_VIDEOS_GEMINI_PROMPT,
@@ -133,6 +134,11 @@ def parse_args() -> argparse.Namespace:
             "Add a Guided Learning section for each PDF with a ChatGPT Study Mode helper button and prompt copy action."
         ),
     )
+    parser.add_argument(
+        "--force-challenges",
+        action="store_true",
+        help="Regenerate challenge exams even if exams.json already exists.",
+    )
     return parser.parse_args()
 
 
@@ -144,6 +150,7 @@ def main() -> None:
         base_path=args.base_path,
         limit=args.limit,
         include_guided_learning=args.include_guided_learning,
+        force_challenges=args.force_challenges,
     )
     print(f"Built tutoring page at {index_path}")
 
@@ -156,6 +163,7 @@ def build_site(
     limit: int | None = None,
     include_guided_learning: bool = False,
     file_ids: set[str] | None = None,
+    force_challenges: bool = False,
 ) -> Path:
     resolved_site_dir = site_dir.resolve() if site_dir else output_dir / DEFAULT_SITE_DIRNAME
     resolved_site_dir.mkdir(parents=True, exist_ok=True)
@@ -194,6 +202,7 @@ def build_site(
             ),
             encoding="utf-8",
         )
+    build_challenges(output_dir=output_dir, site_dir=resolved_site_dir, force=force_challenges)
     return index_path
 
 
@@ -391,6 +400,7 @@ def render_page_shell(
 ) -> str:
     toc_items = "\n".join(render_sidebar_item(record, active_record, base_path) for record in records)
     home_href = site_page_href("index.html", base_path)
+    challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
     active_label = (
         html.escape(document_label(active_record))
         if active_record is not None
@@ -525,6 +535,21 @@ def render_page_shell(
       color: var(--muted);
       font-size: 0.92rem;
     }}
+    .sidebar-challenges {{
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }}
+    .challenges-nav-link {{
+      font-weight: 700;
+      text-decoration: none;
+      color: var(--accent);
+      font-size: 0.95rem;
+    }}
+    .challenges-nav-link:hover {{ text-decoration: underline; }}
     .main {{
       display: grid;
       gap: 18px;
@@ -738,6 +763,10 @@ def render_page_shell(
         <div><strong>Documents:</strong> {len(records)}</div>
         <div><strong>Saved prompt outputs:</strong> {total_prompt_outputs}</div>
         <div><strong>Built:</strong> {generated_at}</div>
+      </div>
+      <div class="sidebar-challenges">
+        <a href="{html.escape(challenges_href)}" class="challenges-nav-link">&#127942; Challenge Exams</a>
+        <span class="chip chip-lock" style="font-size:.75rem;padding:2px 8px;">Login Required</span>
       </div>
     </aside>
     <main class="main">
@@ -1046,11 +1075,10 @@ def render_record(
     if olympiad_card:
         cards.append(olympiad_card)
 
-    # Assignments card hidden until Cloudflare Access is configured
-    # record_assignments = match_assignments_to_record(assignments or [], record)
-    # assignments_card = render_assignments_card(record_assignments, site_dir, base_path)
-    # if assignments_card:
-    #     cards.append(assignments_card)
+    record_assignments = match_assignments_to_record(assignments or [], record)
+    assignments_card = render_assignments_card(record_assignments, site_dir, base_path)
+    if assignments_card:
+        cards.append(assignments_card)
 
     for spec in (*STUDY_GUIDE_SPECS, *INSPIRING_VIDEOS_SPECS, *MENTAL_MATH_SPECS, *OLYMPIAD_PROBLEMS_SPECS, *OLYMPIAD_SOLUTIONS_SPECS):
         rendered_slugs.add(spec.slug)

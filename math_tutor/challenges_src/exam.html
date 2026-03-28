@@ -42,19 +42,25 @@
     .page { width:min(760px,calc(100vw - 32px)); margin:24px auto 80px; }
     .q-card { background:var(--paper); border:1px solid var(--line); border-radius:20px;
               padding:32px; box-shadow:0 10px 30px rgba(78,55,32,.08); }
-    .q-meta { display:flex; justify-content:space-between; align-items:baseline;
-              flex-wrap:wrap; gap:8px; margin-bottom:20px; }
-    .q-counter { font-size:.9rem; color:var(--muted); font-family:system-ui,sans-serif; }
-    .q-source { font-size:.8rem; color:var(--muted); font-family:system-ui,sans-serif;
-                background:var(--accent-soft); color:var(--accent); padding:3px 10px;
+    .q-meta { display:flex; justify-content:space-between; align-items:center;
+              flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+    .q-meta-left { display:flex; align-items:center; gap:10px; }
+    .q-counter { font-size:1rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    .q-source { font-size:.85rem; color:var(--muted); font-family:system-ui,sans-serif;
+                background:var(--accent-soft); color:var(--accent); padding:4px 12px;
                 border-radius:999px; font-weight:600; }
-    .q-text { font-size:1.05rem; line-height:1.8; margin-bottom:28px; }
-    .q-text p { margin:.45em 0; }
+    .copy-btn { appearance:none; background:none; border:1px solid var(--line); border-radius:8px;
+                padding:4px 10px; font-size:.8rem; font-family:system-ui,sans-serif;
+                color:var(--muted); cursor:pointer; transition:all .15s; white-space:nowrap; }
+    .copy-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .copy-btn.copied { border-color:var(--answered); color:var(--answered); }
+    .q-text { font-size:1.35rem; line-height:1.85; margin-bottom:32px; }
+    .q-text p { margin:.5em 0; }
     .q-text strong { color:#213647; }
-    .answer-label { font-size:.82rem; font-weight:700; color:var(--muted);
-                    text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;
+    .answer-label { font-size:.88rem; font-weight:700; color:var(--muted);
+                    text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;
                     font-family:system-ui,sans-serif; }
-    textarea { width:100%; min-height:120px; padding:14px 16px; font:inherit; font-size:1rem;
+    textarea { width:100%; min-height:120px; padding:14px 16px; font:inherit; font-size:1.05rem;
                border:1px solid var(--line); border-radius:12px; background:#fafafa;
                resize:vertical; outline:none; transition:border-color .15s; line-height:1.6; }
     textarea:focus { border-color:var(--accent); background:#fff; }
@@ -192,8 +198,11 @@ function renderQuestion() {
   root.innerHTML = `
     <div class="q-card">
       <div class="q-meta">
-        <span class="q-counter">Question ${S.idx+1} of ${total}</span>
-        <span class="q-source">${escHtml(q.source_label)}</span>
+        <div class="q-meta-left">
+          <span class="q-counter">Question ${S.idx+1} of ${total}</span>
+          <span class="q-source">${escHtml(q.source_label)}</span>
+        </div>
+        <button class="copy-btn" id="copy-btn" title="Copy question text">&#128203; Copy Question</button>
       </div>
       <div class="q-text" id="q-text-render"></div>
       <div class="answer-label">Your Answer</div>
@@ -217,6 +226,21 @@ function renderQuestion() {
   var el = document.getElementById('q-text-render');
   el.innerHTML = mdToHtml(q.text);
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]);
+
+  // Copy button
+  var copyBtn = document.getElementById('copy-btn');
+  if (copyBtn) {
+    copyBtn.addEventListener('click', function() {
+      navigator.clipboard.writeText(q.text).then(function() {
+        copyBtn.textContent = '✓ Copied!';
+        copyBtn.classList.add('copied');
+        setTimeout(function() {
+          copyBtn.textContent = '📋 Copy Question';
+          copyBtn.classList.remove('copied');
+        }, 2000);
+      });
+    });
+  }
 
   // Focus textarea
   var ta = document.getElementById('answer-input');

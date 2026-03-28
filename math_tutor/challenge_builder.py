@@ -189,41 +189,52 @@ def generate_config_php(output_path: Path) -> None:
 def build_challenges(
     output_dir: Path,
     site_dir: Path,
+    force: bool = False,
 ) -> None:
     challenges_dir = site_dir / "challenges"
     challenges_dir.mkdir(parents=True, exist_ok=True)
 
-    # Extract questions and build exam sets
-    print("Extracting questions from response files...")
-    questions = load_all_questions(output_dir)
-    print(f"  Found {len(questions)} questions "
-          f"({sum(1 for q in questions if q['type'] == 'mm')} mental math, "
-          f"{sum(1 for q in questions if q['type'] == 'op')} olympiad)")
+    # Canonical exams.json lives in challenges_src/ so it is tracked in git
+    canonical_exams_json = CHALLENGES_SRC_DIR / "exams.json"
 
-    exams = build_exam_sets(questions)
-    print(f"  Generated {len(exams)} challenge exams")
+    if not force and canonical_exams_json.exists():
+        existing = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
+        generated_at = existing.get("generated_at", "unknown")
+        exam_count = len(existing.get("exams", []))
+        print(f"Challenge exams already generated ({exam_count} exams, bundle: {generated_at}). "
+              f"Skipping regeneration. Use --force-challenges to regenerate.")
+    else:
+        if force and canonical_exams_json.exists():
+            print("Force flag set — regenerating challenge exams...")
+        else:
+            print("Generating challenge exams for the first time...")
+        questions = load_all_questions(output_dir)
+        print(f"  Found {len(questions)} questions "
+              f"({sum(1 for q in questions if q['type'] == 'mm')} mental math, "
+              f"{sum(1 for q in questions if q['type'] == 'op')} olympiad)")
 
-    # Write exams.json
-    exams_json_path = challenges_dir / "exams.json"
-    exams_json_path.write_text(
-        json.dumps({"generated_at": datetime.now(timezone.utc).isoformat(), "exams": exams}, indent=2),
-        encoding="utf-8",
-    )
-    print(f"  Wrote {exams_json_path}")
+        exams = build_exam_sets(questions)
+        generated_at = datetime.now(timezone.utc).isoformat()
+        print(f"  Generated {len(exams)} challenge exams (bundle: {generated_at})")
 
-    # Copy static PHP + HTML source files
+        canonical_exams_json.write_text(
+            json.dumps({"generated_at": generated_at, "exams": exams}, indent=2),
+            encoding="utf-8",
+        )
+        print(f"  Wrote {canonical_exams_json}")
+
+    # Always copy static PHP + HTML source files (picks up UI changes)
     for src_file in CHALLENGES_SRC_DIR.glob("*"):
         dest = challenges_dir / src_file.name
         shutil.copy2(src_file, dest)
         print(f"  Copied {src_file.name}")
 
-    # Generate config.php from env vars
+    # Always regenerate config.php from current env vars
     config_path = challenges_dir / "config.php"
     generate_config_php(config_path)
     print(f"  Generated {config_path}")
 
-    print(f"\nChallenge exams built at: {challenges_dir}")
-    print(f"  Access at: <your-site>/site/challenges/")
+    print(f"\nChallenge exams at: {challenges_dir}")
 
 
 def main() -> None:
@@ -234,8 +245,11 @@ def main() -> None:
                         help="Directory containing responses/ and other outputs.")
     parser.add_argument("--site-dir", default=str(PACKAGE_DIR / "output" / "deploy" / "math_tutor" / "site"),
                         help="Site directory where challenges/ will be written.")
+    parser.add_argument("--force", action="store_true",
+                        help="Regenerate exams.json even if it already exists.")
     args = parser.parse_args()
     build_challenges(
         output_dir=Path(args.output_dir).resolve(),
         site_dir=Path(args.site_dir).resolve(),
+        force=args.force,
     )
