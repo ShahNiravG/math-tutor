@@ -229,6 +229,32 @@ def build_challenges(
         shutil.copy2(src_file, dest)
         print(f"  Copied {src_file.name}")
 
+    # Always generate a lightweight exams-index.json for the picker page (no question text)
+    full = json.loads((challenges_dir / "exams.json").read_text(encoding="utf-8"))
+    index_entries = []
+    for exam in full.get("exams", []):
+        mm = sum(1 for q in exam["questions"] if q["type"] == "mm")
+        op = sum(1 for q in exam["questions"] if q["type"] == "op")
+        chapters = sorted(
+            {q["chapter"] for q in exam["questions"]},
+            key=lambda c: float(re.match(r"^[\d.]+", c).group()) if re.match(r"^[\d.]+", c) else 9999,
+        )
+        index_entries.append({
+            "id": exam["id"],
+            "title": exam["title"],
+            "mm": mm,
+            "op": op,
+            "chapters": chapters,
+        })
+    index_json_path = challenges_dir / "exams-index.json"
+    index_json_path.write_text(
+        json.dumps({"generated_at": full.get("generated_at"), "exams": index_entries}),
+        encoding="utf-8",
+    )
+    print(f"  Wrote exams-index.json ({len(index_entries)} exams, "
+          f"{index_json_path.stat().st_size // 1024}KB vs "
+          f"{(challenges_dir / 'exams.json').stat().st_size // 1024}KB full)")
+
     # Always regenerate config.php from current env vars
     config_path = challenges_dir / "config.php"
     generate_config_php(config_path)

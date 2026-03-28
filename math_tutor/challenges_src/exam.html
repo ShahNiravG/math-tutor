@@ -140,6 +140,24 @@ const S = {
   submitting: false,
 };
 
+const SESSION_KEY = 'math_tutor_challenge_session';
+
+function saveSession() {
+  if (!S.exam) return;
+  localStorage.setItem(SESSION_KEY, JSON.stringify({
+    exam_id: S.exam.id,
+    exam_title: S.exam.title,
+    idx: S.idx,
+    answers: S.answers,
+    timerSecs: S.timerSecs,
+    savedAt: new Date().toISOString(),
+  }));
+}
+
+function clearSession() {
+  localStorage.removeItem(SESSION_KEY);
+}
+
 // ── Markdown renderer ──
 function mdToHtml(text) {
   var dm = [], im = [];
@@ -161,6 +179,7 @@ function startTimer() {
     S.timerSecs++;
     var m = Math.floor(S.timerSecs/60), s = S.timerSecs%60;
     document.getElementById('timer').textContent = m+':'+(s<10?'0':'')+s;
+    if (S.timerSecs % 30 === 0) saveSession();
   }, 1000);
 }
 
@@ -253,6 +272,7 @@ function renderQuestion() {
 function goTo(i) {
   saveCurrentAnswer();
   S.idx = Math.max(0, Math.min(i, S.exam.questions.length-1));
+  saveSession();
   renderQuestion();
 }
 function next() { startTimer(); goTo(S.idx+1); }
@@ -308,6 +328,7 @@ async function doSubmit() {
     });
     var data = await res.json();
     if (data.token) {
+      clearSession();
       window.location.href = 'result.php?token='+encodeURIComponent(data.token);
     } else {
       throw new Error(data.error || 'Unknown error');
@@ -351,6 +372,18 @@ function escHtml(s) {
   document.getElementById('exam-title').textContent = S.exam.title;
   document.getElementById('topbar').style.display = 'flex';
   document.getElementById('progress-bar').style.display = 'flex';
+
+  // Restore saved session if it matches this exam
+  try {
+    var saved = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+    if (saved && saved.exam_id === S.exam.id) {
+      S.idx = saved.idx || 0;
+      S.answers = saved.answers || {};
+      S.timerSecs = saved.timerSecs || 0;
+      var rm = Math.floor(S.timerSecs/60), rs = S.timerSecs%60;
+      document.getElementById('timer').textContent = rm+':'+(rs<10?'0':'')+rs;
+    }
+  } catch(e) { /* ignore corrupt storage */ }
 
   renderQuestion();
 })();

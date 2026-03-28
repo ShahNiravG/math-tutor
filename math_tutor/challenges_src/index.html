@@ -151,6 +151,57 @@
     }
     .another-link:hover { color: var(--ink); }
 
+    /* Resume card */
+    .resume-card {
+      width: 100%;
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 24px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .resume-label {
+      font-size: .78rem;
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #166534;
+    }
+    .resume-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
+    .resume-meta { font-size: .85rem; font-family: system-ui, sans-serif; color: var(--muted); }
+    .resume-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+    .resume-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #166534;
+      color: #fff;
+      font: inherit;
+      font-size: .95rem;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .resume-btn:hover { opacity: .85; }
+    .discard-link {
+      font-size: .82rem;
+      font-family: system-ui, sans-serif;
+      color: var(--muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .discard-link:hover { color: #991b1b; }
+
     /* Loading / error */
     .loading {
       color: var(--muted);
@@ -176,17 +227,54 @@
   <p class="hero-sub">A timed mix of Mental Math &amp; Olympiad Problems.<br>10 questions, picked just for you.</p>
   <p id="bundle-info" style="font-size:.78rem;font-family:system-ui,sans-serif;color:var(--muted);margin:0 0 28px;"></p>
 
+  <div id="resume-container" style="width:100%"></div>
   <div id="root"><div class="loading">Loading&hellip;</div></div>
 </div>
 
 <script>
+const SESSION_KEY = 'math_tutor_challenge_session';
+
+function renderResumeCard() {
+  try {
+    var saved = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+    if (!saved || !saved.exam_id) return;
+
+    var answered = Object.values(saved.answers || {}).filter(function(v){ return v.trim(); }).length;
+    var m = Math.floor((saved.timerSecs || 0) / 60), s = (saved.timerSecs || 0) % 60;
+    var timeStr = m + ':' + (s < 10 ? '0' : '') + s;
+    var questionStr = 'Question ' + ((saved.idx || 0) + 1) + ' of 10';
+    var answeredStr = answered + ' answered';
+
+    var container = document.getElementById('resume-container');
+    container.innerHTML = `
+      <div class="resume-card">
+        <div class="resume-label">&#9654; Resume where you left off</div>
+        <p class="resume-title">${saved.exam_title || 'Challenge Exam'}</p>
+        <div class="resume-meta">${questionStr} &middot; ${answeredStr} &middot; ${timeStr} elapsed</div>
+        <div class="resume-actions">
+          <a class="resume-btn" href="exam.html?id=${encodeURIComponent(saved.exam_id)}">Continue Challenge &rarr;</a>
+          <button class="discard-link" id="discard-btn">Discard &amp; start fresh</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('discard-btn').addEventListener('click', function() {
+      localStorage.removeItem(SESSION_KEY);
+      container.innerHTML = '';
+    });
+  } catch(e) { /* ignore corrupt storage */ }
+}
+
+renderResumeCard();
+
 (async function () {
   const root = document.getElementById('root');
   let exams = [];
 
+  let data;
   try {
-    const res = await fetch('exams.json');
-    const data = await res.json();
+    const res = await fetch('exams-index.json');
+    data = await res.json();
     exams = data.exams || [];
   } catch (e) {
     root.innerHTML = '<div class="error-box">Could not load exams. Please try again later.</div>';
@@ -220,9 +308,9 @@
   }
 
   function render(exam) {
-    const mm = exam.questions.filter(q => q.type === 'mm').length;
-    const op = exam.questions.filter(q => q.type === 'op').length;
-    const chapters = [...new Set(exam.questions.map(q => q.chapter))].sort((a, b) => parseFloat(a) - parseFloat(b));
+    const mm = exam.mm;
+    const op = exam.op;
+    const chapters = exam.chapters || [];
     const chapterText = chapters.length > 5
       ? chapters.slice(0, 4).join(', ') + ` +${chapters.length - 4} more`
       : chapters.join(', ');

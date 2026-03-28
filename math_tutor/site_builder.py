@@ -14,6 +14,7 @@ from urllib.parse import quote
 
 from math_tutor.challenge_builder import build_challenges
 from math_tutor.cli import (
+    load_dotenv_if_present,
     DEFAULT_MODEL,
     INSPIRING_VIDEOS_GEMINI_PROMPT,
     INSPIRING_VIDEOS_GPT5_PROMPT,
@@ -143,6 +144,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> None:
+    load_dotenv_if_present()
     args = parse_args()
     index_path = build_site(
         output_dir=Path(args.output_dir).resolve(),
