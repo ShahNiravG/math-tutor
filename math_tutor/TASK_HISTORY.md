@@ -807,3 +807,69 @@ Fix: removed the name guard; the function now relies solely on `"deploy" in rela
 - All new response files correctly deployed to `output/deploy/math_tutor/site/responses/`
 - Prompt/model architecture refactored; 21 PROMPTS entries in topological order
 - Deploy asset copy works for all future chapters without manual intervention
+
+---
+
+## Session: 2026-03-29 — Site Redesign (other workspace) + MCQ Challenge Exams
+
+### Site Redesign (recorded from parallel workspace)
+
+The generated tutoring site was redesigned to feel like a real product surface.
+
+**New top-level information architecture:**
+- `index.html` — branded landing page with three destination cards (Library, Challenge Exams, Live Tutor)
+- `library.html` — chapter overview with left-rail chapter list
+- `live-tutor.html` — curriculum-wide guided learning page combining all chapter summaries into one prompt with Gemini/ChatGPT launch actions
+- `challenges/index.html` — challenge exam landing (unchanged entry point)
+
+**Library and sidebar cleanup:**
+- Chapter list now appears only on `library.html`, not on per-document pages
+- Removed sidebar metadata (view/build counts)
+- Per-document pages use a slimmer nav shell
+
+**Shared branding:**
+- Brand logo/title consistent across index, library, live-tutor, and challenge pages
+- Section nav labels aligned: Home, Library, Live Tutor, Challenge Exams
+
+**Deploy path change:**
+- Production site now deploys under `/site/` base path (was `/math_tutor/site/`)
+- All build commands updated to include `--base-path /site/`
+
+### MCQ-Enabled Challenge Exams (this workspace)
+
+Previously, challenge exams used free-text textarea answers with no grading. Rebuilt end-to-end to use multiple-choice questions with immediate interactive feedback.
+
+#### challenge_builder.py
+
+- **MCQ filter**: only questions with `options` and `correct` keys (from paired `-mcq.md` files) are eligible for exams
+- **New ordering**: mental math first (up to 7 per exam), then olympiad last (at most 3 per exam), max 10 total
+- **Overflow handling**: when MM pool exhausted, remaining OP questions form OP-only exams (max 3 each); when OP exhausted, MM-only exams (up to 7 each)
+- **New constants**: `MAX_EXAM_SIZE=10`, `MAX_OP_PER_EXAM=3`, `TARGET_MM_PER_EXAM=7` (replaced flat 5+5)
+- **`master_questions.json`**: new flat catalog of all 608 MCQ-equipped questions written to `challenges_src/` as a git-tracked uber artifact for external use; excluded from the live site copy
+- **Result**: 76 challenge exams (up from 43) built from 380 mental math + 228 olympiad MCQ questions
+
+#### exam.html
+
+- Replaced free-text `<textarea>` with MCQ option buttons (A/B/C/D)
+- Clicking an option immediately locks the answer and shows feedback:
+  - **Correct**: selected button turns green (✓), banner "Correct!"
+  - **Wrong**: selected button turns red (✗), correct option revealed in green, banner shows correct letter
+- Answer locked after selection — cannot be changed (but can navigate away and back)
+- Removed explicit "Skip" button — pressing Next without selecting leaves the question unanswered
+- Session storage updated: answers stored as letter strings instead of text
+- Submit payload now includes `options` and `correct` per question so result.php is self-contained
+
+#### result.php
+
+- **Score chip** added to header (e.g. "🏆 7/10 correct") with color-coded tiers (green/yellow/red)
+- **Question cards** have colored left border: green = correct, red = wrong, grey = skipped
+- **MCQ option display**: all 4 options shown with highlighting — correct selection in green (✓), wrong selection in red (✗), correct answer revealed in green when wrong or skipped
+- Renders LaTeX in option text via mdToHtml + MathJax
+- Backward-compatible: old submissions with free-text answers display as before
+
+#### Current State
+
+- 76 challenge exams live; 608 questions with MCQ across 19 chapters
+- Exam experience: click-to-answer MCQ with instant feedback
+- `challenges_src/master_questions.json` committed — flat catalog of all MCQ questions for external use
+- Deploy base path is `/site/` (use `--base-path /site/` in all build commands)

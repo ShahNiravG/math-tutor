@@ -137,15 +137,14 @@ Useful flags:
 
 Each per-document page also includes a **Guided Learning** section with Gemini and ChatGPT Study Mode helper links and a copy button for the short summary from the Study Guide.
 
-**Challenge Exams (`challenges/index.html`)** — branded challenge landing page plus the exam runner under `challenges/exam.html`.
+**Challenge Exams (`challenges/index.html`)** — branded challenge landing page with random exam picker. Exam runner at `challenges/exam.html` presents MCQ questions (mental math first, then up to 3 olympiad problems) with immediate correct/wrong feedback after each selection. Results page shows score and per-question MCQ review. Cloudflare Access protected.
 
 ### Deploy path
 
 The current production site is deployed under `/site/`, so deploy builds should use:
 
 ```bash
-.venv/bin/python -m math_tutor.site_builder \
-  --output-dir math_tutor/output \
+.venv/bin/math-tutor-build-site \
   --site-dir math_tutor/output/deploy/math_tutor/site \
   --base-path /site/
 ```

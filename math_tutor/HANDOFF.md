@@ -102,12 +102,22 @@ Deploy output: `math_tutor/output/deploy/math_tutor/site/`
 .venv/bin/math-tutor-generate-mcq
 ```
 
+## Challenge Exam Details
+
+- 76 exams built from 608 MCQ-equipped questions (380 MM + 228 OP across 19 chapters)
+- Exam structure: up to 7 mental math questions first, then at most 3 olympiad questions; max 10 per exam
+- `exam.html` presents MCQ buttons (A/B/C/D) with immediate correct/wrong feedback after each selection
+- `result.php` shows score chip + per-question MCQ option review with correct/wrong highlighting
+- `challenges_src/master_questions.json` — flat catalog of all 608 MCQ questions (git tracked, not served to site); use for external purposes
+- Force-rebuild challenges when question pool changes: `--force-challenges`
+
 ## Last Verified State
 
 - 19 class note chapters fully processed (through chapter 11.4)
 - All prompts: study-guide, inspiring-videos, mental-math-gpt5 + MCQ, mental-math-gemini + MCQ, olympiad-problems/solutions-gpt5 + MCQ, olympiad-problems/solutions-gemini + MCQ
-- Deploy site at `output/deploy/math_tutor/site/` rebuilt and up to date
-- Deploy links verified against `/site/` base path
+- 76 MCQ challenge exams deployed; master_questions.json committed to git
+- Site redesigned: index.html (landing), library.html, live-tutor.html pages added
+- Deploy base path is `/site/`; all build commands use `--base-path /site/`
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 
 ## Known Risks
