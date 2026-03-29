@@ -15,8 +15,9 @@ PACKAGE_DIR = Path(__file__).resolve().parent
 
 CHALLENGES_SRC_DIR = PACKAGE_DIR / "challenges_src"
 SHUFFLE_SEED = 42
-MM_PER_EXAM = 5
-OP_PER_EXAM = 5
+MAX_EXAM_SIZE = 10
+MAX_OP_PER_EXAM = 3
+TARGET_MM_PER_EXAM = MAX_EXAM_SIZE - MAX_OP_PER_EXAM  # 7
 
 SOURCE_SUFFIXES = [
     ("__mental-math-gpt5.md",         "mm", "gpt54", "GPT-5.4",       "__mental-math-gpt5-mcq.md"),
@@ -164,25 +165,37 @@ def _stratified_shuffle(questions: list[dict], seed: int) -> list[dict]:
 
 
 def build_exam_sets(questions: list[dict]) -> list[dict]:
-    mm = _stratified_shuffle([q for q in questions if q["type"] == "mm"], SHUFFLE_SEED)
-    op = _stratified_shuffle([q for q in questions if q["type"] == "op"], SHUFFLE_SEED + 1)
+    """Build exam sets using only MCQ-equipped questions.
+
+    Each exam has mental math questions first (up to TARGET_MM_PER_EXAM),
+    then olympiad questions last (at most MAX_OP_PER_EXAM). Total ≤ MAX_EXAM_SIZE.
+    When the MM pool is exhausted, remaining OP questions form OP-only exams
+    (still capped at MAX_OP_PER_EXAM each). No question appears in more than one exam.
+    """
+    mm = _stratified_shuffle(
+        [q for q in questions if q["type"] == "mm" and "correct" in q],
+        SHUFFLE_SEED,
+    )
+    op = _stratified_shuffle(
+        [q for q in questions if q["type"] == "op" and "correct" in q],
+        SHUFFLE_SEED + 1,
+    )
 
     exams: list[dict] = []
     mm_idx = op_idx = 0
     num = 1
 
-    while mm_idx + MM_PER_EXAM <= len(mm) and op_idx + OP_PER_EXAM <= len(op):
-        mm_batch = mm[mm_idx: mm_idx + MM_PER_EXAM]
-        op_batch = op[op_idx: op_idx + OP_PER_EXAM]
-        interleaved: list[dict] = []
-        for j in range(max(MM_PER_EXAM, OP_PER_EXAM)):
-            if j < MM_PER_EXAM:
-                interleaved.append(mm_batch[j])
-            if j < OP_PER_EXAM:
-                interleaved.append(op_batch[j])
-        exams.append({"id": f"exam-{num:02d}", "title": f"Challenge Exam {num}", "questions": interleaved})
-        mm_idx += MM_PER_EXAM
-        op_idx += OP_PER_EXAM
+    while mm_idx < len(mm) or op_idx < len(op):
+        mm_take = min(TARGET_MM_PER_EXAM, len(mm) - mm_idx)
+        op_take = min(MAX_OP_PER_EXAM, len(op) - op_idx, MAX_EXAM_SIZE - mm_take)
+        total = mm_take + op_take
+        if total == 0:
+            break
+        # Mental math questions first, then olympiad
+        exam_qs = mm[mm_idx: mm_idx + mm_take] + op[op_idx: op_idx + op_take]
+        exams.append({"id": f"exam-{num:02d}", "title": f"Challenge Exam {num}", "questions": exam_qs})
+        mm_idx += mm_take
+        op_idx += op_take
         num += 1
 
     return exams
@@ -224,10 +237,11 @@ def build_challenges(
     challenges_dir = site_dir / "challenges"
     challenges_dir.mkdir(parents=True, exist_ok=True)
 
-    # Canonical exams.json lives in challenges_src/ so it is tracked in git
+    # Canonical files live in challenges_src/ so they are tracked in git
     canonical_exams_json = CHALLENGES_SRC_DIR / "exams.json"
+    canonical_master_json = CHALLENGES_SRC_DIR / "master_questions.json"
 
-    if not force and canonical_exams_json.exists():
+    if not force and canonical_exams_json.exists() and canonical_master_json.exists():
         existing = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
         generated_at = existing.get("generated_at", "unknown")
         exam_count = len(existing.get("exams", []))
@@ -239,9 +253,10 @@ def build_challenges(
         else:
             print("Generating challenge exams for the first time...")
         questions = load_all_questions(output_dir)
-        print(f"  Found {len(questions)} questions "
-              f"({sum(1 for q in questions if q['type'] == 'mm')} mental math, "
-              f"{sum(1 for q in questions if q['type'] == 'op')} olympiad)")
+        mcq_mm = sum(1 for q in questions if q["type"] == "mm" and "correct" in q)
+        mcq_op = sum(1 for q in questions if q["type"] == "op" and "correct" in q)
+        print(f"  Found {len(questions)} questions total; "
+              f"{mcq_mm} mental math + {mcq_op} olympiad have MCQ data")
 
         exams = build_exam_sets(questions)
         generated_at = datetime.now(timezone.utc).isoformat()
@@ -253,10 +268,24 @@ def build_challenges(
         )
         print(f"  Wrote {canonical_exams_json}")
 
+        # Master questions catalog: flat list of all MCQ-equipped questions (uber artifact)
+        all_with_mcq = [q for q in questions if "correct" in q]
+        master_data = {
+            "generated_at": generated_at,
+            "total": len(all_with_mcq),
+            "mental_math": sum(1 for q in all_with_mcq if q["type"] == "mm"),
+            "olympiad": sum(1 for q in all_with_mcq if q["type"] == "op"),
+            "questions": all_with_mcq,
+        }
+        canonical_master_json.write_text(
+            json.dumps(master_data, indent=2), encoding="utf-8"
+        )
+        print(f"  Wrote {canonical_master_json.name} ({len(all_with_mcq)} questions)")
+
     # Always copy static PHP + HTML source files (picks up UI changes)
     # Skip exams.json — it's only needed to generate individual exam files, not served directly.
     for src_file in CHALLENGES_SRC_DIR.glob("*"):
-        if src_file.name == "exams.json":
+        if src_file.name in ("exams.json", "master_questions.json"):
             continue
         dest = challenges_dir / src_file.name
         shutil.copy2(src_file, dest)
