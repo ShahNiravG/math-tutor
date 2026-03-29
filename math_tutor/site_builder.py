@@ -402,7 +402,13 @@ def build_record_page_html(
     total_prompt_outputs = sum(
         1 for doc in records for prompt_output in doc.prompt_outputs if prompt_output.processed_at
     )
-    body_html = render_record(
+    header_html = render_surface_header(
+        active="library",
+        base_path=base_path,
+        eyebrow="Math Delight",
+        title="Algebra II Trig Tutor",
+    )
+    record_html = render_record(
         record,
         output_dir,
         site_dir,
@@ -410,6 +416,10 @@ def build_record_page_html(
         include_guided_learning=True,  # always show on per-document pages
         assignments=assignments or [],
     )
+    body_html = f"""
+    {header_html}
+    {record_html}
+    """
     return render_page_shell(
         title=f"{document_label(record)} - {SITE_TITLE}",
         records=records,
@@ -503,7 +513,7 @@ def render_page_shell(
       {body_html}
     </main>
   </div>
-    """ if page_kind not in {"home", "live-tutor"} else f"""
+    """ if page_kind not in {"home", "live-tutor", "record"} else f"""
   <div class="page page-home">
     <main class="main">
       {body_html}
