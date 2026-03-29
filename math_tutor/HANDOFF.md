@@ -59,9 +59,21 @@ Default output root: `math_tutor/output/`
 Deploy output: `math_tutor/output/deploy/math_tutor/site/`
 
 - `responses/` — copied from `output/responses/` during build
+- `index.html` — top-level landing page
+- `library.html` — chapter overview page
+- `live-tutor.html` — curriculum-wide guided learning page
 - `doc-<file_id>.html` — per-document pages
 - `challenges/` — challenge exam app (Cloudflare Access protected)
 - `assignments/` — assignment PDFs (Cloudflare Access protected)
+
+## Current Site UX
+
+- Public deploy base path is `/site/`
+- `index.html` is now a three-card landing page: Library, Challenge Exams, Live Tutor
+- `library.html` keeps the chapter list in the left rail and moves the branded nav header into the main panel
+- `live-tutor.html` is a no-sidebar page with the same branded top header as the library overview
+- Per-document pages keep a slim left rail without the full chapter list
+- Challenge exam pages now use the same brand identity and top navigation language as the main site
 
 ## Most Important Files
 
@@ -84,7 +96,7 @@ Deploy output: `math_tutor/output/deploy/math_tutor/site/`
 .venv/bin/math-tutor --username EMAIL --password PASS --fetch-only
 
 # Build and deploy site
-.venv/bin/math-tutor-build-site --site-dir math_tutor/output/deploy/math_tutor/site
+.venv/bin/math-tutor-build-site --site-dir math_tutor/output/deploy/math_tutor/site --base-path /site/
 
 # Backfill MCQ for existing notes (skips already-done)
 .venv/bin/math-tutor-generate-mcq
@@ -95,6 +107,7 @@ Deploy output: `math_tutor/output/deploy/math_tutor/site/`
 - 19 class note chapters fully processed (through chapter 11.4)
 - All prompts: study-guide, inspiring-videos, mental-math-gpt5 + MCQ, mental-math-gemini + MCQ, olympiad-problems/solutions-gpt5 + MCQ, olympiad-problems/solutions-gemini + MCQ
 - Deploy site at `output/deploy/math_tutor/site/` rebuilt and up to date
+- Deploy links verified against `/site/` base path
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 
 ## Known Risks

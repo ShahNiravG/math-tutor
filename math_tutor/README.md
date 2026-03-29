@@ -118,7 +118,15 @@ Useful flags:
 
 ### Site layout
 
-**Index page (`index.html`)** — one card per document, each showing a summary row.
+**Home page (`index.html`)** — a top-level landing page with three primary destinations:
+
+- **Library** — chapter browsing
+- **Challenge Exams** — the timed exam app
+- **Live Tutor** — curriculum-wide guided learning launch page
+
+**Library page (`library.html`)** — one card per document, each showing a summary row. The chapter list stays in the left rail only on this page.
+
+**Live Tutor page (`live-tutor.html`)** — a full-curriculum guided learning page with one combined prompt assembled from all chapter summaries, plus Gemini/ChatGPT Study Mode launch actions.
 
 **Per-document pages (`doc-<id>.html`)** — four prompt cards per document:
 
@@ -128,6 +136,19 @@ Useful flags:
 - **Olympiad Problems & Solutions** — one card combining both prompts; rows are grouped by model, each showing `Problems [PDF]   Solutions [PDF]`
 
 Each per-document page also includes a **Guided Learning** section with Gemini and ChatGPT Study Mode helper links and a copy button for the short summary from the Study Guide.
+
+**Challenge Exams (`challenges/index.html`)** — branded challenge landing page plus the exam runner under `challenges/exam.html`.
+
+### Deploy path
+
+The current production site is deployed under `/site/`, so deploy builds should use:
+
+```bash
+.venv/bin/python -m math_tutor.site_builder \
+  --output-dir math_tutor/output \
+  --site-dir math_tutor/output/deploy/math_tutor/site \
+  --base-path /site/
+```
 
 ### Model display names
 

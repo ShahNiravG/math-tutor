@@ -318,23 +318,32 @@ def build_index_html(
     library_href = site_page_href("library.html", base_path)
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
     live_tutor_href = site_page_href("live-tutor.html", base_path)
-    library_preview_cards = "\n".join(
-        render_index_card(
-            record,
-            output_dir,
-            site_dir,
-            base_path,
-            include_guided_learning=include_guided_learning,
-        )
-        for record in records[:6]
-    )
-    library_preview = f"""
-      <div class="library-preview-grid">
-        {library_preview_cards}
-      </div>
-    """ if library_preview_cards else ""
     body_html = f"""
     <section class="landing-hero">
+      <div class="home-brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="homeBrandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fff5da"/>
+                <stop offset="55%" stop-color="#f3c98f"/>
+                <stop offset="100%" stop-color="#cf7c43"/>
+              </linearGradient>
+            </defs>
+            <rect width="72" height="72" rx="16" fill="url(#homeBrandGlow)"/>
+            <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
+            <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
+            <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
+            <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
+            <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
+            <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
+          </svg>
+        </div>
+        <div>
+          <span class="eyebrow">Math Delight</span>
+          <h1 class="home-brand-title">Algebra II Trig Tutor</h1>
+        </div>
+      </div>
       <div class="landing-copy">
         <span class="eyebrow">Algebra II with Trigonometry</span>
         <h2>Choose how you want to study today.</h2>
@@ -365,17 +374,6 @@ def build_index_html(
         <p>Launch a full-curriculum guided learning session with one prompt that covers every chapter and can generate custom exams on demand.</p>
         <span class="destination-link">Open live tutor</span>
       </a>
-    </section>
-    <section class="content-card section-card">
-      <div class="section-head">
-        <div>
-          <span class="eyebrow">Library Preview</span>
-          <h3>Recent chapters</h3>
-        </div>
-        <a class="section-link" href="{html.escape(library_href)}">See full library</a>
-      </div>
-      <p class="page-intro">A quick glance at the first few note pages so the landing page still feels alive.</p>
-      {library_preview}
     </section>
     """
     return render_page_shell(
@@ -436,6 +434,11 @@ def render_page_shell(
     page_kind: str = "record",
 ) -> str:
     toc_items = "\n".join(render_sidebar_item(record, active_record, base_path) for record in records)
+    toc_html = f"""
+      <ol class="toc">
+        {toc_items}
+      </ol>
+    """ if page_kind == "library" else ""
     home_href = site_page_href("index.html", base_path)
     library_href = site_page_href("library.html", base_path)
     live_tutor_href = site_page_href("live-tutor.html", base_path)
@@ -449,8 +452,7 @@ def render_page_shell(
     home_active = " active" if page_kind == "home" else ""
     library_active = " active" if page_kind in {"library", "record"} else ""
     live_tutor_active = " active" if page_kind == "live-tutor" else ""
-    shell_html = f"""
-  <div class="page {page_class}">
+    sidebar_html = f"""
     <aside class="sidebar">
       <div class="brand-head">
         <div class="brand-mark" aria-hidden="true">
@@ -471,7 +473,7 @@ def render_page_shell(
             <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
           </svg>
         </div>
-        <h1>{html.escape(SIDEBAR_TITLE)}</h1>
+        <h1><span class="brand-keep">Algebra II</span> <span class="brand-keep">Trig Tutor</span></h1>
       </div>
       <p>Browse saved class note PDFs alongside the generated tutoring outputs.</p>
       <nav class="global-nav" aria-label="Site sections">
@@ -480,21 +482,28 @@ def render_page_shell(
         <a class="nav-pill{live_tutor_active}" href="{html.escape(live_tutor_href)}">Live Tutor</a>
         <a class="nav-pill" href="{html.escape(challenges_href)}">Challenge Exams</a>
       </nav>
-      <ol class="toc">
-        {toc_items}
-      </ol>
-      <div class="meta">
-        <div><strong>Viewing:</strong> {active_label}</div>
-        <div><strong>Documents:</strong> {len(records)}</div>
-        <div><strong>Saved prompt outputs:</strong> {total_prompt_outputs}</div>
-        <div><strong>Built:</strong> {generated_at}</div>
-      </div>
+      {toc_html}
     </aside>
+    """
+    if page_kind == "library":
+        sidebar_html = f"""
+    <aside class="sidebar sidebar-library">
+      <div class="sidebar-compact-head">
+        <span class="eyebrow">Library</span>
+        <h2>Chapters</h2>
+        <p>Jump directly into any chapter from here.</p>
+      </div>
+      {toc_html}
+    </aside>
+    """
+    shell_html = f"""
+  <div class="page {page_class}">
+    {sidebar_html}
     <main class="main">
       {body_html}
     </main>
   </div>
-    """ if page_kind != "home" else f"""
+    """ if page_kind not in {"home", "live-tutor"} else f"""
   <div class="page page-home">
     <main class="main">
       {body_html}
@@ -546,7 +555,7 @@ def render_page_shell(
       width: min(1240px, calc(100vw - 32px));
       margin: 24px auto 48px;
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 236px 1fr;
       gap: 24px;
     }}
     .page-home {{
@@ -567,15 +576,21 @@ def render_page_shell(
       max-height: calc(100vh - 40px);
       overflow: auto;
     }}
+    .sidebar-library {{
+      padding: 22px 18px 18px;
+    }}
     .sidebar h1 {{
       margin: 0 0 8px;
-      font-size: 1.8rem;
-      line-height: 1.05;
+      font-size: 1.66rem;
+      line-height: 1.04;
+    }}
+    .brand-keep {{
+      white-space: nowrap;
     }}
     .brand-head {{
       display: flex;
-      align-items: center;
-      gap: 12px;
+      align-items: flex-start;
+      gap: 10px;
       margin-bottom: 10px;
     }}
     .brand-mark {{
@@ -594,6 +609,19 @@ def render_page_shell(
     .sidebar p {{
       color: var(--muted);
       margin: 0 0 18px;
+      line-height: 1.45;
+    }}
+    .sidebar-compact-head {{
+      margin-bottom: 14px;
+    }}
+    .sidebar-compact-head h2 {{
+      margin: 6px 0 8px;
+      font-size: 1.45rem;
+      line-height: 1.05;
+    }}
+    .sidebar-compact-head p {{
+      margin: 0;
+      color: var(--muted);
       line-height: 1.45;
     }}
     .sidebar-home {{
@@ -676,6 +704,29 @@ def render_page_shell(
     .content-card {{
       padding: 24px;
     }}
+    .surface-header {{
+      background: color-mix(in srgb, var(--panel) 94%, white);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 12px 30px rgba(78, 55, 32, 0.08);
+      padding: 24px;
+    }}
+    .surface-nav {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }}
+    .surface-brand {{
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }}
+    .surface-brand-copy h2 {{
+      margin: 4px 0 0;
+      font-size: 1.65rem;
+      line-height: 1.02;
+    }}
     .landing-hero {{
       position: relative;
       overflow: hidden;
@@ -686,6 +737,17 @@ def render_page_shell(
       border-radius: 28px;
       padding: 38px 34px;
       box-shadow: 0 16px 34px rgba(78, 55, 32, 0.1);
+    }}
+    .home-brand {{
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }}
+    .home-brand-title {{
+      margin: 4px 0 0;
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      line-height: 1.02;
     }}
     .landing-copy h2 {{
       margin: 8px 0 14px;
@@ -997,6 +1059,7 @@ def render_page_shell(
       .page {{ grid-template-columns: 1fr; }}
       .sidebar {{ position: static; max-height: none; }}
       .landing-grid {{ grid-template-columns: 1fr; }}
+      .home-brand {{ margin-bottom: 18px; }}
     }}
   </style>
 </head>
@@ -1035,6 +1098,47 @@ def render_sidebar_item(record: DocumentRecord, active_record: DocumentRecord | 
     return f'<li><a class="{classes}" href="{html.escape(href)}">{html.escape(document_label(record))}</a></li>'
 
 
+def render_surface_header(*, active: str, base_path: str, eyebrow: str, title: str) -> str:
+    home_href = site_page_href("index.html", base_path)
+    library_href = site_page_href("library.html", base_path)
+    live_tutor_href = site_page_href("live-tutor.html", base_path)
+    challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
+    return f"""
+    <section class="surface-header">
+      <div class="surface-brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="surfaceBrandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#fff5da"/>
+                <stop offset="55%" stop-color="#f3c98f"/>
+                <stop offset="100%" stop-color="#cf7c43"/>
+              </linearGradient>
+            </defs>
+            <rect width="72" height="72" rx="16" fill="url(#surfaceBrandGlow)"/>
+            <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
+            <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
+            <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
+            <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
+            <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
+            <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
+          </svg>
+        </div>
+        <div class="surface-brand-copy">
+          <span class="eyebrow">{html.escape(eyebrow)}</span>
+          <h2>{html.escape(title)}</h2>
+        </div>
+      </div>
+      <nav class="surface-nav" aria-label="Site sections">
+        <a class="nav-pill{' active' if active == 'home' else ''}" href="{html.escape(home_href)}">Home</a>
+        <a class="nav-pill{' active' if active == 'library' else ''}" href="{html.escape(library_href)}">Library</a>
+        <a class="nav-pill{' active' if active == 'live-tutor' else ''}" href="{html.escape(live_tutor_href)}">Live Tutor</a>
+        <a class="nav-pill{' active' if active == 'challenges' else ''}" href="{html.escape(challenges_href)}">Challenge Exams</a>
+      </nav>
+    </section>
+    """
+
+
 def build_library_page_html(
     *,
     records: list[DocumentRecord],
@@ -1057,14 +1161,20 @@ def build_library_page_html(
         )
         for record in records
     )
+    header_html = render_surface_header(
+        active="library",
+        base_path=base_path,
+        eyebrow="Math Delight",
+        title="Algebra II Trig Tutor",
+    )
     body_html = f"""
+    {header_html}
     <section class="content-card section-card">
       <div class="section-head">
         <div>
           <span class="eyebrow">Library</span>
           <h3>Chapter collection</h3>
         </div>
-        <a class="section-link" href="{html.escape(site_page_href('index.html', base_path))}">Back to home</a>
       </div>
       <p class="page-intro">Choose a chapter to open its study guide, practice tools, assignments, and guided learning links.</p>
       <div class="prompt-grid">
@@ -1096,14 +1206,20 @@ def build_live_tutor_page_html(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
     )
     curriculum_prompt = build_curriculum_guided_learning_prompt(records)
+    header_html = render_surface_header(
+        active="live-tutor",
+        base_path=base_path,
+        eyebrow="Math Delight",
+        title="Algebra II Trig Tutor",
+    )
     body_html = f"""
+    {header_html}
     <section class="content-card section-card">
       <div class="section-head">
         <div>
           <span class="eyebrow">Live Tutor</span>
           <h3>Whole-course guided learning</h3>
         </div>
-        <a class="section-link" href="{html.escape(site_page_href('index.html', base_path))}">Back to home</a>
       </div>
       <p class="page-intro">This uses the same guided-learning launch pattern as the chapter pages, but with a single prompt covering the full Algebra II with Trigonometry curriculum.</p>
       {render_guided_learning_card(

@@ -259,6 +259,64 @@ Because:
 
 As of this log, `math_tutor/cli.py` supports:
 
+## Recent Site Redesign Work
+
+We later revisited the generated tutoring site to make it feel more like a real product surface rather than a document index.
+
+### 1. New top-level information architecture
+
+We changed the generated site so the root page is no longer just the document library.
+
+Current top-level pages:
+
+- `index.html` — branded landing page
+- `library.html` — chapter overview
+- `live-tutor.html` — curriculum-wide guided learning launcher
+- `challenges/index.html` — challenge exam landing page
+
+### 2. Dedicated Live Tutor page
+
+You wanted a `Live Tutor` section that behaves like the per-document guided learning card but covers the entire course.
+
+Fixes made:
+
+- added `live-tutor.html`
+- built a curriculum-wide prompt by combining all chapter short summaries
+- kept Gemini and ChatGPT Study Mode launch buttons plus prompt copy support
+- explicitly told the tutor prompt to support live exams at different difficulty levels
+
+### 3. Library and sidebar cleanup
+
+You called out that the left navigation was too large and too busy.
+
+Fixes made:
+
+- reduced chapter list visibility so it appears only on `library.html`
+- removed sidebar metadata such as viewing/build counts
+- kept per-document pages on a slimmer navigation shell
+- moved cross-site navigation into the main content header on the library overview
+
+### 4. Shared branding across sections
+
+You wanted the brand mark and title to appear consistently across the site, including challenge pages.
+
+Fixes made:
+
+- added the brand logo/title to the home page hero
+- added matching branded headers to the library overview and live tutor pages
+- updated challenge exam pages to use the same logo/title identity
+- aligned the section navigation labels across pages: Home, Library, Live Tutor, Challenge Exams
+
+### 5. Deploy path clarification
+
+The deploy path originally assumed `/math_tutor/site/`, but you clarified that the live site now uses `/site/`.
+
+Fixes made:
+
+- rebuilt deploy output with `--base-path /site/`
+- updated links and expectations around the live URL shape
+- documented `/site/` as the current public deploy base
+
 - course-based login entry
 - OneLogin flow handling
 - optional headful debugging with pause-before-exit
