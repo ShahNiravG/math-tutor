@@ -34,7 +34,7 @@ Prompts are defined via two dataclasses in `cli.py`:
 
 **Bundled generation**: mental-math and olympiad prompts include MCQ as part of their bundle. Specifying `--prompt mental-math-gpt5` automatically includes `mental-math-gpt5-mcq`.
 
-**Display-only prompts**: `study-guide-gemini` and `inspiring-videos-gemini` have `generate=False` — they are shown in the site but no API calls are made for them.
+**Display-only prompts**: `study-guide-gemini` has `generate=False` — it is shown in the site but no API calls are made for it.
 
 ## Current Processing Rules
 
@@ -56,12 +56,16 @@ Default output root: `math_tutor/output/`
 - `openai_state.json` — remembers completed prompt steps
 - `site/` — local browsable HTML site (default build target)
 
-Deploy output: `math_tutor/output/deploy/math_tutor/site/`
+Deploy root: `math_tutor/output/deploy/math_tutor/`
+
+Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 
 - `responses/` — copied from `output/responses/` during build
+- `.htaccess` and other hosting-level assets can live at the deploy root
 - `index.html` — top-level landing page
 - `library.html` — chapter overview page
 - `live-tutor.html` — curriculum-wide guided learning page
+- `privacy-policy.html` — generated legal page linked from the auth flow
 - `doc-<file_id>.html` — per-document pages
 - `challenges/` — challenge exam app (Cloudflare Access protected)
 - `assignments/` — assignment PDFs (Cloudflare Access protected)
@@ -69,11 +73,13 @@ Deploy output: `math_tutor/output/deploy/math_tutor/site/`
 ## Current Site UX
 
 - Public deploy base path is `/site/`
+- `.vscode/sftp.json` currently syncs from local `output/deploy/math_tutor/` to remote `public_html/math_tutor/`
 - `index.html` is now a three-card landing page: Library, Challenge Exams, Live Tutor
 - `library.html` keeps the chapter list in the left rail and moves the branded nav header into the main panel
 - `live-tutor.html` is a no-sidebar page with the same branded top header as the library overview
 - Per-document pages keep a slim left rail without the full chapter list
 - Challenge exam pages now use the same brand identity and top navigation language as the main site
+- The challenge landing page tracks completed exams, hides already-finished picks, and links to `reports.php`
 
 ## Most Important Files
 
@@ -106,7 +112,11 @@ Deploy output: `math_tutor/output/deploy/math_tutor/site/`
 
 - 76 exams built from 608 MCQ-equipped questions (380 MM + 228 OP across 19 chapters)
 - Exam structure: up to 7 mental math questions first, then at most 3 olympiad questions; max 10 per exam
+- `save_progress.php` writes authenticated in-progress challenge state to MySQL
+- `completed.php` returns completed exam ids for the current authenticated user
+- `reports.php` shows per-user submissions plus in-progress sessions
 - `exam.html` presents MCQ buttons (A/B/C/D) with immediate correct/wrong feedback after each selection
+- `submit.php` prevents duplicate submissions per user+exam and returns the existing result token when needed
 - `result.php` shows score chip + per-question MCQ option review with correct/wrong highlighting
 - `challenges_src/master_questions.json` — flat catalog of all 608 MCQ questions (git tracked, not served to site); use for external purposes
 - Force-rebuild challenges when question pool changes: `--force-challenges`
@@ -117,8 +127,10 @@ Deploy output: `math_tutor/output/deploy/math_tutor/site/`
 - All prompts: study-guide, inspiring-videos, mental-math-gpt5 + MCQ, mental-math-gemini + MCQ, olympiad-problems/solutions-gpt5 + MCQ, olympiad-problems/solutions-gemini + MCQ
 - 76 MCQ challenge exams deployed; master_questions.json committed to git
 - Site redesigned: index.html (landing), library.html, live-tutor.html pages added
+- Privacy policy page and challenge auth/reporting pages are part of the generated deploy output
 - Deploy base path is `/site/`; all build commands use `--base-path /site/`
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
+- CLI fetch logs now summarize already-fetched vs pending files before processing
 
 ## Known Risks
 

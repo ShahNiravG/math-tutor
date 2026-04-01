@@ -10,7 +10,7 @@
 6. Uploads each PDF to OpenAI or Gemini once per prompt, with the prompts embedded in code
 7. Saves each prompt-specific model output in Markdown, MathJax-enabled HTML, and PDF
 8. Saves run metadata to disk
-9. Can build a readable HTML tutoring site from the already-saved PDFs and responses
+9. Can build a readable HTML tutoring site, privacy policy page, and challenge-exam app from the already-saved PDFs and responses
 
 ## Requirements
 
@@ -48,7 +48,7 @@ Each prompt generates a separate output file. Supported slugs:
 | `study-guide` | GPT-4.1 | Study guide with short summary, key concepts, and practice problems |
 | `study-guide-gemini` | Gemini 3.1 Pro | Same study guide prompt via Gemini (display-only — no new API calls) |
 | `inspiring-videos` | GPT-4.1 | Curated YouTube search suggestions |
-| `inspiring-videos-gemini` | Gemini 3.1 Pro | Same inspiring videos prompt via Gemini (display-only — no new API calls) |
+| `inspiring-videos-gemini` | Gemini 3.1 Pro | Gemini-grounded YouTube search suggestions |
 | `mental-math-gpt5` | GPT-5.4 | Mental math drill set |
 | `mental-math-gpt5-mcq` | GPT-5.4 | Multiple-choice options for the GPT-5.4 mental math questions |
 | `mental-math-gemini` | Gemini 3.1 Pro | Mental math drill set via Gemini |
@@ -68,9 +68,15 @@ Each prompt generates a separate output file. Supported slugs:
 - `--force-prompt inspiring-videos`: rerun just that prompt while leaving other prompts alone
 - `--fetch-only`: only download matching PDFs and update fetch state
 - `--skip-fetch`: skip Canvas login and use already-downloaded PDFs from `fetch_state.json`
+- `--fetch-assignments`: fetch assignment PDFs instead of class notes
+- `--assignment-limit 10`: cap assignment fetches when `--fetch-assignments` is used
 - `--chapter 11.4`: filter to a specific chapter (repeatable; works with `--skip-fetch`)
 - `--force`: reprocess files even if output already exists
 - `--force-openai`: rerun the AI step even for files already processed successfully
+- `--list-files`: print all discovered course PDFs and exit
+- `--print-prompt study-guide`: print saved prompt PDFs without rerunning fetch or AI
+- `--print-all --chapter 7.4`: print class notes, assignments, and generated PDFs for a chapter
+- `--dry-run`: preview what `--print-prompt` or `--print-all` would print
 - `--output-dir custom/path`: choose a different output directory
 - `--login-url URL`: override the initial login entry URL if the auth flow has changed
 - `--site-dir custom/path`: choose where the generated tutoring page is written
@@ -108,7 +114,7 @@ Outputs are written under the selected output directory (default: `math_tutor/ou
 math-tutor-build-site
 ```
 
-This reads the existing saved PDFs, responses, and state files and generates the full HTML site under `math_tutor/output/site/`.
+This reads the existing saved PDFs, responses, and state files and generates the full HTML site under `math_tutor/output/site/`. The build also writes the challenge-exam assets and `privacy-policy.html`, and regenerates challenge `config.php` from the current `.env`.
 
 Useful flags:
 
@@ -139,15 +145,24 @@ Each per-document page also includes a **Guided Learning** section with Gemini a
 
 **Challenge Exams (`challenges/index.html`)** — branded challenge landing page with random exam picker. Exam runner at `challenges/exam.html` presents MCQ questions (mental math first, then up to 3 olympiad problems) with immediate correct/wrong feedback after each selection. Results page shows score and per-question MCQ review. Cloudflare Access protected.
 
+The challenge area also includes:
+
+- resume support from saved local state plus server-side progress saves for authenticated users
+- `completed.php` and `reports.php` so the picker can hide completed exams and show submission history
+- duplicate-submission protection so re-submitting the same exam returns the saved result instead of creating a second row
+- a generated `privacy-policy.html` page used by the Google-authenticated challenge flow
+
 ### Deploy path
 
-The current production site is deployed under `/site/`, so deploy builds should use:
+The current production site is deployed under `/site/`, while the SFTP sync root is `math_tutor/output/deploy/math_tutor/` as configured in `.vscode/sftp.json`. Build the site into that deploy tree with:
 
 ```bash
 .venv/bin/math-tutor-build-site \
   --site-dir math_tutor/output/deploy/math_tutor/site \
   --base-path /site/
 ```
+
+Then sync the whole `math_tutor/output/deploy/math_tutor/` folder to Bluehost. The generated tutoring pages live under its `site/` subfolder, and the deploy root can also contain top-level files like `.htaccess`.
 
 ### Model display names
 
@@ -170,5 +185,6 @@ math-tutor-backfill-response-html
 - You can target one or more prompts with repeated `--prompt` flags, and `--force-openai` applies only to the selected prompts.
 - `Olympiad Solutions` depends on the saved `Olympiad Problems` output for the same PDF. If the problems file does not exist yet, the CLI generates it first.
 - The HTML tutoring site is built from already-saved files and does not need to refetch PDFs or rerun the AI.
+- The Gemini inspiring-videos prompt uses Google Search grounding in the Gemini API.
 - Math formulas render best in the saved `.html` response files (MathJax). The `.pdf` files are convenient for printing or sharing.
 - If login does not complete, rerun with `--headful` and inspect whether the site is using a different auth flow or MFA.

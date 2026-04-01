@@ -873,3 +873,74 @@ Previously, challenge exams used free-text textarea answers with no grading. Reb
 - Exam experience: click-to-answer MCQ with instant feedback
 - `challenges_src/master_questions.json` committed — flat catalog of all MCQ questions for external use
 - Deploy base path is `/site/` (use `--base-path /site/` in all build commands)
+
+---
+
+## Session: 2026-03-31 — Auth Flow Polish, Reports, and Deploy/Docs Sync
+
+### Goals
+
+1. Make the challenge area production-ready for authenticated use
+2. Ensure deploy builds always generate the right challenge/auth assets
+3. Improve operational visibility during class-note fetch runs
+
+### Challenge Auth + Reporting Additions
+
+The challenge area was expanded beyond the exam runner itself.
+
+Changes made:
+
+- added `save_progress.php` so authenticated users can persist in-progress challenge state to MySQL
+- added `completed.php` so the challenge picker can hide already-completed exams for the current user
+- added `reports.php` to review saved submissions and in-progress sessions by user
+- added the related challenge UI links to the generated deploy output
+
+Behavior after this change:
+
+- the challenge landing page can show completed-progress status
+- users are prompted to resume only when the exam is still incomplete
+- reports now include both submitted exams and saved in-progress work
+
+### Submission Handling Improvements
+
+We tightened the authenticated result flow.
+
+Changes made:
+
+- `submit.php` now prevents duplicate submissions for the same `user_email + exam_id` pair and returns the original result token instead
+- after a successful submission, any matching `challenge_progress` row is deleted
+- `result.php` was updated to work cleanly with the newer authenticated result metadata
+
+### Deploy/Auth Build Updates
+
+We also aligned the generated site with the auth requirements.
+
+Changes made:
+
+- added generated `privacy-policy.html` output for the Google-authenticated challenge flow
+- added OAuth logo assets
+- ensured challenge `config.php` is regenerated from the current `.env` during builds
+- kept the public tutoring pages under `/site/` while the SFTP sync root remains `output/deploy/math_tutor/`
+
+### Gemini Watch Picks Fix
+
+The Gemini inspiring-videos path was corrected so it can produce grounded watch-pick results again.
+
+Fix made:
+
+- enabled Gemini Google Search grounding in the inspiring-videos generation path
+
+### Fetch Progress Logging
+
+The CLI now gives a clearer summary before and during fetch work.
+
+Changes made:
+
+- improved class-note discovery logging to show which files are already fetched versus still pending
+- kept per-file progress output clearer during processing
+
+### Current State
+
+- `README.md`, `TASK_HISTORY.md`, and `HANDOFF.md` now reflect the current deploy/auth flow
+- challenge deploys include reports, completed-state lookup, progress saving, privacy policy, and OAuth branding assets
+- deploy sync still uses `.vscode/sftp.json` with local `output/deploy/math_tutor/` as the upload context
