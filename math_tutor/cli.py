@@ -575,9 +575,9 @@ def main() -> None:
                 try:
                     from google import genai as google_genai
                     gemini_client = google_genai.Client(api_key=gemini_api_key)
-                    print("Gemini client initialized.")
+                    print("Gemini client initialized.", flush=True)
                 except ImportError:
-                    print("Warning: GEMINI_API_KEY is set but google-genai is not installed. Gemini prompts will be skipped.")
+                    print("Warning: GEMINI_API_KEY is set but google-genai is not installed. Gemini prompts will be skipped.", flush=True)
 
         if args.skip_fetch:
             # Build CanvasFile objects from already-downloaded fetch_state entries
@@ -602,7 +602,7 @@ def main() -> None:
                 ))
             if args.limit is not None:
                 skip_fetch_files = skip_fetch_files[:args.limit]
-            print(f"Found {len(skip_fetch_files)} already-fetched class note file(s).")
+            print(f"Found {len(skip_fetch_files)} already-fetched class note file(s).", flush=True)
             client = OpenAI(api_key=api_key) if api_key else None
             skip_fetch_needs_browser = any(prompt.generate and prompt.generate_response_pdf for prompt in selected_prompts)
             if skip_fetch_needs_browser:
@@ -664,7 +664,7 @@ def main() -> None:
                     page = context.new_page()
 
                     login_entry_url = args.login_url or args.course_url
-                    print(f"Starting login flow at {login_entry_url}...")
+                    print(f"Starting login flow at {login_entry_url}...", flush=True)
                     perform_login(
                         page=page,
                         login_url=login_entry_url,
@@ -678,9 +678,9 @@ def main() -> None:
                             all_files = list_canvas_pdfs_from_ui(
                                 page, canvas_client, args.course_url, name_matcher=is_pdf_by_name
                             )
-                            print(f"All PDF files found on course pages ({len(all_files)}):")
+                            print(f"All PDF files found on course pages ({len(all_files)}):", flush=True)
                             for f in all_files:
-                                print(f"  {f.display_name!r}")
+                                print(f"  {f.display_name!r}", flush=True)
                             return
 
                         if args.fetch_assignments:
@@ -692,7 +692,7 @@ def main() -> None:
                                 raise RuntimeError(
                                     "No assignment files were found on the course pages. Confirm that the account can access module attachments or course files."
                                 )
-                            print(f"Found {len(files)} assignment file(s).")
+                            print(f"Found {len(files)} assignment file(s).", flush=True)
                             for index, canvas_file in enumerate(files, start=1):
                                 process_file(
                                     canvas_client=canvas_client,
@@ -727,13 +727,14 @@ def main() -> None:
                                     if (lbl := extract_chapter_label(f.display_name)) and
                                     chapter_matches_filters(lbl, f.display_name, chapter_filters_normalized)
                                 ]
+                            summarize_discovered_files(files=files, fetch_state=fetch_state, force=args.force)
                             if args.limit is not None:
                                 files = files[:args.limit]
                             if not files:
                                 raise RuntimeError(
                                     "No PDF files were found on the course pages. Confirm that the account can access module attachments or course files."
                                 )
-                            print(f"Found {len(files)} class note file(s).")
+                            print(f"Found {len(files)} class note file(s).", flush=True)
                             client = OpenAI(api_key=api_key) if not args.fetch_only else None
                             for index, canvas_file in enumerate(files, start=1):
                                 process_file(
@@ -763,7 +764,7 @@ def main() -> None:
                                 page, canvas_client, args.course_url
                             )
                             if assignment_files:
-                                print(f"Found {len(assignment_files)} assignment file(s).")
+                                print(f"Found {len(assignment_files)} assignment file(s).", flush=True)
                                 for index, canvas_file in enumerate(assignment_files, start=1):
                                     process_file(
                                         canvas_client=canvas_client,
@@ -801,7 +802,7 @@ def main() -> None:
                 include_guided_learning=True,
                 file_ids=processed_file_ids,
             )
-            print(f"Built tutoring page with Guided Learning at {index_path}")
+            print(f"Built tutoring page with Guided Learning at {index_path}", flush=True)
     except KeyboardInterrupt:
         raise SystemExit(130)
 
@@ -1045,10 +1046,15 @@ def list_canvas_pdfs_from_ui(
     name_matcher: Callable[[str], bool] | None = None,
 ) -> list[CanvasFile]:
     matcher = name_matcher or matches_target_pdf
+    print("Checking Canvas files pages for matching PDFs...", flush=True)
     files = list_canvas_pdfs_from_files_page(page, course_url, name_matcher=matcher)
     if files:
+        print(f"Found {len(files)} matching PDF(s) via Canvas files pages.", flush=True)
         return files
-    return list_canvas_pdfs_from_modules_page(page, client, course_url, name_matcher=matcher)
+    print("No matching PDFs found via Canvas files pages; checking modules page...", flush=True)
+    files = list_canvas_pdfs_from_modules_page(page, client, course_url, name_matcher=matcher)
+    print(f"Found {len(files)} matching PDF(s) via Canvas modules page.", flush=True)
+    return files
 
 
 def list_canvas_pdfs_from_files_page(
@@ -1360,7 +1366,7 @@ def process_file(
     )
 
     if fetch_only:
-        print(f"[{index}/{total}] Fetch-only mode; skipping OpenAI for {canvas_file.display_name}.")
+        print(f"[{index}/{total}] Fetch-only mode; skipping OpenAI for {canvas_file.display_name}.", flush=True)
         return
 
     for prompt_spec in prompts:
@@ -1384,6 +1390,35 @@ def process_file(
         )
 
 
+def summarize_discovered_files(
+    *,
+    files: list[CanvasFile],
+    fetch_state: FetchState,
+    force: bool,
+) -> None:
+    existing_count = 0
+    new_files: list[CanvasFile] = []
+    for canvas_file in files:
+        state_key = str(canvas_file.file_id)
+        pdf_path_value = fetch_state.fetched.get(state_key, {}).get("pdf_path", "")
+        if pdf_path_value and Path(pdf_path_value).exists() and not force:
+            existing_count += 1
+            continue
+        new_files.append(canvas_file)
+
+    print(
+        f"Fetch check summary: {len(files)} matching file(s), "
+        f"{existing_count} already fetched, {len(new_files)} new.",
+        flush=True,
+    )
+    if new_files:
+        print("New matching files:", flush=True)
+        for canvas_file in new_files:
+            print(f"  {canvas_file.display_name} (file id {canvas_file.file_id})", flush=True)
+    else:
+        print("No new matching files were found on Canvas.", flush=True)
+
+
 def ensure_pdf_fetched(
     *,
     client: httpx.Client,
@@ -1397,10 +1432,10 @@ def ensure_pdf_fetched(
     state_key = str(canvas_file.file_id)
     previously_fetched = state_key in fetch_state.fetched and destination.exists()
     if previously_fetched and not force:
-        print(f"[{index}/{total}] Skipping download for {canvas_file.display_name}; already fetched.")
+        print(f"[{index}/{total}] Skipping download for {canvas_file.display_name}; already fetched.", flush=True)
         return
 
-    print(f"[{index}/{total}] Downloading {canvas_file.display_name}...")
+    print(f"[{index}/{total}] Downloading {canvas_file.display_name}...", flush=True)
     download_pdf(client, canvas_file.download_url, destination)
     fetch_state.fetched[state_key] = {
         "display_name": canvas_file.display_name,
@@ -1493,7 +1528,7 @@ def run_prompt(
     )
 
     effective_model = prompt_spec.model or model
-    print(f"[{index}/{total}] Sending {canvas_file.display_name} to {effective_model} for {prompt_spec.title}...")
+    print(f"[{index}/{total}] Sending {canvas_file.display_name} to {effective_model} for {prompt_spec.title}...", flush=True)
     result = generate_prompt_response(
         client=openai_client,
         gemini_client=gemini_client,
@@ -1558,7 +1593,7 @@ def run_prompt(
     }
     save_openai_state(openai_state)
     prompt_outputs_cache[prompt_spec.slug] = result.output_text
-    print(f"[{index}/{total}] Saved {prompt_spec.title} output to {response_path}.")
+    print(f"[{index}/{total}] Saved {prompt_spec.title} output to {response_path}.", flush=True)
     return result.output_text
 
 
