@@ -326,7 +326,7 @@ def build_index_html(
     library_href = site_page_href("library.html", base_path)
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
     live_tutor_href = site_page_href("live-tutor.html", base_path)
-    privacy_policy_href = "http://mathdelight.com/site/privacy-policy.html"
+    privacy_policy_href = "https://mathdelight.com/site/privacy-policy.html"
     body_html = f"""
     <section class="landing-hero">
       <div class="home-brand">
