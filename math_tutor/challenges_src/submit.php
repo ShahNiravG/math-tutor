@@ -45,11 +45,34 @@ try {
         $pdo->exec("ALTER TABLE challenge_results ADD COLUMN user_email VARCHAR(255) DEFAULT NULL");
     } catch (PDOException $e) { /* column already exists */ }
 
+    // Prevent duplicate submission: if this user has already submitted this exam, return the
+    // existing token so the client can redirect to the already-saved result.
+    if ($user_email) {
+        $dup = $pdo->prepare(
+            "SELECT token FROM challenge_results WHERE user_email = ? AND exam_id = ? LIMIT 1"
+        );
+        $dup->execute([$user_email, $exam_id]);
+        $existing = $dup->fetch(PDO::FETCH_ASSOC);
+        if ($existing) {
+            echo json_encode(['token' => $existing['token'], 'already_submitted' => true]);
+            exit;
+        }
+    }
+
     $stmt = $pdo->prepare(
         "INSERT INTO challenge_results (token, exam_id, exam_title, answers_json, time_seconds, user_email, submitted_at)
          VALUES (?, ?, ?, ?, ?, ?, NOW())"
     );
     $stmt->execute([$token, $exam_id, $exam_title, $answers, $time_secs, $user_email ?: null]);
+
+    // Clean up any in-progress record for this user+exam now that it's submitted
+    if ($user_email) {
+        try {
+            $pdo->prepare(
+                "DELETE FROM challenge_progress WHERE user_email = ? AND exam_id = ?"
+            )->execute([$user_email, $exam_id]);
+        } catch (PDOException $e) { /* progress table may not exist yet; safe to ignore */ }
+    }
 
     echo json_encode(['token' => $token]);
 } catch (PDOException $e) {

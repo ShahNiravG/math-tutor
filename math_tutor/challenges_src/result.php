@@ -50,6 +50,19 @@ foreach ($answers as $item) {
   <title><?= $exam_title ?> — Result</title>
   <script>window.MathJax={tex:{inlineMath:[['\\(','\\)'],['$','$']],displayMath:[['\\[','\\]'],['$$','$$']]}};</script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <script>
+  function mdToHtml(text) {
+    var dm = [], im = [];
+    text = text.replace(/\\\[[\s\S]*?\\\]/g, function(m){ dm.push(m); return '\x00DM'+(dm.length-1)+'\x00'; });
+    text = text.replace(/\\\([\s\S]*?\\\)|\$[^$\n]+\$/g, function(m){ im.push(m); return '\x00IM'+(im.length-1)+'\x00'; });
+    text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    text = text.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+    text = text.replace(/\n\n+/g,'</p><p>').replace(/\n/g,'<br>');
+    dm.forEach(function(m,i){ text = text.replace('\x00DM'+i+'\x00', m); });
+    im.forEach(function(m,i){ text = text.replace('\x00IM'+i+'\x00', m); });
+    return '<p>'+text+'</p>';
+  }
+  </script>
   <style>
     :root { --bg:#f5f1e8; --paper:#fffaf2; --ink:#1f2a33; --muted:#5b6a74;
             --accent:#a14d2e; --line:#d8cfc2;
@@ -232,18 +245,5 @@ foreach ($answers as $item) {
   <?php endforeach; ?>
 </div>
 
-<script>
-function mdToHtml(text) {
-  var dm = [], im = [];
-  text = text.replace(/\\\[[\s\S]*?\\\]/g, function(m){ dm.push(m); return '\x00DM'+(dm.length-1)+'\x00'; });
-  text = text.replace(/\\\([\s\S]*?\\\)|\$[^$\n]+\$/g, function(m){ im.push(m); return '\x00IM'+(im.length-1)+'\x00'; });
-  text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  text = text.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
-  text = text.replace(/\n\n+/g,'</p><p>').replace(/\n/g,'<br>');
-  dm.forEach(function(m,i){ text = text.replace('\x00DM'+i+'\x00', m); });
-  im.forEach(function(m,i){ text = text.replace('\x00IM'+i+'\x00', m); });
-  return '<p>'+text+'</p>';
-}
-</script>
 </body>
 </html>

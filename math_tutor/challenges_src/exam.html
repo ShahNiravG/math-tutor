@@ -157,10 +157,31 @@ function saveSession() {
     timerSecs: S.timerSecs,
     savedAt: new Date().toISOString(),
   }));
+  saveProgressToServer();
 }
 
 function clearSession() {
   localStorage.removeItem(SESSION_KEY);
+}
+
+// ── Server-side progress save (throttled, fire-and-forget) ──
+var _lastServerSave = 0;
+function saveProgressToServer() {
+  var now = Date.now();
+  if (now - _lastServerSave < 25000) return; // at most once per 25s
+  _lastServerSave = now;
+  var answered = Object.keys(S.answers).filter(function(k){ return S.answers[k]; }).length;
+  fetch('save_progress.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      exam_id:        S.exam.id,
+      exam_title:     S.exam.title,
+      current_idx:    S.idx,
+      timer_secs:     S.timerSecs,
+      answered_count: answered,
+    }),
+  }).catch(function(){}); // ignore errors — server save is best-effort
 }
 
 // ── Markdown + math renderer ──
