@@ -211,7 +211,8 @@ def _php_str(value: str) -> str:
 
 
 def generate_config_php(output_path: Path) -> None:
-    host = os.environ.get("MYSQL_HOST", "localhost")
+    load_dotenv_if_present()
+    host = os.environ.get("MYSQL_HOST") or os.environ.get("MySQL_HOST") or "localhost"
     dbname = os.environ.get("DBNAME", "")
     user = os.environ.get("DBUSER", "")
     password = os.environ.get("DBPASSWORD", "")

@@ -9,8 +9,8 @@ import subprocess
 import time
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable
-from urllib.parse import urljoin, urlparse
+from typing import Any, Callable, TypedDict
+from urllib.parse import parse_qs, quote, urljoin, urlparse
 
 import httpx
 from openai import OpenAI
@@ -42,6 +42,7 @@ class PromptSpec:
     model: str | None = None
     reasoning_effort: str | None = None
     generate: bool = True  # False = recognized for display but never sent to an API
+    use_google_search: bool = False
 
 
 @dataclass(frozen=True)
@@ -91,23 +92,31 @@ Keep the response self-contained and use clear section headings.
         title="Inspiring Videos",
         text="""I have a 14-year-old student studying the math topics in the attached PDF.
 
-For the topics in the PDF, recommend 1-2 highly engaging and visually intuitive YouTube videos from reputable math creators that inspire curiosity rather than focus on procedural problem solving.
+For the topics in the PDF, recommend exactly 2 highly engaging and visually intuitive YouTube videos from reputable math creators that inspire curiosity rather than focus on procedural problem solving.
 
 Requirements:
 1. Prefer videos that build deep conceptual understanding, such as geometric or visual intuition.
 2. Keep the recommendations appropriate for a motivated beginner.
 3. Avoid overly technical, competition-focused, or Olympiad-level content.
-4. Do not provide a direct YouTube watch URL, since those are often hallucinated or stale.
-5. Instead, provide a Google search link that is likely to find the exact video, using the video title, creator name, and the word YouTube in the query.
-6. Make the search query specific enough that a student can quickly find the intended video from the results.
-7. For each recommendation, briefly explain why it is inspiring and why it matches the topics in the PDF.
-8. If the PDF spans several distinct topics, choose the 1-2 videos that best cover the most central ideas.
+4. Use grounded web search to find the exact public YouTube video page.
+5. Provide a direct, working YouTube watch URL for each recommendation.
+6. Do not invent or guess URLs. Only include a URL if you found that exact video page.
+7. Prefer standard watch links like https://www.youtube.com/watch?v=... over channel or search pages.
+8. For each recommendation, briefly explain why it is inspiring and why it matches the topics in the PDF.
+9. If the PDF spans several distinct topics, choose the 2 videos that best cover the most central ideas.
 
-Format the response as a short list with the video title, creator, Google search link, and a brief explanation.
+Format the response exactly as:
+- Title: ...
+- Creator: ...
+- URL: https://www.youtube.com/watch?v=...
+- Why it inspires: ...
+- Topics matched: ...
+
+Output only the two recommendations.
 """,
         include_source_pdf_link=False,
         generate_response_pdf=False,
-        generate_models=("",),
+        generate_models=("", "gemini"),
     ),
     PromptTemplate(
         slug="mental-math",
@@ -258,6 +267,7 @@ def _build_prompt_spec(template: PromptTemplate, mc: ModelConfig) -> PromptSpec:
         generate_response_pdf=template.generate_response_pdf,
         model=mc.model if mc.slug else None,
         generate=generate,
+        use_google_search=(template.slug == "inspiring-videos" and mc.slug == "gemini"),
     )
 
 
@@ -339,10 +349,15 @@ def load_dotenv_if_present(path: Path = DEFAULT_ENV_PATH) -> None:
         line = raw_line.strip()
         if not line or line.startswith("#") or "=" not in line:
             continue
+        if line.startswith("export "):
+            line = line[len("export "):].strip()
+            if "=" not in line:
+                continue
 
         key, value = line.split("=", 1)
         key = key.strip()
-        if not key or key in os.environ:
+        existing = os.environ.get(key)
+        if not key or (existing is not None and existing != ""):
             continue
 
         value = value.strip()
@@ -589,33 +604,58 @@ def main() -> None:
                 skip_fetch_files = skip_fetch_files[:args.limit]
             print(f"Found {len(skip_fetch_files)} already-fetched class note file(s).")
             client = OpenAI(api_key=api_key) if api_key else None
-            with sync_playwright() as playwright:
-                browser = playwright.chromium.launch(headless=not args.headful)
-                try:
-                    for index, canvas_file in enumerate(skip_fetch_files, start=1):
-                        process_file(
-                            canvas_client=None,
-                            openai_client=client,
-                            gemini_client=gemini_client,
-                            pdf_browser=browser,
-                            canvas_file=canvas_file,
-                            downloads_dir=downloads_dir,
-                            responses_dir=responses_dir,
-                            metadata_dir=metadata_dir,
-                            fetch_state=fetch_state,
-                            openai_state=openai_state,
-                            model=args.model,
-                            prompts=selected_prompts,
-                            forced_prompt_slugs=forced_prompt_slugs,
-                            force=args.force,
-                            fetch_only=False,
-                            force_openai=args.force_openai,
-                            index=index,
-                            total=len(skip_fetch_files),
-                        )
-                        processed_file_ids.add(str(canvas_file.file_id))
-                finally:
-                    browser.close()
+            skip_fetch_needs_browser = any(prompt.generate and prompt.generate_response_pdf for prompt in selected_prompts)
+            if skip_fetch_needs_browser:
+                with sync_playwright() as playwright:
+                    browser = playwright.chromium.launch(headless=not args.headful)
+                    try:
+                        for index, canvas_file in enumerate(skip_fetch_files, start=1):
+                            process_file(
+                                canvas_client=None,
+                                openai_client=client,
+                                gemini_client=gemini_client,
+                                pdf_browser=browser,
+                                canvas_file=canvas_file,
+                                downloads_dir=downloads_dir,
+                                responses_dir=responses_dir,
+                                metadata_dir=metadata_dir,
+                                fetch_state=fetch_state,
+                                openai_state=openai_state,
+                                model=args.model,
+                                prompts=selected_prompts,
+                                forced_prompt_slugs=forced_prompt_slugs,
+                                force=args.force,
+                                fetch_only=False,
+                                force_openai=args.force_openai,
+                                index=index,
+                                total=len(skip_fetch_files),
+                            )
+                            processed_file_ids.add(str(canvas_file.file_id))
+                    finally:
+                        browser.close()
+            else:
+                for index, canvas_file in enumerate(skip_fetch_files, start=1):
+                    process_file(
+                        canvas_client=None,
+                        openai_client=client,
+                        gemini_client=gemini_client,
+                        pdf_browser=None,
+                        canvas_file=canvas_file,
+                        downloads_dir=downloads_dir,
+                        responses_dir=responses_dir,
+                        metadata_dir=metadata_dir,
+                        fetch_state=fetch_state,
+                        openai_state=openai_state,
+                        model=args.model,
+                        prompts=selected_prompts,
+                        forced_prompt_slugs=forced_prompt_slugs,
+                        force=args.force,
+                        fetch_only=False,
+                        force_openai=args.force_openai,
+                        index=index,
+                        total=len(skip_fetch_files),
+                    )
+                    processed_file_ids.add(str(canvas_file.file_id))
         else:
             with sync_playwright() as playwright:
                 browser = playwright.chromium.launch(headless=not args.headful)
@@ -1491,7 +1531,7 @@ def run_prompt(
         "content_type": canvas_file.content_type,
         "size": canvas_file.size,
         "updated_at": canvas_file.updated_at,
-        "openai_model": model,
+        "openai_model": effective_model,
         "openai_response_id": result.response_id,
         "prompt_slug": prompt_spec.slug,
         "prompt_title": prompt_spec.title,
@@ -1514,7 +1554,7 @@ def run_prompt(
         "processed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "openai_response_id": result.response_id,
         "source_prompt_slug": prompt_spec.source_prompt_slug or "",
-        "model": model,
+        "model": effective_model,
     }
     save_openai_state(openai_state)
     prompt_outputs_cache[prompt_spec.slug] = result.output_text
@@ -1594,6 +1634,73 @@ class PromptResponseResult:
     response_id: str | None
 
 
+class InspiringVideoRecommendation(TypedDict):
+    title: str
+    creator: str
+    url: str
+    why_it_inspires: str
+    topics_matched: list[str]
+
+
+def normalize_youtube_url(url: str) -> str | None:
+    parsed = urlparse(url.strip())
+    host = parsed.netloc.lower()
+    if host.startswith("www."):
+        host = host[4:]
+
+    video_id = ""
+    if host == "youtu.be":
+        video_id = parsed.path.strip("/").split("/", 1)[0]
+    elif host == "youtube.com":
+        if parsed.path == "/watch":
+            video_id = parse_qs(parsed.query).get("v", [""])[0]
+        elif parsed.path.startswith("/shorts/"):
+            video_id = parsed.path.split("/", 2)[2]
+
+    video_id = re.sub(r"[^A-Za-z0-9_-].*$", "", video_id)
+    if not video_id:
+        return None
+    return f"https://www.youtube.com/watch?v={video_id}"
+
+
+def validate_youtube_url(url: str) -> tuple[str, dict[str, Any]] | None:
+    normalized = normalize_youtube_url(url)
+    if not normalized:
+        return None
+
+    oembed_url = f"https://www.youtube.com/oembed?url={quote(normalized, safe='')}&format=json"
+    try:
+        response = httpx.get(oembed_url, timeout=15.0, follow_redirects=True)
+        response.raise_for_status()
+        payload = response.json()
+    except Exception:
+        return None
+
+    if not isinstance(payload, dict):
+        return None
+    if not payload.get("title") or not payload.get("author_name"):
+        return None
+    return normalized, payload
+
+
+def render_inspiring_videos_markdown(recommendations: list[InspiringVideoRecommendation]) -> str:
+    blocks: list[str] = []
+    for index, item in enumerate(recommendations, start=1):
+        topics = ", ".join(item.get("topics_matched") or [])
+        blocks.append(
+            "\n".join(
+                [
+                    f"### {index}. {item['title']}",
+                    f"**Creator:** {item['creator']}",
+                    f"**URL:** {item['url']}",
+                    f"**Why it inspires:** {item['why_it_inspires']}",
+                    f"**Topics matched:** {topics}",
+                ]
+            )
+        )
+    return "\n\n---\n\n".join(blocks)
+
+
 def generate_tutor_response(
     client: OpenAI, pdf_path: Path, model: str, prompt_text: str, reasoning_effort: str | None = None
 ) -> Any:
@@ -1632,9 +1739,10 @@ def generate_text_only_response(
 
 
 def generate_gemini_tutor_response(
-    client: Any, pdf_path: Path, model: str, prompt_text: str
+    client: Any, pdf_path: Path, model: str, prompt_spec: PromptSpec
 ) -> PromptResponseResult:
     from google.genai import types as genai_types
+
     print(f"  -> Uploading {pdf_path.name} to Gemini...", flush=True)
     with pdf_path.open("rb") as handle:
         uploaded_file = client.files.upload(
@@ -1645,13 +1753,20 @@ def generate_gemini_tutor_response(
             ),
         )
     print(f"  -> Waiting for Gemini ({model}) response...", flush=True)
+    config = None
+    if prompt_spec.use_google_search:
+        config = genai_types.GenerateContentConfig(
+            tools=[genai_types.Tool(googleSearch=genai_types.GoogleSearch())],
+            response_mime_type="application/json",
+            response_schema=list[InspiringVideoRecommendation],
+        )
     response = client.models.generate_content(
         model=model,
         contents=[
             genai_types.Content(
                 role="user",
                 parts=[
-                    genai_types.Part(text=prompt_text),
+                    genai_types.Part(text=prompt_spec.text),
                     genai_types.Part(
                         file_data=genai_types.FileData(
                             mime_type="application/pdf",
@@ -1661,8 +1776,46 @@ def generate_gemini_tutor_response(
                 ],
             )
         ],
+        config=config,
     )
-    return PromptResponseResult(output_text=response.text, response_id=None)
+    output_text = response.text or ""
+    if not prompt_spec.use_google_search:
+        return PromptResponseResult(output_text=output_text, response_id=None)
+
+    try:
+        raw_items = json.loads(output_text)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Gemini returned invalid JSON for {prompt_spec.slug}.") from exc
+    if not isinstance(raw_items, list):
+        raise RuntimeError(f"Gemini returned an unexpected payload for {prompt_spec.slug}.")
+
+    validated: list[InspiringVideoRecommendation] = []
+    seen_urls: set[str] = set()
+    for raw_item in raw_items:
+        if not isinstance(raw_item, dict):
+            continue
+        url = str(raw_item.get("url") or "").strip()
+        validated_result = validate_youtube_url(url)
+        if not validated_result:
+            continue
+        normalized_url, oembed_payload = validated_result
+        if normalized_url in seen_urls:
+            continue
+        seen_urls.add(normalized_url)
+        validated.append(
+            {
+                "title": str(raw_item.get("title") or oembed_payload["title"]).strip() or str(oembed_payload["title"]).strip(),
+                "creator": str(raw_item.get("creator") or oembed_payload["author_name"]).strip() or str(oembed_payload["author_name"]).strip(),
+                "url": normalized_url,
+                "why_it_inspires": str(raw_item.get("why_it_inspires") or "").strip(),
+                "topics_matched": [str(t).strip() for t in raw_item.get("topics_matched") or [] if str(t).strip()],
+            }
+        )
+
+    if not validated:
+        raise RuntimeError("Gemini did not return any valid public YouTube links.")
+
+    return PromptResponseResult(output_text=render_inspiring_videos_markdown(validated), response_id=None)
 
 
 def generate_gemini_text_only_response(
@@ -1691,7 +1844,7 @@ def generate_prompt_response(
         if gemini_client is None:
             raise RuntimeError("GEMINI_API_KEY must be set to run Gemini prompts.")
         if prompt_spec.source_prompt_slug is None:
-            return generate_gemini_tutor_response(gemini_client, pdf_path, effective_model, prompt_spec.text)
+            return generate_gemini_tutor_response(gemini_client, pdf_path, effective_model, prompt_spec)
         if source_output is None:
             raise RuntimeError(f"{prompt_spec.title} requires a source prompt output.")
         prompt_text = prompt_spec.text.replace(prompt_spec.source_placeholder, source_output)

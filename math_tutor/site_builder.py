@@ -1432,6 +1432,24 @@ def render_single_model_row_card(
     """
 
 
+def render_inspiring_videos_card(
+    record: DocumentRecord,
+    outputs_by_slug: dict[str, PromptOutputRecord],
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+) -> str:
+    return render_single_model_row_card(
+        "Inspiring Videos",
+        INSPIRING_VIDEOS_SPECS,
+        outputs_by_slug,
+        "Watch Picks",
+        output_dir,
+        site_dir,
+        base_path,
+    )
+
+
 def render_olympiad_combined(
     outputs_by_slug: dict[str, PromptOutputRecord],
     output_dir: Path,
@@ -1510,12 +1528,15 @@ def render_record(
 
     for title, specs, label, hide_model in (
         ("Study Guide", STUDY_GUIDE_SPECS, "Open Guide", False),
-        ("Inspiring Videos", INSPIRING_VIDEOS_SPECS, "Watch Picks", False),
         ("Mental Math", MENTAL_MATH_SPECS, "Mental Math", False),
     ):
         card = render_single_model_row_card(title, specs, outputs_by_slug, label, output_dir, site_dir, base_path, hide_model=hide_model)
         if card:
             cards.append(card)
+
+    inspiring_videos_card = render_inspiring_videos_card(record, outputs_by_slug, output_dir, site_dir, base_path)
+    if inspiring_videos_card:
+        cards.insert(1 if cards else 0, inspiring_videos_card)
 
     olympiad_card = render_olympiad_combined(outputs_by_slug, output_dir, site_dir, base_path)
     if olympiad_card:
