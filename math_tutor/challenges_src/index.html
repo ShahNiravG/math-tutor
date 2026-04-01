@@ -73,6 +73,21 @@
       color: #6a2e16;
     }
     .nav-pill:hover { border-color: var(--accent); }
+    .auth-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-right: 7px;
+      border-radius: 999px;
+      background: #8b4a2c;
+      color: #fff7f0;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.16);
+    }
     .brand-bar {
       width: 100%;
       display: flex;
@@ -289,6 +304,53 @@
       color: var(--muted);
       margin: 0 0 28px;
     }
+    .progress-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--teal-light);
+      color: var(--teal);
+      font-family: system-ui, sans-serif;
+      font-size: .82rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .progress-bar-wrap {
+      flex: 1;
+      height: 6px;
+      background: #b2dce4;
+      border-radius: 999px;
+      min-width: 60px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--teal);
+      border-radius: 999px;
+      transition: width .4s;
+    }
+    .tag-done { background: #d1fae5; color: #065f46; }
+    .all-done-box {
+      width: min(560px, 100%);
+      background: var(--teal-light);
+      border: 1.5px solid #5fbdd1;
+      border-radius: 24px;
+      padding: 32px 28px;
+      text-align: center;
+      color: var(--teal);
+    }
+    .all-done-box h2 { margin: 0 0 8px; font-size: 1.4rem; }
+    .all-done-box p  { margin: 0 0 18px; font-family: system-ui, sans-serif; font-size: .95rem; }
+    .all-done-box a  {
+      display: inline-block;
+      padding: 10px 24px; border-radius: 999px;
+      background: var(--teal); color: #fff;
+      text-decoration: none; font-family: system-ui, sans-serif;
+      font-weight: 700; font-size: .95rem;
+    }
+    .all-done-box a:hover { background: #0d3347; }
     @media (max-width: 640px) {
       .page { padding-top: 28px; }
       .site-nav { margin-bottom: 24px; }
@@ -327,6 +389,7 @@
       <a class="nav-pill" href="../library.html">Library</a>
       <a class="nav-pill" href="../live-tutor.html">Live Tutor</a>
       <a class="nav-pill active" href="index.html">Challenge Exams</a>
+      <a class="nav-pill" href="reports.php"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>Reports</a>
     </nav>
   </section>
 
@@ -342,10 +405,16 @@
 <script>
 const SESSION_KEY = 'math_tutor_challenge_session';
 
-function renderResumeCard() {
+function renderResumeCard(completedSet) {
   try {
     var saved = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
     if (!saved || !saved.exam_id) return;
+
+    // Don't offer to resume an already-submitted exam
+    if (completedSet && completedSet.has(saved.exam_id)) {
+      localStorage.removeItem(SESSION_KEY);
+      return;
+    }
 
     var answered = Object.values(saved.answers || {}).filter(function(v){ return v.trim(); }).length;
     var m = Math.floor((saved.timerSecs || 0) / 60), s = (saved.timerSecs || 0) % 60;
@@ -373,43 +442,82 @@ function renderResumeCard() {
   } catch(e) { /* ignore corrupt storage */ }
 }
 
-renderResumeCard();
-
 (async function () {
   const root = document.getElementById('root');
-  let exams = [];
 
-  let data;
+  // Fetch exam index and completed list in parallel
+  let data, completedIds = [];
   try {
-    const res = await fetch('exams-index.json');
-    data = await res.json();
-    exams = data.exams || [];
+    const [indexRes, completedRes] = await Promise.all([
+      fetch('exams-index.json'),
+      fetch('completed.php').catch(function() { return null; }),
+    ]);
+    data = await indexRes.json();
+    if (completedRes && completedRes.ok) {
+      const cdata = await completedRes.json();
+      completedIds = cdata.completed || [];
+    }
   } catch (e) {
     root.innerHTML = '<div class="error-box">Could not load exams. Please try again later.</div>';
     return;
   }
 
-  if (!exams.length) {
+  const allExams = data.exams || [];
+  if (!allExams.length) {
     root.innerHTML = '<div class="error-box">No exams found.</div>';
     return;
   }
 
-  // Show bundle timestamp
+  const completedSet = new Set(completedIds);
+
+  // Render resume card now that we know which exams are already completed
+  renderResumeCard(completedSet);
+
+  // Show bundle timestamp and progress
   if (data.generated_at) {
     const d = new Date(data.generated_at);
     const label = d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
     document.getElementById('bundle-info').textContent =
-      `${exams.length} exams · Bundle generated ${label}`;
+      `${allExams.length} exams · Bundle generated ${label}`;
+  }
+
+  const availableExams = allExams.filter(function(e) { return !completedSet.has(e.id); });
+  const doneCount = completedSet.size;
+
+  // Show progress chip if at least one exam is completed
+  if (doneCount > 0) {
+    const pct = Math.round((doneCount / allExams.length) * 100);
+    const progressContainer = document.createElement('div');
+    progressContainer.innerHTML = `
+      <div class="progress-chip">
+        &#127942; ${doneCount} / ${allExams.length} completed
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:${pct}%"></div>
+        </div>
+      </div>
+    `;
+    document.getElementById('resume-container').before(progressContainer.firstElementChild);
+  }
+
+  // All exams completed
+  if (!availableExams.length) {
+    root.innerHTML = `
+      <div class="all-done-box">
+        <h2>&#127881; All Challenges Completed!</h2>
+        <p>You've finished all ${allExams.length} challenge exams. Check your results below.</p>
+        <a href="reports.php"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>View Reports &rarr;</a>
+      </div>
+    `;
+    return;
   }
 
   // Track recently shown exams to avoid immediate repeats
   const shown = new Set();
 
   function pickRandom() {
-    // Reset if we've exhausted all exams
-    if (shown.size >= exams.length) shown.clear();
+    if (shown.size >= availableExams.length) shown.clear();
     let exam;
-    do { exam = exams[Math.floor(Math.random() * exams.length)]; }
+    do { exam = availableExams[Math.floor(Math.random() * availableExams.length)]; }
     while (shown.has(exam.id));
     shown.add(exam.id);
     return exam;

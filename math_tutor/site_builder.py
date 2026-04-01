@@ -180,6 +180,14 @@ def build_site(
         ),
         encoding="utf-8",
     )
+    privacy_policy_path = resolved_site_dir / "privacy-policy.html"
+    privacy_policy_path.write_text(
+        build_privacy_policy_page_html(
+            records=records,
+            base_path=resolved_base_path,
+        ),
+        encoding="utf-8",
+    )
     for record in records:
         record_path = resolved_site_dir / record_page_filename(record)
         record_path.write_text(
@@ -318,6 +326,7 @@ def build_index_html(
     library_href = site_page_href("library.html", base_path)
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
     live_tutor_href = site_page_href("live-tutor.html", base_path)
+    privacy_policy_href = "http://mathdelight.com/site/privacy-policy.html"
     body_html = f"""
     <section class="landing-hero">
       <div class="home-brand">
@@ -374,6 +383,9 @@ def build_index_html(
         <p>Launch a full-curriculum guided learning session with one prompt that covers every chapter and can generate custom exams on demand.</p>
         <span class="destination-link">Open live tutor</span>
       </a>
+    </section>
+    <section class="landing-footer-note">
+      <a href="{html.escape(privacy_policy_href)}">Privacy Policy</a>
     </section>
     """
     return render_page_shell(
@@ -945,6 +957,21 @@ def render_page_shell(
       color: #854d0e;
       font-weight: 600;
     }}
+    .auth-icon {{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.35rem;
+      height: 1.35rem;
+      margin-right: 0.45rem;
+      border-radius: 999px;
+      background: #854d0e;
+      color: #fffdf4;
+      font-size: 0.9rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.16);
+    }}
     .olympiad-model-row {{
       display: flex;
       align-items: flex-start;
@@ -1252,6 +1279,75 @@ def build_live_tutor_page_html(
     )
 
 
+def build_privacy_policy_page_html(
+    *,
+    records: list[DocumentRecord],
+    base_path: str,
+) -> str:
+    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    total_prompt_outputs = sum(
+        1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
+    )
+    header_html = render_surface_header(
+        active="home",
+        base_path=base_path,
+        eyebrow="Math Delight",
+        title="Privacy Policy",
+    )
+    body_html = f"""
+    {header_html}
+    <section class="content-card section-card">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Legal</span>
+          <h3>Privacy Policy</h3>
+        </div>
+      </div>
+      <p class="page-intro">This privacy policy explains how Algebra II Trig Tutor collects, uses, and protects information when students or families use the website and related Google OAuth sign-in flow.</p>
+
+      <h3>Information We Collect</h3>
+      <p>We collect only the user's email address from Google Sign-In, along with app data needed to operate the service such as challenge exam progress, submitted answers, timestamps, and saved learning activity.</p>
+
+      <h3>How We Use Information</h3>
+      <p>We use collected information to authenticate users, provide access to tutoring and challenge features, save progress, display reports, improve the learning experience, maintain security, and communicate essential updates related to the service.</p>
+
+      <h3>Google User Data</h3>
+      <p>If you sign in with Google, we use only the user's email address to identify the account within the app and support the requested educational features. We do not sell Google user data, and we do not use it for advertising.</p>
+
+      <h3>Data Sharing</h3>
+      <p>We do not sell personal information. Data may be shared only with service providers or hosting platforms that help operate the application, or when required by law, security needs, or protection of rights.</p>
+
+      <h3>Data Retention</h3>
+      <p>We keep information only as long as reasonably necessary to operate the tutoring service, maintain saved progress, review challenge results, meet legal obligations, or resolve disputes.</p>
+
+      <h3>Security</h3>
+      <p>We use reasonable administrative and technical safeguards to protect stored information. However, no method of transmission or storage is completely secure, so we cannot guarantee absolute security.</p>
+
+      <h3>Your Choices</h3>
+      <p>You may stop using the service at any time. If you would like your stored data reviewed or deleted, you can contact us using the contact method associated with this application or site.</p>
+
+      <h3>Children and Education</h3>
+      <p>This site is intended to support educational use. Parents, guardians, schools, or authorized users should ensure that use of the app complies with their local policies and requirements.</p>
+
+      <h3>Changes to This Policy</h3>
+      <p>We may update this privacy policy from time to time. Any updated version will be posted on this page with the current effective build date shown in the site footer.</p>
+
+      <h3>Contact</h3>
+      <p>For privacy-related questions about this application, please use the contact details associated with the website, school, or app administrator managing this deployment.</p>
+    </section>
+    """
+    return render_page_shell(
+        title=f"Privacy Policy - {SITE_TITLE}",
+        records=records,
+        active_record=None,
+        body_html=body_html,
+        total_prompt_outputs=total_prompt_outputs,
+        generated_at=generated_at,
+        base_path=base_path,
+        page_kind="live-tutor",
+    )
+
+
 def render_index_card(
     record: DocumentRecord,
     output_dir: Path,
@@ -1370,7 +1466,7 @@ def render_assignments_card(assignments: list[Path], site_dir: Path, base_path: 
     return f"""
       <section class="prompt-card">
         <h3>Assignments</h3>
-        <div class="chip-row"><span class="chip chip-lock">Login Required</span></div>
+        <div class="chip-row"><span class="chip chip-lock"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>Authorization Required</span></div>
         <div class="link-row">
           {' '.join(links)}
         </div>
