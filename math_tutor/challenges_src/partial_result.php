@@ -113,6 +113,8 @@ foreach ($answers as $item) {
            font:inherit; font-weight:600; padding:9px 16px; border-radius:999px; cursor:pointer;
            text-decoration:none; font-size:.95rem; }
     .btn:hover { background:var(--accent); color:#fff; }
+    .btn-delete { color:#dc2626; border-color:#fca5a5; }
+    .btn-delete:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
 
     .q-card { background:var(--paper); border:1px solid var(--line); border-radius:16px;
               padding:24px 28px; margin-bottom:16px;
@@ -188,6 +190,7 @@ foreach ($answers as $item) {
     <div class="actions">
       <a class="btn" href="reports.php">&#8592; Reports</a>
       <button class="btn" onclick="window.print()">Print / Save PDF</button>
+      <a class="btn btn-delete" href="admin/delete.php?type=progress&email=<?= urlencode($row['user_email']) ?>&exam_id=<?= urlencode($row['exam_id']) ?>">&#128465; Delete</a>
     </div>
   </div>
 

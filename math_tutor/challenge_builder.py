@@ -289,8 +289,14 @@ def build_challenges(
         if src_file.name in ("exams.json", "master_questions.json"):
             continue
         dest = challenges_dir / src_file.name
-        shutil.copy2(src_file, dest)
-        print(f"  Copied {src_file.name}")
+        if src_file.is_dir():
+            if dest.exists():
+                shutil.rmtree(dest)
+            shutil.copytree(src_file, dest)
+            print(f"  Copied {src_file.name}/")
+        else:
+            shutil.copy2(src_file, dest)
+            print(f"  Copied {src_file.name}")
 
     # Always generate a lightweight exams-index.json for the picker page (no question text)
     # and individual per-exam JSON files so exam.html only fetches ~4KB instead of 194KB.
