@@ -404,7 +404,7 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
             <td><span class="badge-progress">&#9203; <?= $p['answered'] ?>/10 answered &middot; Q<?= $p['current_idx'] + 1 ?></span></td>
             <td class="td-time">&#9201; <?= $time_fmt ?></td>
             <td class="td-date"><?= $p['last_saved_at'] ?></td>
-            <td></td>
+            <td><a class="view-btn" href="partial_result.php?email=<?= urlencode($email) ?>&exam_id=<?= urlencode($p['exam_id']) ?>">View Partial &rarr;</a></td>
           </tr>
           <?php endforeach; ?>
           <?php endif; ?>

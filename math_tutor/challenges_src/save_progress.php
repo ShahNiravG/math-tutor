@@ -20,6 +20,7 @@ $exam_title    = substr($input['exam_title'], 0, 64);
 $answered      = max(0, (int)($input['answered_count'] ?? 0));
 $current_idx   = max(0, (int)($input['current_idx']   ?? 0));
 $timer_secs    = max(0, (int)($input['timer_secs']     ?? 0));
+$answers_json  = isset($input['answers']) ? json_encode($input['answers']) : null;
 $user_email    = substr($_SERVER['HTTP_CF_ACCESS_AUTHENTICATED_USER_EMAIL'] ?? '', 0, 255);
 
 if (!$user_email) {
@@ -42,22 +43,29 @@ try {
         answered_count INT          NOT NULL DEFAULT 0,
         current_idx    INT          NOT NULL DEFAULT 0,
         timer_secs     INT          NOT NULL DEFAULT 0,
+        answers_json   MEDIUMTEXT   DEFAULT NULL,
         user_email     VARCHAR(255) NOT NULL,
         last_saved_at  DATETIME     NOT NULL,
         UNIQUE KEY uniq_user_exam (user_email, exam_id)
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
 
+    // Add answers_json column if upgrading from old schema
+    try {
+        $pdo->exec("ALTER TABLE challenge_progress ADD COLUMN answers_json MEDIUMTEXT DEFAULT NULL");
+    } catch (PDOException $e) { /* column already exists */ }
+
     $pdo->prepare(
         "INSERT INTO challenge_progress
-             (exam_id, exam_title, answered_count, current_idx, timer_secs, user_email, last_saved_at)
-         VALUES (?, ?, ?, ?, ?, ?, NOW())
+             (exam_id, exam_title, answered_count, current_idx, timer_secs, answers_json, user_email, last_saved_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
          ON DUPLICATE KEY UPDATE
              exam_title     = VALUES(exam_title),
              answered_count = VALUES(answered_count),
              current_idx    = VALUES(current_idx),
              timer_secs     = VALUES(timer_secs),
+             answers_json   = COALESCE(VALUES(answers_json), answers_json),
              last_saved_at  = NOW()"
-    )->execute([$exam_id, $exam_title, $answered, $current_idx, $timer_secs, $user_email]);
+    )->execute([$exam_id, $exam_title, $answered, $current_idx, $timer_secs, $answers_json, $user_email]);
 
     echo json_encode(['ok' => true]);
 } catch (PDOException $e) {

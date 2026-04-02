@@ -180,6 +180,16 @@ function saveProgressToServer() {
       current_idx:    S.idx,
       timer_secs:     S.timerSecs,
       answered_count: answered,
+      answers: S.exam.questions.map(function(q){
+        return {
+          question_id:   q.id,
+          source_label:  q.source_label,
+          question_text: q.text,
+          options:       q.options || [],
+          correct:       q.correct || '',
+          answer:        S.answers[q.id] || '',
+        };
+      }),
     }),
   }).catch(function(){}); // ignore errors — server save is best-effort
 }
@@ -195,6 +205,14 @@ function mdToHtml(text) {
   dm.forEach(function(m,i){ text = text.replace('\x00DM'+i+'\x00', m); });
   im.forEach(function(m,i){ text = text.replace('\x00IM'+i+'\x00', m); });
   return '<p>'+text+'</p>';
+}
+
+function normalizeOptionMath(text) {
+  var raw = String(text || '').trim();
+  if (!raw) return raw;
+  if (/\\\(|\\\)|\\\[|\\\]|\$/.test(raw)) return raw;
+  if (/\\[A-Za-z]+/.test(raw) || /\^\{?[^}\s]+\}?/.test(raw)) return '\\(' + raw + '\\)';
+  return raw;
 }
 
 function escHtml(s) {
@@ -306,7 +324,7 @@ function renderQuestion() {
 
   // Render option texts (may contain LaTeX)
   root.querySelectorAll('.opt-text[data-raw]').forEach(function(el){
-    el.innerHTML = mdToHtml(el.dataset.raw);
+    el.innerHTML = mdToHtml(normalizeOptionMath(el.dataset.raw));
     el.removeAttribute('data-raw');
   });
 
