@@ -268,6 +268,14 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
       transition: background .12s, color .12s;
     }
     .view-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .delete-btn {
+      display: inline-block; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid #fca5a5; background: #fff; color: #dc2626;
+      text-decoration: none; font-family: system-ui,sans-serif;
+      font-size: .82rem; font-weight: 700; white-space: nowrap;
+      transition: background .12s, color .12s;
+    }
+    .delete-btn:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
 
     .empty-state {
       text-align: center; color: var(--muted);
@@ -404,7 +412,10 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
             <td><span class="badge-progress">&#9203; <?= $p['answered'] ?>/10 answered &middot; Q<?= $p['current_idx'] + 1 ?></span></td>
             <td class="td-time">&#9201; <?= $time_fmt ?></td>
             <td class="td-date"><?= $p['last_saved_at'] ?></td>
-            <td><a class="view-btn" href="partial_result.php?email=<?= urlencode($email) ?>&exam_id=<?= urlencode($p['exam_id']) ?>">View Partial &rarr;</a></td>
+            <td style="display:flex;gap:6px;align-items:center;">
+              <a class="view-btn" href="partial_result.php?email=<?= urlencode($email) ?>&exam_id=<?= urlencode($p['exam_id']) ?>">View Partial &rarr;</a>
+              <a class="delete-btn" href="admin/delete.php?type=progress&email=<?= urlencode($email) ?>&exam_id=<?= urlencode($p['exam_id']) ?>" title="Delete">&#128465;</a>
+            </td>
           </tr>
           <?php endforeach; ?>
           <?php endif; ?>
@@ -426,7 +437,10 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
             <td><span class="score-chip <?= $cls ?>"><?= $icon ?> <?= $s['score'] ?>/<?= $s['total'] ?></span></td>
             <td class="td-time">&#9201; <?= $time_fmt ?></td>
             <td class="td-date"><?= $s['submitted_at'] ?></td>
-            <td><a class="view-btn" href="result.php?token=<?= htmlspecialchars($s['token']) ?>">View Result &rarr;</a></td>
+            <td style="display:flex;gap:6px;align-items:center;">
+              <a class="view-btn" href="result.php?token=<?= htmlspecialchars($s['token']) ?>">View Result &rarr;</a>
+              <a class="delete-btn" href="admin/delete.php?type=result&token=<?= htmlspecialchars($s['token']) ?>" title="Delete">&#128465;</a>
+            </td>
           </tr>
           <?php endforeach; ?>
           <?php endif; ?>
