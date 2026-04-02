@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
 
-$email   = $_GET['email']   ?? '';
+$email   = $_GET['email']   ?? ($_SERVER['HTTP_CF_ACCESS_AUTHENTICATED_USER_EMAIL'] ?? '');
 $exam_id = $_GET['exam_id'] ?? '';
 
 if (!$email || !$exam_id) {
@@ -76,6 +76,23 @@ foreach ($answers as $item) {
     if (/\\[A-Za-z]+/.test(raw) || /\^\{?[^}\s]+\}?/.test(raw)) return '\\(' + raw + '\\)';
     return raw;
   }
+  function copyRawText(btn, text) {
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '&#10003;';
+      btn.classList.add('copied');
+      setTimeout(function(){ btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function(){ fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
   </script>
   <style>
     :root { --bg:#f5f1e8; --paper:#fffaf2; --ink:#1f2a33; --muted:#5b6a74;
@@ -91,6 +108,17 @@ foreach ($answers as $item) {
     .header-card { background:var(--paper); border:1px solid var(--line); border-radius:18px;
                    padding:28px 32px; margin-bottom:24px;
                    box-shadow:0 8px 24px rgba(78,55,32,.07); }
+    .brand-bar { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+    .brand-mark {
+      width:56px; height:56px; flex:0 0 56px; border-radius:16px; overflow:hidden;
+      box-shadow:0 10px 24px rgba(78,55,32,.12);
+    }
+    .brand-mark svg { display:block; width:100%; height:100%; }
+    .brand-eyebrow {
+      display:inline-block; font-size:.76rem; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--muted); font-family:system-ui,sans-serif; font-weight:700; margin-bottom:4px;
+    }
+    .brand-title { margin:0; font-size:1.5rem; line-height:1.08; color:var(--ink); }
     .header-card h1 { margin:0 0 4px; font-size:1.9rem; }
     .partial-banner {
       display:inline-block; padding:4px 14px; border-radius:999px;
@@ -115,6 +143,15 @@ foreach ($answers as $item) {
     .btn:hover { background:var(--accent); color:#fff; }
     .btn-delete { color:#dc2626; border-color:#fca5a5; }
     .btn-delete:hover { background:#dc2626; color:#fff; border-color:#dc2626; }
+    .copy-btn {
+      appearance:none; border:1px solid var(--line); background:rgba(255,255,255,.7);
+      color:var(--muted); border-radius:6px; cursor:pointer;
+      padding:3px 7px; font-size:.85rem;
+      white-space:nowrap; transition:all .15s;
+      display:inline-flex; align-items:center; flex-shrink:0; margin-left:10px;
+    }
+    .copy-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .copy-btn.copied { border-color:var(--correct); color:var(--correct); background:var(--correct-bg); }
 
     .q-card { background:var(--paper); border:1px solid var(--line); border-radius:16px;
               padding:24px 28px; margin-bottom:16px;
@@ -173,6 +210,30 @@ foreach ($answers as $item) {
 <body>
 <div class="page">
   <div class="header-card">
+    <div class="brand-bar">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="partialBrandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fff5da"/>
+              <stop offset="55%" stop-color="#f3c98f"/>
+              <stop offset="100%" stop-color="#cf7c43"/>
+            </linearGradient>
+          </defs>
+          <rect width="72" height="72" rx="16" fill="url(#partialBrandGlow)"/>
+          <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
+          <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
+          <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
+          <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
+          <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
+          <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
+        </svg>
+      </div>
+      <div>
+        <span class="brand-eyebrow">Math Delight</span>
+        <h2 class="brand-title">Algebra II Trig Tutor</h2>
+      </div>
+    </div>
     <div class="partial-banner">&#9203; In Progress — Partial View</div>
     <h1><?= $exam_title ?></h1>
     <div class="meta">
@@ -219,6 +280,12 @@ foreach ($answers as $item) {
     elseif ($is_wrong) $card_cls = 'result-wrong';
     elseif ($not_reached) $card_cls = 'result-unanswered';
     else               $card_cls = 'result-skipped';
+
+    $copy_lines = [$qtext, ''];
+    foreach ($options as $optStr) { $copy_lines[] = $optStr; }
+    if ($ans)     { $copy_lines[] = ''; $copy_lines[] = 'Your answer: ' . $ans . ($is_correct ? ' ✓' : ($is_wrong ? ' ✗' : '')); }
+    if ($correct) { $copy_lines[] = 'Correct answer: ' . $correct; }
+    $copy_text = implode("\n", $copy_lines);
   ?>
   <div class="q-card <?= $card_cls ?>">
     <div class="q-header">
@@ -230,7 +297,10 @@ foreach ($answers as $item) {
         <?php if ($is_current):   ?><span class="badge badge-current">&#9654; Current</span><?php endif; ?>
         <?php if ($not_reached):  ?><span class="badge badge-not-reached">Not reached</span><?php endif; ?>
       </span>
-      <span class="q-source"><?= $source ?></span>
+      <span style="display:flex;align-items:center;gap:10px;">
+        <span class="q-source"><?= $source ?></span>
+        <button class="copy-btn" onclick="copyRawText(this,<?= json_encode($copy_text) ?>)">&#128203;</button>
+      </span>
     </div>
     <div class="q-text" id="qt-<?= $qnum ?>"></div>
 

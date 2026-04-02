@@ -18,7 +18,6 @@ SHUFFLE_SEED = 42
 MAX_EXAM_SIZE = 10
 MAX_OP_PER_EXAM = 3
 TARGET_MM_PER_EXAM = MAX_EXAM_SIZE - MAX_OP_PER_EXAM  # 7
-
 SOURCE_SUFFIXES = [
     ("__mental-math-gpt5.md",         "mm", "gpt54", "GPT-5.4",       "__mental-math-gpt5-mcq.md"),
     ("__mental-math-gemini.md",        "mm", "gem",   "Gemini 3.1 Pro","__mental-math-gemini-mcq.md"),
@@ -147,6 +146,10 @@ def _chapter_sort_key(chapter: str) -> float:
     return float(m.group(1)) if m else 9999.0
 
 
+def _chapter_slug(chapter: str) -> str:
+    return re.sub(r"[^0-9]+", "", chapter)
+
+
 def _stratified_shuffle(questions: list[dict], seed: int) -> list[dict]:
     rng = random.Random(seed)
     by_chapter: dict[str, list[dict]] = {}
@@ -201,6 +204,51 @@ def build_exam_sets(questions: list[dict]) -> list[dict]:
     return exams
 
 
+def build_chapter_exam_sets(questions: list[dict], *, chapters: tuple[str, ...] | None = None) -> list[dict]:
+    """Build per-chapter challenge exams.
+
+    For each requested chapter, emit exactly two exams:
+    - one mental math exam using all MCQ-equipped MM questions from GPT-5.4 + Gemini
+    - one olympiad exam using all MCQ-equipped OP questions from GPT-5.4 + Gemini
+    """
+    if chapters is None:
+        chapters = tuple(
+            sorted(
+                {q["chapter"] for q in questions if q.get("chapter") and "correct" in q},
+                key=_chapter_sort_key,
+            )
+        )
+    exams: list[dict] = []
+    for chapter in chapters:
+        chapter_key = _chapter_slug(chapter)
+        chapter_questions = [q for q in questions if q["chapter"] == chapter and "correct" in q]
+        mm = sorted(
+            [q for q in chapter_questions if q["type"] == "mm"],
+            key=lambda q: (q["model_label"], q["question_number"]),
+        )
+        op = sorted(
+            [q for q in chapter_questions if q["type"] == "op"],
+            key=lambda q: (q["model_label"], q["question_number"]),
+        )
+        if mm:
+            exams.append({
+                "id": f"chp{chapter_key}-mm",
+                "title": f"Chapter {chapter} Mental Math Challenge",
+                "chapter": chapter,
+                "challenge_type": "mm",
+                "questions": mm,
+            })
+        if op:
+            exams.append({
+                "id": f"chp{chapter_key}-op",
+                "title": f"Chapter {chapter} Olympiad Challenge",
+                "chapter": chapter,
+                "challenge_type": "op",
+                "questions": op,
+            })
+    return exams
+
+
 # ---------------------------------------------------------------------------
 # Config PHP generation
 # ---------------------------------------------------------------------------
@@ -241,8 +289,14 @@ def build_challenges(
     # Canonical files live in challenges_src/ so they are tracked in git
     canonical_exams_json = CHALLENGES_SRC_DIR / "exams.json"
     canonical_master_json = CHALLENGES_SRC_DIR / "master_questions.json"
+    canonical_chapter_exams_json = CHALLENGES_SRC_DIR / "chapter_exams.json"
 
-    if not force and canonical_exams_json.exists() and canonical_master_json.exists():
+    if (
+        not force
+        and canonical_exams_json.exists()
+        and canonical_master_json.exists()
+        and canonical_chapter_exams_json.exists()
+    ):
         existing = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
         generated_at = existing.get("generated_at", "unknown")
         exam_count = len(existing.get("exams", []))
@@ -260,6 +314,7 @@ def build_challenges(
               f"{mcq_mm} mental math + {mcq_op} olympiad have MCQ data")
 
         exams = build_exam_sets(questions)
+        chapter_exams = build_chapter_exam_sets(questions)
         generated_at = datetime.now(timezone.utc).isoformat()
         print(f"  Generated {len(exams)} challenge exams (bundle: {generated_at})")
 
@@ -282,11 +337,16 @@ def build_challenges(
             json.dumps(master_data, indent=2), encoding="utf-8"
         )
         print(f"  Wrote {canonical_master_json.name} ({len(all_with_mcq)} questions)")
+        canonical_chapter_exams_json.write_text(
+            json.dumps({"generated_at": generated_at, "exams": chapter_exams}, indent=2),
+            encoding="utf-8",
+        )
+        print(f"  Wrote {canonical_chapter_exams_json.name} ({len(chapter_exams)} chapter exams)")
 
     # Always copy static PHP + HTML source files (picks up UI changes)
     # Skip exams.json — it's only needed to generate individual exam files, not served directly.
     for src_file in CHALLENGES_SRC_DIR.glob("*"):
-        if src_file.name in ("exams.json", "master_questions.json"):
+        if src_file.name in ("exams.json", "master_questions.json", "chapter_exams.json"):
             continue
         dest = challenges_dir / src_file.name
         if src_file.is_dir():
@@ -339,6 +399,45 @@ def build_challenges(
     print(f"  Wrote {len(index_entries)} individual exam files to exams/ "
           f"(avg {avg_kb // 1024 if avg_kb >= 1024 else avg_kb}{'KB' if avg_kb >= 1024 else 'B'} each, "
           f"vs {full_kb}KB full bundle)")
+
+    chapter_full = json.loads(canonical_chapter_exams_json.read_text(encoding="utf-8"))
+    chapter_index_entries = []
+    chapter_subdir = challenges_dir / "chapter-exams"
+    chapter_subdir.mkdir(exist_ok=True)
+    for exam in chapter_full.get("exams", []):
+        mm = sum(1 for q in exam["questions"] if q["type"] == "mm")
+        op = sum(1 for q in exam["questions"] if q["type"] == "op")
+        models = sorted({q["model_label"] for q in exam["questions"]})
+        chapter_index_entries.append({
+            "id": exam["id"],
+            "title": exam["title"],
+            "chapter": exam["chapter"],
+            "challenge_type": exam.get("challenge_type", ""),
+            "mm": mm,
+            "op": op,
+            "question_count": len(exam["questions"]),
+            "models": models,
+        })
+        (exams_subdir / f"{exam['id']}.json").write_text(
+            json.dumps({"generated_at": chapter_full.get("generated_at"), **exam}),
+            encoding="utf-8",
+        )
+    (chapter_subdir / "index.json").write_text(
+        json.dumps({"generated_at": chapter_full.get("generated_at"), "exams": chapter_index_entries}, indent=2),
+        encoding="utf-8",
+    )
+    for chapter in sorted({e["chapter"] for e in chapter_index_entries}, key=_chapter_sort_key):
+        chapter_exams = [e for e in chapter_index_entries if e["chapter"] == chapter]
+        chapter_slug = _chapter_slug(chapter)
+        (chapter_subdir / f"chp{chapter_slug}.json").write_text(
+            json.dumps({
+                "generated_at": chapter_full.get("generated_at"),
+                "chapter": chapter,
+                "exams": chapter_exams,
+            }, indent=2),
+            encoding="utf-8",
+        )
+    print(f"  Wrote chapter challenge index ({len(chapter_index_entries)} exams)")
 
     # Always regenerate config.php from current env vars
     config_path = challenges_dir / "config.php"

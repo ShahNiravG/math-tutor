@@ -6,13 +6,14 @@ import json
 import os
 import re
 import shutil
+from functools import lru_cache
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 from urllib.parse import quote
 
-from math_tutor.challenge_builder import build_challenges
+from math_tutor.challenge_builder import CHALLENGES_SRC_DIR, build_challenges
 from math_tutor.cli import (
     load_dotenv_if_present,
     DEFAULT_MODEL,
@@ -138,6 +139,7 @@ def build_site(
 ) -> Path:
     resolved_site_dir = site_dir.resolve() if site_dir else output_dir / DEFAULT_SITE_DIRNAME
     resolved_site_dir.mkdir(parents=True, exist_ok=True)
+    build_challenges(output_dir=output_dir, site_dir=resolved_site_dir, force=force_challenges)
     resolved_base_path = determine_base_path(
         raw_base_path=base_path,
         output_dir=output_dir,
@@ -202,7 +204,6 @@ def build_site(
             ),
             encoding="utf-8",
         )
-    build_challenges(output_dir=output_dir, site_dir=resolved_site_dir, force=force_challenges)
     return index_path
 
 
@@ -1064,6 +1065,90 @@ def render_page_shell(
       font-size: 0.95rem;
       color: var(--muted);
     }}
+    .chapter-challenge-copy {{
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 14px;
+    }}
+    .chapter-challenge-card {{
+      margin-top: 24px;
+    }}
+    .chapter-challenge-intro {{
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 14px;
+    }}
+    .chapter-challenge-options {{
+      display: grid;
+      gap: 14px;
+    }}
+    .chapter-challenge-option {{
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 14px 0;
+      border-top: 1px solid var(--line);
+    }}
+    .chapter-challenge-option:first-of-type {{
+      border-top: 0;
+      padding-top: 0;
+    }}
+    .chapter-challenge-option p {{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+    }}
+    .chapter-challenge-row {{
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }}
+    .chapter-challenge-title {{
+      font-size: 1rem;
+      font-weight: 700;
+      color: #243645;
+    }}
+    .chapter-challenge-meta {{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 4px 0 0;
+    }}
+    .chapter-challenge-tag {{
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-family: system-ui, sans-serif;
+    }}
+    .chapter-challenge-tag-mm {{
+      background: #dbeafe;
+      color: #1e40af;
+    }}
+    .chapter-challenge-tag-op {{
+      background: #dcfce7;
+      color: #166534;
+    }}
+    .chapter-challenge-tag-model {{
+      background: var(--soft);
+      color: var(--accent);
+    }}
+    .chapter-challenge-tag-resume {{
+      background: #fef9c3;
+      color: #854d0e;
+    }}
+    .chapter-challenge-tag-done {{
+      background: #dcfce7;
+      color: #166534;
+    }}
+    .chapter-challenge-small {{
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.82rem;
+    }}
     details pre {{
       white-space: pre-wrap;
       word-break: break-word;
@@ -1085,12 +1170,35 @@ def render_page_shell(
     .prompt-card .link-row {{
       margin-bottom: 14px;
     }}
+    .guided-card h3 {{
+      color: #243645;
+    }}
     .card-summary {{
-      color: var(--muted);
-      line-height: 1.55;
+      color: #020b10;
+      font-size: 1.18rem;
+      font-weight: 500;
+      line-height: 1.88;
+      background: linear-gradient(180deg, #fffaf4 0%, #f4e0c8 100%);
+      border: 2px solid #d6ab7d;
+      border-left: 8px solid #a14d2e;
+      border-radius: 18px;
+      padding: 22px 24px;
+      box-shadow: 0 14px 32px rgba(78,55,32,.1);
+      margin: 0 0 22px;
     }}
     .card-summary p {{
       margin: 0;
+    }}
+    .card-summary p + p,
+    .card-summary ul,
+    .card-summary ol {{
+      margin-top: 12px;
+    }}
+    .card-summary strong {{
+      color: #00070b;
+    }}
+    .card-summary li {{
+      margin-bottom: 8px;
     }}
     @media (max-width: 960px) {{
       .page {{ grid-template-columns: 1fr; }}
@@ -1652,6 +1760,7 @@ def render_record(
     guided_learning_html = ""
     if include_guided_learning:
         guided_learning_html = render_guided_learning(record, output_dir, site_dir, base_path)
+    chapter_challenge_html = render_chapter_challenge_embed(record, base_path)
     return f"""
     <section class="content-card" id="doc-{record.file_id}">
       <div class="doc-header">
@@ -1668,6 +1777,7 @@ def render_record(
       <div class="prompt-grid">
         {prompt_cards}
       </div>
+      {chapter_challenge_html}
     </section>
     """
 
@@ -1683,6 +1793,183 @@ def render_guided_learning(record: DocumentRecord, output_dir: Path, site_dir: P
         prompt_text=prompt_text,
         extra_links=extra_links,
     )
+
+
+def render_chapter_challenge_embed(record: DocumentRecord, base_path: str) -> str:
+    chapter = extract_chapter_label(record.display_name)
+    if not chapter:
+        return ""
+    chapter_exams = load_chapter_challenge_entries().get(chapter, [])
+    if not chapter_exams:
+        return ""
+    return_target = quote(site_page_href(record_page_filename(record), base_path), safe="") if base_path else f"../{record_page_filename(record)}"
+    return_label = quote("Back to Chapter", safe="")
+    reports_href = f"{base_path}challenges/reports.php" if base_path else "challenges/reports.php"
+    completed_href = f"{base_path}challenges/completed.php" if base_path else "challenges/completed.php"
+    options_html: list[str] = []
+    for exam in chapter_exams:
+        exam_id = exam["id"]
+        exam_href = (
+            f"{base_path}challenges/exam.html?id={quote(exam_id, safe='')}&return={return_target}&return_label={return_label}"
+            if base_path else
+            f"challenges/exam.html?id={exam_id}&return=../{record_page_filename(record)}&return_label=Back%20to%20Chapter"
+        )
+        progress_href = (
+            f"{base_path}challenges/get_progress.php?exam_id={quote(exam_id, safe='')}"
+            if base_path else
+            f"challenges/get_progress.php?exam_id={exam_id}"
+        )
+        challenge_type = exam.get("challenge_type", "")
+        is_mm = challenge_type == "mm"
+        type_class = "chapter-challenge-tag-mm" if is_mm else "chapter-challenge-tag-op"
+        type_label = "Mental Math" if is_mm else "Olympiad"
+        title = "Mental Math Challenge" if is_mm else "Olympiad Challenge"
+        description = (
+            "Practice fast, focused multiple-choice questions built from both Gemini and GPT-5.4 mental math sets."
+            if is_mm else
+            "Work through olympiad-style multiple-choice problems drawn from both Gemini and GPT-5.4 challenge sets."
+        )
+        models = " + ".join(exam.get("models", []))
+        question_count = exam.get("question_count", 0)
+        options_html.append(f"""
+          <div class="chapter-challenge-option" data-challenge-exam="{html.escape(exam_id, quote=True)}" data-question-count="{question_count}" data-exam-href="{html.escape(exam_href, quote=True)}" data-progress-href="{html.escape(progress_href, quote=True)}">
+            <div class="chapter-challenge-row">
+              <div class="chapter-challenge-title">{title}</div>
+              <span class="chapter-challenge-status"></span>
+            </div>
+            <div class="chapter-challenge-meta">
+              <span class="chapter-challenge-tag {type_class}">{type_label}</span>
+              <span class="chapter-challenge-tag chapter-challenge-tag-model">{html.escape(models)}</span>
+              <span class="chapter-challenge-tag chapter-challenge-tag-model">{question_count} questions</span>
+            </div>
+            <p>{html.escape(description)}</p>
+            <div class="chapter-challenge-row">
+              <div class="button-row">
+                <a class="chapter-challenge-action" href="{html.escape(exam_href, quote=True)}">Start Challenge</a>
+              </div>
+            </div>
+          </div>
+        """)
+    return f"""
+      <section class="prompt-card chapter-challenge-card">
+        <h3>Challenge Exams</h3>
+        <p class="chapter-challenge-intro">Choose a mental math or olympiad challenge and continue in the full challenge page.</p>
+        <div class="chapter-challenge-options">
+          {''.join(options_html)}
+        </div>
+        <script>
+        (function () {{
+          const SESSION_KEY = 'math_tutor_challenge_session';
+          const reportsHref = {json.dumps(reports_href)};
+          const completedHref = {json.dumps(completed_href)};
+          const options = Array.from(document.querySelectorAll('[data-challenge-exam]'));
+
+          function getLocalSession(examId) {{
+            try {{
+              const saved = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
+              return saved && saved.exam_id === examId ? saved : null;
+            }} catch (e) {{
+              return null;
+            }}
+          }}
+
+          function answeredCount(progress, local) {{
+            if (progress && typeof progress.answered_count === 'number') {{
+              return progress.answered_count;
+            }}
+            if (local && local.answers) {{
+              return Object.values(local.answers).filter(Boolean).length;
+            }}
+            return 0;
+          }}
+
+          function setStatus(el, text, className) {{
+            if (!el) return;
+            el.className = 'chapter-challenge-status chapter-challenge-tag ' + className;
+            el.textContent = text;
+          }}
+
+          async function fetchJson(url) {{
+            try {{
+              const res = await fetch(url, {{cache: 'no-store'}});
+              if (!res.ok) return null;
+              return await res.json();
+            }} catch (e) {{
+              return null;
+            }}
+          }}
+
+          Promise.all([
+            fetchJson(completedHref),
+            Promise.all(options.map(function (option) {{
+              return fetchJson(option.getAttribute('data-progress-href'));
+            }})),
+          ]).then(function (results) {{
+            const completedData = results[0] || {{}};
+            const progressResults = results[1] || [];
+            const completed = new Set(completedData.completed || []);
+
+            options.forEach(function (option, index) {{
+              const examId = option.getAttribute('data-challenge-exam');
+              const questionCount = Number(option.getAttribute('data-question-count') || '0');
+              const progressData = progressResults[index];
+              const progress = progressData && progressData.progress ? progressData.progress : null;
+              const local = getLocalSession(examId);
+              const action = option.querySelector('.chapter-challenge-action');
+              const status = option.querySelector('.chapter-challenge-status');
+              const answered = answeredCount(progress, local);
+
+              if (completed.has(examId)) {{
+                setStatus(status, 'All answered', 'chapter-challenge-tag-done');
+                if (action) {{
+                  action.textContent = 'View Reports';
+                  action.href = reportsHref;
+                }}
+                return;
+              }}
+
+              if (progress || local) {{
+                setStatus(status, answered + '/' + questionCount + ' answered', 'chapter-challenge-tag-resume');
+                if (action) {{
+                  action.textContent = 'Resume Challenge';
+                }}
+                return;
+              }}
+
+              if (status) {{
+                status.className = 'chapter-challenge-status';
+                status.textContent = '';
+              }}
+              if (action) {{
+                action.textContent = 'Start Challenge';
+              }}
+            }});
+          }});
+        }})();
+        </script>
+      </section>
+    """
+
+
+@lru_cache(maxsize=1)
+def load_chapter_challenge_entries() -> dict[str, list[dict[str, Any]]]:
+    chapter_json = CHALLENGES_SRC_DIR / "chapter_exams.json"
+    if not chapter_json.exists():
+        return {}
+    payload = json.loads(chapter_json.read_text(encoding="utf-8"))
+    grouped: dict[str, list[dict[str, Any]]] = {}
+    for exam in payload.get("exams", []):
+        grouped.setdefault(exam.get("chapter", ""), []).append({
+            "id": exam.get("id", ""),
+            "title": exam.get("title", ""),
+            "chapter": exam.get("chapter", ""),
+            "challenge_type": exam.get("challenge_type", ""),
+            "question_count": len(exam.get("questions", [])),
+            "models": sorted({q.get("model_label", "") for q in exam.get("questions", []) if q.get("model_label")}),
+        })
+    for exams in grouped.values():
+        exams.sort(key=lambda item: (0 if item.get("challenge_type") == "mm" else 1, item.get("id", "")))
+    return grouped
 
 
 def render_guided_learning_card(
@@ -1811,9 +2098,11 @@ def render_record_summary(record: DocumentRecord) -> str:
     if not summary_html:
         return ""
     return f"""
-      <section class="guided-card">
+      <section class="guided-card summary-card">
         <h3>Summary</h3>
-        {summary_html}
+        <div class="card-summary">
+          {summary_html}
+        </div>
       </section>
     """
 

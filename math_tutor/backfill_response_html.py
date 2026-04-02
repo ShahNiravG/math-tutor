@@ -64,6 +64,7 @@ def main() -> None:
                     if prompt_spec.include_source_pdf_link
                     else None
                 ),
+                prompt_slug=prompt_spec.slug,
             ),
             encoding="utf-8",
         )

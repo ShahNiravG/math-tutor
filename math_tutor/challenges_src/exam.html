@@ -22,8 +22,20 @@
     /* ── Top bar ── */
     .topbar { position:sticky; top:0; z-index:100; background:rgba(255,250,242,.95);
               backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
-              padding:12px 24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
-    .topbar-title { font-weight:700; font-size:1rem; flex:1; }
+              padding:12px 24px; display:flex; align-items:flex-start; gap:16px; }
+    .topbar-left { display:flex; flex-direction:column; gap:10px; flex:1; min-width:240px; }
+    .topbar-brand { display:flex; align-items:center; gap:12px; }
+    .brand-mark {
+      width:46px; height:46px; flex:0 0 46px; border-radius:14px; overflow:hidden;
+      box-shadow:0 8px 18px rgba(78,55,32,.12);
+    }
+    .brand-mark svg { display:block; width:100%; height:100%; }
+    .brand-eyebrow {
+      display:inline-block; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--muted); font-family:system-ui,sans-serif; font-weight:700; margin-bottom:2px;
+    }
+    .brand-title { margin:0; font-size:1.2rem; line-height:1.02; color:var(--ink); }
+    .topbar-title { font-weight:700; font-size:.88rem; color:var(--muted); font-family:system-ui,sans-serif; }
     .timer { font-family:system-ui,monospace; font-size:1.1rem; font-weight:700;
              color:var(--accent); min-width:56px; text-align:right; }
 
@@ -40,6 +52,23 @@
 
     /* ── Main content ── */
     .page { width:min(760px,calc(100vw - 32px)); margin:24px auto 80px; }
+    .return-link {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:9px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      text-decoration:none;
+      font-family:system-ui,sans-serif;
+      font-size:.9rem;
+      font-weight:700;
+      align-self:flex-start;
+      margin-left:58px;
+    }
+    .return-link:hover { border-color:var(--accent); color:var(--accent); }
     .q-card { background:var(--paper); border:1px solid var(--line); border-radius:20px;
               padding:32px; box-shadow:0 10px 30px rgba(78,55,32,.08); }
     .q-meta { display:flex; justify-content:space-between; align-items:center;
@@ -49,11 +78,6 @@
     .q-source { font-size:.85rem; font-family:system-ui,sans-serif;
                 background:var(--accent-soft); color:var(--accent); padding:4px 12px;
                 border-radius:999px; font-weight:600; }
-    .copy-btn { appearance:none; background:none; border:1px solid var(--line); border-radius:8px;
-                padding:4px 10px; font-size:.8rem; font-family:system-ui,sans-serif;
-                color:var(--muted); cursor:pointer; transition:all .15s; white-space:nowrap; }
-    .copy-btn:hover { border-color:var(--accent); color:var(--accent); }
-    .copy-btn.copied { border-color:var(--answered); color:var(--answered); }
     .q-text { font-size:1.35rem; line-height:1.85; margin-bottom:28px; }
     .q-text p { margin:.5em 0; }
     .q-text strong { color:#213647; }
@@ -115,7 +139,34 @@
 <body>
 
 <div id="topbar" class="topbar" style="display:none">
-  <span class="topbar-title" id="exam-title"></span>
+  <div class="topbar-left">
+    <div class="topbar-brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="examBrandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fff5da"/>
+              <stop offset="55%" stop-color="#f3c98f"/>
+              <stop offset="100%" stop-color="#cf7c43"/>
+            </linearGradient>
+          </defs>
+          <rect width="72" height="72" rx="16" fill="url(#examBrandGlow)"/>
+          <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
+          <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
+          <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
+          <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
+          <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
+          <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
+        </svg>
+      </div>
+      <div>
+        <span class="brand-eyebrow">Math Delight</span>
+        <h1 class="brand-title">Algebra II Trig Tutor</h1>
+        <div class="topbar-title" id="exam-title"></div>
+      </div>
+    </div>
+    <a id="return-link" class="return-link" href="index.html" style="display:none">&#8592; Return</a>
+  </div>
   <span class="timer" id="timer">0:00</span>
 </div>
 <div id="progress-bar" class="progress-bar" style="display:none"></div>
@@ -146,6 +197,35 @@ const S = {
 };
 
 const SESSION_KEY = 'math_tutor_challenge_session';
+
+function answeredCount(answers) {
+  return Object.keys(answers || {}).filter(function(k){ return (answers[k] || '').trim(); }).length;
+}
+
+function firstUnansweredIndex(start) {
+  var begin = Math.max(0, start || 0);
+  for (var i = begin; i < S.exam.questions.length; i++) {
+    if (!(S.answers[S.exam.questions[i].id] || '').trim()) return i;
+  }
+  return -1;
+}
+
+function bestResumeIndex(savedIdx) {
+  if (!S.exam || !S.exam.questions.length) return 0;
+  var idx = Math.max(0, Math.min(savedIdx || 0, S.exam.questions.length - 1));
+  var currentQ = S.exam.questions[idx];
+  if (currentQ && !(S.answers[currentQ.id] || '').trim()) return idx;
+  var firstSkipped = firstUnansweredIndex(0);
+  return firstSkipped >= 0 ? firstSkipped : idx;
+}
+
+function mergeServerAnswers(items) {
+  var merged = {};
+  (items || []).forEach(function(item){
+    if (item && item.question_id) merged[item.question_id] = item.answer || '';
+  });
+  return merged;
+}
 
 function saveSession() {
   if (!S.exam) return;
@@ -192,6 +272,17 @@ function saveProgressToServer() {
       }),
     }),
   }).catch(function(){}); // ignore errors — server save is best-effort
+}
+
+async function loadServerProgress(examId) {
+  try {
+    var res = await fetch('get_progress.php?exam_id=' + encodeURIComponent(examId), {cache: 'no-store'});
+    if (!res.ok) return null;
+    var data = await res.json();
+    return data.progress || null;
+  } catch (e) {
+    return null;
+  }
 }
 
 // ── Markdown + math renderer ──
@@ -302,7 +393,7 @@ function renderQuestion() {
     '<button class="btn" onclick="goTo(' + (S.idx-1) + ')"' + (S.idx===0?' disabled':'') + '>&#8592; Prev</button>' +
     '</div><div class="nav-right">';
   if (!isLast) {
-    navHtml += '<button class="btn btn-primary" onclick="goTo(' + (S.idx+1) + ')">Next &#8594;</button>';
+    navHtml += '<button class="btn btn-primary" onclick="goNext()">Next &#8594;</button>';
   } else {
     navHtml += '<button class="btn btn-submit" onclick="confirmSubmit()">Submit Exam &#10003;</button>';
   }
@@ -314,7 +405,6 @@ function renderQuestion() {
     '<span class="q-counter">Question ' + (S.idx+1) + ' of ' + total + '</span>' +
     '<span class="q-source">' + escHtml(q.source_label) + '</span>' +
     '</div>' +
-    '<button class="copy-btn" id="copy-btn">&#128203; Copy Question</button>' +
     '</div>' +
     '<div class="q-text" id="q-text-render"></div>' +
     optHtml + navHtml + '</div>';
@@ -331,20 +421,6 @@ function renderQuestion() {
   // Typeset all math in one pass
   if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([root]);
 
-  // Copy button
-  document.getElementById('copy-btn').addEventListener('click', function(){
-    navigator.clipboard.writeText(q.text).then(function(){
-      var btn = document.getElementById('copy-btn');
-      if (!btn) return;
-      btn.textContent = '\u2713 Copied!';
-      btn.classList.add('copied');
-      setTimeout(function(){
-        var b = document.getElementById('copy-btn');
-        if (b) { b.textContent = '\uD83D\uDCCB Copy Question'; b.classList.remove('copied'); }
-      }, 2000);
-    });
-  });
-
   renderDots();
 }
 
@@ -353,6 +429,24 @@ function goTo(i) {
   S.idx = Math.max(0, Math.min(i, S.exam.questions.length - 1));
   saveSession();
   renderQuestion();
+}
+
+function goNext() {
+  var nextSkipped = firstUnansweredIndex(S.idx + 1);
+  if (nextSkipped >= 0) {
+    goTo(nextSkipped);
+    return;
+  }
+  var firstSkipped = firstUnansweredIndex(0);
+  if (firstSkipped >= 0) {
+    goTo(firstSkipped);
+    return;
+  }
+  if (S.idx < S.exam.questions.length - 1) {
+    goTo(S.idx + 1);
+    return;
+  }
+  confirmSubmit();
 }
 
 // ── Submit flow ──
@@ -403,6 +497,9 @@ async function doSubmit() {
     if (data.token) {
       clearSession();
       window.location.href = 'result.php?token=' + encodeURIComponent(data.token);
+    } else if (data.partial && data.partial_url) {
+      clearSession();
+      window.location.href = data.partial_url;
     } else {
       throw new Error(data.error || 'Unknown error');
     }
@@ -418,6 +515,8 @@ async function doSubmit() {
 (async function() {
   var params = new URLSearchParams(window.location.search);
   var examId = params.get('id');
+  var returnHref = params.get('return') || '';
+  var returnLabel = params.get('return_label') || 'Return';
   if (!examId) {
     document.getElementById('root').innerHTML =
       '<div class="error-box">No exam ID specified. <a href="index.html">Back to exams</a></div>';
@@ -438,6 +537,12 @@ async function doSubmit() {
   document.getElementById('exam-title').textContent = S.exam.title;
   document.getElementById('topbar').style.display = 'flex';
   document.getElementById('progress-bar').style.display = 'flex';
+  if (returnHref) {
+    var back = document.getElementById('return-link');
+    back.href = returnHref;
+    back.textContent = '\u2190 ' + returnLabel;
+    back.style.display = 'inline-flex';
+  }
 
   // Restore saved session if it matches this exam
   try {
@@ -446,10 +551,28 @@ async function doSubmit() {
       S.idx = saved.idx || 0;
       S.answers = saved.answers || {};
       S.timerSecs = saved.timerSecs || 0;
-      var rm = Math.floor(S.timerSecs/60), rs = S.timerSecs%60;
-      document.getElementById('timer').textContent = rm + ':' + (rs<10?'0':'') + rs;
     }
   } catch(e) { /* ignore corrupt storage */ }
+
+  var serverProgress = await loadServerProgress(S.exam.id);
+  if (serverProgress) {
+    var serverAnswers = mergeServerAnswers(serverProgress.answers);
+    var localCount = answeredCount(S.answers);
+    var serverCount = answeredCount(serverAnswers);
+    if (serverCount > localCount) {
+      S.answers = serverAnswers;
+      S.timerSecs = serverProgress.timer_secs || S.timerSecs;
+      S.idx = serverProgress.current_idx || 0;
+    } else if (serverCount === localCount && serverProgress.current_idx > (S.idx || 0)) {
+      S.idx = serverProgress.current_idx;
+      if ((serverProgress.timer_secs || 0) > (S.timerSecs || 0)) S.timerSecs = serverProgress.timer_secs;
+    }
+  }
+
+  S.idx = bestResumeIndex(S.idx);
+  var rm = Math.floor(S.timerSecs/60), rs = S.timerSecs%60;
+  document.getElementById('timer').textContent = rm + ':' + (rs<10?'0':'') + rs;
+  saveSession();
 
   renderQuestion();
 })();

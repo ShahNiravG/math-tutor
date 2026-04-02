@@ -18,7 +18,7 @@ try {
         [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
     );
     $stmt = $pdo->prepare(
-        "SELECT exam_id FROM challenge_results WHERE user_email = ?"
+        "SELECT exam_id FROM challenge_results WHERE user_email = ? AND COALESCE(is_complete, 1) = 1"
     );
     $stmt->execute([$user_email]);
     $ids = $stmt->fetchAll(PDO::FETCH_COLUMN, 0);

@@ -1550,6 +1550,7 @@ def run_prompt(
                 if prompt_spec.include_source_pdf_link
                 else None
             ),
+            prompt_slug=prompt_spec.slug,
         ),
         encoding="utf-8",
     )
@@ -2210,8 +2211,14 @@ def resolve_prompt_slug_set(prompt_slugs: list[str] | None) -> set[str]:
     return set(prompt_slugs)
 
 
+COPY_BUTTON_SLUGS = {"mental-math", "mental-math-gpt5", "mental-math-gemini",
+                     "olympiad-problems", "olympiad-problems-gpt5", "olympiad-problems-gemini",
+                     "olympiad-solutions", "olympiad-solutions-gpt5", "olympiad-solutions-gemini"}
+
+
 def build_response_html(
-    *, title: str, prompt_title: str, markdown_text: str, pdf_label: str | None, pdf_href: str | None
+    *, title: str, prompt_title: str, markdown_text: str, pdf_label: str | None, pdf_href: str | None,
+    prompt_slug: str = ""
 ) -> str:
     rendered = markdown_to_html(markdown_text)
     pdf_name = html_escape(response_document_title(title))
@@ -2226,6 +2233,107 @@ def build_response_html(
         )
     else:
         pdf_note = "<p>Saved tutoring response with MathJax rendering.</p>"
+    show_copy = prompt_slug in COPY_BUTTON_SLUGS
+    copy_block = """    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }""" if show_copy else ""
+    copy_script = """  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\\\[' + tex + '\\\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \\t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>""" if show_copy else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -2310,7 +2418,9 @@ def build_response_html(
       border-radius: 6px;
       font-size: 0.95em;
     }}
+{copy_block}
   </style>
+{copy_script}
 </head>
 <body>
   <article class="page">

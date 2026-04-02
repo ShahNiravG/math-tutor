@@ -156,7 +156,63 @@ def _build_mcq_html(stem: str, mcq_md: str) -> str:
     main {{ padding: 24px 28px 32px; }}
     p, li {{ line-height: 1.7; }}
     hr {{ border: 0; border-top: 1px solid var(--line); margin: 22px 0; }}
+    .q-row {{ display: flex; align-items: baseline; gap: 10px; }}
+    .copy-q-btn {{
+      appearance: none; border: 1px solid var(--line); background: rgba(255,255,255,.7);
+      color: var(--muted); border-radius: 6px; cursor: pointer;
+      padding: 2px 7px; font-size: .85rem;
+      white-space: nowrap; transition: all .15s; flex-shrink: 0; margin-left: 10px;
+    }}
+    .copy-q-btn:hover {{ border-color: var(--accent); color: var(--accent); }}
+    .copy-q-btn.copied {{ border-color: #166534; color: #166534; background: #dcfce7; }}
+    @media print {{ .copy-q-btn {{ display: none; }} }}
   </style>
+  <script>
+  function rawTextOf(node) {{
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {{
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return (node.getAttribute && node.getAttribute('display') === 'true') ? '\\\\[' + tex + '\\\\]' : '$' + tex + '$';
+    }}
+    var out = '';
+    node.childNodes.forEach(function(c) {{ out += rawTextOf(c); }});
+    return out;
+  }}
+  function copyText(btn, text) {{
+    function flash() {{
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\\u2713'; btn.classList.add('copied');
+      setTimeout(function() {{ btn.innerHTML = orig; btn.classList.remove('copied'); }}, 2000);
+    }}
+    if (navigator.clipboard && navigator.clipboard.writeText) {{
+      navigator.clipboard.writeText(text).then(flash).catch(function() {{ fallbackCopy(text); flash(); }});
+    }} else {{ fallbackCopy(text); flash(); }}
+  }}
+  function fallbackCopy(text) {{
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+  }}
+  document.addEventListener('DOMContentLoaded', function() {{
+    function attach() {{
+      document.querySelectorAll('main p').forEach(function(p) {{
+        if (!/^[0-9]+[.]/.test(p.textContent.trim())) return;
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn'; btn.innerHTML = '&#128203;';
+        var pClone = p.cloneNode(true);
+        btn.addEventListener('click', function() {{ copyText(btn, rawTextOf(pClone).trim()); }});
+        var row = document.createElement('span');
+        row.className = 'q-row';
+        while (p.firstChild) row.appendChild(p.firstChild);
+        row.appendChild(btn);
+        p.appendChild(row);
+      }});
+    }}
+    if (window.MathJax && MathJax.startup) {{ MathJax.startup.promise.then(attach); }}
+    else {{ attach(); }}
+  }});
+  </script>
 </head>
 <body>
   <article class="page">
