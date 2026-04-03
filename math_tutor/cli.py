@@ -13,7 +13,7 @@ from math_tutor.cli_commands import (
 )
 from math_tutor.cli_context import build_command_context
 from math_tutor.env_config import load_dotenv_if_present
-from math_tutor.prompt_catalog import DEFAULT_MODEL, PROMPTS_BY_SLUG
+from math_tutor.prompt_catalog import DEFAULT_MODEL, PRINTABLE_PROMPT_SLUGS, PROMPTS_BY_SLUG
 
 COURSE_URL = "https://mitty.instructure.com/courses/4187"
 

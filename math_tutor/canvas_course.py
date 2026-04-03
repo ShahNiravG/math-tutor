@@ -38,6 +38,9 @@ from math_tutor.state_store import FetchState, save_fetch_state
 
 
 FILES_PAGE_TIMEOUT_MS = 30_000
+DEFAULT_TIMEOUT_SECONDS = 30.0
+
+
 def build_canvas_client(context: Any, course_url: str) -> httpx.Client:
     parsed = urlparse(course_url)
     cookies = context.cookies()
