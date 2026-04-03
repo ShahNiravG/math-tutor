@@ -944,3 +944,92 @@ Changes made:
 - `README.md`, `TASK_HISTORY.md`, and `HANDOFF.md` now reflect the current deploy/auth flow
 - challenge deploys include reports, completed-state lookup, progress saving, privacy policy, and OAuth branding assets
 - deploy sync still uses `.vscode/sftp.json` with local `output/deploy/math_tutor/` as the upload context
+
+---
+
+## Session: 2026-04-02 — Engineering Hardening and Module Extraction
+
+### Goals
+
+1. Move the project toward a clearer, more professional module architecture
+2. Reduce the size and responsibility concentration in `cli.py` and `site_builder.py`
+3. Add safety rails so future refactors can happen without breaking preserved outputs or the deployed site
+
+### Architecture Hardening
+
+This session focused on turning large mixed-responsibility files into narrower modules with explicit contracts.
+
+Major extractions completed:
+
+- CLI/runtime:
+  - `cli_auth.py`
+  - `cli_commands.py`
+  - `cli_context.py`
+  - `cli_generation.py`
+  - `cli_runtime.py`
+  - `cli_workflows.py`
+  - `env_config.py`
+- Canvas:
+  - `canvas_files.py`
+  - `canvas_login.py`
+  - `canvas_course.py` narrowed to discovery/download orchestration
+- Prompt/artifact pipeline:
+  - `prompt_catalog.py`
+  - `prompt_generation.py`
+  - `prompt_pipeline.py`
+  - `prompt_output_store.py`
+  - `prompt_saved_outputs.py`
+  - `response_artifacts.py`
+  - `generated_metadata.py`
+  - `video_recommendations.py`
+- Site generation:
+  - `site_assets.py`
+  - `site_cards.py`
+  - `site_challenges.py`
+  - `site_content.py`
+  - `site_data.py`
+  - `site_models.py`
+  - `site_navigation.py`
+  - `site_pages.py`
+  - `site_prompt_cards.py`
+  - `site_records.py`
+  - `site_sections.py`
+  - `site_shell.py`
+  - `site_theme.py`
+
+### Naming and Contract Cleanup
+
+We also cleaned up several misleading legacy seams:
+
+- canonical generated-output state file renamed to `generated_output_state.json`
+- runtime state helpers renamed to provider-neutral terms
+- stored metadata migrated from `openai_*` keys to neutral keys like `model` and `response_id`
+- CLI flag compatibility aliases like `--force-openai` and `--model` were removed after the new contracts were in place
+- provider-specific UI fallback text such as `No OpenAI response yet` was replaced with provider-neutral wording
+
+### Validation and Documentation
+
+This hardening pass also added stronger verification and operator documentation.
+
+Changes made:
+
+- created `scripts/validate_project.py` as the canonical safe local validation path
+- expanded unit coverage to 78 tests
+- added `docs/ARCHITECTURE.md`, `docs/VALIDATION.md`, and `docs/OPERATIONS.md`
+- updated `README.md` and `HANDOFF.md` to reflect the current modular layout and preserved-artifact workflow
+
+### Important Safety Constraint
+
+Throughout this refactor pass we deliberately preserved the expensive saved artifacts:
+
+- no new OpenAI calls
+- no new Gemini calls
+- no rewriting of saved response `.md` files
+- no deploy-tree rebuilds unless explicitly requested for site verification
+
+### Current State
+
+- local validation baseline: `78` tests passing
+- the CLI is now a relatively thin orchestration entry point instead of a giant catch-all file
+- `site_builder.py` is much smaller and now composes dedicated page, record, theme, navigation, and challenge modules
+- remaining larger cleanup targets are `challenge_builder.py` and `mcq_generator.py`

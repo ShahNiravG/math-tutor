@@ -39,6 +39,8 @@ math-tutor \
 
 The CLI automatically loads environment variables from `../.env` when present, so you usually do not need to `export OPENAI_API_KEY` or `export GEMINI_API_KEY` manually first.
 
+For exact operator workflows, recovery steps, and deploy commands, see [docs/OPERATIONS.md](/home/nshah/projects/math-tutor/math_tutor/docs/OPERATIONS.md).
+
 ### Prompt slugs
 
 Each prompt generates a separate output file. Supported slugs:
@@ -72,9 +74,9 @@ Each prompt generates a separate output file. Supported slugs:
 - `--assignment-limit 10`: cap assignment fetches when `--fetch-assignments` is used
 - `--chapter 11.4`: filter to a specific chapter (repeatable; works with `--skip-fetch`)
 - `--force`: reprocess files even if output already exists
-- `--force-openai`: rerun the AI step even for files already processed successfully
+- `--force-generation`: rerun the generation step even for files already processed successfully
 - `--list-files`: print all discovered course PDFs and exit
-- `--print-prompt study-guide`: print saved prompt PDFs without rerunning fetch or AI
+- `--print-prompt study-guide`: print saved prompt PDFs without rerunning fetch or generation
 - `--print-all --chapter 7.4`: print class notes, assignments, and generated PDFs for a chapter
 - `--dry-run`: preview what `--print-prompt` or `--print-all` would print
 - `--output-dir custom/path`: choose a different output directory
@@ -94,7 +96,7 @@ math-tutor \
   --prompt olympiad-solutions-gemini
 ```
 
-The skip logic works the same way for Gemini as for OpenAI: if a prompt output already exists for a given PDF it is not regenerated unless `--force-openai` is passed.
+The skip logic works the same way for Gemini as for OpenAI: if a prompt output already exists for a given PDF it is not regenerated unless `--force-generation` is passed.
 
 ### Output files
 
@@ -104,7 +106,7 @@ Outputs are written under the selected output directory (default: `math_tutor/ou
 - `responses/`: AI output for each PDF and prompt in `.md`, `.html`, and `.pdf`
 - `metadata/`: JSON metadata for traceability
 - `fetch_state.json`: remembers which PDFs were fetched successfully
-- `openai_state.json`: remembers which PDFs completed each prompt step successfully (used for both OpenAI and Gemini)
+- `generated_output_state.json`: remembers which PDFs completed each prompt step successfully across OpenAI and Gemini
 - `site/index.html`: a browsable tutoring library landing page
 - `site/doc-<file_id>.html`: per-document pages with shared left navigation
 
@@ -176,13 +178,74 @@ If you already have saved Study Guide Markdown responses from earlier runs, you 
 math-tutor-backfill-response-html
 ```
 
+## Engineering Validation
+
+Run the local validation workflow before refactoring core behavior:
+
+```bash
+.venv/bin/python math_tutor/scripts/validate_project.py
+```
+
+This validation path is intentionally safe for preserved artifacts:
+
+- no OpenAI calls
+- no Gemini calls
+- no Canvas fetches
+- no deploy-tree rewrites
+
+## Architecture and Contracts
+
+Reference docs:
+
+- [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md)
+- [docs/VALIDATION.md](/home/nshah/projects/math-tutor/math_tutor/docs/VALIDATION.md)
+- [docs/OPERATIONS.md](/home/nshah/projects/math-tutor/math_tutor/docs/OPERATIONS.md)
+
+## Current Engineering State
+
+The codebase has been split into smaller modules so the main entry points are no longer the source of truth for every behavior.
+
+Examples:
+
+- CLI/runtime orchestration:
+  - [cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py)
+  - [cli_commands.py](/home/nshah/projects/math-tutor/math_tutor/cli_commands.py)
+  - [cli_context.py](/home/nshah/projects/math-tutor/math_tutor/cli_context.py)
+  - [cli_runtime.py](/home/nshah/projects/math-tutor/math_tutor/cli_runtime.py)
+  - [cli_generation.py](/home/nshah/projects/math-tutor/math_tutor/cli_generation.py)
+- Canvas integration:
+  - [canvas_course.py](/home/nshah/projects/math-tutor/math_tutor/canvas_course.py)
+  - [canvas_files.py](/home/nshah/projects/math-tutor/math_tutor/canvas_files.py)
+  - [canvas_login.py](/home/nshah/projects/math-tutor/math_tutor/canvas_login.py)
+- Prompt generation/output:
+  - [prompt_catalog.py](/home/nshah/projects/math-tutor/math_tutor/prompt_catalog.py)
+  - [prompt_pipeline.py](/home/nshah/projects/math-tutor/math_tutor/prompt_pipeline.py)
+  - [prompt_generation.py](/home/nshah/projects/math-tutor/math_tutor/prompt_generation.py)
+  - [prompt_output_store.py](/home/nshah/projects/math-tutor/math_tutor/prompt_output_store.py)
+  - [response_artifacts.py](/home/nshah/projects/math-tutor/math_tutor/response_artifacts.py)
+- Site generation/rendering:
+  - [site_builder.py](/home/nshah/projects/math-tutor/math_tutor/site_builder.py)
+  - [site_pages.py](/home/nshah/projects/math-tutor/math_tutor/site_pages.py)
+  - [site_records.py](/home/nshah/projects/math-tutor/math_tutor/site_records.py)
+  - [site_prompt_cards.py](/home/nshah/projects/math-tutor/math_tutor/site_prompt_cards.py)
+  - [site_shell.py](/home/nshah/projects/math-tutor/math_tutor/site_shell.py)
+  - [site_theme.py](/home/nshah/projects/math-tutor/math_tutor/site_theme.py)
+  - [site_navigation.py](/home/nshah/projects/math-tutor/math_tutor/site_navigation.py)
+  - [site_challenges.py](/home/nshah/projects/math-tutor/math_tutor/site_challenges.py)
+
+Current validation baseline:
+
+- `78` unit tests pass through [scripts/validate_project.py](/home/nshah/projects/math-tutor/math_tutor/scripts/validate_project.py)
+- core modules compile successfully with `py_compile`
+- validation does not call model APIs, fetch from Canvas, or rewrite the current deploy tree
+
 ## Notes
 
-- Prompts are defined in [cli.py](cli.py).
+- Prompts are defined in [prompt_catalog.py](/home/nshah/projects/math-tutor/math_tutor/prompt_catalog.py).
 - The CLI only processes PDFs whose visible names contain `note.docx` or `note.pdf`.
 - The Study Guide prompt keeps legacy filenames so already-completed Study Guide runs are preserved and not repeated.
 - The CLI tracks success per PDF and per prompt slug, so it only reruns when that specific output is missing or forced.
-- You can target one or more prompts with repeated `--prompt` flags, and `--force-openai` applies only to the selected prompts.
+- You can target one or more prompts with repeated `--prompt` flags, and `--force-generation` applies only to the selected prompts.
 - `Olympiad Solutions` depends on the saved `Olympiad Problems` output for the same PDF. If the problems file does not exist yet, the CLI generates it first.
 - The HTML tutoring site is built from already-saved files and does not need to refetch PDFs or rerun the AI.
 - The Gemini inspiring-videos prompt uses Google Search grounding in the Gemini API.

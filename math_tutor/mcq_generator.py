@@ -7,12 +7,8 @@ import re
 from pathlib import Path
 from typing import Any
 
-from math_tutor.cli import (
-    build_response_html,
-    build_response_pdf,
-    load_dotenv_if_present,
-    markdown_to_html,
-)
+from math_tutor.env_config import load_dotenv_if_present
+from math_tutor.response_artifacts import build_response_pdf, markdown_to_html
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 RESPONSES_DIR = PACKAGE_DIR / "output" / "responses"

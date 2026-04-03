@@ -2,7 +2,7 @@
 
 ## What This Project Does
 
-`math_tutor` logs into the Canvas course, finds PDF attachments, downloads them, sends them to OpenAI/Gemini with structured prompts, and saves the generated output plus metadata locally. It also builds a browsable HTML tutoring site from those outputs.
+`math_tutor` logs into the Canvas course, finds PDF attachments, downloads them, sends them through the prompt-generation pipeline with OpenAI/Gemini as needed, and saves the generated output plus metadata locally. It also builds a browsable HTML tutoring site from those outputs.
 
 ## Current Login Flow
 
@@ -25,12 +25,13 @@ The CLI only keeps PDFs whose names contain `note.docx` or `note.pdf`.
 
 ## Prompt Architecture
 
-Prompts are defined via two dataclasses in `cli.py`:
+Prompts are defined in [math_tutor/prompt_catalog.py](/home/nshah/projects/math-tutor/math_tutor/prompt_catalog.py):
 
-- **`PromptTemplate`**: slug, title, prompt text, optional `source_template_slug` dependency, `generate_models` allowlist
-- **`ModelConfig`**: slug (`""` = default/GPT-4.1, `"gpt5"` = GPT-5.4, `"gemini"` = Gemini 3.1 Pro)
+- **`PromptTemplate`** captures the prompt family, shared text, and any source-prompt dependency
+- **`ModelConfig`** declares the available model variants for generated prompts
+- **`PromptSpec`** is the fully expanded generation contract used by the pipeline
 
-`_build_prompt_spec()` creates `PromptSpec` instances from template × model cross-products. `_order_prompts()` topologically sorts them so dependents follow their source. PROMPTS has 21 entries.
+The catalog expands template × model combinations into concrete prompt specs, and dependency ordering is resolved before execution so source prompts always run before derived prompts like MCQ generation.
 
 **Bundled generation**: mental-math and olympiad prompts include MCQ as part of their bundle. Specifying `--prompt mental-math-gpt5` automatically includes `mental-math-gpt5-mcq`.
 
@@ -39,11 +40,11 @@ Prompts are defined via two dataclasses in `cli.py`:
 ## Current Processing Rules
 
 - `fetch_state.json` prevents refetching files that were already downloaded successfully
-- `openai_state.json` tracks completion state (used for display, not for skip logic)
+- `generated_output_state.json` tracks generated-output completion state (used for display, not for skip logic)
 - Skip logic is **file-existence only**: if all output artifacts (`.md`, `.html`, optionally `.pdf`) exist, the prompt is skipped
 - `--fetch-only` stops after download/state update
 - `--skip-fetch` uses `fetch_state.json` directly; no Canvas login needed
-- `--force-openai` reruns the AI step for already processed files
+- `--force-generation` reruns the generation step for already processed files
 
 ## Output Locations
 
@@ -53,7 +54,7 @@ Default output root: `math_tutor/output/`
 - `responses/` — AI output per PDF per prompt (`.md`, `.html`, `.pdf`)
 - `metadata/` — JSON metadata for traceability
 - `fetch_state.json` — remembers fetched PDFs
-- `openai_state.json` — remembers completed prompt steps
+- `generated_output_state.json` — remembers completed prompt steps across providers
 - `site/` — local browsable HTML site (default build target)
 
 Deploy root: `math_tutor/output/deploy/math_tutor/`
@@ -89,6 +90,40 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 - [math_tutor/README.md](/home/nshah/projects/math-tutor/math_tutor/README.md)
 - [math_tutor/TASK_HISTORY.md](/home/nshah/projects/math-tutor/math_tutor/TASK_HISTORY.md)
 
+## Refactor Checkpoint
+
+The codebase is no longer organized around one large CLI file and one large site-builder file.
+
+Current important module boundaries:
+
+- CLI orchestration:
+  - [math_tutor/cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py)
+  - [math_tutor/cli_commands.py](/home/nshah/projects/math-tutor/math_tutor/cli_commands.py)
+  - [math_tutor/cli_context.py](/home/nshah/projects/math-tutor/math_tutor/cli_context.py)
+  - [math_tutor/cli_runtime.py](/home/nshah/projects/math-tutor/math_tutor/cli_runtime.py)
+  - [math_tutor/cli_generation.py](/home/nshah/projects/math-tutor/math_tutor/cli_generation.py)
+- Canvas logic:
+  - [math_tutor/canvas_course.py](/home/nshah/projects/math-tutor/math_tutor/canvas_course.py)
+  - [math_tutor/canvas_files.py](/home/nshah/projects/math-tutor/math_tutor/canvas_files.py)
+  - [math_tutor/canvas_login.py](/home/nshah/projects/math-tutor/math_tutor/canvas_login.py)
+- Prompt and artifact flow:
+  - [math_tutor/prompt_catalog.py](/home/nshah/projects/math-tutor/math_tutor/prompt_catalog.py)
+  - [math_tutor/prompt_pipeline.py](/home/nshah/projects/math-tutor/math_tutor/prompt_pipeline.py)
+  - [math_tutor/prompt_generation.py](/home/nshah/projects/math-tutor/math_tutor/prompt_generation.py)
+  - [math_tutor/prompt_output_store.py](/home/nshah/projects/math-tutor/math_tutor/prompt_output_store.py)
+  - [math_tutor/response_artifacts.py](/home/nshah/projects/math-tutor/math_tutor/response_artifacts.py)
+- Site generation:
+  - [math_tutor/site_builder.py](/home/nshah/projects/math-tutor/math_tutor/site_builder.py)
+  - [math_tutor/site_pages.py](/home/nshah/projects/math-tutor/math_tutor/site_pages.py)
+  - [math_tutor/site_records.py](/home/nshah/projects/math-tutor/math_tutor/site_records.py)
+  - [math_tutor/site_prompt_cards.py](/home/nshah/projects/math-tutor/math_tutor/site_prompt_cards.py)
+  - [math_tutor/site_shell.py](/home/nshah/projects/math-tutor/math_tutor/site_shell.py)
+  - [math_tutor/site_theme.py](/home/nshah/projects/math-tutor/math_tutor/site_theme.py)
+  - [math_tutor/site_navigation.py](/home/nshah/projects/math-tutor/math_tutor/site_navigation.py)
+  - [math_tutor/site_challenges.py](/home/nshah/projects/math-tutor/math_tutor/site_challenges.py)
+
+This means future cleanup should usually target one focused module at a time instead of editing `cli.py` or `site_builder.py` as giant catch-all files.
+
 ## Common Commands
 
 ```bash
@@ -98,7 +133,7 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 # Skip fetch, generate for a specific chapter
 .venv/bin/math-tutor --skip-fetch --chapter 11.4
 
-# Fetch only (no AI)
+# Fetch only (no generation)
 .venv/bin/math-tutor --username EMAIL --password PASS --fetch-only
 
 # Build and deploy site
@@ -107,6 +142,27 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 # Backfill MCQ for existing notes (skips already-done)
 .venv/bin/math-tutor-generate-mcq
 ```
+
+For the current canonical operator runbook, including recovery from saved Markdown without new model calls, see [docs/OPERATIONS.md](/home/nshah/projects/math-tutor/math_tutor/docs/OPERATIONS.md).
+
+## Safe Validation Before Refactors
+
+From the repository root:
+
+```bash
+.venv/bin/python math_tutor/scripts/validate_project.py
+```
+
+This runs local unit tests and Python compilation checks without:
+
+- fetching from Canvas
+- calling model APIs
+- rewriting the current deploy tree
+
+Architecture and validation references:
+
+- [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md)
+- [docs/VALIDATION.md](/home/nshah/projects/math-tutor/math_tutor/docs/VALIDATION.md)
 
 ## Challenge Exam Details
 
@@ -131,6 +187,8 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 - Deploy base path is `/site/`; all build commands use `--base-path /site/`
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 - CLI fetch logs now summarize already-fetched vs pending files before processing
+- Local validation baseline is `78` passing tests via `math_tutor/scripts/validate_project.py`
+- The current refactor checkpoint did not rerun model APIs and did not rebuild the deploy tree in place unless explicitly requested
 
 ## Known Risks
 
@@ -138,3 +196,4 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 - The Modules page structure could change
 - OpenAI and Gemini runs require valid API keys with available quota
 - Challenge exam app requires MySQL DB credentials in `.env`
+- `challenge_builder.py` and `mcq_generator.py` are still larger mixed-responsibility modules than the rest of the cleaned codebase

@@ -9,7 +9,8 @@ import shutil
 from datetime import datetime, timezone
 from pathlib import Path
 
-from math_tutor.cli import load_dotenv_if_present
+from math_tutor.chaptering import chapter_slug, chapter_sort_key, parse_response_stem_chapter
+from math_tutor.env_config import load_dotenv_if_present
 
 PACKAGE_DIR = Path(__file__).resolve().parent
 
@@ -24,24 +25,9 @@ SOURCE_SUFFIXES = [
     ("__olympiad-problems-gpt5.md",    "op", "gpt54", "GPT-5.4",       "__olympiad-problems-gpt5-mcq.md"),
     ("__olympiad-problems-gemini.md",  "op", "gem",   "Gemini 3.1 Pro","__olympiad-problems-gemini-mcq.md"),
 ]
-
-
 # ---------------------------------------------------------------------------
 # Question extraction
 # ---------------------------------------------------------------------------
-
-def _chapter_from_stem(stem: str) -> str:
-    base = stem.split("__")[0]
-    m = re.search(r"chp-(\d+(?:-\d+)*)", base)
-    if not m:
-        return "?"
-    parts = m.group(1).split("-")
-    chapters: list[str] = []
-    i = 0
-    while i + 1 < len(parts):
-        chapters.append(f"{parts[i]}.{parts[i + 1]}")
-        i += 2
-    return " & ".join(chapters)
 
 
 def _extract_numbered_questions(text: str) -> list[str]:
@@ -113,7 +99,7 @@ def load_all_questions(output_dir: Path) -> list[dict]:
     for suffix, q_type, model, model_label, mcq_suffix in SOURCE_SUFFIXES:
         type_label = "Mental Math" if q_type == "mm" else "Olympiad Problems"
         for path in sorted(responses_dir.glob(f"*{suffix}")):
-            chapter = _chapter_from_stem(path.stem)
+            chapter = parse_response_stem_chapter(path.stem)
             # Load MCQ options if available
             base = path.stem[: path.stem.rfind("__")]
             mcq_path = responses_dir / f"{base}{mcq_suffix}"
@@ -122,7 +108,7 @@ def load_all_questions(output_dir: Path) -> list[dict]:
                 q_id = f"chp{chapter.replace(' & ', '-').replace('.', '')}-{q_type}-{model}-q{i}"
                 q: dict = {
                     "id": q_id,
-                    "chapter": chapter,
+                    "chapter": parse_response_stem_chapter(path.stem),
                     "type": q_type,
                     "model": model,
                     "model_label": model_label,
@@ -136,18 +122,9 @@ def load_all_questions(output_dir: Path) -> list[dict]:
                 questions.append(q)
     return questions
 
-
 # ---------------------------------------------------------------------------
 # Exam set generation
 # ---------------------------------------------------------------------------
-
-def _chapter_sort_key(chapter: str) -> float:
-    m = re.match(r"^(\d+(?:\.\d+)?)", chapter)
-    return float(m.group(1)) if m else 9999.0
-
-
-def _chapter_slug(chapter: str) -> str:
-    return re.sub(r"[^0-9]+", "", chapter)
 
 
 def _stratified_shuffle(questions: list[dict], seed: int) -> list[dict]:
@@ -157,7 +134,7 @@ def _stratified_shuffle(questions: list[dict], seed: int) -> list[dict]:
         by_chapter.setdefault(q["chapter"], []).append(q)
     for qs in by_chapter.values():
         rng.shuffle(qs)
-    chapters = sorted(by_chapter.keys(), key=_chapter_sort_key)
+    chapters = sorted(by_chapter.keys(), key=chapter_sort_key)
     result: list[dict] = []
     max_len = max(len(v) for v in by_chapter.values())
     for i in range(max_len):
@@ -215,12 +192,12 @@ def build_chapter_exam_sets(questions: list[dict], *, chapters: tuple[str, ...] 
         chapters = tuple(
             sorted(
                 {q["chapter"] for q in questions if q.get("chapter") and "correct" in q},
-                key=_chapter_sort_key,
+                key=chapter_sort_key,
             )
         )
     exams: list[dict] = []
     for chapter in chapters:
-        chapter_key = _chapter_slug(chapter)
+        chapter_key = chapter_slug(chapter)
         chapter_questions = [q for q in questions if q["chapter"] == chapter and "correct" in q]
         mm = sorted(
             [q for q in chapter_questions if q["type"] == "mm"],
@@ -426,10 +403,10 @@ def build_challenges(
         json.dumps({"generated_at": chapter_full.get("generated_at"), "exams": chapter_index_entries}, indent=2),
         encoding="utf-8",
     )
-    for chapter in sorted({e["chapter"] for e in chapter_index_entries}, key=_chapter_sort_key):
+    for chapter in sorted({e["chapter"] for e in chapter_index_entries}, key=chapter_sort_key):
         chapter_exams = [e for e in chapter_index_entries if e["chapter"] == chapter]
-        chapter_slug = _chapter_slug(chapter)
-        (chapter_subdir / f"chp{chapter_slug}.json").write_text(
+        chapter_key = chapter_slug(chapter)
+        (chapter_subdir / f"chp{chapter_key}.json").write_text(
             json.dumps({
                 "generated_at": chapter_full.get("generated_at"),
                 "chapter": chapter,
