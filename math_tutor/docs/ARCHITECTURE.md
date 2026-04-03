@@ -173,6 +173,26 @@ Key contract:
 - Outputs: normalized question catalogs, mixed challenge exam bundles, and chapter-specific exam bundles
 - Side effects: filesystem reads only
 
+### `challenge_outputs.py`
+
+Challenge catalog writing and deploy materialization helpers.
+
+Key contract:
+
+- Inputs: generated challenge bundles, chapter bundles, source `challenges_src/` assets, and target deploy paths
+- Outputs: canonical JSON catalogs, deploy-side exam index files, per-exam JSON files, and copied static challenge assets
+- Side effects: filesystem writes and directory copying only
+
+### `challenge_config.py`
+
+Config generation helpers for the challenge PHP app.
+
+Key contract:
+
+- Inputs: current environment variables and target `config.php` output path
+- Outputs: generated PHP constants for challenge DB configuration
+- Side effects: filesystem writes only
+
 ### `site_builder.py`
 
 Builds the tutoring site and chapter pages from saved artifacts.
@@ -192,6 +212,46 @@ Key contract:
 - Inputs: saved source `.md` question files
 - Outputs: `*-mcq.md/.html/.pdf`
 - Side effects: API calls and filesystem writes
+
+### `mcq_prompts.py`
+
+MCQ generation prompt contracts and source-file mappings.
+
+Key contract:
+
+- Inputs: prompt type and source question markdown text
+- Outputs: canonical MCQ-generation prompts plus source-file configuration metadata
+- Side effects: none
+
+### `mcq_artifacts.py`
+
+MCQ artifact path and HTML rendering helpers.
+
+Key contract:
+
+- Inputs: source markdown paths, MCQ slugs, responses directory, and generated MCQ markdown
+- Outputs: normalized MCQ output paths and MathJax-enabled MCQ HTML documents
+- Side effects: none
+
+### `mcq_clients.py`
+
+Provider client bootstrap and dispatch for MCQ generation.
+
+Key contract:
+
+- Inputs: provider API keys, provider selection, generated MCQ prompt text, and optional provider clients
+- Outputs: initialized provider clients and generated MCQ response text when the requested provider is available
+- Side effects: provider SDK imports, optional API calls, and operator-facing warnings
+
+### `mcq_workflow.py`
+
+Per-file MCQ workflow helpers.
+
+Key contract:
+
+- Inputs: source markdown file, MCQ source configuration, responses directory, provider clients, force flag, and optional injected helper functions
+- Outputs: generated `*-mcq.md/.html/.pdf` artifacts for a single source file when generation is possible
+- Side effects: filesystem writes and optional provider API calls
 
 ### `backfill_response_html.py`
 
