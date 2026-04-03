@@ -24,6 +24,7 @@ CORE_MODULES = [
     "math_tutor/canvas_files.py",
     "math_tutor/canvas_login.py",
     "math_tutor/canvas_course.py",
+    "math_tutor/challenge_catalog.py",
     "math_tutor/chaptering.py",
     "math_tutor/challenge_builder.py",
     "math_tutor/cli_auth.py",

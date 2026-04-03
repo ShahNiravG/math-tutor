@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import unittest
 
-from math_tutor.challenge_builder import build_chapter_exam_sets
+from math_tutor.challenge_catalog import build_chapter_exam_sets
 
 
 class ChallengeBuilderTests(unittest.TestCase):

@@ -163,6 +163,16 @@ Key contract:
 - Outputs: challenge exam JSON catalogs, deploy challenge assets, generated `config.php`
 - Side effects: filesystem writes only
 
+### `challenge_catalog.py`
+
+Question extraction and exam-catalog assembly for challenge generation.
+
+Key contract:
+
+- Inputs: saved response markdown plus MCQ markdown artifacts under `output/responses/`
+- Outputs: normalized question catalogs, mixed challenge exam bundles, and chapter-specific exam bundles
+- Side effects: filesystem reads only
+
 ### `site_builder.py`
 
 Builds the tutoring site and chapter pages from saved artifacts.
