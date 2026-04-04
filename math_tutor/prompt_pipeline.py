@@ -137,6 +137,7 @@ def run_prompt(
         metadata_dir=metadata_dir,
         stem=stem,
         prompt_spec=prompt_spec,
+        model_name=prompt_spec.model or default_model,
     )
 
     if should_skip_generation(
@@ -231,6 +232,7 @@ def resolve_source_output(
         metadata_dir=metadata_dir,
         stem=stem,
         prompt_spec=source_prompt,
+        model_name=source_prompt.model or default_model,
     )
     if source_response_path.exists():
         source_output = source_response_path.read_text(encoding="utf-8")

@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 import re
 from typing import Any, TypedDict
-from urllib.parse import parse_qs, quote, urlparse
+from urllib.parse import parse_qs, quote, quote_plus, urlparse
 
 import httpx
 
@@ -16,6 +16,12 @@ class InspiringVideoRecommendation(TypedDict):
     url: str
     why_it_inspires: str
     topics_matched: list[str]
+
+
+_SEARCH_QUERY_BLOCK_PATTERN = re.compile(
+    r"\*\*Google Search Query:\*\*\s*\n\s*`(?P<query>[^`\n]+)`",
+    re.MULTILINE,
+)
 
 
 def normalize_youtube_url(url: str) -> str | None:
@@ -105,16 +111,80 @@ def parse_gemini_video_recommendations(
     return validated
 
 
+def build_google_search_query(*, title: str, creator: str) -> str:
+    parts = [title.strip(), creator.strip(), "YouTube"]
+    return " ".join(part for part in parts if part)
+
+
+def build_google_search_url(query: str) -> str:
+    return f"https://www.google.com/search?q={quote_plus(query)}"
+
+
+def normalize_inspiring_videos_markdown(markdown_text: str) -> str:
+    normalized = _SEARCH_QUERY_BLOCK_PATTERN.sub(
+        lambda match: (
+            f"**Google Search Link:** "
+            f"[{match.group('query')}]" f"({build_google_search_url(match.group('query'))})"
+        ),
+        markdown_text,
+    )
+
+    if "google.com/search" in normalized:
+        return normalized
+
+    blocks: list[str] = []
+    changed = False
+    for block in normalized.split("\n\n---\n\n"):
+        lines = block.splitlines()
+        if not lines:
+            blocks.append(block)
+            continue
+        if any("google.com/search" in line or "Google Search" in line for line in lines):
+            blocks.append(block)
+            continue
+        heading = lines[0].strip()
+        if not heading.startswith("### "):
+            blocks.append(block)
+            continue
+        title = re.sub(r"^###\s+\d+\.\s*", "", heading).strip()
+        title = re.sub(r"[*_`]+", "", title).strip()
+
+        creator_index = next((index for index, line in enumerate(lines) if line.startswith("**Creator:** ")), -1)
+        if creator_index < 0:
+            blocks.append(block)
+            continue
+        creator = lines[creator_index].split("**Creator:** ", 1)[1].strip()
+        if not title or not creator:
+            blocks.append(block)
+            continue
+
+        search_query = build_google_search_query(title=title, creator=creator)
+        search_line = f"**Google Search Link:** [{search_query}]({build_google_search_url(search_query)})"
+
+        insert_at = creator_index + 1
+        if insert_at < len(lines) and lines[insert_at].startswith("**URL:** "):
+            insert_at += 1
+        lines.insert(insert_at, search_line)
+        blocks.append("\n".join(lines))
+        changed = True
+
+    if changed:
+        return "\n\n---\n\n".join(blocks)
+    return normalized
+
+
 def render_inspiring_videos_markdown(recommendations: list[InspiringVideoRecommendation]) -> str:
     blocks: list[str] = []
     for index, item in enumerate(recommendations, start=1):
         topics = ", ".join(item.get("topics_matched") or [])
+        search_query = build_google_search_query(title=item["title"], creator=item["creator"])
         blocks.append(
             "\n".join(
                 [
                     f"### {index}. {item['title']}",
                     f"**Creator:** {item['creator']}",
                     f"**URL:** {item['url']}",
+                    f"**Google Search Link:** [{search_query}]({build_google_search_url(search_query)})",
                     f"**Why it inspires:** {item['why_it_inspires']}",
                     f"**Topics matched:** {topics}",
                 ]

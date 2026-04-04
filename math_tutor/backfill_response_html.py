@@ -3,8 +3,6 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
-
-from math_tutor.artifact_paths import build_prompt_paths
 from math_tutor.generated_metadata import normalize_metadata_payload
 from math_tutor.prompt_catalog import PROMPTS_BY_SLUG, STUDY_GUIDE_PROMPT
 from math_tutor.response_artifacts import build_response_html, build_response_pdf
@@ -37,18 +35,8 @@ def main() -> None:
         if prompt_spec is None:
             continue
 
-        if prompt_slug == STUDY_GUIDE_PROMPT.slug and "__" not in response_path.stem:
-            expected_md_path, html_path, pdf_response_path, expected_metadata_path = build_prompt_paths(
-                responses_dir=responses_dir,
-                metadata_dir=metadata_dir,
-                stem=response_path.stem,
-                prompt_spec=STUDY_GUIDE_PROMPT,
-            )
-            if expected_md_path != response_path or expected_metadata_path != metadata_path:
-                continue
-        else:
-            html_path = response_path.with_suffix(".html")
-            pdf_response_path = response_path.with_suffix(".pdf")
+        html_path = response_path.with_suffix(".html")
+        pdf_response_path = response_path.with_suffix(".pdf")
 
         pdf_path = Path(metadata["pdf_path"])
         display_name = metadata["display_name"]

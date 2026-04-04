@@ -56,4 +56,9 @@ class VideoRecommendationsTests(unittest.TestCase):
         )
 
         self.assertIn("### 1. Video A", markdown)
+        self.assertIn("**Google Search Link:** [Video A Teacher YouTube]", markdown)
+        self.assertIn(
+            "(https://www.google.com/search?q=Video+A+Teacher+YouTube)",
+            markdown,
+        )
         self.assertIn("**Topics matched:** Angles, Radians", markdown)

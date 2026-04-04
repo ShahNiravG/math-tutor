@@ -8,6 +8,8 @@ from typing import Any
 
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError, sync_playwright
 
+from math_tutor.video_recommendations import normalize_inspiring_videos_markdown
+
 
 MATHJAX_SCRIPT = "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 COPY_BUTTON_SLUGS = {
@@ -32,6 +34,8 @@ def build_response_html(
     pdf_href: str | None,
     prompt_slug: str = "",
 ) -> str:
+    if prompt_slug.startswith("inspiring-videos"):
+        markdown_text = normalize_inspiring_videos_markdown(markdown_text)
     rendered = markdown_to_html(markdown_text)
     pdf_name = html_escape(response_document_title(title))
     prompt_name = html_escape(prompt_title)
@@ -294,6 +298,7 @@ def markdown_to_html(markdown_text: str) -> str:
     parts: list[str] = []
     paragraph: list[str] = []
     in_list = False
+    blockquote: list[str] = []
 
     def flush_paragraph() -> None:
         nonlocal paragraph
@@ -307,41 +312,65 @@ def markdown_to_html(markdown_text: str) -> str:
             parts.append("</ul>")
             in_list = False
 
+    def flush_blockquote() -> None:
+        nonlocal blockquote
+        if blockquote:
+            parts.append(f"<blockquote><p>{render_inline(' '.join(blockquote).strip())}</p></blockquote>")
+            blockquote = []
+
     for raw_line in lines:
         stripped = raw_line.strip()
         if not stripped:
             flush_paragraph()
             close_list()
+            flush_blockquote()
             continue
-        if re.fullmatch(r"-{3,}", stripped):
+        if re.fullmatch(r"(?:-{3,}|\*{3,})", stripped):
             flush_paragraph()
             close_list()
+            flush_blockquote()
             parts.append("<hr>")
             continue
         heading_match = re.match(r"^(#{1,4})\s+(.*)$", stripped)
         if heading_match:
             flush_paragraph()
             close_list()
+            flush_blockquote()
             level = min(len(heading_match.group(1)) + 1, 4)
             parts.append(f"<h{level}>{render_inline(heading_match.group(2))}</h{level}>")
             continue
         if stripped.startswith(("- ", "* ")):
             flush_paragraph()
+            flush_blockquote()
             if not in_list:
                 parts.append("<ul>")
                 in_list = True
             parts.append(f"<li>{render_inline(stripped[2:].strip())}</li>")
             continue
+        if stripped.startswith(">"):
+            flush_paragraph()
+            close_list()
+            blockquote.append(stripped[1:].strip())
+            continue
+        flush_blockquote()
         close_list()
         paragraph.append(stripped)
 
     flush_paragraph()
     close_list()
+    flush_blockquote()
     return "\n".join(parts)
 
 
 def render_inline(text: str) -> str:
     escaped = html_escape(text)
+    math_tokens: list[str] = []
+
+    def replace_math(match: re.Match[str]) -> str:
+        math_tokens.append(match.group(0))
+        return f"@@MATH{len(math_tokens) - 1}@@"
+
+    escaped = _MATH_PATTERN.sub(replace_math, escaped)
     escaped = re.sub(
         r"\[([^\]]+)\]\((https?://[^\s)]+)\)",
         r'<a href="\2">\1</a>',
@@ -355,7 +384,15 @@ def render_inline(text: str) -> str:
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
     escaped = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", escaped)
     escaped = re.sub(r"`(.+?)`", r"<code>\1</code>", escaped)
+    for index, token in enumerate(math_tokens):
+        escaped = escaped.replace(f"@@MATH{index}@@", token)
     return escaped
+
+
+_MATH_PATTERN = re.compile(
+    r"(\\\[(?:.*?)\\\]|\\\((?:.*?)\\\)|\$\$(?:.*?)\$\$|(?<!\\)\$(?:\\.|[^$\n])+\$)",
+    flags=re.DOTALL,
+)
 
 
 def pretty_title(display_name: str) -> str:
