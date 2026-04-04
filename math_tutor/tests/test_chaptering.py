@@ -41,7 +41,7 @@ class ChapteringTests(unittest.TestCase):
     def test_format_assignment_display_name(self) -> None:
         self.assertEqual(
             format_assignment_display_name(Path("4517747_chp-6-1-6-2-work.pdf")),
-            "Chp 6.1 6.2 Work",
+            "Chapter 6.1 6.2 Work",
         )
 
     def test_chapter_sort_key_and_slug(self) -> None:

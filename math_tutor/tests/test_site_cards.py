@@ -74,7 +74,7 @@ class SiteCardsTests(unittest.TestCase):
         ]
         matched = match_assignments_to_record(assignments, record)
         self.assertEqual(matched, [Path("4517747_chp-6-1-6-2-work.pdf")])
-        self.assertEqual(format_assignment_display_name(matched[0]), "Chp 6.1 6.2 Work")
+        self.assertEqual(format_assignment_display_name(matched[0]), "Chapter 6.1 6.2 Work")
 
     def test_render_single_model_row_card(self) -> None:
         with TemporaryDirectory() as temp_dir:

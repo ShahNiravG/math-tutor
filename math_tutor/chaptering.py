@@ -86,7 +86,7 @@ def format_assignment_display_name(path: Path) -> str:
     words: list[str] = []
     index = 0
     if parts and parts[0].lower() == "chp":
-        words.append("Chp")
+        words.append("Chapter")
         index = 1
         while index + 1 < len(parts) and parts[index].isdigit() and parts[index + 1].isdigit():
             words.append(f"{parts[index]}.{parts[index + 1]}")
