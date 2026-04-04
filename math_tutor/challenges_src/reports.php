@@ -84,6 +84,10 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Challenge Reports</title>
+  <script src="experience.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #f5f1e8; --paper: #fffaf2; --ink: #1f2a33; --muted: #5b6a74;
@@ -284,6 +288,60 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
 
     @media (max-width: 600px) {
       .th-time, .td-time { display: none; }
+    }
+    html.experience-staging {
+      --stage-ink: #10233b;
+      --stage-muted: #516173;
+      --stage-blue-50: #dbeafe;
+      --stage-blue-700: #1e3a8a;
+      --stage-success: #15803d;
+      --stage-success-bg: #dcfce7;
+      --stage-amber: #d97706;
+      --stage-amber-bg: #fef3c7;
+    }
+    html.experience-staging body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      color: var(--stage-ink);
+      background:
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 24%),
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.08), transparent 26%),
+        linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
+    }
+    html.experience-staging .header-card,
+    html.experience-staging .user-card,
+    html.experience-staging .table-wrap {
+      border-radius: 24px;
+      border-color: rgba(148, 163, 184, 0.24);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+      background: rgba(255,255,255,0.94);
+    }
+    html.experience-staging .nav-pill {
+      background: #fff;
+      border-color: rgba(148, 163, 184, 0.28);
+      color: var(--stage-ink);
+    }
+    html.experience-staging .nav-pill.active {
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+      border-color: rgba(29, 78, 216, 0.24);
+    }
+    html.experience-staging .page-heading,
+    html.experience-staging .brand-title {
+      color: var(--stage-ink);
+      letter-spacing: -0.03em;
+    }
+    html.experience-staging .chip-amber,
+    html.experience-staging .stat-progress,
+    html.experience-staging .badge-progress,
+    html.experience-staging .score-partial {
+      background: var(--stage-amber-bg);
+      color: var(--stage-amber);
+    }
+    html.experience-staging .chip-teal,
+    html.experience-staging .stat-perfect,
+    html.experience-staging .score-perfect {
+      background: var(--stage-success-bg);
+      color: var(--stage-success);
     }
   </style>
 </head>

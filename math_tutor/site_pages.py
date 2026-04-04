@@ -6,7 +6,7 @@ import html
 from datetime import datetime, timezone
 from pathlib import Path
 
-from math_tutor.site_cards import document_label
+from math_tutor.site_cards import document_label, record_page_filename
 from math_tutor.site_content import build_curriculum_guided_learning_prompt
 from math_tutor.site_models import DocumentRecord
 from math_tutor.site_records import render_document_overview_card, render_document_page_content
@@ -17,6 +17,10 @@ from math_tutor.site_shell import render_page_shell
 SITE_TITLE = "Algebra II with Trigonometry Tutor"
 
 
+def _featured_record(records: list[DocumentRecord]) -> DocumentRecord | None:
+    return records[0] if records else None
+
+
 def build_index_html(
     *,
     records: list[DocumentRecord],
@@ -25,6 +29,7 @@ def build_index_html(
     base_path: str,
     include_guided_learning: bool,
     site_page_href,
+    experience_variant: str = "default",
 ) -> str:
     del output_dir, site_dir, include_guided_learning
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
@@ -35,6 +40,113 @@ def build_index_html(
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
     live_tutor_href = site_page_href("live-tutor.html", base_path)
     privacy_policy_href = "https://mathdelight.com/site/privacy-policy.html"
+    featured_record = _featured_record(records)
+    if experience_variant == "staging":
+        header_html = render_surface_header(
+            active="home",
+            base_path=base_path,
+            eyebrow="Math Delight",
+            title="Algebra II Trig Tutor",
+            site_page_href=site_page_href,
+            experience_variant=experience_variant,
+        )
+        featured_practice_href = (
+            f"{site_page_href(record_page_filename(featured_record), base_path)}#practice"
+            if featured_record
+            else library_href
+        )
+        featured_learn_href = (
+            f"{site_page_href(record_page_filename(featured_record), base_path)}#learn"
+            if featured_record
+            else library_href
+        )
+        featured_title = document_label(featured_record) if featured_record else "Your next chapter"
+        body_html = f"""
+        {header_html}
+        <section class="landing-hero landing-hero-staging">
+          <div class="landing-hero-copy">
+            <span class="eyebrow">Today&apos;s Best Path</span>
+            <h1 class="hero-title">Build confidence, one chapter at a time.</h1>
+            <p class="page-intro">Review the chapter idea, practice with short questions, then test yourself. The site keeps each step visible so students never have to guess where to go next.</p>
+            <div class="hero-action-grid">
+              <a class="hero-action primary" href="{html.escape(featured_practice_href)}">Start Practice</a>
+              <a class="hero-action" href="{html.escape(featured_learn_href)}">Review a Chapter</a>
+              <a class="hero-action" href="{html.escape(challenges_href)}">Open Challenges</a>
+            </div>
+            <div class="landing-stats">
+              <div class="stat-pill"><strong>{len(records)}</strong><span>chapters ready</span></div>
+              <div class="stat-pill"><strong>{total_prompt_outputs}</strong><span>study outputs</span></div>
+              <div class="stat-pill"><strong>{generated_at}</strong><span>latest update</span></div>
+            </div>
+          </div>
+          <aside class="continue-card" data-continue-card>
+            <span class="task-kicker">Continue</span>
+            <h3 data-continue-title>{html.escape(featured_title)}</h3>
+            <p class="continue-copy" data-continue-copy>Ready to pick up where you left off.</p>
+            <a class="hero-action primary" data-continue-link href="{html.escape(featured_practice_href)}">Continue Learning</a>
+          </aside>
+        </section>
+        <section class="content-card section-card section-surface">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Quick Start</span>
+              <h3>Three steps, one direction</h3>
+            </div>
+          </div>
+          <div class="quick-start-grid">
+            <section class="prompt-card prompt-card-staging">
+              <span class="task-kicker">1. Learn</span>
+              <h3>Read the chapter idea</h3>
+              <p class="task-copy">Students get the big picture first, so formulas and terms feel familiar before they solve anything.</p>
+            </section>
+            <section class="prompt-card prompt-card-staging">
+              <span class="task-kicker">2. Practice</span>
+              <h3>Do quick problems</h3>
+              <p class="task-copy">Short practice builds confidence and lowers math anxiety before stretch work or timed work begins.</p>
+            </section>
+            <section class="prompt-card prompt-card-staging">
+              <span class="task-kicker">3. Challenge</span>
+              <h3>Test without extra hints</h3>
+              <p class="task-copy">Challenge mode stays clean and focused so it feels like a real check for understanding.</p>
+            </section>
+          </div>
+        </section>
+        <section class="landing-grid landing-grid-staging">
+          <a class="destination-card destination-library" href="{html.escape(library_href)}">
+            <span class="destination-kicker">Learn</span>
+            <h3>Chapter Library</h3>
+            <p>Go straight to a chapter and jump into its learn, practice, or challenge section.</p>
+            <span class="destination-link">Browse chapters</span>
+          </a>
+          <a class="destination-card destination-challenges" href="{html.escape(challenges_href)}">
+            <span class="destination-kicker">Check</span>
+            <h3>Challenge Exams</h3>
+            <p>Take focused mental math or olympiad-style challenge sets with clear progress and resume support.</p>
+            <span class="destination-link">Open challenge mode</span>
+          </a>
+          <a class="destination-card destination-live" href="{html.escape(live_tutor_href)}">
+            <span class="destination-kicker">Coach</span>
+            <h3>Live Tutor</h3>
+            <p>Use an optional AI coaching setup when a student wants more help after their own first try.</p>
+            <span class="destination-link">Set up AI coach</span>
+          </a>
+        </section>
+        <section class="landing-footer-note">
+          <a href="{html.escape(privacy_policy_href)}">Privacy Policy</a>
+        </section>
+        """
+        return render_page_shell(
+            title=SITE_TITLE,
+            records=records,
+            active_record=None,
+            body_html=body_html,
+            total_prompt_outputs=total_prompt_outputs,
+            generated_at=generated_at,
+            base_path=base_path,
+            site_page_href=site_page_href,
+            page_kind="home",
+            experience_variant=experience_variant,
+        )
     body_html = f"""
     <section class="landing-hero">
       <div class="home-brand">
@@ -106,6 +218,7 @@ def build_index_html(
         base_path=base_path,
         site_page_href=site_page_href,
         page_kind="home",
+        experience_variant=experience_variant,
     )
 
 
@@ -119,6 +232,7 @@ def build_record_page_html(
     include_guided_learning: bool,
     assignments: list[Path] | None = None,
     site_page_href=None,
+    experience_variant: str = "default",
 ) -> str:
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     total_prompt_outputs = sum(
@@ -130,6 +244,7 @@ def build_record_page_html(
         eyebrow="Math Delight",
         title="Algebra II Trig Tutor",
         site_page_href=site_page_href,
+        experience_variant=experience_variant,
     )
     record_html = render_document_page_content(
         record,
@@ -139,6 +254,7 @@ def build_record_page_html(
         include_guided_learning=include_guided_learning,
         assignments=assignments or [],
         site_page_href=site_page_href,
+        experience_variant=experience_variant,
     )
     body_html = f"""
     {header_html}
@@ -154,6 +270,7 @@ def build_record_page_html(
         base_path=base_path,
         site_page_href=site_page_href,
         page_kind="record",
+        experience_variant=experience_variant,
     )
 
 
@@ -165,6 +282,7 @@ def build_library_page_html(
     base_path: str,
     include_guided_learning: bool,
     site_page_href,
+    experience_variant: str = "default",
 ) -> str:
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     total_prompt_outputs = sum(
@@ -178,6 +296,7 @@ def build_library_page_html(
             base_path,
             include_guided_learning=include_guided_learning,
             site_page_href=site_page_href,
+            experience_variant=experience_variant,
         )
         for record in records
     )
@@ -187,7 +306,43 @@ def build_library_page_html(
         eyebrow="Math Delight",
         title="Algebra II Trig Tutor",
         site_page_href=site_page_href,
+        experience_variant=experience_variant,
     )
+    if experience_variant == "staging":
+        featured_record = _featured_record(records)
+        featured_practice_href = (
+            f"{site_page_href(record_page_filename(featured_record), base_path)}#practice"
+            if featured_record
+            else site_page_href("index.html", base_path)
+        )
+        body_html = f"""
+        {header_html}
+        <section class="content-card section-card section-surface">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Library</span>
+              <h3>Choose a chapter, then pick your mode</h3>
+            </div>
+            <a class="section-link" href="{html.escape(featured_practice_href)}">Jump straight into practice</a>
+          </div>
+          <p class="page-intro">Every chapter now gives students three clear paths: learn the idea, practice with quick wins, or test themselves in challenge mode.</p>
+          <div class="prompt-grid">
+            {overview_cards}
+          </div>
+        </section>
+        """
+        return render_page_shell(
+            title=f"Library - {SITE_TITLE}",
+            records=records,
+            active_record=None,
+            body_html=body_html,
+            total_prompt_outputs=total_prompt_outputs,
+            generated_at=generated_at,
+            base_path=base_path,
+            site_page_href=site_page_href,
+            page_kind="library",
+            experience_variant=experience_variant,
+        )
     body_html = f"""
     {header_html}
     <section class="content-card section-card">
@@ -213,6 +368,7 @@ def build_library_page_html(
         base_path=base_path,
         site_page_href=site_page_href,
         page_kind="library",
+        experience_variant=experience_variant,
     )
 
 
@@ -221,6 +377,7 @@ def build_live_tutor_page_html(
     records: list[DocumentRecord],
     base_path: str,
     site_page_href,
+    experience_variant: str = "default",
 ) -> str:
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     total_prompt_outputs = sum(
@@ -233,7 +390,57 @@ def build_live_tutor_page_html(
         eyebrow="Math Delight",
         title="Algebra II Trig Tutor",
         site_page_href=site_page_href,
+        experience_variant=experience_variant,
     )
+    if experience_variant == "staging":
+        body_html = f"""
+        {header_html}
+        <section class="content-card section-card section-surface">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Live Tutor</span>
+              <h3>Optional AI coaching after the student&apos;s first try</h3>
+            </div>
+          </div>
+          <p class="page-intro">This is the fallback path for students who still need support after they review a chapter and attempt practice. It is helpful, but it is no longer the main path through the product.</p>
+          <div class="quick-start-grid">
+            <section class="prompt-card prompt-card-staging">
+              <span class="task-kicker">When to use it</span>
+              <h3>After a first attempt</h3>
+              <p class="task-copy">Students should try the chapter summary and at least one practice set before opening external AI help.</p>
+            </section>
+            <section class="prompt-card prompt-card-staging">
+              <span class="task-kicker">What to ask for</span>
+              <h3>One step at a time</h3>
+              <p class="task-copy">Ask for the next move, not the whole answer. That keeps the learning flow active instead of passive.</p>
+            </section>
+            <section class="prompt-card prompt-card-staging">
+              <span class="task-kicker">Best outcome</span>
+              <h3>Return to Math Delight</h3>
+              <p class="task-copy">Use the coach to get unstuck, then come back and finish practice or challenge mode here.</p>
+            </section>
+          </div>
+          {render_guided_learning_card(
+              title="AI Coach Setup",
+              description="Open Gemini or ChatGPT Study Mode, then use the curriculum-wide prompt below. Keep the conversation focused on next steps, not full spoilers.",
+              prompt_text=curriculum_prompt,
+              extra_links=[],
+              experience_variant=experience_variant,
+          )}
+        </section>
+        """
+        return render_page_shell(
+            title=f"Live Tutor - {SITE_TITLE}",
+            records=records,
+            active_record=None,
+            body_html=body_html,
+            total_prompt_outputs=total_prompt_outputs,
+            generated_at=generated_at,
+            base_path=base_path,
+            site_page_href=site_page_href,
+            page_kind="live-tutor",
+            experience_variant=experience_variant,
+        )
     body_html = f"""
     {header_html}
     <section class="content-card section-card">
@@ -249,6 +456,7 @@ def build_live_tutor_page_html(
           description="Open Gemini or ChatGPT Study Mode, then use the curriculum-wide prompt below. Students can ask for a live exam at any difficulty after the session starts.",
           prompt_text=curriculum_prompt,
           extra_links=[],
+          experience_variant=experience_variant,
       )}
     </section>
     """
@@ -262,6 +470,7 @@ def build_live_tutor_page_html(
         base_path=base_path,
         site_page_href=site_page_href,
         page_kind="live-tutor",
+        experience_variant=experience_variant,
     )
 
 
@@ -270,6 +479,7 @@ def build_privacy_policy_page_html(
     records: list[DocumentRecord],
     base_path: str,
     site_page_href,
+    experience_variant: str = "default",
 ) -> str:
     generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     total_prompt_outputs = sum(
@@ -281,6 +491,7 @@ def build_privacy_policy_page_html(
         eyebrow="Math Delight",
         title="Privacy Policy",
         site_page_href=site_page_href,
+        experience_variant=experience_variant,
     )
     body_html = f"""
     {header_html}
@@ -334,4 +545,5 @@ def build_privacy_policy_page_html(
         base_path=base_path,
         site_page_href=site_page_href,
         page_kind="live-tutor",
+        experience_variant=experience_variant,
     )

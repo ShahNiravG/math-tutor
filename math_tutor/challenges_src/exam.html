@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Challenge Exam</title>
+  <script src="experience.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>window.MathJax={tex:{inlineMath:[['\\(','\\)'],['$','$']],displayMath:[['\\[','\\]'],['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};</script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
@@ -36,6 +40,7 @@
     }
     .brand-title { margin:0; font-size:1.2rem; line-height:1.02; color:var(--ink); }
     .topbar-title { font-weight:700; font-size:.88rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    .exam-subtitle { display:none; }
     .timer { font-family:system-ui,monospace; font-size:1.1rem; font-weight:700;
              color:var(--accent); min-width:56px; text-align:right; }
 
@@ -134,6 +139,138 @@
     .loading { text-align:center; padding:60px; color:var(--muted); font-size:1.1rem; }
     .error-box { background:#fee2e2; color:#991b1b; border-radius:12px; padding:20px;
                  margin:20px; text-align:center; }
+    html.experience-staging {
+      --stage-ink: #10233b;
+      --stage-muted: #516173;
+      --stage-blue-50: #dbeafe;
+      --stage-blue-700: #1e3a8a;
+      --stage-orange-500: #f97316;
+      --stage-success: #15803d;
+      --stage-success-bg: #dcfce7;
+      --stage-amber: #d97706;
+      --stage-amber-bg: #fef3c7;
+    }
+    html.experience-staging body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      color: var(--stage-ink);
+      background:
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 24%),
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.08), transparent 26%),
+        linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
+    }
+    html.experience-staging .topbar,
+    html.experience-staging .q-card,
+    html.experience-staging .overlay-box {
+      border-radius: 24px;
+      border-color: rgba(148, 163, 184, 0.24);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+    }
+    html.experience-staging .topbar {
+      width: min(980px, calc(100vw - 24px));
+      margin: 14px auto 0;
+      padding: 24px 26px;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,0.96));
+    }
+    html.experience-staging .topbar-left {
+      gap: 12px;
+    }
+    html.experience-staging .topbar-brand {
+      gap: 14px;
+      align-items: flex-start;
+    }
+    html.experience-staging .brand-mark {
+      width: 56px;
+      height: 56px;
+      flex: 0 0 56px;
+      border-radius: 16px;
+    }
+    html.experience-staging .brand-title {
+      font-size: 1.55rem;
+      line-height: 1.02;
+      color: var(--stage-ink);
+      letter-spacing: -0.03em;
+    }
+    html.experience-staging .topbar-title {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 10px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    html.experience-staging .exam-subtitle {
+      display: block;
+      margin: 0;
+      max-width: 58ch;
+      color: var(--stage-muted);
+      line-height: 1.6;
+      font-size: 0.98rem;
+    }
+    html.experience-staging .topbar-title,
+    html.experience-staging .q-counter,
+    html.experience-staging .q-source,
+    html.experience-staging .answer-label {
+      color: var(--stage-muted);
+    }
+    html.experience-staging .return-link {
+      margin-left: 0;
+      border-color: rgba(148, 163, 184, 0.28);
+      background: #fff;
+      color: var(--stage-ink);
+      font-weight: 700;
+    }
+    html.experience-staging .timer {
+      color: var(--stage-orange-500);
+      font-weight: 800;
+      min-width: auto;
+      padding-top: 4px;
+    }
+    html.experience-staging .progress-bar {
+      width: min(980px, calc(100vw - 24px));
+      margin: 10px auto 0;
+      padding: 0 18px 10px;
+    }
+    html.experience-staging .page {
+      margin-top: 18px;
+    }
+    html.experience-staging .dot.current {
+      background: var(--stage-blue-50);
+      border-color: var(--stage-blue-700);
+      color: var(--stage-blue-700);
+    }
+    html.experience-staging .dot.answered {
+      background: var(--stage-success-bg);
+      border-color: var(--stage-success);
+      color: var(--stage-success);
+    }
+    html.experience-staging .btn-primary,
+    html.experience-staging .btn-submit {
+      background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(249, 115, 22, 0.24);
+    }
+    html.experience-staging .mcq-feedback-wrong {
+      background: var(--stage-amber-bg);
+      color: var(--stage-amber);
+    }
+    html.experience-staging .mcq-option.opt-wrong {
+      border-color: var(--stage-amber);
+      background: var(--stage-amber-bg);
+    }
+    html.experience-staging .mcq-option.opt-wrong .opt-letter {
+      color: var(--stage-amber);
+    }
   </style>
 </head>
 <body>
@@ -165,6 +302,7 @@
         <div class="topbar-title" id="exam-title"></div>
       </div>
     </div>
+    <p class="exam-subtitle">Challenge mode keeps the work focused, the feedback calm, and the next move obvious.</p>
     <a id="return-link" class="return-link" href="index.html" style="display:none">&#8592; Return</a>
   </div>
   <span class="timer" id="timer">0:00</span>

@@ -9,8 +9,9 @@ from math_tutor.prompt_catalog import DEFAULT_MODEL, PROMPTS_BY_SLUG, PromptSpec
 from math_tutor.site_assets import build_site_href, link_tag
 from math_tutor.site_cards import (
     match_assignments_to_record,
-    render_assignments_card,
+    render_assignments_card_with_variant,
     render_inspiring_videos_card,
+    render_learning_idea_card,
     render_olympiad_combined,
     render_single_model_row_card,
 )
@@ -54,14 +55,68 @@ def build_document_prompt_cards_html(
     site_dir: Path,
     base_path: str,
     assignments: list[Path] | None = None,
+    experience_variant: str = "default",
 ) -> str:
+    grouped_cards = build_document_prompt_card_groups(
+        record=record,
+        output_dir=output_dir,
+        site_dir=site_dir,
+        base_path=base_path,
+        assignments=assignments,
+        experience_variant=experience_variant,
+    )
+    return "\n".join(grouped_cards["all"])
+
+
+def build_document_prompt_card_groups(
+    *,
+    record: DocumentRecord,
+    output_dir: Path,
+    site_dir: Path,
+    base_path: str,
+    assignments: list[Path] | None = None,
+    experience_variant: str = "default",
+) -> dict[str, list[str]]:
     outputs_by_slug = {prompt_output.slug: prompt_output for prompt_output in record.prompt_outputs}
     rendered_slugs: set[str] = set()
-    cards: list[str] = []
+    learn_cards: list[str] = []
+    practice_cards: list[str] = []
+    resource_cards: list[str] = []
+    extra_cards: list[str] = []
+
+    if experience_variant == "staging":
+        class_note_link = None
+        if record.pdf_path and record.pdf_path.exists():
+            class_note_link = link_tag(
+                record.pdf_path,
+                output_dir,
+                site_dir,
+                "Class Note PDF",
+                base_path,
+                css_class="button-class-note",
+            )
+        learning_card = render_learning_idea_card(
+            class_note_link=class_note_link,
+            study_specs=STUDY_GUIDE_SPECS,
+            video_specs=INSPIRING_VIDEOS_SPECS,
+            outputs_by_slug=outputs_by_slug,
+            output_dir=output_dir,
+            site_dir=site_dir,
+            base_path=base_path,
+            build_site_href=build_site_href,
+            model_label_for_spec=model_label_for_prompt_spec,
+            experience_variant=experience_variant,
+        )
+        if learning_card:
+            learn_cards.append(learning_card)
 
     for title, specs, label, hide_model in (
-        ("Study Guide", STUDY_GUIDE_SPECS, "Open Guide", False),
-        ("Mental Math", MENTAL_MATH_SPECS, "Mental Math", False),
+        (
+            "Quick Practice" if experience_variant == "staging" else "Mental Math",
+            MENTAL_MATH_SPECS,
+            "Start Practice" if experience_variant == "staging" else "Mental Math",
+            False,
+        ),
     ):
         card = render_single_model_row_card(
             title=title,
@@ -73,10 +128,36 @@ def build_document_prompt_cards_html(
             base_path=base_path,
             build_site_href=build_site_href,
             model_label_for_spec=model_label_for_prompt_spec,
+            link_class="button-quick-practice",
             hide_model=hide_model,
+            description=(
+                "Work a few fast problems first to build confidence before you move into stretch questions."
+                if experience_variant == "staging"
+                else ""
+            ),
+            experience_variant=experience_variant,
         )
         if card:
-            cards.append(card)
+            practice_cards.append(card)
+
+    if experience_variant != "staging":
+        study_guide_card = render_single_model_row_card(
+            title="Study Guide",
+            specs=STUDY_GUIDE_SPECS,
+            outputs_by_slug=outputs_by_slug,
+            link_label="Open Guide",
+            output_dir=output_dir,
+            site_dir=site_dir,
+            base_path=base_path,
+            build_site_href=build_site_href,
+            model_label_for_spec=model_label_for_prompt_spec,
+            link_class="button-study-guide",
+            hide_model=False,
+            description="",
+            experience_variant=experience_variant,
+        )
+        if study_guide_card:
+            learn_cards.append(study_guide_card)
 
     inspiring_videos_card = render_inspiring_videos_card(
         specs=INSPIRING_VIDEOS_SPECS,
@@ -86,9 +167,15 @@ def build_document_prompt_cards_html(
         base_path=base_path,
         build_site_href=build_site_href,
         model_label_for_spec=model_label_for_prompt_spec,
+        description=(
+            "Use these when you want a different explanation or a quick warm-up before practice."
+            if experience_variant == "staging"
+            else ""
+        ),
+        experience_variant=experience_variant,
     )
-    if inspiring_videos_card:
-        cards.insert(1 if cards else 0, inspiring_videos_card)
+    if inspiring_videos_card and experience_variant != "staging":
+        resource_cards.append(inspiring_videos_card)
 
     olympiad_card = render_olympiad_combined(
         problem_specs=OLYMPIAD_PROBLEMS_SPECS,
@@ -99,22 +186,40 @@ def build_document_prompt_cards_html(
         base_path=base_path,
         build_site_href=build_site_href,
         model_label_for_spec=model_label_for_prompt_spec,
+        description=(
+            "Try these after quick practice when you want deeper thinking and multi-step work."
+            if experience_variant == "staging"
+            else ""
+        ),
+        experience_variant=experience_variant,
     )
     if olympiad_card:
-        cards.append(olympiad_card)
+        practice_cards.append(olympiad_card)
 
     record_assignments = match_assignments_to_record(assignments or [], record)
-    assignments_card = render_assignments_card(record_assignments, site_dir, base_path)
+    assignments_card = render_assignments_card_with_variant(
+        assignments=record_assignments,
+        site_dir=site_dir,
+        base_path=base_path,
+        experience_variant=experience_variant,
+    )
     if assignments_card:
-        cards.append(assignments_card)
+        resource_cards.append(assignments_card)
 
     for prompt_spec in PROMPT_ORDER:
         rendered_slugs.add(prompt_spec.slug)
     for prompt_output in record.prompt_outputs:
         if prompt_output.slug not in rendered_slugs:
-            cards.append(render_prompt_output_card(prompt_output, output_dir, site_dir, base_path))
+            extra_cards.append(render_prompt_output_card(prompt_output, output_dir, site_dir, base_path))
 
-    return "\n".join(cards)
+    all_cards = [*learn_cards, *practice_cards, *resource_cards, *extra_cards]
+    return {
+        "learn": learn_cards,
+        "practice": practice_cards,
+        "resources": resource_cards,
+        "extras": extra_cards,
+        "all": all_cards,
+    }
 
 
 def render_prompt_output_card(

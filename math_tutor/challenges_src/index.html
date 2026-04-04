@@ -4,6 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Challenge Exams</title>
+  <script src="experience.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #f5f1e8;
@@ -354,6 +358,86 @@
     @media (max-width: 640px) {
       .page { padding-top: 28px; }
       .site-nav { margin-bottom: 24px; }
+    }
+    html.experience-staging {
+      --stage-ink: #10233b;
+      --stage-muted: #516173;
+      --stage-blue-50: #dbeafe;
+      --stage-blue-700: #1e3a8a;
+      --stage-orange-500: #f97316;
+      --stage-success: #15803d;
+      --stage-success-bg: #dcfce7;
+      --stage-amber: #d97706;
+      --stage-amber-bg: #fef3c7;
+    }
+    html.experience-staging body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      color: var(--stage-ink);
+      background:
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 24%),
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.08), transparent 26%),
+        linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
+    }
+    html.experience-staging .hero-shell,
+    html.experience-staging .challenge-card,
+    html.experience-staging .resume-card,
+    html.experience-staging .all-done-box {
+      border-radius: 24px;
+      border-color: rgba(148, 163, 184, 0.24);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+    }
+    html.experience-staging .nav-pill {
+      background: #fff;
+      border-color: rgba(148, 163, 184, 0.28);
+      color: var(--stage-ink);
+    }
+    html.experience-staging .nav-pill.active {
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+      border-color: rgba(29, 78, 216, 0.24);
+    }
+    html.experience-staging .brand-title,
+    html.experience-staging .hero-heading,
+    html.experience-staging .card-title {
+      color: var(--stage-ink);
+      letter-spacing: -0.03em;
+    }
+    html.experience-staging .hero-sub,
+    html.experience-staging .resume-meta,
+    html.experience-staging .another-link,
+    html.experience-staging #bundle-info {
+      color: var(--stage-muted);
+    }
+    html.experience-staging .tag-mm {
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+    }
+    html.experience-staging .tag-op,
+    html.experience-staging .tag-done {
+      background: var(--stage-success-bg);
+      color: var(--stage-success);
+    }
+    html.experience-staging .tag-q,
+    html.experience-staging .progress-chip {
+      background: var(--stage-amber-bg);
+      color: var(--stage-amber);
+    }
+    html.experience-staging .progress-bar-wrap {
+      background: #f5d7b6;
+    }
+    html.experience-staging .progress-bar-fill,
+    html.experience-staging .start-btn,
+    html.experience-staging .resume-btn,
+    html.experience-staging .all-done-box a {
+      background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+      box-shadow: 0 14px 28px rgba(249, 115, 22, 0.24);
+    }
+    html.experience-staging .start-btn:hover,
+    html.experience-staging .resume-btn:hover,
+    html.experience-staging .all-done-box a:hover {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
     }
   </style>
 </head>

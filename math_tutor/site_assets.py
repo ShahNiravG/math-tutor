@@ -8,9 +8,17 @@ import shutil
 from pathlib import Path
 
 
-def link_tag(path: Path, output_dir: Path, site_dir: Path, label: str, base_path: str) -> str:
+def link_tag(
+    path: Path,
+    output_dir: Path,
+    site_dir: Path,
+    label: str,
+    base_path: str,
+    css_class: str = "",
+) -> str:
     href = build_site_href(path=path, output_dir=output_dir, site_dir=site_dir, base_path=base_path)
-    return f'<a href="{html.escape(href)}">{html.escape(label)}</a>'
+    class_attr = f' class="{html.escape(css_class)}"' if css_class else ""
+    return f'<a href="{html.escape(href)}"{class_attr}>{html.escape(label)}</a>'
 
 
 def resolve_site_asset_path(*, path: Path, output_dir: Path, site_dir: Path, deploy_assets: bool) -> Path:

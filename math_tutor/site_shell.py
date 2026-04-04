@@ -6,9 +6,18 @@ import html
 from typing import Callable
 
 from math_tutor.response_artifacts import MATHJAX_SCRIPT
+from math_tutor.site_cards import document_label, record_page_filename
 from math_tutor.site_navigation import render_sidebar_html
 from math_tutor.site_models import DocumentRecord
-from math_tutor.site_theme import COPY_PROMPT_SCRIPT, SITE_PAGE_STYLES
+from math_tutor.site_theme import (
+    COPY_PROMPT_SCRIPT,
+    KATEX_AUTORENDER_SCRIPT,
+    KATEX_AUTORENDER_SRC,
+    KATEX_CSS_HREF,
+    KATEX_JS_SRC,
+    STAGING_SITE_SCRIPT,
+    get_site_page_styles,
+)
 
 
 def render_page_shell(
@@ -22,6 +31,7 @@ def render_page_shell(
     base_path: str,
     site_page_href: Callable[[str, str], str],
     page_kind: str = "record",
+    experience_variant: str = "default",
 ) -> str:
     del total_prompt_outputs, generated_at
 
@@ -49,12 +59,16 @@ def render_page_shell(
   </div>
     """
 
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{html.escape(title)}</title>
+    body_classes = [f"page-kind-{page_kind}", f"experience-{experience_variant}"]
+    body_attrs: list[str] = [f'class="{" ".join(body_classes)}"', f'data-page-kind="{html.escape(page_kind)}"']
+    if active_record is not None:
+        body_attrs.append(
+            f'data-record-href="{html.escape(site_page_href(record_page_filename(active_record), base_path))}"'
+        )
+        body_attrs.append(f'data-record-title="{html.escape(document_label(active_record))}"')
+
+    font_links = ""
+    math_assets = f"""
   <script>
     window.MathJax = {{
       tex: {{
@@ -67,14 +81,38 @@ def render_page_shell(
     }};
   </script>
   <script defer src="{html.escape(MATHJAX_SCRIPT)}"></script>
+    """
+    math_render_script = ""
+    if experience_variant == "staging":
+        font_links = f"""
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{html.escape(KATEX_CSS_HREF)}">
+        """
+        math_assets = f"""
+  <script defer src="{html.escape(KATEX_JS_SRC)}"></script>
+  <script defer src="{html.escape(KATEX_AUTORENDER_SRC)}"></script>
+        """
+        math_render_script = KATEX_AUTORENDER_SCRIPT + "\n" + STAGING_SITE_SCRIPT
+
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{html.escape(title)}</title>
+{font_links}
+{math_assets}
   <style>
-{SITE_PAGE_STYLES}
+{get_site_page_styles(experience_variant)}
   </style>
 </head>
-<body>
+<body {' '.join(body_attrs)}>
 {shell_html}
   <script>
 {COPY_PROMPT_SCRIPT}
+{math_render_script}
   </script>
 </body>
 </html>

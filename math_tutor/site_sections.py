@@ -13,13 +13,21 @@ def render_surface_header(
     eyebrow: str,
     title: str,
     site_page_href,
+    experience_variant: str = "default",
 ) -> str:
     home_href = site_page_href("index.html", base_path)
     library_href = site_page_href("library.html", base_path)
     live_tutor_href = site_page_href("live-tutor.html", base_path)
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
+    subtitle_html = ""
+    if experience_variant == "staging":
+        subtitle_html = (
+            '<p class="surface-subtitle">Clear next steps, visible progress, and faster paths from chapter review to practice.</p>'
+            if active == "home"
+            else '<p class="surface-subtitle">Built for quick review, low-friction practice, and calm challenge mode.</p>'
+        )
     return f"""
-    <section class="surface-header">
+    <section class="surface-header{' surface-header-staging' if experience_variant == 'staging' else ''}">
       <div class="surface-brand">
         <div class="brand-mark" aria-hidden="true">
           <svg viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
@@ -44,6 +52,7 @@ def render_surface_header(
           <h2>{html.escape(title)}</h2>
         </div>
       </div>
+      {subtitle_html}
       <nav class="surface-nav" aria-label="Site sections">
         <a class="nav-pill{' active' if active == 'home' else ''}" href="{html.escape(home_href)}">Home</a>
         <a class="nav-pill{' active' if active == 'library' else ''}" href="{html.escape(library_href)}">Library</a>
@@ -60,6 +69,7 @@ def render_guided_learning_card(
     description: str,
     prompt_text: str,
     extra_links: list[str],
+    experience_variant: str = "default",
 ) -> str:
     escaped_prompt = html.escape(prompt_text, quote=True)
     gemini_href = f"https://gemini.google.com/guided-learning?query={quote(prompt_text)}"
@@ -73,16 +83,22 @@ def render_guided_learning_card(
     ]
     buttons.extend(extra_links)
 
+    prompt_summary = (
+        "Use this only when you want an external AI coach. Math Delight should still feel complete even if you skip it."
+        if experience_variant == "staging"
+        else "Use the copied prompt as your starting context. In Gemini, switch to Guided Learning. In ChatGPT, use Study Mode."
+    )
+    summary_label = "See setup prompt" if experience_variant == "staging" else "Show prompt"
     return f"""
-      <section class="guided-card">
+      <section class="guided-card{' guided-card-staging' if experience_variant == 'staging' else ''}">
         <h3>{html.escape(title)}</h3>
         <p>{html.escape(description)}</p>
         <div class="button-row">
           {' '.join(buttons)}
         </div>
-        <p class="guided-note">Use the copied prompt as your starting context. In Gemini, switch to Guided Learning. In ChatGPT, use Study Mode.</p>
+        <p class="guided-note">{html.escape(prompt_summary)}</p>
         <details>
-          <summary>Show prompt</summary>
+          <summary>{html.escape(summary_label)}</summary>
           <pre>{html.escape(prompt_text)}</pre>
         </details>
       </section>
@@ -96,7 +112,32 @@ def render_index_card(
     page_href: str,
     class_note_link: str | None,
     summary_html: str,
+    practice_href: str | None = None,
+    challenge_href: str | None = None,
+    experience_variant: str = "default",
 ) -> str:
+    if experience_variant == "staging":
+        action_links: list[str] = [
+            f'<a href="{html.escape(page_href)}">Learn</a>',
+            f'<a href="{html.escape(practice_href or page_href)}">Practice</a>',
+            f'<a href="{html.escape(challenge_href or page_href)}">Challenge</a>',
+        ]
+        if class_note_link:
+            action_links.append(class_note_link)
+        return f"""
+          <section class="prompt-card overview-card-staging">
+            <div class="task-head">
+              <span class="task-kicker">{html.escape(heading)}</span>
+            </div>
+            <div class="chip-row">
+              <span class="chip">{prompt_count} study tools ready</span>
+            </div>
+            {summary_html}
+            <div class="link-row">
+              {' '.join(action_links)}
+            </div>
+          </section>
+        """
     links = [f'<a href="{html.escape(page_href)}">Enter the Lab</a>']
     if class_note_link:
         links.append(class_note_link)

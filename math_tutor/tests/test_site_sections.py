@@ -29,6 +29,21 @@ class SiteSectionsTests(unittest.TestCase):
         self.assertIn("doc-4401267.html", html)
         self.assertIn("Summary text", html)
 
+    def test_render_index_card_staging_includes_mode_links(self) -> None:
+        html = render_index_card(
+            heading="Chapter 5.1",
+            prompt_count=5,
+            page_href="doc-4401267.html",
+            class_note_link=None,
+            summary_html='<div class="card-summary"><p>Summary text</p></div>',
+            practice_href="doc-4401267.html#practice",
+            challenge_href="doc-4401267.html#challenge",
+            experience_variant="staging",
+        )
+        self.assertIn(">Learn<", html)
+        self.assertIn(">Practice<", html)
+        self.assertIn(">Challenge<", html)
+
 
 if __name__ == "__main__":
     unittest.main()

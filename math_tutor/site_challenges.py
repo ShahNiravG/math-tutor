@@ -19,6 +19,7 @@ def render_chapter_challenge_card(
     record: DocumentRecord,
     base_path: str,
     site_page_href: Callable[[str, str], str],
+    experience_variant: str = "default",
 ) -> str:
     chapter = parse_display_name_chapter(record.display_name)
     if not chapter:
@@ -50,6 +51,7 @@ def render_chapter_challenge_card(
         )
         is_mental_math = exam.get("challenge_type", "") == "mm"
         type_class = "chapter-challenge-tag-mm" if is_mental_math else "chapter-challenge-tag-op"
+        action_class = "button-quick-practice" if is_mental_math else "button-olympiad"
         type_label = "Mental Math" if is_mental_math else "Olympiad"
         title = "Mental Math Challenge" if is_mental_math else "Olympiad Challenge"
         description = (
@@ -59,12 +61,17 @@ def render_chapter_challenge_card(
         )
         models = " + ".join(exam.get("models", []))
         question_count = exam.get("question_count", 0)
+        initial_status = (
+            '<span class="chapter-challenge-status chapter-challenge-status-loading">Checking progress</span>'
+            if experience_variant == "staging"
+            else '<span class="chapter-challenge-status"></span>'
+        )
         option_html_blocks.append(
             f"""
           <div class="chapter-challenge-option" data-challenge-exam="{html.escape(exam_id, quote=True)}" data-question-count="{question_count}" data-exam-href="{html.escape(exam_href, quote=True)}" data-progress-href="{html.escape(progress_href, quote=True)}">
             <div class="chapter-challenge-row">
               <div class="chapter-challenge-title">{title}</div>
-              <span class="chapter-challenge-status"></span>
+              {initial_status}
             </div>
             <div class="chapter-challenge-meta">
               <span class="chapter-challenge-tag {type_class}">{type_label}</span>
@@ -74,7 +81,7 @@ def render_chapter_challenge_card(
             <p>{html.escape(description)}</p>
             <div class="chapter-challenge-row">
               <div class="button-row">
-                <a class="chapter-challenge-action" href="{html.escape(exam_href, quote=True)}">Start Challenge</a>
+                <a class="chapter-challenge-action {action_class}" href="{html.escape(exam_href, quote=True)}">Start Challenge</a>
               </div>
             </div>
           </div>
@@ -82,9 +89,9 @@ def render_chapter_challenge_card(
         )
 
     return f"""
-      <section class="prompt-card chapter-challenge-card">
+      <section class="prompt-card chapter-challenge-card{' chapter-challenge-card-staging' if experience_variant == 'staging' else ''}">
         <h3>Challenge Exams</h3>
-        <p class="chapter-challenge-intro">Choose a mental math or olympiad challenge and continue in the full challenge page.</p>
+        <p class="chapter-challenge-intro">{'Take this after review and practice. Challenge mode stays clean and assessment-focused for now.' if experience_variant == 'staging' else 'Choose a mental math or olympiad challenge and continue in the full challenge page.'}</p>
         <div class="chapter-challenge-options">
           {''.join(option_html_blocks)}
         </div>

@@ -8,7 +8,7 @@ from pathlib import Path
 from math_tutor.env_config import load_dotenv_if_present
 
 
-def generate_config_php(output_path: Path) -> None:
+def generate_config_php(output_path: Path, *, experience_variant: str = "default") -> None:
     load_dotenv_if_present()
     host = os.environ.get("MYSQL_HOST") or os.environ.get("MySQL_HOST") or "localhost"
     dbname = os.environ.get("DBNAME", "")
@@ -22,6 +22,18 @@ def generate_config_php(output_path: Path) -> None:
         f"define('DB_PASS', {_php_str(password)});\n",
         encoding="utf-8",
     )
+
+
+def write_experience_script(output_path: Path, *, experience_variant: str = "default") -> None:
+    if experience_variant == "staging":
+        script = (
+            "(function () {\n"
+            "  document.documentElement.classList.add('experience-staging');\n"
+            "})();\n"
+        )
+    else:
+        script = "(function () {})();\n"
+    output_path.write_text(script, encoding="utf-8")
 
 
 def _php_str(value: str) -> str:

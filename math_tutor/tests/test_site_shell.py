@@ -57,6 +57,24 @@ class SiteShellTests(unittest.TestCase):
         self.assertIn(".card-summary {", html)
         self.assertIn(".summary-card .card-summary", html)
 
+    def test_render_page_shell_staging_uses_katex_and_variant_class(self) -> None:
+        html = render_page_shell(
+            title="Library - Algebra II with Trigonometry Tutor",
+            records=[],
+            active_record=None,
+            body_html="<section>Library body</section>",
+            total_prompt_outputs=0,
+            generated_at="2026-04-02 12:00 UTC",
+            base_path="/site/staging/",
+            site_page_href=site_page_href,
+            page_kind="library",
+            experience_variant="staging",
+        )
+
+        self.assertIn("katex.min.css", html)
+        self.assertIn("renderMathInElement", html)
+        self.assertIn("experience-staging", html)
+
 
 if __name__ == "__main__":
     unittest.main()

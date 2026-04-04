@@ -67,6 +67,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Regenerate challenge exams even if exams.json already exists.",
     )
+    parser.add_argument(
+        "--experience",
+        choices=("default", "staging"),
+        default="default",
+        help="Choose which site experience variant to build. Defaults to default.",
+    )
     return parser.parse_args()
 
 
@@ -80,6 +86,7 @@ def main() -> None:
         limit=args.limit,
         include_guided_learning=args.include_guided_learning,
         force_challenges=args.force_challenges,
+        experience_variant=args.experience,
     )
     print(f"Built tutoring page at {index_path}")
 
@@ -93,10 +100,16 @@ def build_site(
     include_guided_learning: bool = False,
     file_ids: set[str] | None = None,
     force_challenges: bool = False,
+    experience_variant: str = "default",
 ) -> Path:
     resolved_site_dir = site_dir.resolve() if site_dir else output_dir / DEFAULT_SITE_DIRNAME
     resolved_site_dir.mkdir(parents=True, exist_ok=True)
-    build_challenges(output_dir=output_dir, site_dir=resolved_site_dir, force=force_challenges)
+    build_challenges(
+        output_dir=output_dir,
+        site_dir=resolved_site_dir,
+        force=force_challenges,
+        experience_variant=experience_variant,
+    )
     resolved_base_path = determine_base_path(
         raw_base_path=base_path,
         output_dir=output_dir,
@@ -116,6 +129,7 @@ def build_site(
         base_path=resolved_base_path,
         include_guided_learning=include_guided_learning,
         site_page_href=site_page_href,
+        experience_variant=experience_variant,
     )
     index_path = resolved_site_dir / "index.html"
     index_path.write_text(html_text, encoding="utf-8")
@@ -128,6 +142,7 @@ def build_site(
             base_path=resolved_base_path,
             include_guided_learning=include_guided_learning,
             site_page_href=site_page_href,
+            experience_variant=experience_variant,
         ),
         encoding="utf-8",
     )
@@ -137,6 +152,7 @@ def build_site(
             records=records,
             base_path=resolved_base_path,
             site_page_href=site_page_href,
+            experience_variant=experience_variant,
         ),
         encoding="utf-8",
     )
@@ -146,6 +162,7 @@ def build_site(
             records=records,
             base_path=resolved_base_path,
             site_page_href=site_page_href,
+            experience_variant=experience_variant,
         ),
         encoding="utf-8",
     )
@@ -161,6 +178,7 @@ def build_site(
                 include_guided_learning=include_guided_learning,
                 assignments=assignments,
                 site_page_href=site_page_href,
+                experience_variant=experience_variant,
             ),
             encoding="utf-8",
         )

@@ -55,6 +55,10 @@ foreach ($answers as $item) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?= $exam_title ?> — Partial Result</title>
+  <script src="experience.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>window.MathJax={tex:{inlineMath:[['\\(','\\)'],['$','$']],displayMath:[['\\[','\\]'],['$$','$$']]}};</script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <script>
@@ -119,6 +123,21 @@ foreach ($answers as $item) {
       color:var(--muted); font-family:system-ui,sans-serif; font-weight:700; margin-bottom:4px;
     }
     .brand-title { margin:0; font-size:1.5rem; line-height:1.08; color:var(--ink); }
+    .site-nav { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 18px; }
+    .nav-pill {
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:8px 14px; border-radius:999px; border:1px solid var(--line);
+      background:rgba(255,255,255,.72); color:var(--ink);
+      text-decoration:none; font-family:system-ui,sans-serif; font-size:.88rem; font-weight:700;
+    }
+    .nav-pill.active { background:#e2e8f0; color:#334155; }
+    .header-subtitle {
+      margin:0 0 14px;
+      color:var(--muted);
+      font-family:system-ui,sans-serif;
+      font-size:.96rem;
+      line-height:1.55;
+    }
     .header-card h1 { margin:0 0 4px; font-size:1.9rem; }
     .partial-banner {
       display:inline-block; padding:4px 14px; border-radius:999px;
@@ -205,6 +224,63 @@ foreach ($answers as $item) {
       .page { width:100%; margin:0; }
       .header-card, .q-card { box-shadow:none; border:1px solid #ccc; }
     }
+    html.experience-staging {
+      --stage-ink: #10233b;
+      --stage-orange-500: #f97316;
+      --stage-success: #15803d;
+      --stage-success-bg: #dcfce7;
+      --stage-amber: #d97706;
+      --stage-amber-bg: #fef3c7;
+    }
+    html.experience-staging body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      color: var(--stage-ink);
+      background:
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 24%),
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.08), transparent 26%),
+        linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
+    }
+    html.experience-staging .header-card,
+    html.experience-staging .q-card {
+      border-radius: 24px;
+      border-color: rgba(148, 163, 184, 0.24);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+      background: rgba(255,255,255,0.94);
+    }
+    html.experience-staging .nav-pill {
+      background: #fff;
+      border-color: rgba(148, 163, 184, 0.28);
+      color: var(--stage-ink);
+    }
+    html.experience-staging .nav-pill.active {
+      background: #dbeafe;
+      color: #1e3a8a;
+      border-color: rgba(29, 78, 216, 0.24);
+    }
+    html.experience-staging .header-subtitle {
+      color: #516173;
+    }
+    html.experience-staging .partial-banner,
+    html.experience-staging .chip-progress,
+    html.experience-staging .chip-score-partial,
+    html.experience-staging .chip-time,
+    html.experience-staging .badge-current {
+      background: var(--stage-amber-bg);
+      color: var(--stage-amber);
+    }
+    html.experience-staging .chip-score-perfect {
+      background: var(--stage-success-bg);
+      color: var(--stage-success);
+    }
+    html.experience-staging .badge-wrong,
+    html.experience-staging .mcq-result-opt.opt-wrong {
+      background: var(--stage-amber-bg);
+      color: var(--stage-amber);
+      border-color: var(--stage-amber);
+    }
+    html.experience-staging .mcq-result-opt.opt-wrong .opt-letter {
+      color: var(--stage-amber);
+    }
   </style>
 </head>
 <body>
@@ -234,8 +310,17 @@ foreach ($answers as $item) {
         <h2 class="brand-title">Algebra II Trig Tutor</h2>
       </div>
     </div>
+    <nav class="site-nav" aria-label="Site sections">
+      <a class="nav-pill" href="../index.html">Home</a>
+      <a class="nav-pill" href="../library.html">Library</a>
+      <a class="nav-pill" href="../live-tutor.html">Live Tutor</a>
+      <a class="nav-pill" href="index.html">Challenge Exams</a>
+      <a class="nav-pill" href="reports.php">Reports</a>
+      <span class="nav-pill active">Partial View</span>
+    </nav>
     <div class="partial-banner">&#9203; In Progress — Partial View</div>
     <h1><?= $exam_title ?></h1>
+    <p class="header-subtitle">This progress snapshot now uses the same top-card structure as the rest of the site experience.</p>
     <div class="meta">
       <span class="chip chip-progress">&#9203; <?= $answered_cnt ?>/<?= $total_q ?> answered &middot; Q<?= $current_idx + 1 ?></span>
       <?php if ($answered_cnt > 0):
