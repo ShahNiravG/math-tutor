@@ -325,7 +325,7 @@ def fetch_assignment_download_links(
             return (assignment_name, [])
         return (
             assignment_name,
-            extract_assignment_downloads_from_html(response.text, course_url=course_url),
+            extract_assignment_downloads_from_html(html_text=response.text, course_url=course_url),
         )
 
     max_workers = min(8, max(1, len(assignment_entries)))

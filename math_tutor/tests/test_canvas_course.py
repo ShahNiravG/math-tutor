@@ -11,6 +11,7 @@ from math_tutor.canvas_course import (
     extract_assignment_entries_from_api_items,
     extract_file_id,
     extract_assignment_downloads_from_html,
+    fetch_assignment_download_links,
     is_pdf,
     is_pdf_by_name,
     list_canvas_pdfs_from_assignments,
@@ -152,6 +153,22 @@ class CanvasCourseTests(unittest.TestCase):
         )
 
         self.assertEqual(entries, [("Chp 5.1 work", "https://host/assignments/1")])
+
+    def test_fetch_assignment_download_links_returns_links_from_html_response(self) -> None:
+        html = '<a href="/courses/4187/files/4435419/download?download=1">Worksheet</a>'
+        client = Mock()
+        response = Mock()
+        response.text = html
+        response.raise_for_status.return_value = None
+        client.get.return_value = response
+
+        results = fetch_assignment_download_links(
+            client,
+            [("Chp 5.1 work", "https://host/assignments/1")],
+            "https://mitty.instructure.com/courses/4187",
+        )
+
+        self.assertEqual(results, [("Chp 5.1 work", ["https://mitty.instructure.com/courses/4187/files/4435419/download?download=1"])])
 
     def test_list_canvas_pdfs_from_assignments_falls_back_to_page_scan_when_parallel_fetch_finds_nothing(self) -> None:
         client = Mock()
