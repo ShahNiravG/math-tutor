@@ -59,7 +59,13 @@ def process_file(
 ) -> None:
     stem = f"{canvas_file.file_id}_{slugify(Path(canvas_file.display_name).stem)}"
     extension = Path(canvas_file.display_name).suffix or ".pdf"
-    pdf_path = downloads_dir / f"{stem}{extension}"
+    saved_pdf_path_value = fetch_state.fetched.get(str(canvas_file.file_id), {}).get("pdf_path", "")
+    saved_pdf_path = Path(saved_pdf_path_value) if saved_pdf_path_value else None
+    pdf_path = (
+        saved_pdf_path
+        if saved_pdf_path is not None and saved_pdf_path.exists() and not force
+        else downloads_dir / f"{stem}{extension}"
+    )
     prompt_outputs_cache: dict[str, str] = {}
 
     ensure_pdf_fetched(

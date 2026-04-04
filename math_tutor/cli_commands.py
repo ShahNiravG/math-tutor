@@ -11,6 +11,7 @@ from playwright.sync_api import sync_playwright
 from math_tutor.canvas_course import (
     build_canvas_client,
     is_pdf_by_name,
+    list_canvas_assignment_entries,
     list_canvas_pdfs_from_assignments,
     list_canvas_pdfs_from_ui,
     matches_target_pdf,
@@ -20,6 +21,9 @@ from math_tutor.canvas_course import (
 from math_tutor.cli_generation import build_openai_generation_client
 from math_tutor.cli_runtime import (
     OutputLayout,
+    build_cached_fetch_files_for_chapters,
+    build_missing_assignment_entries,
+    build_saved_assignment_files_for_names,
     build_saved_assignment_files,
     build_saved_class_note_files,
     display_name_matches_chapter_filters,
@@ -102,13 +106,27 @@ def run_skip_fetch_workflow(command_context: CliCommandContext) -> set[str]:
         print(f"Found {len(skip_fetch_files)} already-fetched class note file(s).", flush=True)
         downloads_dir = command_context.output_layout.downloads_dir
     openai_client = build_openai_generation_client(command_context.openai_api_key)
+    return process_saved_files(
+        command_context=command_context,
+        files=skip_fetch_files,
+        downloads_dir=downloads_dir,
+        openai_client=openai_client,
+    )
 
-    if needs_pdf_browser(command_context.selected_prompts):
+
+def process_saved_files(
+    *,
+    command_context: CliCommandContext,
+    files: list[Any],
+    downloads_dir: Path,
+    openai_client: Any,
+) -> set[str]:
+    if not command_context.fetch_only and needs_pdf_browser(command_context.selected_prompts):
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=not command_context.headful)
             try:
                 return process_file_batch(
-                    files=skip_fetch_files,
+                    files=files,
                     batch_context=FileBatchContext(
                         canvas_client=None,
                         openai_client=openai_client,
@@ -123,7 +141,7 @@ def run_skip_fetch_workflow(command_context: CliCommandContext) -> set[str]:
                         prompts=command_context.selected_prompts,
                         forced_prompt_slugs=command_context.forced_prompt_slugs,
                         force=command_context.force,
-                        fetch_only=False,
+                        fetch_only=command_context.fetch_only,
                         force_generation=command_context.force_generation,
                     ),
                 )
@@ -131,7 +149,7 @@ def run_skip_fetch_workflow(command_context: CliCommandContext) -> set[str]:
                 browser.close()
 
     return process_file_batch(
-        files=skip_fetch_files,
+        files=files,
         batch_context=FileBatchContext(
             canvas_client=None,
             openai_client=openai_client,
@@ -146,9 +164,52 @@ def run_skip_fetch_workflow(command_context: CliCommandContext) -> set[str]:
             prompts=command_context.selected_prompts,
             forced_prompt_slugs=command_context.forced_prompt_slugs,
             force=command_context.force,
-            fetch_only=False,
+            fetch_only=command_context.fetch_only,
             force_generation=command_context.force_generation,
         ),
+    )
+
+
+def should_use_saved_fetch_shortcut(command_context: CliCommandContext) -> bool:
+    if command_context.force or command_context.list_files or not command_context.normalized_chapter_filters:
+        return False
+    limit = command_context.assignment_limit if command_context.fetch_assignments else command_context.limit
+    cached_files = build_cached_fetch_files_for_chapters(
+        fetch_state=command_context.fetch_state,
+        assignments_dir=command_context.output_layout.assignments_dir,
+        normalized_chapter_filters=command_context.normalized_chapter_filters,
+        fetch_assignments=command_context.fetch_assignments,
+        limit=limit,
+    )
+    return bool(cached_files)
+
+
+def run_saved_fetch_shortcut(command_context: CliCommandContext) -> set[str]:
+    limit = command_context.assignment_limit if command_context.fetch_assignments else command_context.limit
+    downloads_dir = (
+        command_context.output_layout.assignments_dir
+        if command_context.fetch_assignments
+        else command_context.output_layout.downloads_dir
+    )
+    cached_files = build_cached_fetch_files_for_chapters(
+        fetch_state=command_context.fetch_state,
+        assignments_dir=command_context.output_layout.assignments_dir,
+        normalized_chapter_filters=command_context.normalized_chapter_filters,
+        fetch_assignments=command_context.fetch_assignments,
+        limit=limit,
+    )
+    if not cached_files:
+        return set()
+    file_kind = "assignment" if command_context.fetch_assignments else "class note"
+    print(
+        f"Using {len(cached_files)} cached {file_kind} file(s) from fetch_state; skipping Canvas login and fetch.",
+        flush=True,
+    )
+    return process_saved_files(
+        command_context=command_context,
+        files=cached_files,
+        downloads_dir=downloads_dir,
+        openai_client=build_openai_generation_client(command_context.openai_api_key),
     )
 
 
@@ -158,6 +219,9 @@ def run_canvas_workflow(
     canvas_credentials: tuple[str, str],
     maybe_prompt_before_exit: Any,
 ) -> set[str]:
+    if should_use_saved_fetch_shortcut(command_context):
+        return run_saved_fetch_shortcut(command_context)
+
     processed_file_ids: set[str] = set()
 
     with sync_playwright() as playwright:
@@ -220,6 +284,54 @@ def _handle_list_files_request(
     return True
 
 
+def discover_assignment_files(
+    *,
+    page: Any,
+    canvas_client: Any,
+    command_context: CliCommandContext,
+    limit: int | None,
+) -> list[Any]:
+    assignment_entries = list_canvas_assignment_entries(
+        canvas_client,
+        command_context.course_url,
+        limit=limit,
+    )
+    if assignment_entries and not command_context.force and not command_context.normalized_chapter_filters:
+        cached_files = build_saved_assignment_files_for_names(
+            fetch_state=command_context.fetch_state,
+            assignments_dir=command_context.output_layout.assignments_dir,
+            assignment_names=[name for name, _ in assignment_entries],
+        )
+        if len(cached_files) == len(assignment_entries):
+            print(
+                f"Using {len(cached_files)} cached assignment file(s) from assignment manifest; skipping assignment page fetch.",
+                flush=True,
+            )
+            return cached_files
+        missing_entries = build_missing_assignment_entries(
+            assignment_entries=assignment_entries,
+            saved_files=cached_files,
+        )
+        print(
+            f"Using {len(cached_files)} cached assignment file(s) from assignment manifest; fetching {len(missing_entries)} missing assignment file(s).",
+            flush=True,
+        )
+        return cached_files + list_canvas_pdfs_from_assignments(
+            page,
+            canvas_client,
+            command_context.course_url,
+            assignment_entries=missing_entries,
+        )
+
+    return list_canvas_pdfs_from_assignments(
+        page,
+        canvas_client,
+        command_context.course_url,
+        limit=limit,
+        assignment_entries=assignment_entries,
+    )
+
+
 def run_assignment_fetch_workflow(
     *,
     page: Any,
@@ -227,16 +339,17 @@ def run_assignment_fetch_workflow(
     browser: Any,
     command_context: CliCommandContext,
 ) -> set[str]:
-    files = list_canvas_pdfs_from_assignments(
-        page,
-        canvas_client,
-        command_context.course_url,
+    files = discover_assignment_files(
+        page=page,
+        canvas_client=canvas_client,
+        command_context=command_context,
         limit=command_context.assignment_limit,
     )
     if not files:
         raise RuntimeError(
             "No assignment files were found on the course pages. Confirm that the account can access module attachments or course files."
         )
+    summarize_discovered_files(files=files, fetch_state=command_context.fetch_state, force=command_context.force)
     print(f"Found {len(files)} assignment file(s).", flush=True)
     return process_file_batch(
         files=files,
@@ -312,8 +425,18 @@ def run_class_note_workflow(
         ),
     )
 
-    assignment_files = list_canvas_pdfs_from_assignments(page, canvas_client, command_context.course_url)
+    assignment_files = discover_assignment_files(
+        page=page,
+        canvas_client=canvas_client,
+        command_context=command_context,
+        limit=None,
+    )
     if assignment_files:
+        summarize_discovered_files(
+            files=assignment_files,
+            fetch_state=command_context.fetch_state,
+            force=command_context.force,
+        )
         print(f"Found {len(assignment_files)} assignment file(s).", flush=True)
         processed_file_ids.update(
             process_file_batch(

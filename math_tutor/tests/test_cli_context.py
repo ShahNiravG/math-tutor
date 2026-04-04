@@ -33,7 +33,7 @@ class CliContextTests(unittest.TestCase):
                 build_site_guided_learning=False,
             )
 
-            with patch("math_tutor.cli_context.initialize_gemini_client", return_value="gemini-client"):
+            with patch("math_tutor.cli_context.initialize_gemini_client", return_value="gemini-client") as initialize_gemini_client:
                 context = build_command_context(
                     args=args,
                     output_dir=output_dir,
@@ -46,7 +46,8 @@ class CliContextTests(unittest.TestCase):
             self.assertEqual(context.selected_prompts[0].slug, "study-guide")
             self.assertEqual(context.forced_prompt_slugs, {"study-guide"})
             self.assertEqual(context.normalized_chapter_filters, ["5.1"])
-            self.assertEqual(context.gemini_client, "gemini-client")
+            self.assertIsNone(context.gemini_client)
+            initialize_gemini_client.assert_not_called()
             self.assertTrue(context.output_layout.downloads_dir.is_dir())
 
 

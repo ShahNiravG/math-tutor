@@ -10,6 +10,7 @@ from math_tutor.cli_commands import (
     handle_print_command,
     run_canvas_workflow,
     run_skip_fetch_workflow,
+    should_use_saved_fetch_shortcut,
 )
 from math_tutor.cli_context import build_command_context
 from math_tutor.env_config import load_dotenv_if_present
@@ -190,16 +191,16 @@ def main() -> None:
         ):
             return
 
-        canvas_credentials = resolve_canvas_credentials(
-            username=args.username,
-            password=args.password,
-            skip_fetch=args.skip_fetch,
-        )
-
         command_context = build_command_context(
             args=args,
             output_dir=output_dir,
             log=lambda message: print(message, flush=True),
+        )
+
+        canvas_credentials = resolve_canvas_credentials(
+            username=args.username,
+            password=args.password,
+            skip_fetch=args.skip_fetch or should_use_saved_fetch_shortcut(command_context),
         )
 
         if args.skip_fetch:

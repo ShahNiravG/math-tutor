@@ -39,7 +39,9 @@ def build_command_context(
         fetch_only=args.fetch_only,
         fetch_assignments=args.fetch_assignments,
     )
-    gemini_client = initialize_gemini_client(log=log)
+    gemini_client = None
+    if not args.fetch_only and any((prompt.model or "").startswith("gemini") for prompt in selected_prompts):
+        gemini_client = initialize_gemini_client(log=log)
 
     return CliCommandContext(
         output_dir=output_dir,
