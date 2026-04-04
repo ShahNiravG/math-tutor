@@ -12,6 +12,7 @@ from math_tutor.site_cards import (
     record_page_filename,
 )
 from math_tutor.site_data import load_records
+from math_tutor.site_data import load_assignment_prompt_outputs
 from math_tutor.site_pages import (
     build_index_html as render_index_page,
     build_library_page_html as render_library_page,
@@ -122,6 +123,7 @@ def build_site(
     if limit is not None:
         records = records[:limit]
     assignments = load_assignment_files(output_dir)
+    assignment_prompt_outputs = load_assignment_prompt_outputs(output_dir)
     html_text = render_index_page(
         records=records,
         output_dir=output_dir,
@@ -177,6 +179,7 @@ def build_site(
                 base_path=resolved_base_path,
                 include_guided_learning=include_guided_learning,
                 assignments=assignments,
+                assignment_prompt_outputs=assignment_prompt_outputs,
                 site_page_href=site_page_href,
                 experience_variant=experience_variant,
             ),

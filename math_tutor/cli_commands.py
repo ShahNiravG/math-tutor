@@ -20,6 +20,7 @@ from math_tutor.canvas_course import (
 from math_tutor.cli_generation import build_openai_generation_client
 from math_tutor.cli_runtime import (
     OutputLayout,
+    build_saved_assignment_files,
     build_saved_class_note_files,
     display_name_matches_chapter_filters,
     needs_pdf_browser,
@@ -82,13 +83,24 @@ def handle_print_command(
 
 
 def run_skip_fetch_workflow(command_context: CliCommandContext) -> set[str]:
-    skip_fetch_files = build_saved_class_note_files(
-        fetch_state=command_context.fetch_state,
-        assignments_dir=command_context.output_layout.assignments_dir,
-        normalized_chapter_filters=command_context.normalized_chapter_filters,
-        limit=command_context.limit,
-    )
-    print(f"Found {len(skip_fetch_files)} already-fetched class note file(s).", flush=True)
+    if command_context.fetch_assignments:
+        skip_fetch_files = build_saved_assignment_files(
+            fetch_state=command_context.fetch_state,
+            assignments_dir=command_context.output_layout.assignments_dir,
+            normalized_chapter_filters=command_context.normalized_chapter_filters,
+            limit=command_context.assignment_limit or command_context.limit,
+        )
+        print(f"Found {len(skip_fetch_files)} already-fetched assignment file(s).", flush=True)
+        downloads_dir = command_context.output_layout.assignments_dir
+    else:
+        skip_fetch_files = build_saved_class_note_files(
+            fetch_state=command_context.fetch_state,
+            assignments_dir=command_context.output_layout.assignments_dir,
+            normalized_chapter_filters=command_context.normalized_chapter_filters,
+            limit=command_context.limit,
+        )
+        print(f"Found {len(skip_fetch_files)} already-fetched class note file(s).", flush=True)
+        downloads_dir = command_context.output_layout.downloads_dir
     openai_client = build_openai_generation_client(command_context.openai_api_key)
 
     if needs_pdf_browser(command_context.selected_prompts):
@@ -102,7 +114,7 @@ def run_skip_fetch_workflow(command_context: CliCommandContext) -> set[str]:
                         openai_client=openai_client,
                         gemini_client=command_context.gemini_client,
                         pdf_browser=browser,
-                        downloads_dir=command_context.output_layout.downloads_dir,
+                        downloads_dir=downloads_dir,
                         responses_dir=command_context.output_layout.responses_dir,
                         metadata_dir=command_context.output_layout.metadata_dir,
                         fetch_state=command_context.fetch_state,
@@ -125,7 +137,7 @@ def run_skip_fetch_workflow(command_context: CliCommandContext) -> set[str]:
             openai_client=openai_client,
             gemini_client=command_context.gemini_client,
             pdf_browser=None,
-            downloads_dir=command_context.output_layout.downloads_dir,
+            downloads_dir=downloads_dir,
             responses_dir=command_context.output_layout.responses_dir,
             metadata_dir=command_context.output_layout.metadata_dir,
             fetch_state=command_context.fetch_state,

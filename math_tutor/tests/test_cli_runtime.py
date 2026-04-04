@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 
 from math_tutor.cli_runtime import (
     build_output_layout,
+    build_saved_assignment_files,
     build_saved_class_note_files,
     display_name_matches_chapter_filters,
     ensure_output_layout,
@@ -81,6 +82,35 @@ class CliRuntimeTests(unittest.TestCase):
 
         self.assertEqual([file.file_id for file in files], [1])
         self.assertEqual(files[0].display_name, "Alg 2 Trig H Chp 5.1 Note.docx")
+
+    def test_build_saved_assignment_files_reads_assignment_entries(self) -> None:
+        fetch_state = FetchState(
+            path=Path("/tmp/fetch_state.json"),
+            fetched={
+                "10": {
+                    "display_name": "4435419_chp-5-1-work.pdf",
+                    "pdf_path": "/tmp/output/downloads/assignments/4435419_chp-5-1-work.pdf",
+                    "download_url": "https://example.com/10",
+                    "content_type": "application/pdf",
+                },
+                "11": {
+                    "display_name": "Alg 2 Trig H Chp 5.1 Note.docx",
+                    "pdf_path": "/tmp/output/downloads/4401267_note.pdf",
+                    "download_url": "https://example.com/11",
+                    "content_type": "application/pdf",
+                },
+            },
+        )
+
+        files = build_saved_assignment_files(
+            fetch_state=fetch_state,
+            assignments_dir=Path("/tmp/output/downloads/assignments"),
+            normalized_chapter_filters=normalize_cli_chapter_filters(["5.1"]),
+            limit=None,
+        )
+
+        self.assertEqual([file.file_id for file in files], [10])
+        self.assertEqual(files[0].display_name, "4435419_chp-5-1-work.pdf")
 
     def test_needs_openai_generation_client_only_for_non_gemini_prompts(self) -> None:
         self.assertTrue(

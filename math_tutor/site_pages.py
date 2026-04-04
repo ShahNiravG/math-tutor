@@ -8,7 +8,7 @@ from pathlib import Path
 
 from math_tutor.site_cards import document_label, record_page_filename
 from math_tutor.site_content import build_curriculum_guided_learning_prompt
-from math_tutor.site_models import DocumentRecord
+from math_tutor.site_models import DocumentRecord, PromptOutputRecord
 from math_tutor.site_records import render_document_overview_card, render_document_page_content
 from math_tutor.site_sections import render_guided_learning_card, render_surface_header
 from math_tutor.site_shell import render_page_shell
@@ -66,7 +66,7 @@ def build_index_html(
         <section class="landing-hero landing-hero-staging">
           <div class="landing-hero-copy">
             <span class="eyebrow">Today&apos;s Best Path</span>
-            <h1 class="hero-title">Build confidence, one chapter at a time.</h1>
+            <h1 class="hero-title">Build confidence, one concept at a time.</h1>
             <p class="page-intro">Review the chapter idea, practice with short questions, then test yourself. The site keeps each step visible so students never have to guess where to go next.</p>
             <div class="hero-action-grid">
               <a class="hero-action primary" href="{html.escape(featured_practice_href)}">Start Practice</a>
@@ -231,6 +231,7 @@ def build_record_page_html(
     base_path: str,
     include_guided_learning: bool,
     assignments: list[Path] | None = None,
+    assignment_prompt_outputs: dict[str, list[PromptOutputRecord]] | None = None,
     site_page_href=None,
     experience_variant: str = "default",
 ) -> str:
@@ -253,6 +254,7 @@ def build_record_page_html(
         base_path,
         include_guided_learning=include_guided_learning,
         assignments=assignments or [],
+        assignment_prompt_outputs=assignment_prompt_outputs or {},
         site_page_href=site_page_href,
         experience_variant=experience_variant,
     )

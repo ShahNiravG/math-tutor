@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 from typing import Any
 
+from math_tutor.prompt_catalog import prompt_title_from_slug
 from math_tutor.site_models import DocumentRecord, PromptOutputRecord
 from math_tutor.site_prompt_cards import PROMPT_ORDER
 from math_tutor.state_store import canonical_generated_output_state_path, load_generated_output_state
@@ -48,6 +49,26 @@ def load_records(output_dir: Path) -> list[DocumentRecord]:
     return records
 
 
+def load_assignment_prompt_outputs(output_dir: Path) -> dict[str, list[PromptOutputRecord]]:
+    fetch_state = load_state(output_dir / "fetch_state.json", "fetched")
+    generated_output_state = load_generated_output_state(
+        canonical_generated_output_state_path(output_dir)
+    ).processed
+
+    outputs_by_filename: dict[str, list[PromptOutputRecord]] = {}
+    for file_id, fetched in fetch_state.items():
+        pdf_path = path_or_none(fetched.get("pdf_path"))
+        if pdf_path is None or "/downloads/assignments/" not in pdf_path.as_posix():
+            continue
+
+        processed = generated_output_state.get(file_id, {})
+        prompt_outputs = load_processed_prompt_outputs(processed)
+        if prompt_outputs:
+            outputs_by_filename[pdf_path.name] = prompt_outputs
+
+    return outputs_by_filename
+
+
 def load_prompt_outputs(processed: dict[str, Any]) -> list[PromptOutputRecord]:
     outputs_by_slug: dict[str, PromptOutputRecord] = {}
     for prompt_spec in PROMPT_ORDER:
@@ -74,6 +95,41 @@ def load_prompt_outputs(processed: dict[str, Any]) -> list[PromptOutputRecord]:
             response_markdown=response_markdown,
         )
     return [outputs_by_slug[prompt_spec.slug] for prompt_spec in PROMPT_ORDER]
+
+
+def load_processed_prompt_outputs(processed: dict[str, Any]) -> list[PromptOutputRecord]:
+    prompt_outputs: list[PromptOutputRecord] = []
+    for prompt_slug, prompt_entry in processed.items():
+        if not isinstance(prompt_entry, dict):
+            continue
+        response_path = path_or_none(prompt_entry.get("response_path"))
+        response_html_path = path_or_none(prompt_entry.get("response_html_path"))
+        response_pdf_path = path_or_none(prompt_entry.get("response_pdf_path"))
+        metadata_path = path_or_none(prompt_entry.get("metadata_path"))
+        response_markdown = (
+            response_path.read_text(encoding="utf-8")
+            if response_path and response_path.exists()
+            else None
+        )
+        processed_at = prompt_entry.get("processed_at")
+        if not processed_at and not (
+            (response_html_path and response_html_path.exists())
+            or (response_pdf_path and response_pdf_path.exists())
+        ):
+            continue
+        prompt_outputs.append(
+            PromptOutputRecord(
+                slug=prompt_slug,
+                title=prompt_entry.get("prompt_title") or prompt_title_from_slug(prompt_slug),
+                response_path=response_path,
+                response_html_path=response_html_path,
+                response_pdf_path=response_pdf_path,
+                metadata_path=metadata_path,
+                processed_at=processed_at,
+                response_markdown=response_markdown,
+            )
+        )
+    return prompt_outputs
 
 
 def first_prompt_value(processed: dict[str, Any], key: str) -> str | None:

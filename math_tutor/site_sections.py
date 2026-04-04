@@ -108,6 +108,7 @@ def render_guided_learning_card(
 def render_index_card(
     *,
     heading: str,
+    kicker: str | None = None,
     prompt_count: int,
     page_href: str,
     class_note_link: str | None,
@@ -127,7 +128,8 @@ def render_index_card(
         return f"""
           <section class="prompt-card overview-card-staging">
             <div class="task-head">
-              <span class="task-kicker">{html.escape(heading)}</span>
+              {f'<span class="task-kicker">{html.escape(kicker)}</span>' if kicker else ''}
+              <h3>{html.escape(heading)}</h3>
             </div>
             <div class="chip-row">
               <span class="chip">{prompt_count} study tools ready</span>

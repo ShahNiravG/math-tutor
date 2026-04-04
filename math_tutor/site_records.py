@@ -6,15 +6,16 @@ import html
 from pathlib import Path
 from typing import Callable
 
+from math_tutor.chaptering import parse_display_name_chapter
 from math_tutor.response_artifacts import render_inline
 from math_tutor.site_assets import link_tag
 from math_tutor.site_challenges import render_chapter_challenge_card
-from math_tutor.site_cards import document_label, record_page_filename
+from math_tutor.site_cards import document_label, document_title, record_page_filename
 from math_tutor.site_content import (
     build_guided_learning_prompt,
     extract_record_summary_html,
 )
-from math_tutor.site_models import DocumentRecord
+from math_tutor.site_models import DocumentRecord, PromptOutputRecord
 from math_tutor.site_prompt_cards import build_document_prompt_card_groups, build_document_prompt_cards_html
 from math_tutor.site_sections import render_guided_learning_card, render_index_card
 
@@ -30,6 +31,7 @@ def render_document_overview_card(
     experience_variant: str = "default",
 ) -> str:
     prompt_count = sum(1 for prompt_output in record.prompt_outputs if prompt_output.processed_at)
+    chapter = parse_display_name_chapter(record.display_name)
     class_note_link = None
     if record.pdf_path and record.pdf_path.exists():
         class_note_link = link_tag(
@@ -45,11 +47,12 @@ def render_document_overview_card(
     if include_guided_learning and not summary_html:
         summary_html = f"<p>{render_inline(build_guided_learning_prompt(record))}</p>"
     return render_index_card(
-        heading=document_label(record),
+        heading=document_title(record) if experience_variant == "staging" else document_label(record),
+        kicker=f"Chapter {chapter}" if experience_variant == "staging" and chapter else None,
         prompt_count=prompt_count,
         page_href=site_page_href(record_page_filename(record), base_path),
         class_note_link=class_note_link,
-        summary_html=summary_html,
+        summary_html="" if experience_variant == "staging" else summary_html,
         practice_href=f'{site_page_href(record_page_filename(record), base_path)}#practice',
         challenge_href=f'{site_page_href(record_page_filename(record), base_path)}#challenge',
         experience_variant=experience_variant,
@@ -64,6 +67,7 @@ def render_document_page_content(
     *,
     include_guided_learning: bool,
     assignments: list[Path] | None = None,
+    assignment_prompt_outputs: dict[str, list[PromptOutputRecord]] | None = None,
     site_page_href: Callable[[str, str], str],
     experience_variant: str = "default",
 ) -> str:
@@ -88,6 +92,7 @@ def render_document_page_content(
         site_dir=site_dir,
         base_path=base_path,
         assignments=assignments,
+        assignment_prompt_outputs=assignment_prompt_outputs or {},
         experience_variant=experience_variant,
     )
     prompt_groups = build_document_prompt_card_groups(
@@ -96,6 +101,7 @@ def render_document_page_content(
         site_dir=site_dir,
         base_path=base_path,
         assignments=assignments,
+        assignment_prompt_outputs=assignment_prompt_outputs or {},
         experience_variant=experience_variant,
     )
     guided_learning_html = ""

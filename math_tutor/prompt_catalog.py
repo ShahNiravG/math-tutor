@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 
-DEFAULT_MODEL = "gpt-4.1"
+DEFAULT_MODEL = "gpt-5.4"
 
 
 @dataclass(frozen=True)
@@ -21,6 +21,9 @@ class PromptSpec:
     reasoning_effort: str | None = None
     generate: bool = True
     use_google_search: bool = False
+    assignment_only: bool = False
+    required_filename_substrings: tuple[str, ...] = ()
+    explicit_only: bool = False
 
 
 @dataclass(frozen=True)
@@ -33,6 +36,10 @@ class PromptTemplate:
     generate_response_pdf: bool = True
     slug_suffix: str = ""
     generate_models: tuple[str, ...] | None = None
+    model: str | None = None
+    assignment_only: bool = False
+    required_filename_substrings: tuple[str, ...] = ()
+    explicit_only: bool = False
 
 
 @dataclass(frozen=True)
@@ -54,15 +61,74 @@ PROMPT_TEMPLATES: tuple[PromptTemplate, ...] = (
         title="Study Guide",
         text="""You are a careful math tutor.
 
-Read the attached PDF and produce:
-1. A short summary of the document.
-2. A list of the core definitions, theorems, and formulas.
-3. A worked study guide that explains the important ideas step by step.
-4. Five practice problems with answers, based only on the document.
-5. Any assumptions or ambiguities you had to resolve.
+Read the attached PDF and produce the following sections using these exact headings:
 
-Keep the response self-contained and use clear section headings.
+## Title
+Provide a concise student-friendly chapter title in 3 to 10 words. Use the math topic name only. Do not repeat the chapter number in the title.
+
+## Short Summary
+Write a short summary of the document.
+
+## Core Definitions, Theorems, and Formulas
+List the core definitions, theorems, and formulas.
+
+## Study Guide
+Write a worked study guide that explains the important ideas step by step.
+
+## Practice Problems
+Give five practice problems with answers, based only on the document.
+
+## Assumptions or Ambiguities
+List any assumptions or ambiguities you had to resolve.
+
+Keep the response self-contained and preserve those exact section headings.
 """,
+        generate_models=("",),
+    ),
+    PromptTemplate(
+        slug="auto-grading-assignment",
+        title="Auto Grading Assignment",
+        text="""Role: You are an expert academic grader. Since no answer key is provided, you must first solve each problem independently to establish the correct answers before grading the student's work.
+
+Grading Rubric:
+- Standard unit: assign 1 point per problem.
+- Sub-problems: treat every sub-part (for example a, b, i, ii) as an individual 1-point item.
+- Final answers: the student has placed a box around their final answers. Prioritize these boxed values for the final result.
+- Partial credit:
+  - 1.0 point: correct boxed answer with supporting work.
+  - 0.5 points: incorrect boxed answer, but the work shows the correct setup or only a minor carry-over error.
+  - 0 points: incorrect answer with no work or fundamentally wrong logic.
+
+Task Instructions:
+1. Solve: for every problem identified in the PDF, show your own brief step-by-step solution first.
+2. Evaluate: compare your solution to the student's boxed answer and their shown work.
+3. Correct: if the student is wrong, clearly explain the error in their logic or calculation.
+
+Output Format:
+Start with this exact summary block at the top of the response:
+
+Final Summary:
+
+Final Score: [Sum of points] / [Total possible points]
+
+Total Correct Answers: [Count of fully correct items] / [Total items]
+
+Questions Less Than Perfect: [Comma-separated list of question numbers that received less than 1.0 point. If none, write "None".]
+
+Then, for each question, use this exact structure:
+
+[Question Number]
+
+AI Solution: [Briefly show the correct steps and answer]
+
+Student Result: [Correct/Incorrect/Partial] - [Points]/1
+
+Feedback: [Brief explanation of errors found]
+""",
+        model="gemini-3.1-pro-preview",
+        assignment_only=True,
+        required_filename_substrings=("work",),
+        explicit_only=True,
         generate_models=("",),
     ),
     PromptTemplate(
@@ -247,9 +313,12 @@ def build_prompt_spec(template: PromptTemplate, model_config: ModelConfig) -> Pr
         source_prompt_slug=source_slug,
         include_source_pdf_link=template.include_source_pdf_link,
         generate_response_pdf=template.generate_response_pdf,
-        model=model_config.model if model_config.slug else None,
+        model=template.model if template.model else (model_config.model if model_config.slug else None),
         generate=generate,
         use_google_search=(template.slug == "inspiring-videos" and model_config.slug == "gemini"),
+        assignment_only=template.assignment_only,
+        required_filename_substrings=template.required_filename_substrings,
+        explicit_only=template.explicit_only,
     )
 
 
@@ -299,7 +368,7 @@ def prompt_title_from_slug(prompt_slug: str) -> str:
 
 def resolve_selected_prompts(prompt_slugs: list[str] | None) -> tuple[PromptSpec, ...]:
     if not prompt_slugs:
-        return PROMPTS
+        return tuple(prompt for prompt in PROMPTS if not prompt.explicit_only)
 
     selected: list[PromptSpec] = []
     seen: set[str] = set()

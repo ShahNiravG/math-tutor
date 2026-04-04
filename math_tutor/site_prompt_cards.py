@@ -55,6 +55,7 @@ def build_document_prompt_cards_html(
     site_dir: Path,
     base_path: str,
     assignments: list[Path] | None = None,
+    assignment_prompt_outputs: dict[str, list[PromptOutputRecord]] | None = None,
     experience_variant: str = "default",
 ) -> str:
     grouped_cards = build_document_prompt_card_groups(
@@ -63,6 +64,7 @@ def build_document_prompt_cards_html(
         site_dir=site_dir,
         base_path=base_path,
         assignments=assignments,
+        assignment_prompt_outputs=assignment_prompt_outputs,
         experience_variant=experience_variant,
     )
     return "\n".join(grouped_cards["all"])
@@ -75,6 +77,7 @@ def build_document_prompt_card_groups(
     site_dir: Path,
     base_path: str,
     assignments: list[Path] | None = None,
+    assignment_prompt_outputs: dict[str, list[PromptOutputRecord]] | None = None,
     experience_variant: str = "default",
 ) -> dict[str, list[str]]:
     outputs_by_slug = {prompt_output.slug: prompt_output for prompt_output in record.prompt_outputs}
@@ -201,6 +204,7 @@ def build_document_prompt_card_groups(
         assignments=record_assignments,
         site_dir=site_dir,
         base_path=base_path,
+        assignment_prompt_outputs_by_filename=assignment_prompt_outputs or {},
         experience_variant=experience_variant,
     )
     if assignments_card:

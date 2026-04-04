@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 from typing import Callable
 
+from math_tutor.chaptering import parse_display_name_chapter
 from math_tutor.site_cards import document_label, record_page_filename
 from math_tutor.site_models import DocumentRecord
 
@@ -17,7 +18,9 @@ def render_sidebar_item(
 ) -> str:
     href = site_page_href(record_page_filename(record), base_path)
     classes = "active" if active_record and active_record.file_id == record.file_id else ""
-    return f'<li><a class="{classes}" href="{html.escape(href)}">{html.escape(document_label(record))}</a></li>'
+    chapter = parse_display_name_chapter(record.display_name)
+    label = f"Chapter {chapter}" if chapter else document_label(record)
+    return f'<li><a class="{classes}" href="{html.escape(href)}">{html.escape(label)}</a></li>'
 
 
 def render_sidebar_html(

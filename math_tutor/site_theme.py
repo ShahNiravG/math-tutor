@@ -622,6 +622,28 @@ BASE_SITE_PAGE_STYLES = """
     .prompt-card .link-row {
       margin-bottom: 14px;
     }
+    .assignment-list {
+      display: grid;
+      gap: 14px;
+    }
+    .assignment-row {
+      display: grid;
+      gap: 8px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+    }
+    .assignment-row:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+    .assignment-row-label {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #243645;
+    }
+    .assignment-row .link-row {
+      margin-bottom: 0;
+    }
     .card-summary {
       color: #0d1b24;
       font-size: 1.03rem;

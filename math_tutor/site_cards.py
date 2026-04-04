@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import html
+import re
 import shutil
 from pathlib import Path
 from typing import Callable
@@ -10,6 +11,7 @@ from typing import Callable
 from math_tutor.chaptering import format_assignment_display_name, parse_assignment_chapters, parse_display_name_chapter
 from math_tutor.prompt_catalog import DEFAULT_MODEL, PromptSpec
 from math_tutor.response_artifacts import pretty_title
+from math_tutor.site_assets import build_site_href
 from math_tutor.site_models import DocumentRecord, PromptOutputRecord
 
 
@@ -17,11 +19,126 @@ def record_page_filename(record: DocumentRecord) -> str:
     return f"doc-{record.file_id}.html"
 
 
+CHAPTER_TITLES: dict[str, str] = {
+    "5.1": "Radians, Arc Length, and Sector Area",
+    "5.2": "Right Triangle Trigonometry",
+    "5.3": "Trigonometric Functions of Angles",
+    "5.4": "Inverse Trigonometric Functions",
+    "5.5": "Law of Sines",
+    "5.6": "Law of Cosines",
+    "6.1": "The Unit Circle",
+    "6.2": "Trigonometric Functions on the Unit Circle",
+    "6.3": "Graphs of Sine and Cosine",
+    "6.4": "Graphs of Tangent, Cotangent, Secant, and Cosecant",
+    "6.5": "Graphs and Properties of Inverse Trig Functions",
+    "7.1": "Fundamental Trigonometric Identities",
+    "7.2": "Addition and Subtraction Formulas",
+    "7.3": "Double-Angle, Half-Angle, and Product Formulas",
+    "7.4 & 7.5": "Solving Trigonometric Equations",
+    "11.1": "Circles and Parabolas",
+    "11.2": "Ellipses",
+    "11.3": "Hyperbolas",
+    "11.4": "Shifted Conics",
+}
+
+
+def chapter_title(chapter: str | None) -> str | None:
+    if not chapter:
+        return None
+    normalized = " ".join(chapter.split())
+    return CHAPTER_TITLES.get(normalized)
+
+
+def generated_document_title(record: DocumentRecord) -> str | None:
+    chapter = parse_display_name_chapter(record.display_name)
+    for prompt_output in record.prompt_outputs:
+        if prompt_output.slug != "study-guide":
+            continue
+        generated_title = _extract_study_guide_title(prompt_output.response_markdown)
+        if generated_title:
+            return _normalize_generated_title(generated_title, chapter)
+        if prompt_output.response_html_path and prompt_output.response_html_path.exists():
+            generated_title = _extract_study_guide_title_from_html(prompt_output.response_html_path.read_text(encoding="utf-8"))
+            if generated_title:
+                return _normalize_generated_title(generated_title, chapter)
+    return None
+
+
+def document_title(record: DocumentRecord) -> str:
+    generated_title = generated_document_title(record)
+    if generated_title:
+        return generated_title
+    chapter = parse_display_name_chapter(record.display_name)
+    title = chapter_title(chapter)
+    if title:
+        return title
+    return pretty_title(record.display_name)
+
+
 def document_label(record: DocumentRecord) -> str:
     chapter = parse_display_name_chapter(record.display_name)
+    title = document_title(record)
+    if chapter and title:
+        return f"Chapter {chapter}: {title}"
     if chapter:
         return f"Chapter {chapter}"
-    return pretty_title(record.display_name)
+    return title
+
+
+def _extract_study_guide_title(markdown_text: str | None) -> str | None:
+    if not markdown_text:
+        return None
+
+    match = re.search(
+        r"(?ims)^\s*#{1,6}\s*(?:chapter\s+)?title\s*$\n(.*?)(?=^\s*#{1,6}\s+|^\s*\d+\.\s+|\Z)",
+        markdown_text,
+    )
+    if match:
+        return _first_content_line(match.group(1))
+
+    match = re.search(r"(?im)^\s*(?:chapter\s+)?title\s*:\s*(.+?)\s*$", markdown_text)
+    if match:
+        return match.group(1).strip()
+
+    return None
+
+
+def _extract_study_guide_title_from_html(content: str) -> str | None:
+    match = re.search(
+        r'(?is)<h[1-6][^>]*>\s*(?:chapter\s+)?title\s*</h[1-6]>(.*?)(?=<h[1-6][^>]*>|<hr\s*/?>|\Z)',
+        content,
+    )
+    if not match:
+        return None
+
+    raw_html = match.group(1)
+    raw_html = re.sub(r"<br\s*/?>", "\n", raw_html, flags=re.IGNORECASE)
+    raw_html = re.sub(r"</p\s*>", "\n", raw_html, flags=re.IGNORECASE)
+    plain = re.sub(r"<[^>]+>", " ", raw_html)
+    plain = html.unescape(plain)
+    plain = re.sub(r"[ \t]+", " ", plain)
+    return _first_content_line(plain)
+
+
+def _first_content_line(text: str) -> str | None:
+    for line in text.splitlines():
+        stripped = line.strip()
+        if stripped:
+            return stripped
+    return None
+
+
+def _normalize_generated_title(title: str, chapter: str | None) -> str | None:
+    cleaned = title.strip().strip('"').strip("'")
+    cleaned = re.sub(r"[*_`#]+", "", cleaned).strip(" :-")
+    if chapter:
+        cleaned = re.sub(
+            rf"(?i)^chapter\s+{re.escape(chapter)}\s*[:\-]\s*",
+            "",
+            cleaned,
+        ).strip()
+    cleaned = re.sub(r"(?i)^chapter\s+\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)?\s*[:\-]\s*", "", cleaned).strip()
+    return cleaned or None
 
 
 def load_assignment_files(output_dir: Path) -> list[Path]:
@@ -46,6 +163,7 @@ def render_assignments_card(assignments: list[Path], site_dir: Path, base_path: 
         assignments=assignments,
         site_dir=site_dir,
         base_path=base_path,
+        assignment_prompt_outputs_by_filename={},
         experience_variant="default",
     )
 
@@ -55,19 +173,37 @@ def render_assignments_card_with_variant(
     assignments: list[Path],
     site_dir: Path,
     base_path: str,
+    assignment_prompt_outputs_by_filename: dict[str, list[PromptOutputRecord]],
     experience_variant: str = "default",
 ) -> str:
     if not assignments:
         return ""
     assignments_dir = site_dir / "assignments"
     assignments_dir.mkdir(parents=True, exist_ok=True)
-    links: list[str] = []
+    rows: list[str] = []
     for source in assignments:
         destination = assignments_dir / source.name
         if not destination.exists() or source.stat().st_mtime_ns != destination.stat().st_mtime_ns:
             shutil.copy2(source, destination)
         href = f"{base_path}assignments/{source.name}" if base_path else f"assignments/{source.name}"
-        links.append(f'<a href="{html.escape(href)}">{html.escape(format_assignment_display_name(source))}</a>')
+        primary_link = f'<a href="{html.escape(href)}">{html.escape("Open Assignment")}</a>'
+        grading_links = _render_assignment_artifact_links(
+            assignment_filename=source.name,
+            assignment_prompt_outputs_by_filename=assignment_prompt_outputs_by_filename,
+            site_dir=site_dir,
+            base_path=base_path,
+        )
+        rows.append(
+            f"""
+          <div class="assignment-row">
+            <div class="assignment-row-label">{html.escape(format_assignment_display_name(source))}</div>
+            <div class="link-row">
+              {primary_link}
+              {grading_links}
+            </div>
+          </div>
+        """
+        )
     intro_html = (
         '<p class="task-copy">Use these when you want the exact class worksheet after you finish the on-site practice.</p>'
         if experience_variant == "staging"
@@ -78,11 +214,53 @@ def render_assignments_card_with_variant(
         <h3>{'Class Assignments' if experience_variant == 'staging' else 'Assignments'}</h3>
         {intro_html}
         <div class="chip-row"><span class="chip chip-lock"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>Authorization Required</span></div>
-        <div class="link-row">
-          {' '.join(links)}
+        <div class="assignment-list">
+          {''.join(rows)}
         </div>
       </section>
     """
+
+
+def _render_assignment_artifact_links(
+    *,
+    assignment_filename: str,
+    assignment_prompt_outputs_by_filename: dict[str, list[PromptOutputRecord]],
+    site_dir: Path,
+    base_path: str,
+) -> str:
+    prompt_outputs = assignment_prompt_outputs_by_filename.get(assignment_filename, [])
+    parts: list[str] = []
+
+    for prompt_output in prompt_outputs:
+        if prompt_output.slug != "auto-grading-assignment":
+            continue
+        if prompt_output.response_html_path and prompt_output.response_html_path.exists():
+            href = _build_assignment_scoped_href(
+                source=prompt_output.response_html_path,
+                site_dir=site_dir,
+                base_path=base_path,
+            )
+            parts.append(f'<a href="{html.escape(href)}" class="button-study-guide">AI Grade</a>')
+        if prompt_output.response_pdf_path and prompt_output.response_pdf_path.exists():
+            href = _build_assignment_scoped_href(
+                source=prompt_output.response_pdf_path,
+                site_dir=site_dir,
+                base_path=base_path,
+            )
+            parts.append(f'<a href="{html.escape(href)}" class="pdf-link">PDF</a>')
+
+    return " ".join(parts)
+
+
+def _build_assignment_scoped_href(*, source: Path, site_dir: Path, base_path: str) -> str:
+    assignment_outputs_dir = site_dir / "assignments" / "ai-grading"
+    assignment_outputs_dir.mkdir(parents=True, exist_ok=True)
+    destination = assignment_outputs_dir / source.name
+    if not destination.exists() or source.stat().st_mtime_ns != destination.stat().st_mtime_ns:
+        shutil.copy2(source, destination)
+    if base_path:
+        return f"{base_path}assignments/ai-grading/{destination.name}"
+    return build_site_href(path=destination, output_dir=site_dir, site_dir=site_dir, base_path=base_path)
 
 
 def render_single_model_row_card(

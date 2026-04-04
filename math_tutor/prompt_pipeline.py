@@ -19,6 +19,23 @@ from math_tutor.state_store import (
     GeneratedOutputState,
 )
 
+
+def prompt_applies_to_file(
+    *,
+    prompt_spec: PromptSpec,
+    canvas_file: CanvasFile,
+    pdf_path: Path,
+) -> bool:
+    if prompt_spec.assignment_only and "assignments" not in {part.lower() for part in pdf_path.parts}:
+        return False
+
+    if prompt_spec.required_filename_substrings:
+        candidate_names = (canvas_file.display_name.lower(), pdf_path.name.lower())
+        return all(any(substring.lower() in name for name in candidate_names) for substring in prompt_spec.required_filename_substrings)
+
+    return True
+
+
 def process_file(
     *,
     canvas_client: httpx.Client,
@@ -100,6 +117,13 @@ def run_prompt(
     total: int,
 ) -> str:
     if not prompt_spec.generate:
+        return ""
+    if not prompt_applies_to_file(prompt_spec=prompt_spec, canvas_file=canvas_file, pdf_path=pdf_path):
+        print(
+            f"[{index}/{total}] Skipping {prompt_spec.title} for {canvas_file.display_name}; "
+            "it only runs on assignment PDFs whose filenames include the required markers.",
+            flush=True,
+        )
         return ""
 
     response_path, response_html_path, response_pdf_path, metadata_path = build_prompt_paths(
