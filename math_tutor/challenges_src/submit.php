@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/timezone.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -22,6 +23,7 @@ $answers     = json_encode($answers_arr);
 $time_secs   = max(0, (int)$input['time_seconds']);
 $token       = bin2hex(random_bytes(6)); // 12-char hex
 $user_email  = substr($_SERVER['HTTP_CF_ACCESS_AUTHENTICATED_USER_EMAIL'] ?? '', 0, 255);
+$saved_at    = challenge_now_storage();
 $answered_count = 0;
 foreach ($answers_arr as $item) {
     if (!empty($item['answer'])) {
@@ -81,15 +83,15 @@ try {
             $pdo->prepare(
                 "INSERT INTO challenge_progress
                      (exam_id, exam_title, answered_count, current_idx, timer_secs, answers_json, user_email, last_saved_at)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                  ON DUPLICATE KEY UPDATE
                      exam_title     = VALUES(exam_title),
                      answered_count = VALUES(answered_count),
                      current_idx    = VALUES(current_idx),
                      timer_secs     = VALUES(timer_secs),
                      answers_json   = VALUES(answers_json),
-                     last_saved_at  = NOW()"
-            )->execute([$exam_id, $exam_title, $answered_count, $current_idx, $time_secs, $answers, $user_email]);
+                     last_saved_at  = VALUES(last_saved_at)"
+            )->execute([$exam_id, $exam_title, $answered_count, $current_idx, $time_secs, $answers, $user_email, $saved_at]);
         }
         echo json_encode([
             'partial' => true,
@@ -114,9 +116,9 @@ try {
 
     $stmt = $pdo->prepare(
         "INSERT INTO challenge_results (token, exam_id, exam_title, answers_json, time_seconds, is_complete, user_email, submitted_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())"
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
     );
-    $stmt->execute([$token, $exam_id, $exam_title, $answers, $time_secs, $is_complete, $user_email ?: null]);
+    $stmt->execute([$token, $exam_id, $exam_title, $answers, $time_secs, $is_complete, $user_email ?: null, $saved_at]);
 
     // Clean up any in-progress record for this user+exam now that it's submitted
     if ($user_email) {

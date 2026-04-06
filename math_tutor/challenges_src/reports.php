@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/timezone.php';
 
 try {
     $pdo = new PDO(
@@ -52,7 +53,7 @@ foreach ($rows as $row) {
         'score'        => $score,
         'total'        => count($answers),
         'time_secs'    => (int)$row['time_seconds'],
-        'submitted_at' => htmlspecialchars($row['submitted_at']),
+        'submitted_at' => challenge_format_california_timestamp($row['submitted_at']),
     ];
 }
 
@@ -68,7 +69,7 @@ foreach ($progress_rows as $p) {
         'answered'      => (int)$p['answered_count'],
         'current_idx'   => (int)$p['current_idx'],
         'timer_secs'    => (int)$p['timer_secs'],
-        'last_saved_at' => htmlspecialchars($p['last_saved_at']),
+        'last_saved_at' => challenge_format_california_timestamp($p['last_saved_at']),
     ];
 }
 
@@ -265,7 +266,8 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
     .score-partial  { background: #fef9c3; color: #854d0e; }
     .score-low      { background: var(--wrong-bg); color: var(--wrong); }
     .view-btn {
-      display: inline-block; padding: 6px 14px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 6px 14px; border-radius: 999px;
       border: 1px solid var(--line); background: #fff; color: var(--accent);
       text-decoration: none; font-family: system-ui,sans-serif;
       font-size: .82rem; font-weight: 700; white-space: nowrap;
@@ -273,17 +275,102 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
     }
     .view-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
     .delete-btn {
-      display: inline-block; padding: 6px 10px; border-radius: 999px;
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 6px 10px; border-radius: 999px;
       border: 1px solid #fca5a5; background: #fff; color: #dc2626;
       text-decoration: none; font-family: system-ui,sans-serif;
       font-size: .82rem; font-weight: 700; white-space: nowrap;
       transition: background .12s, color .12s;
     }
     .delete-btn:hover { background: #dc2626; color: #fff; border-color: #dc2626; }
+    .actions-cell {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
 
     .empty-state {
       text-align: center; color: var(--muted);
       padding: 48px 24px; font-family: system-ui,sans-serif;
+    }
+
+    @media (max-width: 760px) {
+      .page { width: min(960px, calc(100vw - 24px)); margin: 20px auto 56px; }
+      .header-card { padding: 22px 18px 22px; }
+      .brand-bar { align-items: flex-start; }
+      .page-heading { font-size: 1.6rem; }
+      .user-picker { grid-template-columns: 1fr; gap: 12px; }
+      .user-card { padding: 18px 18px 16px; }
+      .table-wrap {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        overflow: visible;
+      }
+      table, tbody, tr, td {
+        display: block;
+        width: 100%;
+      }
+      thead { display: none; }
+      tbody {
+        display: grid;
+        gap: 14px;
+      }
+      tbody tr {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: var(--paper);
+        box-shadow: 0 4px 14px rgba(78,55,32,.06);
+        padding: 16px;
+      }
+      tbody tr.row-progress { background: #fffbeb; }
+      tbody tr.section-row {
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+      }
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 8px 14px;
+        background: #f3ede2;
+      }
+      td {
+        padding: 0;
+        margin-top: 12px;
+        vertical-align: top;
+      }
+      td:first-child { margin-top: 0; }
+      td[data-label]::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 6px;
+        font-family: system-ui,sans-serif;
+        font-size: .72rem;
+        font-weight: 700;
+        letter-spacing: .07em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .td-title {
+        font-size: 1rem;
+        line-height: 1.35;
+      }
+      .td-date, .td-time { white-space: normal; }
+      .actions-cell {
+        margin-top: 14px;
+        justify-content: stretch;
+      }
+      .actions-cell .view-btn { flex: 1 1 180px; }
+      .actions-cell .delete-btn {
+        flex: 0 0 48px;
+        min-width: 48px;
+      }
     }
 
     @media (max-width: 600px) {
@@ -459,18 +546,18 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
         </thead>
         <tbody>
           <?php if ($has_in_progress): ?>
-          <tr><td colspan="5" class="section-label">&#9203; In Progress</td></tr>
+          <tr class="section-row"><td colspan="5" class="section-label">&#9203; In Progress</td></tr>
           <?php foreach ($u['in_progress'] as $p):
             $m = intdiv($p['timer_secs'], 60);
             $sec = $p['timer_secs'] % 60;
             $time_fmt = sprintf('%d:%02d', $m, $sec);
           ?>
           <tr class="row-progress">
-            <td class="td-title"><?= $p['exam_title'] ?></td>
-            <td><span class="badge-progress">&#9203; <?= $p['answered'] ?>/10 answered &middot; Q<?= $p['current_idx'] + 1 ?></span></td>
-            <td class="td-time">&#9201; <?= $time_fmt ?></td>
-            <td class="td-date"><?= $p['last_saved_at'] ?></td>
-            <td style="display:flex;gap:6px;align-items:center;">
+            <td class="td-title" data-label="Exam"><?= $p['exam_title'] ?></td>
+            <td data-label="Progress"><span class="badge-progress">&#9203; <?= $p['answered'] ?>/10 answered &middot; Q<?= $p['current_idx'] + 1 ?></span></td>
+            <td class="td-time" data-label="Time">&#9201; <?= $time_fmt ?></td>
+            <td class="td-date" data-label="Last Saved"><?= $p['last_saved_at'] ?></td>
+            <td class="actions-cell" data-label="Actions">
               <a class="view-btn" href="partial_result.php?email=<?= urlencode($email) ?>&exam_id=<?= urlencode($p['exam_id']) ?>">View Partial &rarr;</a>
               <a class="delete-btn" href="admin/delete.php?type=progress&email=<?= urlencode($email) ?>&exam_id=<?= urlencode($p['exam_id']) ?>" title="Delete">&#128465;</a>
             </td>
@@ -480,7 +567,7 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
 
           <?php if ($has_submitted): ?>
           <?php if ($has_in_progress): ?>
-          <tr><td colspan="5" class="section-label">&#128203; Submitted</td></tr>
+          <tr class="section-row"><td colspan="5" class="section-label">&#128203; Submitted</td></tr>
           <?php endif; ?>
           <?php foreach ($u['submissions'] as $s):
             $pct = $s['total'] > 0 ? $s['score'] / $s['total'] : 0;
@@ -491,11 +578,11 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
             $time_fmt = sprintf('%d:%02d', $m, $sec);
           ?>
           <tr>
-            <td class="td-title"><?= $s['exam_title'] ?></td>
-            <td><span class="score-chip <?= $cls ?>"><?= $icon ?> <?= $s['score'] ?>/<?= $s['total'] ?></span></td>
-            <td class="td-time">&#9201; <?= $time_fmt ?></td>
-            <td class="td-date"><?= $s['submitted_at'] ?></td>
-            <td style="display:flex;gap:6px;align-items:center;">
+            <td class="td-title" data-label="Exam"><?= $s['exam_title'] ?></td>
+            <td data-label="Score"><span class="score-chip <?= $cls ?>"><?= $icon ?> <?= $s['score'] ?>/<?= $s['total'] ?></span></td>
+            <td class="td-time" data-label="Time">&#9201; <?= $time_fmt ?></td>
+            <td class="td-date" data-label="Submitted"><?= $s['submitted_at'] ?></td>
+            <td class="actions-cell" data-label="Actions">
               <a class="view-btn" href="result.php?token=<?= htmlspecialchars($s['token']) ?>">View Result &rarr;</a>
               <a class="delete-btn" href="admin/delete.php?type=result&token=<?= htmlspecialchars($s['token']) ?>" title="Delete">&#128465;</a>
             </td>

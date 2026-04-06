@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../timezone.php';
 
 // This endpoint is under challenges/admin/* — restrict to nirav.shah@gmail.com
 // via a Cloudflare Access policy on the /challenges/admin/* path.
@@ -146,12 +147,12 @@ if (!$record && !$error) {
     <?php if ($type === 'result'): ?>
     <tr><td>Exam</td><td><?= esc($record['exam_title']) ?></td></tr>
     <tr><td>User</td><td><?= esc($record['user_email'] ?: 'anonymous') ?></td></tr>
-    <tr><td>Submitted</td><td><?= esc($record['submitted_at']) ?></td></tr>
+    <tr><td>Submitted</td><td><?= esc(challenge_format_california_timestamp($record['submitted_at'])) ?></td></tr>
     <tr><td>Token</td><td><code><?= esc($record['token']) ?></code></td></tr>
     <?php else: ?>
     <tr><td>Exam</td><td><?= esc($record['exam_title']) ?></td></tr>
     <tr><td>User</td><td><?= esc($record['user_email']) ?></td></tr>
-    <tr><td>Last saved</td><td><?= esc($record['last_saved_at']) ?></td></tr>
+    <tr><td>Last saved</td><td><?= esc(challenge_format_california_timestamp($record['last_saved_at'])) ?></td></tr>
     <tr><td>Answered</td><td><?= (int)$record['answered_count'] ?>/10</td></tr>
     <?php endif; ?>
   </table>

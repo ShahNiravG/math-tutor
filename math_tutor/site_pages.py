@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 import html
-from datetime import datetime, timezone
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from pathlib import Path
 
 from math_tutor.site_cards import document_label, record_page_filename
@@ -15,6 +16,11 @@ from math_tutor.site_shell import render_page_shell
 
 
 SITE_TITLE = "Algebra II with Trigonometry Tutor"
+CALIFORNIA_TZ = ZoneInfo("America/Los_Angeles")
+
+
+def _generated_at_label() -> str:
+    return datetime.now(CALIFORNIA_TZ).strftime("%Y-%m-%d %H:%M %Z")
 
 
 def _featured_record(records: list[DocumentRecord]) -> DocumentRecord | None:
@@ -32,7 +38,7 @@ def build_index_html(
     experience_variant: str = "default",
 ) -> str:
     del output_dir, site_dir, include_guided_learning
-    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    generated_at = _generated_at_label()
     total_prompt_outputs = sum(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
     )
@@ -235,7 +241,7 @@ def build_record_page_html(
     site_page_href=None,
     experience_variant: str = "default",
 ) -> str:
-    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    generated_at = _generated_at_label()
     total_prompt_outputs = sum(
         1 for doc in records for prompt_output in doc.prompt_outputs if prompt_output.processed_at
     )
@@ -286,7 +292,7 @@ def build_library_page_html(
     site_page_href,
     experience_variant: str = "default",
 ) -> str:
-    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    generated_at = _generated_at_label()
     total_prompt_outputs = sum(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
     )
@@ -381,7 +387,7 @@ def build_live_tutor_page_html(
     site_page_href,
     experience_variant: str = "default",
 ) -> str:
-    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    generated_at = _generated_at_label()
     total_prompt_outputs = sum(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
     )
@@ -483,7 +489,7 @@ def build_privacy_policy_page_html(
     site_page_href,
     experience_variant: str = "default",
 ) -> str:
-    generated_at = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    generated_at = _generated_at_label()
     total_prompt_outputs = sum(
         1 for record in records for prompt_output in record.prompt_outputs if prompt_output.processed_at
     )

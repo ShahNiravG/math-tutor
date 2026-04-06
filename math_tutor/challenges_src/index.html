@@ -356,8 +356,34 @@
     }
     .all-done-box a:hover { background: #0d3347; }
     @media (max-width: 640px) {
-      .page { padding-top: 28px; }
+      body { align-items: flex-start; }
+      .page {
+        width: min(920px, calc(100vw - 24px));
+        padding: 24px 0 56px;
+      }
+      .hero-shell,
+      .challenge-card,
+      .resume-card,
+      .all-done-box {
+        border-radius: 20px;
+        padding-left: 18px;
+        padding-right: 18px;
+      }
       .site-nav { margin-bottom: 24px; }
+      .brand-bar { align-items: flex-start; }
+      .brand-title { font-size: 1.45rem; }
+      .hero-icon { font-size: 3.2rem; margin-bottom: 12px; }
+      .hero-heading { font-size: 1.65rem; }
+      .hero-sub { margin-bottom: 24px; }
+      .start-btn,
+      .resume-btn,
+      .all-done-box a {
+        width: 100%;
+      }
+      .resume-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
     }
     html.experience-staging {
       --stage-ink: #10233b;

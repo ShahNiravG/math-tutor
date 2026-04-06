@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/timezone.php';
 
 $token = $_GET['token'] ?? '';
 if (!preg_match('/^[a-f0-9]{12}$/', $token)) {
@@ -27,7 +28,7 @@ if (!$row) {
 }
 
 $exam_title  = htmlspecialchars($row['exam_title']);
-$submitted   = htmlspecialchars($row['submitted_at']);
+$submitted   = htmlspecialchars(challenge_format_california_timestamp($row['submitted_at']));
 $secs        = (int)$row['time_seconds'];
 $time_fmt    = sprintf('%d:%02d', intdiv($secs, 60), $secs % 60);
 $answers     = json_decode($row['answers_json'], true) ?: [];
@@ -66,7 +67,15 @@ foreach ($answers as $item) {
     im.forEach(function(m,i){ text = text.replace('\x00IM'+i+'\x00', m); });
     return '<p>'+text+'</p>';
   }
+  function inlineMdToHtml(text) {
+    return mdToHtml(text).replace(/^<p>/, '').replace(/<\/p>$/, '');
+  }
   function copyRawText(btn, text) {
+    if (typeof text !== 'string') {
+      var payload = btn.parentElement ? btn.parentElement.querySelector('.copy-payload') : null;
+      text = payload ? payload.value : '';
+    }
+    if (!text) return;
     function flash() {
       var orig = btn.innerHTML;
       btn.innerHTML = '&#10003;';
@@ -174,6 +183,7 @@ foreach ($answers as $item) {
                 flex-wrap:wrap; gap:8px; margin-bottom:14px; }
     .q-num { font-size:1rem; font-weight:700; color:var(--accent);
              display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .q-tools { display:flex; align-items:center; gap:10px; flex-wrap:wrap; max-width:100%; }
     .badge { padding:2px 10px; border-radius:999px; font-size:.78rem; font-weight:700;
              font-family:system-ui,sans-serif; }
     .badge-correct { background:var(--correct-bg); color:var(--correct); }
@@ -208,6 +218,30 @@ foreach ($answers as $item) {
                   padding:14px 16px; line-height:1.65; min-height:48px;
                   white-space:pre-wrap; font-family:Georgia,serif; }
     .answer-empty { color:var(--muted); font-style:italic; }
+
+    @media (max-width: 720px) {
+      .page { width:min(860px,calc(100vw - 24px)); margin:20px auto 48px; }
+      .header-card, .q-card { padding:20px 18px; }
+      .brand-bar { align-items:flex-start; }
+      .header-card h1 { font-size:1.55rem; }
+      .meta { gap:8px; }
+      .actions .btn { flex:1 1 220px; text-align:center; }
+      .q-text { font-size:1rem; line-height:1.7; }
+      .mcq-result-opt { padding:10px 12px; }
+      .q-tools { width:100%; justify-content:space-between; }
+      .q-source { max-width:100%; overflow-wrap:anywhere; }
+    }
+
+    @media (max-width: 520px) {
+      .header-card, .q-card { border-radius:16px; }
+      .brand-mark { width:48px; height:48px; flex-basis:48px; }
+      .brand-title { font-size:1.3rem; }
+      .nav-pill, .actions .btn { width:100%; }
+      .actions { align-items:stretch; }
+      .q-header { gap:12px; }
+      .q-tools { align-items:flex-start; }
+      .copy-btn { margin-left:0; }
+    }
 
     @media print {
       body { background:#fff; }
@@ -342,7 +376,8 @@ foreach ($answers as $item) {
   <?php foreach ($answers as $i => $item): ?>
   <?php
     $qnum    = $i + 1;
-    $source  = htmlspecialchars($item['source_label'] ?? '');
+    $source_raw = $item['source_label'] ?? '';
+    $source  = htmlspecialchars($source_raw);
     $qtext   = $item['question_text'] ?? '';
     $options = $item['options'] ?? [];   // present in MCQ submissions
     $correct = $item['correct'] ?? '';
@@ -368,9 +403,10 @@ foreach ($answers as $item) {
         <?php if ($is_wrong):   ?><span class="badge badge-wrong">&#10007; Wrong</span><?php endif; ?>
         <?php if ($is_skipped): ?><span class="badge badge-skipped">&mdash; Skipped</span><?php endif; ?>
       </span>
-      <span style="display:flex;align-items:center;gap:10px;">
-        <span class="q-source"><?= $source ?></span>
-        <button class="copy-btn" onclick="copyRawText(this,<?= json_encode($copy_text) ?>)">&#128203;</button>
+      <span class="q-tools">
+        <span class="q-source" id="qs-<?= $qnum ?>" data-raw="<?= $source ?>"></span>
+        <textarea class="copy-payload" hidden><?= htmlspecialchars($copy_text) ?></textarea>
+        <button class="copy-btn" type="button" onclick="copyRawText(this)">&#128203;</button>
       </span>
     </div>
     <div class="q-text" id="qt-<?= $qnum ?>"></div>
@@ -407,17 +443,22 @@ foreach ($answers as $item) {
   <script>
   (function() {
     var qEl = document.getElementById('qt-<?= $qnum ?>');
+    var sourceEl = document.getElementById('qs-<?= $qnum ?>');
     qEl.innerHTML = mdToHtml(<?= json_encode($qtext) ?>);
+    if (sourceEl && sourceEl.dataset.raw) {
+      sourceEl.innerHTML = inlineMdToHtml(normalizeOptionMath(sourceEl.dataset.raw));
+      sourceEl.removeAttribute('data-raw');
+    }
     <?php if (!empty($options)): ?>
     document.querySelectorAll('#opts-<?= $qnum ?> .opt-text[data-raw]').forEach(function(el){
       el.innerHTML = mdToHtml(normalizeOptionMath(el.dataset.raw));
       el.removeAttribute('data-raw');
     });
     if (window.MathJax && MathJax.typesetPromise) {
-      MathJax.typesetPromise([qEl, document.getElementById('opts-<?= $qnum ?>')]);
+      MathJax.typesetPromise([qEl, sourceEl, document.getElementById('opts-<?= $qnum ?>')].filter(Boolean));
     }
     <?php else: ?>
-    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([qEl]);
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([qEl, sourceEl].filter(Boolean));
     <?php endif; ?>
   })();
   </script>

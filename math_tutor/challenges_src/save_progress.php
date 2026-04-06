@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/config.php';
+require_once __DIR__ . '/timezone.php';
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -22,6 +23,7 @@ $current_idx   = max(0, (int)($input['current_idx']   ?? 0));
 $timer_secs    = max(0, (int)($input['timer_secs']     ?? 0));
 $answers_json  = isset($input['answers']) ? json_encode($input['answers']) : null;
 $user_email    = substr($_SERVER['HTTP_CF_ACCESS_AUTHENTICATED_USER_EMAIL'] ?? '', 0, 255);
+$saved_at      = challenge_now_storage();
 
 if (!$user_email) {
     // No authenticated user — nothing to save server-side
@@ -57,15 +59,15 @@ try {
     $pdo->prepare(
         "INSERT INTO challenge_progress
              (exam_id, exam_title, answered_count, current_idx, timer_secs, answers_json, user_email, last_saved_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
          ON DUPLICATE KEY UPDATE
              exam_title     = VALUES(exam_title),
              answered_count = VALUES(answered_count),
              current_idx    = VALUES(current_idx),
              timer_secs     = VALUES(timer_secs),
              answers_json   = COALESCE(VALUES(answers_json), answers_json),
-             last_saved_at  = NOW()"
-    )->execute([$exam_id, $exam_title, $answered, $current_idx, $timer_secs, $answers_json, $user_email]);
+             last_saved_at  = VALUES(last_saved_at)"
+    )->execute([$exam_id, $exam_title, $answered, $current_idx, $timer_secs, $answers_json, $user_email, $saved_at]);
 
     echo json_encode(['ok' => true]);
 } catch (PDOException $e) {

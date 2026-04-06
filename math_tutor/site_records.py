@@ -32,16 +32,6 @@ def render_document_overview_card(
 ) -> str:
     prompt_count = sum(1 for prompt_output in record.prompt_outputs if prompt_output.processed_at)
     chapter = parse_display_name_chapter(record.display_name)
-    class_note_link = None
-    if record.pdf_path and record.pdf_path.exists():
-        class_note_link = link_tag(
-            record.pdf_path,
-            output_dir,
-            site_dir,
-            "Class Note PDF",
-            base_path,
-            css_class="button-class-note",
-        )
     record_summary_html = extract_record_summary_html(record)
     summary_html = f'<div class="card-summary">{record_summary_html}</div>' if record_summary_html else ""
     if include_guided_learning and not summary_html:
@@ -51,7 +41,7 @@ def render_document_overview_card(
         kicker=f"Chapter {chapter}" if experience_variant == "staging" and chapter else None,
         prompt_count=prompt_count,
         page_href=site_page_href(record_page_filename(record), base_path),
-        class_note_link=class_note_link,
+        class_note_link=None,
         summary_html="" if experience_variant == "staging" else summary_html,
         practice_href=f'{site_page_href(record_page_filename(record), base_path)}#practice',
         challenge_href=f'{site_page_href(record_page_filename(record), base_path)}#challenge',

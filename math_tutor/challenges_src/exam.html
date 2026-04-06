@@ -139,6 +139,37 @@
     .loading { text-align:center; padding:60px; color:var(--muted); font-size:1.1rem; }
     .error-box { background:#fee2e2; color:#991b1b; border-radius:12px; padding:20px;
                  margin:20px; text-align:center; }
+    @media (max-width: 720px) {
+      .topbar { padding:14px 16px; flex-direction:column; align-items:stretch; gap:12px; }
+      .topbar-left { min-width:0; }
+      .topbar-brand { align-items:flex-start; }
+      .brand-title { font-size:1.05rem; }
+      .timer { min-width:0; text-align:left; }
+      .progress-bar { padding:12px 12px 6px; gap:6px; }
+      .dot { width:28px; height:28px; font-size:.72rem; }
+      .page { width:min(760px,calc(100vw - 24px)); margin:18px auto 56px; }
+      .return-link { margin-left:0; }
+      .q-card { padding:22px 18px; border-radius:18px; }
+      .q-text { font-size:1.15rem; line-height:1.7; }
+      .mcq-option { padding:12px 14px; font-size:1rem; }
+      .nav, .nav-left, .nav-right { width:100%; }
+      .nav-left, .nav-right { flex-wrap:wrap; }
+      .nav-right { justify-content:flex-end; }
+      .nav-left .btn, .nav-right .btn { flex:1 1 180px; text-align:center; }
+      .overlay-box { padding:24px 18px; }
+      .overlay-actions .btn { flex:1 1 180px; }
+    }
+    @media (max-width: 520px) {
+      .topbar { padding:12px; }
+      .brand-mark { width:40px; height:40px; flex-basis:40px; border-radius:12px; }
+      .progress-bar { justify-content:flex-start; }
+      .page { width:min(760px,calc(100vw - 16px)); }
+      .q-card { padding:18px 14px; }
+      .q-text { font-size:1.02rem; }
+      .q-meta { margin-bottom:18px; }
+      .mcq-option { gap:10px; padding:11px 12px; }
+      .nav-left .btn, .nav-right .btn, .overlay-actions .btn { flex-basis:100%; }
+    }
     html.experience-staging {
       --stage-ink: #10233b;
       --stage-muted: #516173;
