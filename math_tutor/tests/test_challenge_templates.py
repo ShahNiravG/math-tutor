@@ -8,6 +8,39 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class ChallengeTemplateTests(unittest.TestCase):
+    def test_exam_template_uses_per_exam_session_storage(self) -> None:
+        template = (ROOT / "challenges_src" / "exam.html").read_text(encoding="utf-8")
+
+        self.assertIn("const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';", template)
+        self.assertIn("function sessionKeyForExam(examId)", template)
+        self.assertIn("questionCount: S.exam.questions.length,", template)
+
+    def test_index_template_lists_multiple_saved_sessions(self) -> None:
+        template = (ROOT / "challenges_src" / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn("const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';", template)
+        self.assertIn("localStorage.key(i)", template)
+        self.assertIn("renderResumeCards(completedSet, examIndexById);", template)
+        self.assertIn("data-discard-key", template)
+
+    def test_progress_views_use_saved_question_counts(self) -> None:
+        reports = (ROOT / "challenges_src" / "reports.php").read_text(encoding="utf-8")
+        admin_delete = (ROOT / "challenges_src" / "admin" / "delete.php").read_text(encoding="utf-8")
+
+        self.assertIn("answers_json", reports)
+        self.assertIn("<?= $p['answered'] ?>/<?= $total_questions ?: '?' ?> answered", reports)
+        self.assertIn("answers_json", admin_delete)
+        self.assertIn("<?= (int)$record['answered_count'] ?>/<?= $progress_total ?: '?' ?>", admin_delete)
+
+    def test_reports_template_allows_logged_in_user_to_resume_progress(self) -> None:
+        reports = (ROOT / "challenges_src" / "reports.php").read_text(encoding="utf-8")
+
+        self.assertIn("HTTP_CF_ACCESS_AUTHENTICATED_USER_EMAIL", reports)
+        self.assertIn("'can_resume'    =>", reports)
+        self.assertIn("Resume Challenge &rarr;", reports)
+        self.assertIn("exam.html?id=", reports)
+        self.assertIn("return_label", reports)
+
     def test_result_template_uses_hidden_copy_payload_instead_of_inline_json(self) -> None:
         template = (ROOT / "challenges_src" / "result.php").read_text(encoding="utf-8")
 

@@ -43,6 +43,7 @@ $current_idx  = (int)$row['current_idx'];
 $answers      = json_decode($row['answers_json'] ?? 'null', true) ?: [];
 
 $total_q = count($answers);
+$current_question = $total_q > 0 ? min($total_q, $current_idx + 1) : ($current_idx + 1);
 $score   = 0;
 foreach ($answers as $item) {
     if (!empty($item['answer']) && !empty($item['correct']) && $item['answer'] === $item['correct']) {
@@ -356,7 +357,7 @@ foreach ($answers as $item) {
     <h1><?= $exam_title ?></h1>
     <p class="header-subtitle">This progress snapshot now uses the same top-card structure as the rest of the site experience.</p>
     <div class="meta">
-      <span class="chip chip-progress">&#9203; <?= $answered_cnt ?>/<?= $total_q ?> answered &middot; Q<?= $current_idx + 1 ?></span>
+      <span class="chip chip-progress">&#9203; <?= $answered_cnt ?>/<?= $total_q ?> answered &middot; Q<?= $current_question ?></span>
       <?php if ($answered_cnt > 0):
         $pct = $score / $answered_cnt;
         $score_class = $pct >= 1.0 ? 'chip-score-perfect' : ($pct >= 0.6 ? 'chip-score-partial' : 'chip-score-low');

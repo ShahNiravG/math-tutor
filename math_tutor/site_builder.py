@@ -4,6 +4,9 @@ import argparse
 from pathlib import Path
 
 from math_tutor.challenge_builder import build_challenges
+from math_tutor.experience_variants import CLI_EXPERIENCE_CHOICES
+from math_tutor.experience_variants import PRIMARY_EXPERIENCE_VARIANT
+from math_tutor.experience_variants import normalize_experience_variant
 from math_tutor.site_assets import (
     determine_base_path,
 )
@@ -26,6 +29,7 @@ from math_tutor.env_config import load_dotenv_if_present
 PACKAGE_DIR = Path(__file__).resolve().parent
 DEFAULT_OUTPUT_DIR = str(PACKAGE_DIR / "output")
 DEFAULT_SITE_DIRNAME = "site"
+DEFAULT_EXPERIENCE_VARIANT = PRIMARY_EXPERIENCE_VARIANT
 
 
 def parse_args() -> argparse.Namespace:
@@ -70,9 +74,12 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--experience",
-        choices=("default", "staging"),
-        default="default",
-        help="Choose which site experience variant to build. Defaults to default.",
+        choices=CLI_EXPERIENCE_CHOICES,
+        default=DEFAULT_EXPERIENCE_VARIANT,
+        help=(
+            f"Choose which site experience variant to build. Defaults to {DEFAULT_EXPERIENCE_VARIANT}. "
+            "Use archived for the older pre-refresh styling."
+        ),
     )
     return parser.parse_args()
 
@@ -87,7 +94,7 @@ def main() -> None:
         limit=args.limit,
         include_guided_learning=args.include_guided_learning,
         force_challenges=args.force_challenges,
-        experience_variant=args.experience,
+        experience_variant=normalize_experience_variant(args.experience),
     )
     print(f"Built tutoring page at {index_path}")
 
@@ -101,8 +108,9 @@ def build_site(
     include_guided_learning: bool = False,
     file_ids: set[str] | None = None,
     force_challenges: bool = False,
-    experience_variant: str = "default",
+    experience_variant: str = DEFAULT_EXPERIENCE_VARIANT,
 ) -> Path:
+    experience_variant = normalize_experience_variant(experience_variant)
     resolved_site_dir = site_dir.resolve() if site_dir else output_dir / DEFAULT_SITE_DIRNAME
     resolved_site_dir.mkdir(parents=True, exist_ok=True)
     build_challenges(

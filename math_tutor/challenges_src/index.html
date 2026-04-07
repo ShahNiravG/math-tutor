@@ -513,43 +513,112 @@
 </div>
 
 <script>
-const SESSION_KEY = 'math_tutor_challenge_session';
+const LEGACY_SESSION_KEY = 'math_tutor_challenge_session';
+const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';
 
-function renderResumeCard(completedSet) {
+function readStoredSession(key) {
   try {
-    var saved = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
-    if (!saved || !saved.exam_id) return;
+    var saved = JSON.parse(localStorage.getItem(key) || 'null');
+    if (!saved || !saved.exam_id) return null;
+    saved.__storageKey = key;
+    return saved;
+  } catch (e) {
+    return null;
+  }
+}
 
-    // Don't offer to resume an already-submitted exam
-    if (completedSet && completedSet.has(saved.exam_id)) {
-      localStorage.removeItem(SESSION_KEY);
-      return;
+function sessionSavedAtMs(saved) {
+  var value = Date.parse(saved && saved.savedAt ? saved.savedAt : '');
+  return isNaN(value) ? 0 : value;
+}
+
+function getAllLocalSessions() {
+  var byExam = {};
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (!key || key.indexOf(SESSION_KEY_PREFIX) !== 0) continue;
+    var saved = readStoredSession(key);
+    if (!saved) continue;
+    var existing = byExam[saved.exam_id];
+    if (!existing || sessionSavedAtMs(saved) >= sessionSavedAtMs(existing)) {
+      byExam[saved.exam_id] = saved;
     }
+  }
 
-    var answered = Object.values(saved.answers || {}).filter(function(v){ return v.trim(); }).length;
+  var legacySaved = readStoredSession(LEGACY_SESSION_KEY);
+  if (legacySaved) {
+    var current = byExam[legacySaved.exam_id];
+    if (!current || sessionSavedAtMs(legacySaved) > sessionSavedAtMs(current)) {
+      byExam[legacySaved.exam_id] = legacySaved;
+    }
+  }
+
+  return Object.values(byExam).sort(function(a, b) {
+    return sessionSavedAtMs(b) - sessionSavedAtMs(a);
+  });
+}
+
+function discardStoredSession(storageKey) {
+  if (!storageKey) return;
+  localStorage.removeItem(storageKey);
+}
+
+function questionCountForSavedSession(saved, examIndexById) {
+  if (saved && saved.questionCount) return saved.questionCount;
+  var exam = examIndexById && examIndexById[saved.exam_id];
+  if (!exam) return 0;
+  if (typeof exam.question_count === 'number' && exam.question_count > 0) return exam.question_count;
+  return (exam.mm || 0) + (exam.op || 0);
+}
+
+function renderResumeCards(completedSet, examIndexById) {
+  var container = document.getElementById('resume-container');
+  var sessions = getAllLocalSessions().filter(function(saved) {
+    if (completedSet && completedSet.has(saved.exam_id)) {
+      discardStoredSession(saved.__storageKey);
+      return false;
+    }
+    return true;
+  });
+
+  if (!sessions.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = sessions.map(function(saved) {
+    var answered = Object.values(saved.answers || {}).filter(function(v) {
+      return (v || '').trim();
+    }).length;
+    var total = questionCountForSavedSession(saved, examIndexById);
     var m = Math.floor((saved.timerSecs || 0) / 60), s = (saved.timerSecs || 0) % 60;
     var timeStr = m + ':' + (s < 10 ? '0' : '') + s;
-    var questionStr = 'Question ' + ((saved.idx || 0) + 1) + ' of 10';
-    var answeredStr = answered + ' answered';
-
-    var container = document.getElementById('resume-container');
-    container.innerHTML = `
+    var questionNumber = total > 0 ? Math.min((saved.idx || 0) + 1, total) : ((saved.idx || 0) + 1);
+    var questionStr = total > 0
+      ? ('Question ' + questionNumber + ' of ' + total)
+      : ('Question ' + questionNumber);
+    var answeredStr = total > 0
+      ? (answered + '/' + total + ' answered')
+      : (answered + ' answered');
+    return `
       <div class="resume-card">
-        <div class="resume-label">&#9654; Resume where you left off</div>
+        <div class="resume-label">&#9654; Resume challenge in progress</div>
         <p class="resume-title">${saved.exam_title || 'Challenge Exam'}</p>
         <div class="resume-meta">${questionStr} &middot; ${answeredStr} &middot; ${timeStr} elapsed</div>
         <div class="resume-actions">
           <a class="resume-btn" href="exam.html?id=${encodeURIComponent(saved.exam_id)}">Continue Challenge &rarr;</a>
-          <button class="discard-link" id="discard-btn">Discard &amp; start fresh</button>
+          <button class="discard-link" type="button" data-discard-key="${saved.__storageKey}">Discard &amp; start fresh</button>
         </div>
       </div>
     `;
+  }).join('');
 
-    document.getElementById('discard-btn').addEventListener('click', function() {
-      localStorage.removeItem(SESSION_KEY);
-      container.innerHTML = '';
+  container.querySelectorAll('[data-discard-key]').forEach(function(button) {
+    button.addEventListener('click', function() {
+      discardStoredSession(button.getAttribute('data-discard-key'));
+      renderResumeCards(completedSet, examIndexById);
     });
-  } catch(e) { /* ignore corrupt storage */ }
+  });
 }
 
 (async function () {
@@ -579,9 +648,13 @@ function renderResumeCard(completedSet) {
   }
 
   const completedSet = new Set(completedIds);
+  const examIndexById = {};
+  allExams.forEach(function(exam) {
+    examIndexById[exam.id] = exam;
+  });
 
-  // Render resume card now that we know which exams are already completed
-  renderResumeCard(completedSet);
+  // Render resumable sessions now that we know which exams are already completed
+  renderResumeCards(completedSet, examIndexById);
 
   // Show bundle timestamp and progress
   if (data.generated_at) {

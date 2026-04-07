@@ -2,6 +2,8 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/timezone.php';
 
+$current_user_email = trim((string)($_SERVER['HTTP_CF_ACCESS_AUTHENTICATED_USER_EMAIL'] ?? ''));
+
 try {
     $pdo = new PDO(
         'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
@@ -23,7 +25,7 @@ try {
 $progress_rows = [];
 try {
     $prog = $pdo->query(
-        "SELECT exam_id, exam_title, answered_count, current_idx, timer_secs, user_email, last_saved_at
+        "SELECT exam_id, exam_title, answered_count, current_idx, timer_secs, answers_json, user_email, last_saved_at
          FROM challenge_progress
          ORDER BY last_saved_at DESC"
     );
@@ -63,17 +65,21 @@ foreach ($progress_rows as $p) {
     if (!isset($by_user[$email])) {
         $by_user[$email] = ['submissions' => [], 'in_progress' => [], 'perfect' => 0];
     }
+    $progress_answers = json_decode($p['answers_json'] ?? 'null', true) ?: [];
     $by_user[$email]['in_progress'][] = [
         'exam_id'       => $p['exam_id'],
         'exam_title'    => htmlspecialchars($p['exam_title']),
         'answered'      => (int)$p['answered_count'],
+        'total'         => count($progress_answers),
         'current_idx'   => (int)$p['current_idx'],
         'timer_secs'    => (int)$p['timer_secs'],
+        'can_resume'    => ($current_user_email !== '' && $email === $current_user_email),
         'last_saved_at' => challenge_format_california_timestamp($p['last_saved_at']),
     ];
 }
 
 $users = array_keys($by_user);
+$selected_email = in_array($current_user_email, $users, true) ? $current_user_email : ($users[0] ?? '');
 $total_submissions = 0;
 foreach ($by_user as $u) { $total_submissions += count($u['submissions']); }
 $total_in_progress = 0;
@@ -495,10 +501,11 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
       $avg_pct = $total_q > 0 ? round(($total_score / $total_q) * 100) : 0;
       $initials = strtoupper(substr($email, 0, 1));
       $uid = 'user-' . $idx;
+      $is_selected = ($email === $selected_email);
     ?>
-    <button class="user-card <?= $idx === 0 ? 'selected' : '' ?>"
+    <button class="user-card <?= $is_selected ? 'selected' : '' ?>"
             onclick="selectUser('<?= $uid ?>', this)"
-            aria-pressed="<?= $idx === 0 ? 'true' : 'false' ?>">
+            aria-pressed="<?= $is_selected ? 'true' : 'false' ?>">
       <div class="user-card-top">
         <div class="user-avatar"><?= htmlspecialchars($initials) ?></div>
         <div class="user-card-name"><?= htmlspecialchars($email) ?></div>
@@ -525,8 +532,9 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
     $uid = 'user-' . $idx;
     $has_submitted  = count($u['submissions']) > 0;
     $has_in_progress = count($u['in_progress']) > 0;
+    $is_selected = ($email === $selected_email);
   ?>
-  <div class="exam-panel <?= $idx === 0 ? 'active' : '' ?>" id="<?= $uid ?>">
+  <div class="exam-panel <?= $is_selected ? 'active' : '' ?>" id="<?= $uid ?>">
     <div class="panel-header">
       <p class="panel-title">&#128100; <?= htmlspecialchars($email) ?></p>
       <span class="panel-email">
@@ -551,13 +559,19 @@ foreach ($by_user as $u) { $total_in_progress += count($u['in_progress']); }
             $m = intdiv($p['timer_secs'], 60);
             $sec = $p['timer_secs'] % 60;
             $time_fmt = sprintf('%d:%02d', $m, $sec);
+            $total_questions = max(0, (int)$p['total']);
+            $current_question = $total_questions > 0 ? min($total_questions, ((int)$p['current_idx']) + 1) : ((int)$p['current_idx']) + 1;
+            $resume_href = 'exam.html?id=' . urlencode($p['exam_id']) . '&return=' . urlencode('reports.php') . '&return_label=' . urlencode('Reports');
           ?>
           <tr class="row-progress">
             <td class="td-title" data-label="Exam"><?= $p['exam_title'] ?></td>
-            <td data-label="Progress"><span class="badge-progress">&#9203; <?= $p['answered'] ?>/10 answered &middot; Q<?= $p['current_idx'] + 1 ?></span></td>
+            <td data-label="Progress"><span class="badge-progress">&#9203; <?= $p['answered'] ?>/<?= $total_questions ?: '?' ?> answered &middot; Q<?= $current_question ?></span></td>
             <td class="td-time" data-label="Time">&#9201; <?= $time_fmt ?></td>
             <td class="td-date" data-label="Last Saved"><?= $p['last_saved_at'] ?></td>
             <td class="actions-cell" data-label="Actions">
+              <?php if ($p['can_resume']): ?>
+              <a class="view-btn" href="<?= htmlspecialchars($resume_href) ?>">Resume Challenge &rarr;</a>
+              <?php endif; ?>
               <a class="view-btn" href="partial_result.php?email=<?= urlencode($email) ?>&exam_id=<?= urlencode($p['exam_id']) ?>">View Partial &rarr;</a>
               <a class="delete-btn" href="admin/delete.php?type=progress&email=<?= urlencode($email) ?>&exam_id=<?= urlencode($p['exam_id']) ?>" title="Delete">&#128465;</a>
             </td>

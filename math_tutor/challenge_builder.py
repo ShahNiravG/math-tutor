@@ -12,6 +12,9 @@ from math_tutor.challenge_catalog import (
 )
 from math_tutor.challenge_config import generate_config_php
 from math_tutor.challenge_config import write_experience_script
+from math_tutor.experience_variants import CLI_EXPERIENCE_CHOICES
+from math_tutor.experience_variants import PRIMARY_EXPERIENCE_VARIANT
+from math_tutor.experience_variants import normalize_experience_variant
 from math_tutor.challenge_outputs import (
     copy_static_challenge_assets,
     materialize_chapter_exam_outputs,
@@ -23,13 +26,15 @@ from math_tutor.env_config import load_dotenv_if_present
 PACKAGE_DIR = Path(__file__).resolve().parent
 
 CHALLENGES_SRC_DIR = PACKAGE_DIR / "challenges_src"
+DEFAULT_EXPERIENCE_VARIANT = PRIMARY_EXPERIENCE_VARIANT
 
 def build_challenges(
     output_dir: Path,
     site_dir: Path,
     force: bool = False,
-    experience_variant: str = "default",
+    experience_variant: str = DEFAULT_EXPERIENCE_VARIANT,
 ) -> None:
+    experience_variant = normalize_experience_variant(experience_variant)
     challenges_dir = site_dir / "challenges"
     challenges_dir.mkdir(parents=True, exist_ok=True)
 
@@ -138,14 +143,17 @@ def main() -> None:
                         help="Regenerate exams.json even if it already exists.")
     parser.add_argument(
         "--experience",
-        choices=("default", "staging"),
-        default="default",
-        help="Choose which challenge experience variant to build. Defaults to default.",
+        choices=CLI_EXPERIENCE_CHOICES,
+        default=DEFAULT_EXPERIENCE_VARIANT,
+        help=(
+            f"Choose which challenge experience variant to build. Defaults to {DEFAULT_EXPERIENCE_VARIANT}. "
+            "Use archived for the older pre-refresh styling."
+        ),
     )
     args = parser.parse_args()
     build_challenges(
         output_dir=Path(args.output_dir).resolve(),
         site_dir=Path(args.site_dir).resolve(),
         force=args.force,
-        experience_variant=args.experience,
+        experience_variant=normalize_experience_variant(args.experience),
     )

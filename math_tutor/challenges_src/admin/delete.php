@@ -80,7 +80,7 @@ try {
     } elseif ($type === 'progress') {
         $email   = $_GET['email']   ?? '';
         $exam_id = substr(preg_replace('/[^a-z0-9-]/', '', $_GET['exam_id'] ?? ''), 0, 32);
-        $stmt = $pdo->prepare("SELECT exam_id, exam_title, user_email, last_saved_at, answered_count FROM challenge_progress WHERE user_email = ? AND exam_id = ?");
+        $stmt = $pdo->prepare("SELECT exam_id, exam_title, user_email, last_saved_at, answered_count, answers_json FROM challenge_progress WHERE user_email = ? AND exam_id = ?");
         $stmt->execute([$email, $exam_id]);
         $record = $stmt->fetch(PDO::FETCH_ASSOC);
     } else {
@@ -153,7 +153,8 @@ if (!$record && !$error) {
     <tr><td>Exam</td><td><?= esc($record['exam_title']) ?></td></tr>
     <tr><td>User</td><td><?= esc($record['user_email']) ?></td></tr>
     <tr><td>Last saved</td><td><?= esc(challenge_format_california_timestamp($record['last_saved_at'])) ?></td></tr>
-    <tr><td>Answered</td><td><?= (int)$record['answered_count'] ?>/10</td></tr>
+    <?php $progress_total = count(json_decode($record['answers_json'] ?? 'null', true) ?: []); ?>
+    <tr><td>Answered</td><td><?= (int)$record['answered_count'] ?>/<?= $progress_total ?: '?' ?></td></tr>
     <?php endif; ?>
   </table>
 

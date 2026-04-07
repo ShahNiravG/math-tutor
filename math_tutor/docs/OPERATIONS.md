@@ -79,6 +79,9 @@ Typical variables:
 .venv/bin/math-tutor-build-site
 ```
 
+This now defaults to the styled `staging` experience.
+For the older pre-refresh look, use `--experience archived`.
+
 ### Build the deploy tree used by SFTP
 
 ```bash

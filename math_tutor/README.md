@@ -117,6 +117,7 @@ math-tutor-build-site
 ```
 
 This reads the existing saved PDFs, responses, and state files and generates the full HTML site under `math_tutor/output/site/`. The build also writes the challenge-exam assets and `privacy-policy.html`, and regenerates challenge `config.php` from the current `.env`.
+The styled `staging` experience is now the default for builds. If you need the older pre-refresh look, use `--experience archived`.
 
 Useful flags:
 

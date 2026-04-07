@@ -91,7 +91,8 @@
     <div class="widget-card loading">Loading chapter challenges&hellip;</div>
   </div>
 <script>
-const SESSION_KEY = 'math_tutor_challenge_session';
+const LEGACY_SESSION_KEY = 'math_tutor_challenge_session';
+const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';
 
 function sendHeight() {
   const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
@@ -100,13 +101,25 @@ function sendHeight() {
   }
 }
 
-function getLocalSession(examId) {
+function sessionKeyForExam(examId) {
+  return SESSION_KEY_PREFIX + examId;
+}
+
+function readStoredSession(key) {
   try {
-    const saved = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null');
-    return saved && saved.exam_id === examId ? saved : null;
+    const saved = JSON.parse(localStorage.getItem(key) || 'null');
+    return saved && saved.exam_id ? saved : null;
   } catch (e) {
     return null;
   }
+}
+
+function getLocalSession(examId) {
+  const perExamSaved = readStoredSession(sessionKeyForExam(examId));
+  if (perExamSaved && perExamSaved.exam_id === examId) return perExamSaved;
+
+  const legacySaved = readStoredSession(LEGACY_SESSION_KEY);
+  return legacySaved && legacySaved.exam_id === examId ? legacySaved : null;
 }
 
 function openTopLevel(href) {
