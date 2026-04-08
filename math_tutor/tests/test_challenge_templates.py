@@ -23,6 +23,24 @@ class ChallengeTemplateTests(unittest.TestCase):
         self.assertIn("renderResumeCards(completedSet, examIndexById);", template)
         self.assertIn("data-discard-key", template)
 
+    def test_index_template_supports_bank_selection(self) -> None:
+        template = (ROOT / "challenges_src" / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn("bank-picker", template)
+        self.assertIn("selectedBank", template)
+        self.assertIn("bank_title", template)
+        self.assertIn("Choose a challenge bank", template)
+        self.assertIn("cache: 'no-store'", template)
+
+    def test_exam_and_result_templates_support_five_choice_mcq(self) -> None:
+        exam_template = (ROOT / "challenges_src" / "exam.html").read_text(encoding="utf-8")
+        result_template = (ROOT / "challenges_src" / "result.php").read_text(encoding="utf-8")
+        partial_template = (ROOT / "challenges_src" / "partial_result.php").read_text(encoding="utf-8")
+
+        self.assertIn("[A-E]", exam_template)
+        self.assertIn("[A-E]", result_template)
+        self.assertIn("[A-E]", partial_template)
+
     def test_progress_views_use_saved_question_counts(self) -> None:
         reports = (ROOT / "challenges_src" / "reports.php").read_text(encoding="utf-8")
         admin_delete = (ROOT / "challenges_src" / "admin" / "delete.php").read_text(encoding="utf-8")

@@ -4,10 +4,13 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 from math_tutor.challenge_catalog import (
     build_chapter_exam_sets,
     build_exam_sets,
+    ensure_classic_bank_metadata,
+    load_curated_question_sources,
     load_all_questions,
 )
 from math_tutor.challenge_config import generate_config_php
@@ -19,6 +22,7 @@ from math_tutor.challenge_outputs import (
     copy_static_challenge_assets,
     materialize_chapter_exam_outputs,
     materialize_exam_outputs,
+    write_json,
     write_canonical_challenge_catalogs,
 )
 from math_tutor.env_config import load_dotenv_if_present
@@ -26,7 +30,178 @@ from math_tutor.env_config import load_dotenv_if_present
 PACKAGE_DIR = Path(__file__).resolve().parent
 
 CHALLENGES_SRC_DIR = PACKAGE_DIR / "challenges_src"
+CURATED_EXAMS_DIR = PACKAGE_DIR / "exams"
+CANONICAL_CURATED_EXAMS_JSON = CHALLENGES_SRC_DIR / "curated_exams.json"
 DEFAULT_EXPERIENCE_VARIANT = PRIMARY_EXPERIENCE_VARIANT
+
+
+def load_classic_exam_bundle(canonical_exams_json: Path) -> dict[str, Any]:
+    bundle = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
+    bundle["exams"] = [
+        exam
+        for exam in ensure_classic_bank_metadata(bundle.get("exams", []))
+        if exam.get("bank", "classic") == "classic"
+    ]
+    return bundle
+
+
+def build_deploy_exam_bundle(*, classic_bundle: dict[str, Any], curated_exams: list[dict]) -> dict[str, Any]:
+    return {
+        "generated_at": classic_bundle.get("generated_at") or datetime.now(timezone.utc).isoformat(),
+        "exams": [*classic_bundle.get("exams", []), *curated_exams],
+    }
+
+
+def sync_curated_exam_bundle(*, exams_dir: Path, canonical_curated_exams_json: Path) -> dict[str, Any]:
+    now_iso = datetime.now(timezone.utc).isoformat()
+    if canonical_curated_exams_json.exists():
+        bundle = json.loads(canonical_curated_exams_json.read_text(encoding="utf-8"))
+    else:
+        bundle = {"generated_at": now_iso, "exams": []}
+
+    normalized_bundle = _normalize_curated_bundle(bundle, generated_at=now_iso)
+    merged_exams = [dict(exam) for exam in normalized_bundle.get("exams", [])]
+    existing_keys_by_bank: dict[str, set[tuple[str, int]]] = {}
+    next_exam_number_by_bank: dict[str, int] = {}
+    next_question_number_by_bank: dict[str, int] = {}
+
+    for exam in merged_exams:
+        bank_id = str(exam.get("bank", "")).strip().lower()
+        if not bank_id:
+            continue
+        next_exam_number_by_bank[bank_id] = max(
+            next_exam_number_by_bank.get(bank_id, 0),
+            _exam_sequence_number(str(exam.get("id", ""))),
+        )
+        bank_key_set = existing_keys_by_bank.setdefault(bank_id, set())
+        for question in exam.get("questions", []):
+            next_question_number_by_bank[bank_id] = max(
+                next_question_number_by_bank.get(bank_id, 0),
+                _curated_question_sequence_number(str(question.get("id", ""))),
+            )
+            identity = _curated_question_identity(question, bank_id=bank_id)
+            if identity is not None:
+                bank_key_set.add(identity)
+
+    for source in load_curated_question_sources(exams_dir):
+        bank_id = source["bank"]
+        bank_title = source["bank_title"]
+        new_questions: list[dict[str, Any]] = []
+        bank_key_set = existing_keys_by_bank.setdefault(bank_id, set())
+        next_exam_number = next_exam_number_by_bank.get(bank_id, 0) + 1
+        next_question_number = next_question_number_by_bank.get(bank_id, 0)
+        for question in source["questions"]:
+            identity = _curated_question_identity(question, bank_id=bank_id)
+            if identity is not None and identity in bank_key_set:
+                continue
+            next_question_number += 1
+            canonical_question = _canonicalize_curated_question(
+                question,
+                bank_id=bank_id,
+                question_index=next_question_number,
+            )
+            new_questions.append(canonical_question)
+            if identity is not None:
+                bank_key_set.add(identity)
+        next_question_number_by_bank[bank_id] = next_question_number
+        while new_questions:
+            exam_questions = new_questions[:5]
+            new_questions = new_questions[5:]
+            new_exam = {
+                "id": f"{bank_id}-{next_exam_number:02d}",
+                "title": f"{bank_title} Exam {next_exam_number}",
+                "bank": bank_id,
+                "bank_title": bank_title,
+                "questions": exam_questions,
+            }
+            merged_exams.append(new_exam)
+            next_exam_number += 1
+        next_exam_number_by_bank[bank_id] = next_exam_number - 1
+
+    merged_bundle = {
+        "generated_at": normalized_bundle.get("generated_at") or now_iso,
+        "exams": merged_exams,
+    }
+    if (not canonical_curated_exams_json.exists()) or (merged_bundle != bundle):
+        write_json(canonical_curated_exams_json, merged_bundle, indent=2)
+    return merged_bundle
+
+
+def _source_stem_from_exam_id(exam_id: str) -> str:
+    if len(exam_id) < 4 or exam_id[-3] != "-":
+        return ""
+    suffix = exam_id[-2:]
+    if not suffix.isdigit():
+        return ""
+    return exam_id[:-3]
+
+
+def _exam_sequence_number(exam_id: str) -> int:
+    suffix = exam_id[-2:] if len(exam_id) >= 2 else ""
+    return int(suffix) if suffix.isdigit() else 0
+
+
+def _curated_question_sequence_number(question_id: str) -> int:
+    match = question_id.rsplit("-q", 1)
+    if len(match) != 2 or not match[1].isdigit():
+        return 0
+    return int(match[1])
+
+
+def _normalize_curated_bundle(bundle: dict[str, Any], *, generated_at: str) -> dict[str, Any]:
+    normalized_exams: list[dict[str, Any]] = []
+    exam_counts: dict[str, int] = {}
+    question_counts: dict[str, int] = {}
+    for exam in bundle.get("exams", []):
+        bank_id = str(exam.get("bank", "")).strip().lower() or "curated"
+        bank_title = str(exam.get("bank_title", "")).strip() or bank_id.upper()
+        exam_counts[bank_id] = exam_counts.get(bank_id, 0) + 1
+        exam_number = exam_counts[bank_id]
+        normalized_questions: list[dict[str, Any]] = []
+        for question in exam.get("questions", []):
+            question_counts[bank_id] = question_counts.get(bank_id, 0) + 1
+            question_number = question_counts[bank_id]
+            normalized_questions.append(
+                _canonicalize_curated_question(
+                    question,
+                    bank_id=bank_id,
+                    question_index=question_number,
+                )
+            )
+        normalized_exams.append(
+            {
+                "id": f"{bank_id}-{exam_number:02d}",
+                "title": f"{bank_title} Exam {exam_number}",
+                "bank": bank_id,
+                "bank_title": bank_title,
+                "questions": normalized_questions,
+            }
+        )
+    return {
+        "generated_at": bundle.get("generated_at") or generated_at,
+        "exams": normalized_exams,
+    }
+
+
+def _canonicalize_curated_question(question: dict[str, Any], *, bank_id: str, question_index: int) -> dict[str, Any]:
+    normalized_question = dict(question)
+    normalized_question["id"] = f"{bank_id}-q{question_index:03d}"
+    normalized_question["type"] = bank_id
+    normalized_question["curated_problem_number"] = int(
+        normalized_question.get("curated_problem_number", normalized_question.get("question_number", question_index))
+    )
+    return normalized_question
+
+
+def _curated_question_identity(question: dict[str, Any], *, bank_id: str) -> tuple[str, int] | None:
+    problem_number = question.get("curated_problem_number", question.get("question_number"))
+    if problem_number is None:
+        return None
+    try:
+        numeric_problem_number = int(problem_number)
+    except (TypeError, ValueError):
+        return None
+    return (bank_id, numeric_problem_number)
 
 def build_challenges(
     output_dir: Path,
@@ -42,23 +217,18 @@ def build_challenges(
     canonical_exams_json = CHALLENGES_SRC_DIR / "exams.json"
     canonical_master_json = CHALLENGES_SRC_DIR / "master_questions.json"
     canonical_chapter_exams_json = CHALLENGES_SRC_DIR / "chapter_exams.json"
+    canonical_curated_exams_json = CANONICAL_CURATED_EXAMS_JSON
 
-    if (
-        not force
-        and canonical_exams_json.exists()
-        and canonical_master_json.exists()
-        and canonical_chapter_exams_json.exists()
-    ):
+    if canonical_exams_json.exists() and canonical_master_json.exists() and canonical_chapter_exams_json.exists():
         existing = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
         generated_at = existing.get("generated_at", "unknown")
         exam_count = len(existing.get("exams", []))
-        print(f"Challenge exams already generated ({exam_count} exams, bundle: {generated_at}). "
-              f"Skipping regeneration. Use --force-challenges to regenerate.")
+        action_label = "Preserving existing classic challenge mappings"
+        if force:
+            action_label += " (force keeps canonical classic catalogs unchanged)"
+        print(f"{action_label} ({exam_count} exams, bundle: {generated_at}).")
     else:
-        if force and canonical_exams_json.exists():
-            print("Force flag set — regenerating challenge exams...")
-        else:
-            print("Generating challenge exams for the first time...")
+        print("Generating challenge exams for the first time...")
         questions = load_all_questions(output_dir)
         mcq_mm = sum(1 for q in questions if q["type"] == "mm" and "correct" in q)
         mcq_op = sum(1 for q in questions if q["type"] == "op" and "correct" in q)
@@ -82,22 +252,34 @@ def build_challenges(
         print(f"  Wrote {canonical_master_json.name} ({catalog_stats['question_count']} questions)")
         print(f"  Wrote {canonical_chapter_exams_json.name} ({catalog_stats['chapter_exam_count']} chapter exams)")
 
+    curated_bundle = sync_curated_exam_bundle(
+        exams_dir=CURATED_EXAMS_DIR,
+        canonical_curated_exams_json=canonical_curated_exams_json,
+    )
+    curated_exams = curated_bundle.get("exams", [])
+    classic_bundle = load_classic_exam_bundle(canonical_exams_json)
+    full = build_deploy_exam_bundle(classic_bundle=classic_bundle, curated_exams=curated_exams)
+    if curated_exams:
+        print(
+            f"  Loaded {len(curated_exams)} curated bank exam(s) from "
+            f"{canonical_curated_exams_json.name}"
+        )
+
     # Always copy static PHP + HTML source files (picks up UI changes)
     # Skip exams.json — it's only needed to generate individual exam files, not served directly.
     copy_static_challenge_assets(source_dir=CHALLENGES_SRC_DIR, challenges_dir=challenges_dir)
     for source_path in CHALLENGES_SRC_DIR.glob("*"):
-        if source_path.name in ("exams.json", "master_questions.json", "chapter_exams.json"):
+        if source_path.name in ("exams.json", "master_questions.json", "chapter_exams.json", "curated_exams.json"):
             continue
         suffix = "/" if source_path.is_dir() else ""
         print(f"  Copied {source_path.name}{suffix}")
 
     # Always generate a lightweight exams-index.json for the picker page (no question text)
     # and individual per-exam JSON files so exam.html only fetches ~4KB instead of 194KB.
-    full = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
     exam_output_stats = materialize_exam_outputs(
         challenges_dir=challenges_dir,
         bundle=full,
-        full_bundle_size=canonical_exams_json.stat().st_size,
+        full_bundle_size=len(json.dumps(full).encode("utf-8")),
     )
     average_size = exam_output_stats["avg_individual_size_bytes"]
     average_label = (

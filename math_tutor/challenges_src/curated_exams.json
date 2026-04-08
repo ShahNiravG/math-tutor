@@ -1,0 +1,653 @@
+{
+  "generated_at": "2026-04-08T22:28:05.831929+00:00",
+  "exams": [
+    {
+      "id": "amc-01",
+      "title": "AMC Exam 1",
+      "bank": "amc",
+      "bank_title": "AMC",
+      "questions": [
+        {
+          "id": "amc-q001",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / AMC 12 / Double-Angle and Half-Angle Formulas / Q1",
+          "question_number": 1,
+          "text": "If $\\cos(2x) = \\frac{1}{5}$, what is the value of $\\cos^2 x$?",
+          "options": [
+            "(A) $\\frac{1}{5}$",
+            "(B) $\\frac{2}{5}$",
+            "(C) $\\frac{3}{5}$",
+            "(D) $\\frac{4}{5}$",
+            "(E) $1$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 1
+        },
+        {
+          "id": "amc-q002",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / 2007 AMC 12A, Problem 17 / Addition and Subtraction Formulas / Q2",
+          "question_number": 2,
+          "text": "Suppose that $\\sin a + \\sin b = \\sqrt{\\frac{5}{3}}$ and $\\cos a + \\cos b = 1$. What is $\\cos(a - b)$?",
+          "options": [
+            "(A) $\\sqrt{\\frac{5}{3}} - 1$",
+            "(B) $\\frac{1}{3}$",
+            "(C) $\\frac{1}{2}$",
+            "(D) $\\frac{2}{3}$",
+            "(E) $1$"
+          ],
+          "correct": "B",
+          "curated_problem_number": 2
+        },
+        {
+          "id": "amc-q003",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / AMC 12 / Trigonometric Properties & Inequalities / Q3",
+          "question_number": 3,
+          "text": "Which of the following describes the largest subset of values of $y$ within the closed interval $[0, \\pi]$ for which $\\sin(x + y) \\le \\sin(x) + \\sin(y)$ for every $x$ between $0$ and $\\pi$, inclusive?",
+          "options": [
+            "(A) $y = 0$",
+            "(B) $0 \\le y \\le \\frac{\\pi}{4}$",
+            "(C) $0 \\le y \\le \\frac{\\pi}{2}$",
+            "(D) $0 \\le y \\le \\frac{3\\pi}{4}$",
+            "(E) $0 \\le y \\le \\pi$"
+          ],
+          "correct": "E",
+          "curated_problem_number": 3
+        },
+        {
+          "id": "amc-q004",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / AMC 12 / Right Triangle Trigonometry / Q4",
+          "question_number": 4,
+          "text": "Alice and Bob live $10$ miles apart. One day Alice looks due north from her house and sees an airplane. At the same time Bob looks due west from his house and sees the same airplane. The angle of elevation of the airplane is $30^\\circ$ from Alice's position and $60^\\circ$ from Bob's position. Which of the following is closest to the airplane's altitude, in miles?",
+          "options": [
+            "(A) $3.5$",
+            "(B) $4$",
+            "(C) $4.5$",
+            "(D) $5$",
+            "(E) $5.5$"
+          ],
+          "correct": "E",
+          "curated_problem_number": 4
+        },
+        {
+          "id": "amc-q005",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / 2003 AMC 12B, Problem 21 / Radians & Law of Cosines / Q5",
+          "question_number": 5,
+          "text": "An object moves $8$ cm in a straight line from $A$ to $B$, turns at an angle $\\alpha$, measured in radians and chosen at random from the interval $(0,\\pi)$, and moves $5$ cm in a straight line to $C$. What is the probability that $AC < 7$?",
+          "options": [
+            "(A) $\\frac{1}{6}$",
+            "(B) $\\frac{1}{4}$",
+            "(C) $\\frac{1}{3}$",
+            "(D) $\\frac{1}{2}$",
+            "(E) $\\frac{2}{3}$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 5
+        }
+      ]
+    },
+    {
+      "id": "amc-02",
+      "title": "AMC Exam 2",
+      "bank": "amc",
+      "bank_title": "AMC",
+      "questions": [
+        {
+          "id": "amc-q006",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / 2016 AMC 10A, Problem 24 / Law of Sines / Law of Cosines with Circles / Q6",
+          "question_number": 6,
+          "text": "A quadrilateral is inscribed in a circle of radius $200\\sqrt{2}$. Three of the sides of this quadrilateral have length $200$. What is the length of the fourth side?",
+          "options": [
+            "(A) $200$",
+            "(B) $200\\sqrt{2}$",
+            "(C) $200\\sqrt{3}$",
+            "(D) $400$",
+            "(E) $500$"
+          ],
+          "correct": "E",
+          "curated_problem_number": 6
+        },
+        {
+          "id": "amc-q007",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / 2000 AMC 12, Problem 17 / Right Triangle Trig & The Unit Circle / Q7",
+          "question_number": 7,
+          "text": "A circle centered at $O$ has radius $1$ and contains the point $A$. The segment $AB$ is tangent to the circle at $A$ and $\\angle AOB = \\theta$. If point $C$ lies on $OA$ and $BC$ bisects $\\angle ABO$, then $OC =$",
+          "options": [
+            "(A) $\\sec^2 \\theta - \\tan \\theta$",
+            "(B) $\\frac{1}{2}$",
+            "(C) $\\frac{\\cos^2 \\theta}{1 + \\sin \\theta}$",
+            "(D) $\\frac{1}{1 + \\sin \\theta}$",
+            "(E) $\\frac{\\sin \\theta}{\\cos^2 \\theta}$"
+          ],
+          "correct": "D",
+          "curated_problem_number": 7
+        },
+        {
+          "id": "amc-q008",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / 2010 AMC 12A, Problem 13 / Circles & Intersections / Q8",
+          "question_number": 8,
+          "text": "For how many integer values of $k$ do the graphs of $x^2 + y^2 = 4k^2$ and $xy = k$ not intersect?",
+          "options": [
+            "(A) $0$",
+            "(B) $1$",
+            "(C) $2$",
+            "(D) $4$",
+            "(E) $8$"
+          ],
+          "correct": "A",
+          "curated_problem_number": 8
+        },
+        {
+          "id": "amc-q009",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / 2005 AMC 12B, Problem 8 / Parabolas & Algebraic Connections / Q9",
+          "question_number": 9,
+          "text": "For how many values of $a$ does the line $y = x + a$ pass through the vertex of the parabola $y = x^2 + a^2$?",
+          "options": [
+            "(A) $0$",
+            "(B) $1$",
+            "(C) $2$",
+            "(D) $3$",
+            "(E) $4$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 9
+        },
+        {
+          "id": "amc-q010",
+          "source_stem": "amc-gemini-pro",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro / 2003 AMC 12A, Problem 11 / Circumscribed Circles & Geometry / Q10",
+          "question_number": 10,
+          "text": "A square and an equilateral triangle have the same perimeter. Let $A$ be the area of the circle circumscribed about the square and $B$ be the area of the circle circumscribed about the triangle. Find $A/B$.",
+          "options": [
+            "(A) $\\frac{9}{16}$",
+            "(B) $\\frac{3}{4}$",
+            "(C) $\\frac{27}{32}$",
+            "(D) $\\frac{3}{8}$",
+            "(E) $1$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 10
+        }
+      ]
+    },
+    {
+      "id": "amc-03",
+      "title": "AMC Exam 3",
+      "bank": "amc",
+      "bank_title": "AMC",
+      "questions": [
+        {
+          "id": "amc-q011",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Solving Trigonometric Equations / Q11",
+          "question_number": 11,
+          "text": "If $\\sin x = 3\\cos x$, what is the value of $\\sin x \\cos x$?",
+          "options": [
+            "(A) $\\frac{1}{6}$",
+            "(B) $\\frac{1}{4}$",
+            "(C) $\\frac{3}{10}$",
+            "(D) $\\frac{1}{3}$",
+            "(E) $\\frac{3}{8}$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 11
+        },
+        {
+          "id": "amc-q012",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Graphs of Sine and Cosine / Q12",
+          "question_number": 12,
+          "text": "The graph of $y = \\sin x + \\cos x$ is shifted to the right by $c$ units to coincide with the graph of $y = \\sqrt{2} \\cos x$. What is the smallest positive value of $c$?",
+          "options": [
+            "(A) $\\frac{\\pi}{6}$",
+            "(B) $\\frac{\\pi}{4}$",
+            "(C) $\\frac{\\pi}{3}$",
+            "(D) $\\frac{\\pi}{2}$",
+            "(E) $\\frac{3\\pi}{4}$"
+          ],
+          "correct": "B",
+          "curated_problem_number": 12
+        },
+        {
+          "id": "amc-q013",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 10 / Right Triangle Trigonometry / Q13",
+          "question_number": 13,
+          "text": "In right triangle $ABC$ with $\\angle C = 90^\\circ$, we have $AC=6$ and $BC=8$. What is the length of the altitude from $C$ to $AB$?",
+          "options": [
+            "(A) $4$",
+            "(B) $\\frac{24}{5}$",
+            "(C) $5$",
+            "(D) $\\frac{12}{5}$",
+            "(E) $\\frac{25}{4}$"
+          ],
+          "correct": "B",
+          "curated_problem_number": 13
+        },
+        {
+          "id": "amc-q014",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 10 / Law of Sines / Q14",
+          "question_number": 14,
+          "text": "In $\\triangle ABC$, $\\angle A = 30^\\circ$, $\\angle B = 45^\\circ$, and $BC = 10$. What is the length of $AC$?",
+          "options": [
+            "(A) $5\\sqrt{2}$",
+            "(B) $10$",
+            "(C) $10\\sqrt{2}$",
+            "(D) $20$",
+            "(E) $20\\sqrt{2}$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 14
+        },
+        {
+          "id": "amc-q015",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Law of Cosines / Q15",
+          "question_number": 15,
+          "text": "In $\\triangle ABC$, $AB=5$, $BC=6$, and $CA=7$. What is $\\cos B$?",
+          "options": [
+            "(A) $\\frac{1}{7}$",
+            "(B) $\\frac{1}{6}$",
+            "(C) $\\frac{1}{5}$",
+            "(D) $\\frac{1}{4}$",
+            "(E) $\\frac{5}{7}$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 15
+        }
+      ]
+    },
+    {
+      "id": "amc-04",
+      "title": "AMC Exam 4",
+      "bank": "amc",
+      "bank_title": "AMC",
+      "questions": [
+        {
+          "id": "amc-q016",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Addition and Subtraction Formulas / Q16",
+          "question_number": 16,
+          "text": "Suppose $\\tan a = 2$ and $\\tan b = 3$. What is $\\tan(a+b)$?",
+          "options": [
+            "(A) $-1$",
+            "(B) $-\\frac{1}{5}$",
+            "(C) $0$",
+            "(D) $\\frac{1}{5}$",
+            "(E) $1$"
+          ],
+          "correct": "A",
+          "curated_problem_number": 16
+        },
+        {
+          "id": "amc-q017",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Fundamental Trigonometric Identities / Q17",
+          "question_number": 17,
+          "text": "If $\\tan x + \\cot x = 4$, what is the value of $\\tan^2 x + \\cot^2 x$?",
+          "options": [
+            "(A) $10$",
+            "(B) $12$",
+            "(C) $14$",
+            "(D) $16$",
+            "(E) $18$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 17
+        },
+        {
+          "id": "amc-q018",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Double-Angle Formulas / Q18",
+          "question_number": 18,
+          "text": "If $\\sin x + \\cos x = \\frac{1}{2}$, what is $\\sin(2x)$?",
+          "options": [
+            "(A) $-\\frac{3}{4}$",
+            "(B) $-\\frac{1}{2}$",
+            "(C) $0$",
+            "(D) $\\frac{1}{4}$",
+            "(E) $\\frac{3}{4}$"
+          ],
+          "correct": "A",
+          "curated_problem_number": 18
+        },
+        {
+          "id": "amc-q019",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Inverse Trigonometric Functions / Q19",
+          "question_number": 19,
+          "text": "What is the exact value of $\\sin(2 \\arctan(\\frac{3}{4}))$?",
+          "options": [
+            "(A) $\\frac{3}{5}$",
+            "(B) $\\frac{4}{5}$",
+            "(C) $\\frac{24}{25}$",
+            "(D) $1$",
+            "(E) $\\frac{25}{24}$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 19
+        },
+        {
+          "id": "amc-q020",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Half-Angle Formulas / Q20",
+          "question_number": 20,
+          "text": "If $\\cos \\theta = \\frac{1}{3}$ and $\\frac{3\\pi}{2} < \\theta < 2\\pi$, what is $\\sin(\\frac{\\theta}{2})$?",
+          "options": [
+            "(A) $-\\frac{\\sqrt{3}}{3}$",
+            "(B) $-\\frac{1}{3}$",
+            "(C) $\\frac{1}{3}$",
+            "(D) $\\frac{\\sqrt{3}}{3}$",
+            "(E) $\\frac{\\sqrt{6}}{3}$"
+          ],
+          "correct": "D",
+          "curated_problem_number": 20
+        }
+      ]
+    },
+    {
+      "id": "amc-05",
+      "title": "AMC Exam 5",
+      "bank": "amc",
+      "bank_title": "AMC",
+      "questions": [
+        {
+          "id": "amc-q021",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 10 / Shifted Conics / Q21",
+          "question_number": 21,
+          "text": "What is the area of the region bounded by the graph of $x^2 + y^2 = 2x + 4y + 20$?",
+          "options": [
+            "(A) $15\\pi$",
+            "(B) $20\\pi$",
+            "(C) $25\\pi$",
+            "(D) $30\\pi$",
+            "(E) $36\\pi$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 21
+        },
+        {
+          "id": "amc-q022",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Ellipses / Q22",
+          "question_number": 22,
+          "text": "The ellipse $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$ has its foci at $(\\pm 3, 0)$ and vertices at $(\\pm 5, 0)$. What is the value of $b$?",
+          "options": [
+            "(A) $2$",
+            "(B) $3$",
+            "(C) $4$",
+            "(D) $5$",
+            "(E) $16$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 22
+        },
+        {
+          "id": "amc-q023",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Hyperbolas / Q23",
+          "question_number": 23,
+          "text": "What is the distance between the foci of the hyperbola $\\frac{x^2}{9} - \\frac{y^2}{16} = 1$?",
+          "options": [
+            "(A) $5$",
+            "(B) $7$",
+            "(C) $8$",
+            "(D) $10$",
+            "(E) $14$"
+          ],
+          "correct": "D",
+          "curated_problem_number": 23
+        },
+        {
+          "id": "amc-q024",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 10 / Shifted Conics / Q24",
+          "question_number": 24,
+          "text": "A parabola with equation $y = ax^2 + bx + c$ has vertex $(2, 3)$ and passes through the point $(0, 7)$. What is $a+b+c$?",
+          "options": [
+            "(A) $2$",
+            "(B) $3$",
+            "(C) $4$",
+            "(D) $5$",
+            "(E) $7$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 24
+        },
+        {
+          "id": "amc-q025",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Trigonometric Functions on the Unit Circle / Q25",
+          "question_number": 25,
+          "text": "For what length of an interval in $[0, 2\\pi]$ is $\\sin x > \\cos x$?",
+          "options": [
+            "(A) $\\frac{\\pi}{2}$",
+            "(B) $\\frac{3\\pi}{4}$",
+            "(C) $\\pi$",
+            "(D) $\\frac{5\\pi}{4}$",
+            "(E) $\\frac{3\\pi}{2}$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 25
+        }
+      ]
+    },
+    {
+      "id": "amc-06",
+      "title": "AMC Exam 6",
+      "bank": "amc",
+      "bank_title": "AMC",
+      "questions": [
+        {
+          "id": "amc-q026",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 10 / Sector Area and Arc Length / Q26",
+          "question_number": 26,
+          "text": "A circular sector has an area of $10$ and an arc length of $4$. What is the radius of the circle?",
+          "options": [
+            "(A) $2$",
+            "(B) $2.5$",
+            "(C) $4$",
+            "(D) $5$",
+            "(E) $10$"
+          ],
+          "correct": "D",
+          "curated_problem_number": 26
+        },
+        {
+          "id": "amc-q027",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Graphs of Sine and Cosine / Q27",
+          "question_number": 27,
+          "text": "What is the period of the function $f(x) = \\sin\\left(\\frac{\\pi x}{2}\\right) + \\cos\\left(\\frac{\\pi x}{3}\\right)$?",
+          "options": [
+            "(A) $6$",
+            "(B) $10$",
+            "(C) $12$",
+            "(D) $24$",
+            "(E) $6\\pi$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 27
+        },
+        {
+          "id": "amc-q028",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Solving Trigonometric Equations / Q28",
+          "question_number": 28,
+          "text": "How many solutions does the equation $\\sin(2x) = \\cos x$ have in the interval $[0, 2\\pi]$?",
+          "options": [
+            "(A) $2$",
+            "(B) $3$",
+            "(C) $4$",
+            "(D) $5$",
+            "(E) $6$"
+          ],
+          "correct": "C",
+          "curated_problem_number": 28
+        },
+        {
+          "id": "amc-q029",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Fundamental Trigonometric Identities / Q29",
+          "question_number": 29,
+          "text": "Simplify the expression $\\frac{1}{1-\\sin x} + \\frac{1}{1+\\sin x}$.",
+          "options": [
+            "(A) $2\\csc^2 x$",
+            "(B) $2\\sec^2 x$",
+            "(C) $2\\cos^2 x$",
+            "(D) $2\\sin^2 x$",
+            "(E) $\\tan^2 x$"
+          ],
+          "correct": "B",
+          "curated_problem_number": 29
+        },
+        {
+          "id": "amc-q030",
+          "source_stem": "amc-gemini-pro-2",
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC Gemini Pro 2 / AMC 12 / Circles and Parabolas / Q30",
+          "question_number": 30,
+          "text": "For what value of $k$ does the circle $(x-1)^2 + (y-2)^2 = k$ have exactly one intersection point with the line $y = 3$?",
+          "options": [
+            "(A) $0$",
+            "(B) $1$",
+            "(C) $2$",
+            "(D) $3$",
+            "(E) $4$"
+          ],
+          "correct": "B",
+          "curated_problem_number": 30
+        }
+      ]
+    }
+  ]
+}

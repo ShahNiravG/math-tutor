@@ -12,12 +12,17 @@ class ChallengeOutputsTests(unittest.TestCase):
     def test_materialize_exam_outputs_writes_index_and_individual_exam_files(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             challenges_dir = Path(temp_dir)
+            exams_subdir = challenges_dir / "exams"
+            exams_subdir.mkdir()
+            (exams_subdir / "stale.json").write_text("{}", encoding="utf-8")
             bundle = {
                 "generated_at": "2026-04-02T00:00:00+00:00",
                 "exams": [
                     {
                         "id": "exam-01",
                         "title": "Challenge Exam 1",
+                        "bank": "classic",
+                        "bank_title": "Classic",
                         "questions": [
                             {"id": "q1", "chapter": "5.1", "type": "mm"},
                             {"id": "q2", "chapter": "5.2", "type": "op"},
@@ -37,8 +42,14 @@ class ChallengeOutputsTests(unittest.TestCase):
 
             self.assertEqual(stats["exam_count"], 1)
             self.assertEqual(index_payload["exams"][0]["chapters"], ["5.1", "5.2"])
+            self.assertEqual(index_payload["exams"][0]["bank"], "classic")
+            self.assertEqual(index_payload["exams"][0]["bank_id"], "classic")
+            self.assertEqual(index_payload["exams"][0]["bank_title"], "Classic")
+            self.assertEqual(index_payload["exams"][0]["bank_label"], "Classic")
+            self.assertEqual(index_payload["exams"][0]["question_count"], 2)
             self.assertEqual(exam_payload["id"], "exam-01")
             self.assertEqual(exam_payload["generated_at"], bundle["generated_at"])
+            self.assertFalse((exams_subdir / "stale.json").exists())
 
     def test_materialize_chapter_exam_outputs_writes_per_chapter_indexes(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

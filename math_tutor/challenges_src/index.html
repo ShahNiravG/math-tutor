@@ -197,6 +197,40 @@
     .tag-op  { background: #dcfce7; color: #166534; }
     .tag-ch  { background: var(--teal-light); color: var(--teal); }
     .tag-q   { background: var(--accent-soft); color: var(--accent); }
+    .tag-bank { background: #ede9fe; color: #6d28d9; }
+    .bank-picker {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 0 18px;
+    }
+    .bank-picker-label {
+      margin: 0 0 12px;
+      text-align: center;
+      color: var(--teal);
+      font-family: system-ui, sans-serif;
+      font-size: .96rem;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .bank-pill {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-family: system-ui, sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .bank-pill.active {
+      background: var(--accent-soft);
+      border-color: #cabaa4;
+      color: #6a2e16;
+    }
 
     .start-btn {
       display: block;
@@ -450,6 +484,20 @@
       background: var(--stage-amber-bg);
       color: var(--stage-amber);
     }
+    html.experience-staging .tag-bank {
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+    }
+    html.experience-staging .bank-pill {
+      background: #fff;
+      border-color: rgba(148, 163, 184, 0.28);
+      color: var(--stage-ink);
+    }
+    html.experience-staging .bank-pill.active {
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+      border-color: rgba(29, 78, 216, 0.24);
+    }
     html.experience-staging .progress-bar-wrap {
       background: #f5d7b6;
     }
@@ -505,7 +553,9 @@
 
   <div class="hero-icon">&#127942;</div>
   <h1 class="hero-heading">Ready for a Challenge?</h1>
-  <p class="hero-sub">A timed mix of Mental Math &amp; Olympiad Problems.<br>10 questions, picked just for you.</p>
+  <p class="hero-sub">Pick a challenge bank, then launch a short focused exam from that pool.</p>
+  <p class="bank-picker-label">Choose a challenge bank</p>
+  <div id="bank-picker" class="bank-picker"></div>
   <p id="bundle-info"></p>
 
   <div id="resume-container"></div>
@@ -515,6 +565,7 @@
 <script>
 const LEGACY_SESSION_KEY = 'math_tutor_challenge_session';
 const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';
+let selectedBank = 'classic';
 
 function readStoredSession(key) {
   try {
@@ -569,6 +620,33 @@ function questionCountForSavedSession(saved, examIndexById) {
   if (!exam) return 0;
   if (typeof exam.question_count === 'number' && exam.question_count > 0) return exam.question_count;
   return (exam.mm || 0) + (exam.op || 0);
+}
+
+function examBankId(exam) {
+  return (exam && (exam.bank || exam.bank_id)) || 'classic';
+}
+
+function examBankTitle(exam) {
+  return (exam && (exam.bank_title || exam.bank_label)) || 'Classic';
+}
+
+function buildBankEntries(allExams) {
+  var byBank = {};
+  var entries = [];
+  allExams.forEach(function(exam) {
+    var bankId = examBankId(exam);
+    if (!byBank[bankId]) {
+      byBank[bankId] = { id: bankId, title: examBankTitle(exam), count: 0 };
+      entries.push(byBank[bankId]);
+    }
+    byBank[bankId].count += 1;
+  });
+  entries.sort(function(a, b) {
+    if (a.id === 'classic') return -1;
+    if (b.id === 'classic') return 1;
+    return a.title.localeCompare(b.title);
+  });
+  return entries;
 }
 
 function renderResumeCards(completedSet, examIndexById) {
@@ -627,8 +705,9 @@ function renderResumeCards(completedSet, examIndexById) {
   // Fetch exam index and completed list in parallel
   let data, completedIds = [];
   try {
+    const examIndexUrl = 'exams-index.json?v=' + Date.now();
     const [indexRes, completedRes] = await Promise.all([
-      fetch('exams-index.json'),
+      fetch(examIndexUrl, { cache: 'no-store' }),
       fetch('completed.php').catch(function() { return null; }),
     ]);
     data = await indexRes.json();
@@ -647,6 +726,11 @@ function renderResumeCards(completedSet, examIndexById) {
     return;
   }
 
+  const bankEntries = buildBankEntries(allExams);
+  selectedBank = bankEntries.some(function(entry) { return entry.id === 'classic'; })
+    ? 'classic'
+    : bankEntries[0].id;
+
   const completedSet = new Set(completedIds);
   const examIndexById = {};
   allExams.forEach(function(exam) {
@@ -655,14 +739,6 @@ function renderResumeCards(completedSet, examIndexById) {
 
   // Render resumable sessions now that we know which exams are already completed
   renderResumeCards(completedSet, examIndexById);
-
-  // Show bundle timestamp and progress
-  if (data.generated_at) {
-    const d = new Date(data.generated_at);
-    const label = d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
-    document.getElementById('bundle-info').textContent =
-      `${allExams.length} exams · Bundle generated ${label}`;
-  }
 
   const availableExams = allExams.filter(function(e) { return !completedSet.has(e.id); });
   const doneCount = completedSet.size;
@@ -682,25 +758,45 @@ function renderResumeCards(completedSet, examIndexById) {
     document.getElementById('resume-container').before(progressContainer.firstElementChild);
   }
 
-  // All exams completed
-  if (!availableExams.length) {
-    root.innerHTML = `
-      <div class="all-done-box">
-        <h2>&#127881; All Challenges Completed!</h2>
-        <p>You've finished all ${allExams.length} challenge exams. Check your results below.</p>
-        <a href="reports.php"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>View Reports &rarr;</a>
-      </div>
-    `;
-    return;
+  // Track recently shown exams to avoid immediate repeats
+  const shownByBank = {};
+
+  function availableExamsForSelectedBank() {
+    return availableExams.filter(function(exam) {
+      return examBankId(exam) === selectedBank;
+    });
   }
 
-  // Track recently shown exams to avoid immediate repeats
-  const shown = new Set();
+  function updateBundleInfo() {
+    if (!data.generated_at) return;
+    const d = new Date(data.generated_at);
+    const label = d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+    const bankTitle = (bankEntries.find(function(entry) { return entry.id === selectedBank; }) || {}).title || 'Classic';
+    const bankExamCount = allExams.filter(function(exam) { return examBankId(exam) === selectedBank; }).length;
+    document.getElementById('bundle-info').textContent =
+      `${bankTitle} bank · ${bankExamCount} exams · Bundle generated ${label}`;
+  }
 
-  function pickRandom() {
-    if (shown.size >= availableExams.length) shown.clear();
+  function renderBankPicker() {
+    const picker = document.getElementById('bank-picker');
+    picker.innerHTML = bankEntries.map(function(entry) {
+      return `<button class="bank-pill${entry.id === selectedBank ? ' active' : ''}" type="button" data-bank="${entry.id}">${entry.title} (${entry.count})</button>`;
+    }).join('');
+    picker.querySelectorAll('[data-bank]').forEach(function(button) {
+      button.addEventListener('click', function() {
+        selectedBank = button.getAttribute('data-bank');
+        updateBundleInfo();
+        renderCurrentBank();
+      });
+    });
+  }
+
+  function pickRandom(examsForBank) {
+    const shown = shownByBank[selectedBank] || new Set();
+    shownByBank[selectedBank] = shown;
+    if (shown.size >= examsForBank.length) shown.clear();
     let exam;
-    do { exam = availableExams[Math.floor(Math.random() * availableExams.length)]; }
+    do { exam = examsForBank[Math.floor(Math.random() * examsForBank.length)]; }
     while (shown.has(exam.id));
     shown.add(exam.id);
     return exam;
@@ -710,33 +806,57 @@ function renderResumeCards(completedSet, examIndexById) {
     const mm = exam.mm;
     const op = exam.op;
     const chapters = exam.chapters || [];
+    const questionCount = exam.question_count || ((mm || 0) + (op || 0));
     const chapterText = chapters.length > 5
       ? chapters.slice(0, 4).join(', ') + ` +${chapters.length - 4} more`
       : chapters.join(', ');
+    const bankTitle = exam.bank_title || 'Classic';
+    const countTags = [];
+    if (mm > 0) countTags.push(`<span class="tag tag-mm">${mm} Mental Math</span>`);
+    if (op > 0) countTags.push(`<span class="tag tag-op">${op} Olympiad</span>`);
+    const chapterRow = chapterText
+      ? `<div class="tag-row"><span class="tag tag-ch">Chapters: ${chapterText}</span></div>`
+      : '';
 
     root.innerHTML = `
       <div class="challenge-card">
         <div class="card-label">Your Challenge</div>
         <p class="card-title">${exam.title}</p>
         <div class="tag-row">
-          <span class="tag tag-q">10 Questions</span>
-          <span class="tag tag-mm">${mm} Mental Math</span>
-          <span class="tag tag-op">${op} Olympiad</span>
+          <span class="tag tag-q">${questionCount} Questions</span>
+          <span class="tag tag-bank">${bankTitle}</span>
+          ${countTags.join('')}
         </div>
-        <div class="tag-row">
-          <span class="tag tag-ch">Chapters: ${chapterText}</span>
-        </div>
+        ${chapterRow}
         <a class="start-btn" href="exam.html?id=${encodeURIComponent(exam.id)}">Start Challenge! &rarr;</a>
       </div>
       <button class="another-link" id="another-btn">&#128256; Try a Different Challenge</button>
     `;
 
     document.getElementById('another-btn').addEventListener('click', function () {
-      render(pickRandom());
+      render(pickRandom(availableExamsForSelectedBank()));
     });
   }
 
-  render(pickRandom());
+  function renderCurrentBank() {
+    renderBankPicker();
+    const examsForBank = availableExamsForSelectedBank();
+    if (!examsForBank.length) {
+      const bankTitle = (bankEntries.find(function(entry) { return entry.id === selectedBank; }) || {}).title || 'Selected';
+      root.innerHTML = `
+        <div class="all-done-box">
+          <h2>&#127881; ${bankTitle} Complete!</h2>
+          <p>You've finished all available exams in this bank. Pick another bank or review your results below.</p>
+          <a href="reports.php"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>View Reports &rarr;</a>
+        </div>
+      `;
+      return;
+    }
+    render(pickRandom(examsForBank));
+  }
+
+  updateBundleInfo();
+  renderCurrentBank();
 })();
 </script>
 </body>

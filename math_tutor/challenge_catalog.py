@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import random
 import re
 from pathlib import Path
@@ -13,6 +14,7 @@ SHUFFLE_SEED = 42
 MAX_EXAM_SIZE = 10
 MAX_OP_PER_EXAM = 3
 TARGET_MM_PER_EXAM = MAX_EXAM_SIZE - MAX_OP_PER_EXAM  # 7
+CURATED_BANK_EXAM_SIZE = 5
 SOURCE_SUFFIXES = [
     ("__mental-math-gpt5.md", "mm", "gpt54", "GPT-5.4", "__mental-math-gpt5-mcq.md"),
     ("__mental-math-gemini.md", "mm", "gem", "Gemini 3.1 Pro", "__mental-math-gemini-mcq.md"),
@@ -110,6 +112,70 @@ def load_all_questions(output_dir: Path) -> list[dict]:
     return questions
 
 
+def load_curated_question_sources(exams_dir: Path) -> list[dict]:
+    if not exams_dir.exists():
+        return []
+
+    sources: list[dict] = []
+    for path in sorted(exams_dir.glob("*.json"), key=_natural_path_sort_key):
+        questions = _load_curated_questions(path)
+        if not questions:
+            continue
+        bank_id, bank_title = _curated_bank_identity(path)
+        source_stem = path.stem.lower()
+        sources.append(
+            {
+                "source_stem": source_stem,
+                "source_file": path.name,
+                "exam_title": _humanize_bank_title(path.stem),
+                "bank": bank_id,
+                "bank_title": bank_title,
+                "questions": questions,
+            }
+        )
+    return sources
+
+
+def load_curated_exam_banks(exams_dir: Path) -> list[dict]:
+    exams: list[dict] = []
+    questions_by_bank: dict[str, list[dict]] = {}
+    bank_titles: dict[str, str] = {}
+
+    for source in load_curated_question_sources(exams_dir):
+        bank_id = source["bank"]
+        bank_titles[bank_id] = source["bank_title"]
+        questions_by_bank.setdefault(bank_id, []).extend(dict(question) for question in source["questions"])
+
+    for bank_id in sorted(questions_by_bank):
+        bank_title = bank_titles[bank_id]
+        bank_questions = questions_by_bank[bank_id]
+        for question_number, question in enumerate(bank_questions, 1):
+            question["id"] = f"{bank_id}-q{question_number:03d}"
+            question["type"] = bank_id
+        for exam_number, start in enumerate(range(0, len(bank_questions), CURATED_BANK_EXAM_SIZE), 1):
+            exam_questions = bank_questions[start : start + CURATED_BANK_EXAM_SIZE]
+            exams.append(
+                {
+                    "id": f"{bank_id}-{exam_number:02d}",
+                    "title": f"{bank_title} Exam {exam_number}",
+                    "bank": bank_id,
+                    "bank_title": bank_title,
+                    "questions": exam_questions,
+                }
+            )
+    return exams
+
+
+def ensure_classic_bank_metadata(exams: list[dict]) -> list[dict]:
+    normalized: list[dict] = []
+    for exam in exams:
+        normalized_exam = dict(exam)
+        normalized_exam.setdefault("bank", "classic")
+        normalized_exam.setdefault("bank_title", "Classic")
+        normalized.append(normalized_exam)
+    return normalized
+
+
 def _stratified_shuffle(questions: list[dict], seed: int) -> list[dict]:
     rng = random.Random(seed)
     by_chapter: dict[str, list[dict]] = {}
@@ -156,6 +222,8 @@ def build_exam_sets(questions: list[dict]) -> list[dict]:
             {
                 "id": f"exam-{exam_number:02d}",
                 "title": f"Challenge Exam {exam_number}",
+                "bank": "classic",
+                "bank_title": "Classic",
                 "questions": exam_questions,
             }
         )
@@ -211,3 +279,86 @@ def build_chapter_exam_sets(
                 }
             )
     return exams
+
+
+def _load_curated_questions(path: Path) -> list[dict]:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, list):
+        return []
+
+    bank = path.stem.lower()
+    bank_id, bank_title = _curated_bank_identity(path)
+    questions: list[dict] = []
+    for entry in payload:
+        if not isinstance(entry, dict):
+            continue
+        question_number = int(entry.get("problem_number", len(questions) + 1))
+        question_text = str(entry.get("question", "")).strip()
+        options_map = entry.get("options", {})
+        correct_option = str(entry.get("correct_option", "")).strip().upper()
+        if not question_text or not isinstance(options_map, dict) or not correct_option:
+            continue
+
+        option_lines = [
+            f"({letter}) {str(options_map[letter]).strip()}"
+            for letter in sorted(options_map)
+            if str(letter).strip()
+        ]
+        if not option_lines:
+            continue
+
+        source = str(entry.get("source", bank_title)).strip() or bank_title
+        concept = str(entry.get("concept", "")).strip()
+        source_parts = [bank_title, source]
+        if concept:
+            source_parts.append(concept)
+        source_parts.append(f"Q{question_number}")
+        questions.append(
+            {
+                "id": f"{bank}-q{question_number}",
+                "source_stem": bank,
+                "source_file": path.name,
+                "curated_source": source,
+                "curated_concept": concept,
+                "curated_problem_number": question_number,
+                "chapter": "",
+                "type": bank_id,
+                "model": "gem",
+                "model_label": "Gemini 3.1 Pro",
+                "source_label": " / ".join(source_parts),
+                "question_number": question_number,
+                "text": question_text,
+                "options": option_lines,
+                "correct": correct_option,
+            }
+        )
+    return questions
+
+
+def _curated_bank_identity(path: Path) -> tuple[str, str]:
+    stem = path.stem
+    if stem.lower().startswith("amc"):
+        return ("amc", "AMC")
+    return (stem.lower(), _humanize_bank_title(stem))
+
+
+def _natural_path_sort_key(path: Path) -> tuple[tuple[int, str | int], ...]:
+    parts = re.split(r"(\d+)", path.stem.lower())
+    key: list[tuple[int, str | int]] = []
+    for part in parts:
+        if not part:
+            continue
+        if part.isdigit():
+            key.append((1, int(part)))
+        else:
+            key.append((0, part))
+    return tuple(key)
+
+
+def _humanize_bank_title(stem: str) -> str:
+    words = []
+    for token in stem.replace("_", "-").split("-"):
+        if not token:
+            continue
+        words.append(token if token.isupper() else token.capitalize())
+    return " ".join(words)

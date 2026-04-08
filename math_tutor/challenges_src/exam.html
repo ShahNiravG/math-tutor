@@ -358,7 +358,7 @@
 const S = {
   exam: null,
   idx: 0,
-  answers: {},       // qId → letter ('A'/'B'/'C'/'D') or ''
+  answers: {},       // qId → letter ('A'...'E') or ''
   timerSecs: 0,
   timerInterval: null,
   started: false,
@@ -573,7 +573,7 @@ function renderQuestion() {
   var optHtml = '<div class="answer-label">Your Answer</div>' + feedbackHtml +
     '<div class="mcq-options" id="mcq-opts">';
   (q.options || []).forEach(function(optStr) {
-    var m = optStr.match(/^\(([A-D])\)\s*([\s\S]*)/);
+    var m = optStr.match(/^\(([A-E])\)\s*([\s\S]*)/);
     if (!m) return;
     var letter = m[1], text = m[2].trim();
     var cls = 'mcq-option', letterDisp = letter;

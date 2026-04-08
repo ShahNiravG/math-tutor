@@ -431,7 +431,7 @@ foreach ($answers as $item) {
     <div class="mcq-result" id="opts-<?= $qnum ?>">
       <?php foreach ($options as $optStr): ?>
       <?php
-        preg_match('/^\(([A-D])\)\s*([\s\S]*)/', $optStr, $m);
+        preg_match('/^\(([A-E])\)\s*([\s\S]*)/', $optStr, $m);
         $letter   = $m[1] ?? '?';
         $opt_text = isset($m[2]) ? trim($m[2]) : $optStr;
         $opt_cls  = '';

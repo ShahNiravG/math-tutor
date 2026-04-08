@@ -57,7 +57,7 @@ def write_canonical_challenge_catalogs(
 
 def copy_static_challenge_assets(*, source_dir: Path, challenges_dir: Path) -> None:
     for source_path in source_dir.glob("*"):
-        if source_path.name in ("exams.json", "master_questions.json", "chapter_exams.json"):
+        if source_path.name in ("exams.json", "master_questions.json", "chapter_exams.json", "curated_exams.json"):
             continue
         destination = challenges_dir / source_path.name
         if source_path.is_dir():
@@ -73,18 +73,25 @@ def materialize_exam_outputs(*, challenges_dir: Path, bundle: dict[str, Any], fu
     index_entries: list[dict[str, Any]] = []
     exams_subdir = challenges_dir / "exams"
     exams_subdir.mkdir(exist_ok=True)
+    for existing_json in exams_subdir.glob("*.json"):
+        existing_json.unlink()
     total_individual_bytes = 0
     for exam in bundle.get("exams", []):
         mm_count = sum(1 for question in exam["questions"] if question["type"] == "mm")
         op_count = sum(1 for question in exam["questions"] if question["type"] == "op")
         chapters = sorted(
-            {question["chapter"] for question in exam["questions"]},
+            {question["chapter"] for question in exam["questions"] if question.get("chapter")},
             key=_chapter_numeric_sort_key,
         )
         index_entries.append(
             {
                 "id": exam["id"],
                 "title": exam["title"],
+                "bank": exam.get("bank", "classic"),
+                "bank_id": exam.get("bank", "classic"),
+                "bank_title": exam.get("bank_title", "Classic"),
+                "bank_label": exam.get("bank_title", "Classic"),
+                "question_count": len(exam["questions"]),
                 "mm": mm_count,
                 "op": op_count,
                 "chapters": chapters,
