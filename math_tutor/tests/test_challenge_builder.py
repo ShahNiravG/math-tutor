@@ -219,12 +219,11 @@ class ChallengeBuilderTests(unittest.TestCase):
                     "amc-q008",
                     "amc-q009",
                     "amc-q010",
+                    "amc-q011",
                 ],
             )
-            self.assertEqual(
-                second_bundle["exams"][0]["questions"][0]["text"],
-                "Original Question 1",
-            )
+            self.assertEqual(second_bundle["exams"][2]["questions"][0]["text"], "Edited Question 1")
+            self.assertEqual(second_bundle["exams"][0]["questions"][0]["text"], "Original Question 1")
             self.assertEqual(second_bundle["exams"][0]["questions"][0]["curated_problem_number"], 1)
             self.assertEqual(second_bundle["exams"][0]["questions"][0]["curated_source"], "AMC")
             self.assertEqual(len(second_bundle["exams"][0]["questions"][0]["curated_question_checksum"]), 64)
