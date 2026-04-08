@@ -145,7 +145,7 @@ def build_document_prompt_card_groups(
 
     if experience_variant != "staging":
         study_guide_card = render_single_model_row_card(
-            title="Study Guide",
+            title="Quick Reference",
             specs=STUDY_GUIDE_SPECS,
             outputs_by_slug=outputs_by_slug,
             link_label="Open Guide",

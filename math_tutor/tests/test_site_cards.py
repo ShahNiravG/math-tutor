@@ -15,6 +15,7 @@ from math_tutor.site_cards import (
     render_single_model_row_card,
 )
 from math_tutor.site_models import DocumentRecord, PromptOutputRecord
+from math_tutor.site_prompt_cards import build_document_prompt_card_groups
 
 
 class SiteCardsTests(unittest.TestCase):
@@ -144,6 +145,46 @@ class SiteCardsTests(unittest.TestCase):
             self.assertIn("AI Grade", html)
             self.assertIn("/site/assignments/ai-grading/4435419__auto-grading-assignment.html", html)
             self.assertIn("/site/assignments/ai-grading/4435419__auto-grading-assignment.pdf", html)
+
+    def test_build_document_prompt_card_groups_renames_study_guide_card_to_quick_reference(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            study_html_path = root / "study-guide.html"
+            study_pdf_path = root / "study-guide.pdf"
+            study_html_path.write_text("<html></html>", encoding="utf-8")
+            study_pdf_path.write_text("pdf", encoding="utf-8")
+
+            record = DocumentRecord(
+                file_id="4401267",
+                display_name="Alg 2 Trig H Chp 5.1 Note.docx",
+                pdf_path=None,
+                download_url=None,
+                fetched_at=None,
+                prompt_outputs=[
+                    PromptOutputRecord(
+                        slug="study-guide",
+                        title="Study Guide",
+                        response_path=root / "study-guide.md",
+                        response_html_path=study_html_path,
+                        response_pdf_path=study_pdf_path,
+                        metadata_path=None,
+                        processed_at="2026-04-08T00:00:00Z",
+                        response_markdown=None,
+                    )
+                ],
+            )
+
+            groups = build_document_prompt_card_groups(
+                record=record,
+                output_dir=root,
+                site_dir=root,
+                base_path="/site/",
+                experience_variant="default",
+            )
+
+            learn_html = "\n".join(groups["learn"])
+            self.assertIn("Quick Reference", learn_html)
+            self.assertNotIn(">Study Guide<", learn_html)
 
 
 if __name__ == "__main__":

@@ -112,7 +112,6 @@ def render_document_page_content(
 
     if experience_variant == "staging":
         summary_body = extract_record_summary_html(record) or "<p>No chapter summary is available yet. Start with the class note, then move into practice.</p>"
-        document_links_html = " ".join(document_links)
         learn_cards_html = "\n".join(prompt_groups["learn"])
         practice_cards_html = "\n".join(prompt_groups["practice"])
         resource_cards_html = "\n".join(prompt_groups["resources"] + prompt_groups["extras"])
@@ -140,15 +139,12 @@ def render_document_page_content(
               <h3>Use these when you need a different format</h3>
             </div>
           </div>
-          <div class="resource-chip-row">
-            {document_links_html}
-          </div>
           <div class="prompt-grid prompt-grid-compact">
             {resource_cards_html}
           </div>
         </section>
         """
-            if resource_cards_html or document_links_html
+            if resource_cards_html
             else ""
         )
         coach_section = (
@@ -200,9 +196,6 @@ def render_document_page_content(
                 <div class="card-summary">
                   {summary_body}
                 </div>
-              </div>
-              <div class="resource-chip-row">
-                {document_links_html}
               </div>
             </div>
             {resource_panel}
