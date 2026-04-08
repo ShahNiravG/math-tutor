@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import hashlib
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -62,6 +64,7 @@ def sync_curated_exam_bundle(*, exams_dir: Path, canonical_curated_exams_json: P
     normalized_bundle = _normalize_curated_bundle(bundle, generated_at=now_iso)
     merged_exams = [dict(exam) for exam in normalized_bundle.get("exams", [])]
     existing_keys_by_bank: dict[str, set[tuple[str, int]]] = {}
+    existing_checksums_by_bank: dict[str, set[str]] = {}
     next_exam_number_by_bank: dict[str, int] = {}
     next_question_number_by_bank: dict[str, int] = {}
 
@@ -74,6 +77,7 @@ def sync_curated_exam_bundle(*, exams_dir: Path, canonical_curated_exams_json: P
             _exam_sequence_number(str(exam.get("id", ""))),
         )
         bank_key_set = existing_keys_by_bank.setdefault(bank_id, set())
+        bank_checksum_set = existing_checksums_by_bank.setdefault(bank_id, set())
         for question in exam.get("questions", []):
             next_question_number_by_bank[bank_id] = max(
                 next_question_number_by_bank.get(bank_id, 0),
@@ -82,17 +86,24 @@ def sync_curated_exam_bundle(*, exams_dir: Path, canonical_curated_exams_json: P
             identity = _curated_question_identity(question, bank_id=bank_id)
             if identity is not None:
                 bank_key_set.add(identity)
+            checksum = _curated_question_checksum(question)
+            if checksum is not None:
+                bank_checksum_set.add(checksum)
 
     for source in load_curated_question_sources(exams_dir):
         bank_id = source["bank"]
         bank_title = source["bank_title"]
         new_questions: list[dict[str, Any]] = []
         bank_key_set = existing_keys_by_bank.setdefault(bank_id, set())
+        bank_checksum_set = existing_checksums_by_bank.setdefault(bank_id, set())
         next_exam_number = next_exam_number_by_bank.get(bank_id, 0) + 1
         next_question_number = next_question_number_by_bank.get(bank_id, 0)
         for question in source["questions"]:
             identity = _curated_question_identity(question, bank_id=bank_id)
+            checksum = _curated_question_checksum(question)
             if identity is not None and identity in bank_key_set:
+                continue
+            if checksum is not None and checksum in bank_checksum_set:
                 continue
             next_question_number += 1
             canonical_question = _canonicalize_curated_question(
@@ -103,6 +114,8 @@ def sync_curated_exam_bundle(*, exams_dir: Path, canonical_curated_exams_json: P
             new_questions.append(canonical_question)
             if identity is not None:
                 bank_key_set.add(identity)
+            if checksum is not None:
+                bank_checksum_set.add(checksum)
         next_question_number_by_bank[bank_id] = next_question_number
         while new_questions:
             exam_questions = new_questions[:5]
@@ -190,6 +203,10 @@ def _canonicalize_curated_question(question: dict[str, Any], *, bank_id: str, qu
     normalized_question["curated_problem_number"] = int(
         normalized_question.get("curated_problem_number", normalized_question.get("question_number", question_index))
     )
+    checksum = _curated_question_checksum(normalized_question)
+    if checksum is not None:
+        normalized_question["curated_question_checksum"] = checksum
+    normalized_question.pop("curated_fingerprint", None)
     return normalized_question
 
 
@@ -202,6 +219,17 @@ def _curated_question_identity(question: dict[str, Any], *, bank_id: str) -> tup
     except (TypeError, ValueError):
         return None
     return (bank_id, numeric_problem_number)
+
+
+def _curated_question_checksum(question: dict[str, Any]) -> str | None:
+    text = _normalize_curated_text(str(question.get("text", "")).strip())
+    if not text:
+        return None
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def _normalize_curated_text(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip().lower()
 
 def build_challenges(
     output_dir: Path,

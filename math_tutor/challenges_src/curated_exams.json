@@ -25,7 +25,8 @@
             "(E) $1$"
           ],
           "correct": "C",
-          "curated_problem_number": 1
+          "curated_problem_number": 1,
+          "curated_question_checksum": "5a7270bde1941890833f29f48cbb191c3720df6fb7b7d7f0ec9438995464e10e"
         },
         {
           "id": "amc-q002",
@@ -45,7 +46,8 @@
             "(E) $1$"
           ],
           "correct": "B",
-          "curated_problem_number": 2
+          "curated_problem_number": 2,
+          "curated_question_checksum": "3f146a9e992c91e3d870366e24c2481f90d48d3cc40db06884a32a9b6781b776"
         },
         {
           "id": "amc-q003",
@@ -65,7 +67,8 @@
             "(E) $0 \\le y \\le \\pi$"
           ],
           "correct": "E",
-          "curated_problem_number": 3
+          "curated_problem_number": 3,
+          "curated_question_checksum": "c12b2e9df79a2cce7dbc4ba9560ec7cec3a796404f13ee0f249a39cc47c91f23"
         },
         {
           "id": "amc-q004",
@@ -85,7 +88,8 @@
             "(E) $5.5$"
           ],
           "correct": "E",
-          "curated_problem_number": 4
+          "curated_problem_number": 4,
+          "curated_question_checksum": "d7e4ee29bf52ea0c362fd11c7e76e091f505a83f739a1fd75137b674f81ebf24"
         },
         {
           "id": "amc-q005",
@@ -105,7 +109,8 @@
             "(E) $\\frac{2}{3}$"
           ],
           "correct": "C",
-          "curated_problem_number": 5
+          "curated_problem_number": 5,
+          "curated_question_checksum": "7b2e125eb0b70ebfdc5994d412e79cecd02666c650ace5565248ad58da8e0d01"
         }
       ]
     },
@@ -133,7 +138,8 @@
             "(E) $500$"
           ],
           "correct": "E",
-          "curated_problem_number": 6
+          "curated_problem_number": 6,
+          "curated_question_checksum": "abcb2390aa0ba0b8af1691baad7de616582b53da59392ccc081110f97ce626f7"
         },
         {
           "id": "amc-q007",
@@ -153,7 +159,8 @@
             "(E) $\\frac{\\sin \\theta}{\\cos^2 \\theta}$"
           ],
           "correct": "D",
-          "curated_problem_number": 7
+          "curated_problem_number": 7,
+          "curated_question_checksum": "45936fdc334b32f4819fdeb66f63b1fbd9306b0b9fd4c9d018959f0bcf97f324"
         },
         {
           "id": "amc-q008",
@@ -173,7 +180,8 @@
             "(E) $8$"
           ],
           "correct": "A",
-          "curated_problem_number": 8
+          "curated_problem_number": 8,
+          "curated_question_checksum": "92d1912c4d62a9debbcc96386444e035e892070e7dc02aa9af33cb95acbd1fea"
         },
         {
           "id": "amc-q009",
@@ -193,7 +201,8 @@
             "(E) $4$"
           ],
           "correct": "C",
-          "curated_problem_number": 9
+          "curated_problem_number": 9,
+          "curated_question_checksum": "2195c447074f705439cf3ef08b21f9c0d46a5bafaeb1859859fdee3ae1752775"
         },
         {
           "id": "amc-q010",
@@ -213,7 +222,8 @@
             "(E) $1$"
           ],
           "correct": "C",
-          "curated_problem_number": 10
+          "curated_problem_number": 10,
+          "curated_question_checksum": "d414ac00ca705c4a8b60ba5e5904dbd9a4bb50ef44d50564b2327108278a5e36"
         }
       ]
     },
@@ -241,7 +251,8 @@
             "(E) $\\frac{3}{8}$"
           ],
           "correct": "C",
-          "curated_problem_number": 11
+          "curated_problem_number": 11,
+          "curated_question_checksum": "418dbb4e2d7d04ec9600e03f959bcf3da5affffcdc7b7633ed0bd9de370ec00f"
         },
         {
           "id": "amc-q012",
@@ -261,7 +272,8 @@
             "(E) $\\frac{3\\pi}{4}$"
           ],
           "correct": "B",
-          "curated_problem_number": 12
+          "curated_problem_number": 12,
+          "curated_question_checksum": "435ec6d2836a77a0e833b93daf895739b95c8c1b1426287b12b7035a541122eb"
         },
         {
           "id": "amc-q013",
@@ -281,7 +293,8 @@
             "(E) $\\frac{25}{4}$"
           ],
           "correct": "B",
-          "curated_problem_number": 13
+          "curated_problem_number": 13,
+          "curated_question_checksum": "c6caaac311a31031223178b771f8fcf7958606967ca745cf02d35127bfd3fd13"
         },
         {
           "id": "amc-q014",
@@ -301,7 +314,8 @@
             "(E) $20\\sqrt{2}$"
           ],
           "correct": "C",
-          "curated_problem_number": 14
+          "curated_problem_number": 14,
+          "curated_question_checksum": "b47243b133ea34215169903c794b42d7353c1c73996843644c5e69d5611fae52"
         },
         {
           "id": "amc-q015",
@@ -321,7 +335,8 @@
             "(E) $\\frac{5}{7}$"
           ],
           "correct": "C",
-          "curated_problem_number": 15
+          "curated_problem_number": 15,
+          "curated_question_checksum": "a8230875ed4b1055c394465698912d3eda3e47bb55f2614703ba08177bef43d4"
         }
       ]
     },
@@ -349,7 +364,8 @@
             "(E) $1$"
           ],
           "correct": "A",
-          "curated_problem_number": 16
+          "curated_problem_number": 16,
+          "curated_question_checksum": "4949571eb4fda8a93748c5cdba9f6b239e4d7ece5d5f15c1a6258ee159065742"
         },
         {
           "id": "amc-q017",
@@ -369,7 +385,8 @@
             "(E) $18$"
           ],
           "correct": "C",
-          "curated_problem_number": 17
+          "curated_problem_number": 17,
+          "curated_question_checksum": "3bd3125fdfebe4a62d5efc670920522ca59bf1ac5529e9219fed29adb706264d"
         },
         {
           "id": "amc-q018",
@@ -389,7 +406,8 @@
             "(E) $\\frac{3}{4}$"
           ],
           "correct": "A",
-          "curated_problem_number": 18
+          "curated_problem_number": 18,
+          "curated_question_checksum": "6f91181de3bf654c7221ca9340245e35072cfa3f7abbc8f162b52b1f09b98dfd"
         },
         {
           "id": "amc-q019",
@@ -409,7 +427,8 @@
             "(E) $\\frac{25}{24}$"
           ],
           "correct": "C",
-          "curated_problem_number": 19
+          "curated_problem_number": 19,
+          "curated_question_checksum": "f7675852d4024885c3cd2c28457ce21bc40af4fcaa80722f5eb079303751d5f4"
         },
         {
           "id": "amc-q020",
@@ -429,7 +448,8 @@
             "(E) $\\frac{\\sqrt{6}}{3}$"
           ],
           "correct": "D",
-          "curated_problem_number": 20
+          "curated_problem_number": 20,
+          "curated_question_checksum": "f21b71281d770a279e8da3d047f9de9d5a5386eb1ef7fe7e214bd0d5fd16746d"
         }
       ]
     },
@@ -457,7 +477,8 @@
             "(E) $36\\pi$"
           ],
           "correct": "C",
-          "curated_problem_number": 21
+          "curated_problem_number": 21,
+          "curated_question_checksum": "59057f1a06da43c591dd9e22a8348913ebf87a8259761b4eab2b348493ce4530"
         },
         {
           "id": "amc-q022",
@@ -477,7 +498,8 @@
             "(E) $16$"
           ],
           "correct": "C",
-          "curated_problem_number": 22
+          "curated_problem_number": 22,
+          "curated_question_checksum": "a01a1306975f5c3b773bf802b3ea68603d9ff9350da3f71a03b3de67ef4b0dce"
         },
         {
           "id": "amc-q023",
@@ -497,7 +519,8 @@
             "(E) $14$"
           ],
           "correct": "D",
-          "curated_problem_number": 23
+          "curated_problem_number": 23,
+          "curated_question_checksum": "096ab698e14c6b8ad7ececdbfe0f235e910a187ad95e16707701e7d8a0b10ff5"
         },
         {
           "id": "amc-q024",
@@ -517,7 +540,8 @@
             "(E) $7$"
           ],
           "correct": "C",
-          "curated_problem_number": 24
+          "curated_problem_number": 24,
+          "curated_question_checksum": "273b63f5a17e4628ea55c62b9571639809abb94ae788cdf8e64d919fa556fbb1"
         },
         {
           "id": "amc-q025",
@@ -537,7 +561,8 @@
             "(E) $\\frac{3\\pi}{2}$"
           ],
           "correct": "C",
-          "curated_problem_number": 25
+          "curated_problem_number": 25,
+          "curated_question_checksum": "c6e641794ee22ee387306c36c52026e2a861cb83589559dc406e6f52f12e2754"
         }
       ]
     },
@@ -565,7 +590,8 @@
             "(E) $10$"
           ],
           "correct": "D",
-          "curated_problem_number": 26
+          "curated_problem_number": 26,
+          "curated_question_checksum": "7e00a0782e7f122ac26a9ff0cd7af5b30a34513034146c9cc0cf8c94ee0542fc"
         },
         {
           "id": "amc-q027",
@@ -585,7 +611,8 @@
             "(E) $6\\pi$"
           ],
           "correct": "C",
-          "curated_problem_number": 27
+          "curated_problem_number": 27,
+          "curated_question_checksum": "36bc3bb001b451d51b7d0d36d748746b67b2075bb434e8f8c3a17d1018ed2776"
         },
         {
           "id": "amc-q028",
@@ -605,7 +632,8 @@
             "(E) $6$"
           ],
           "correct": "C",
-          "curated_problem_number": 28
+          "curated_problem_number": 28,
+          "curated_question_checksum": "4ab61fe1c2ef9e4c6de229ffb17aba5a6a7618fa4a043d7bc00cfcb7642ae3aa"
         },
         {
           "id": "amc-q029",
@@ -625,7 +653,8 @@
             "(E) $\\tan^2 x$"
           ],
           "correct": "B",
-          "curated_problem_number": 29
+          "curated_problem_number": 29,
+          "curated_question_checksum": "65e8f56bcc5d0f4b300b4bbb9656b535474d4c774989f33bb233d187c611482b"
         },
         {
           "id": "amc-q030",
@@ -645,7 +674,8 @@
             "(E) $4$"
           ],
           "correct": "B",
-          "curated_problem_number": 30
+          "curated_problem_number": 30,
+          "curated_question_checksum": "6205c581e8de36507ad2c722a37b3cc528d8683bfa135793034493e91567a9b5"
         }
       ]
     }

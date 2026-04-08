@@ -227,6 +227,8 @@ class ChallengeBuilderTests(unittest.TestCase):
             )
             self.assertEqual(second_bundle["exams"][0]["questions"][0]["curated_problem_number"], 1)
             self.assertEqual(second_bundle["exams"][0]["questions"][0]["curated_source"], "AMC")
+            self.assertEqual(len(second_bundle["exams"][0]["questions"][0]["curated_question_checksum"]), 64)
+            self.assertNotIn("curated_fingerprint", second_bundle["exams"][0]["questions"][0])
 
     def test_sync_curated_exam_bundle_migrates_legacy_source_named_canonical_ids(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -270,6 +272,75 @@ class ChallengeBuilderTests(unittest.TestCase):
             self.assertEqual([exam["id"] for exam in bundle["exams"]], ["amc-01"])
             self.assertEqual([question["id"] for question in bundle["exams"][0]["questions"]], ["amc-q001"])
             self.assertEqual(bundle["exams"][0]["questions"][0]["text"], "Legacy Question 1")
+
+    def test_sync_curated_exam_bundle_skips_duplicate_content_even_with_new_file_and_problem_numbers(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            exams_dir = temp_root / "exams"
+            exams_dir.mkdir()
+            canonical_path = temp_root / "curated_exams.json"
+
+            first_source = exams_dir / "AMC-a.json"
+            first_source.write_text(
+                json.dumps(
+                    [
+                        {
+                            "problem_number": 1,
+                            "source": "AMC",
+                            "concept": "Trig",
+                            "question": "What is sin(30 degrees)?",
+                            "options": {
+                                "A": "0",
+                                "B": "1/2",
+                                "C": "sqrt(2)/2",
+                                "D": "1",
+                                "E": "2",
+                            },
+                            "correct_option": "B",
+                        }
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            first_bundle = sync_curated_exam_bundle(
+                exams_dir=exams_dir,
+                canonical_curated_exams_json=canonical_path,
+            )
+            self.assertEqual([exam["id"] for exam in first_bundle["exams"]], ["amc-01"])
+            self.assertEqual([question["id"] for question in first_bundle["exams"][0]["questions"]], ["amc-q001"])
+
+            second_source = exams_dir / "AMC-renamed.json"
+            second_source.write_text(
+                json.dumps(
+                    [
+                        {
+                            "problem_number": 99,
+                            "source": "AMC Archive",
+                            "concept": "Angles",
+                            "question": " What is   sin(30 degrees)? ",
+                            "options": {
+                                "A": "0",
+                                "B": "1/2",
+                                "C": "sqrt(2)/2",
+                                "D": "1",
+                                "E": "2",
+                            },
+                            "correct_option": "b",
+                        }
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            second_bundle = sync_curated_exam_bundle(
+                exams_dir=exams_dir,
+                canonical_curated_exams_json=canonical_path,
+            )
+
+            self.assertEqual([exam["id"] for exam in second_bundle["exams"]], ["amc-01"])
+            self.assertEqual([question["id"] for question in second_bundle["exams"][0]["questions"]], ["amc-q001"])
+            self.assertEqual(len(second_bundle["exams"][0]["questions"][0]["curated_question_checksum"]), 64)
 
 
 if __name__ == "__main__":
