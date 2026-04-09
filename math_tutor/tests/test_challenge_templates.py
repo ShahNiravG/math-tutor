@@ -48,8 +48,9 @@ class ChallengeTemplateTests(unittest.TestCase):
         self.assertIn("curated_source: q.curated_source || ''", exam_template)
         self.assertIn("curated_concept: q.curated_concept || ''", exam_template)
         self.assertIn("curated_source_link: q.curated_source_link || ''", exam_template)
-        self.assertIn("Review Source", partial_template)
-        self.assertIn("curated_source_link", partial_template)
+        self.assertIn("curated_source", partial_template)
+        self.assertIn("curated_concept", partial_template)
+        self.assertNotIn("Review Source", partial_template)
 
     def test_progress_views_use_saved_question_counts(self) -> None:
         reports = (ROOT / "challenges_src" / "reports.php").read_text(encoding="utf-8")
