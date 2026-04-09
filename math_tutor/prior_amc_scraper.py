@@ -351,22 +351,78 @@ AMC_10_EXAMS_2020_2025: dict[str, str] = {
 AOPS_WIKI_BASE = "https://artofproblemsolving.com/wiki/index.php?title="
 
 
-def scrape_all_amc_10_exams(output_dir: Path, *, skip_existing: bool = True) -> list[Path]:
+def _preserve_question_ids(
+    existing: list[dict[str, Any]],
+    new_questions: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Remap IDs in new_questions to match existing IDs wherever the question text is the same.
+
+    This keeps question IDs stable across force-rescrapes so that existing DB submissions
+    (which reference question_id) remain consistent. Questions whose text has no match in
+    the existing list keep their new positional ID as-is.
+    """
+    text_to_id: dict[str, str] = {}
+    for q in existing:
+        text = q.get("text", "").strip()
+        qid = q.get("id", "")
+        if text and qid:
+            text_to_id[text] = qid
+
+    result: list[dict[str, Any]] = []
+    for q in new_questions:
+        remapped = dict(q)
+        matched_id = text_to_id.get(q.get("text", "").strip())
+        if matched_id:
+            remapped["id"] = matched_id
+        result.append(remapped)
+    return result
+
+
+def scrape_all_amc_10_exams(
+    output_dir: Path,
+    *,
+    skip_existing: bool = True,
+    _out: Any = None,
+) -> list[Path]:
     """Scrape all AMC 10 exams from 2020–2025 into output_dir.
 
     Returns the list of paths written (or skipped if already present).
+    _out: optional file-like for output (defaults to sys.stdout via print).
     """
+    import sys
+    _print = (lambda msg: print(msg, file=_out)) if _out is not None else print
+
     output_dir.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
     for stem, title in AMC_10_EXAMS_2020_2025.items():
         output_path = output_dir / f"{stem}.json"
         if skip_existing and output_path.exists():
-            print(f"  skip (exists): {output_path.name}")
+            _print(f"  skip (exists): {output_path.name}")
             written.append(output_path)
             continue
+
+        # Load existing data before overwriting so we can preserve question IDs
+        existing_questions: list[dict[str, Any]] = []
+        if output_path.exists():
+            try:
+                prior = json.loads(output_path.read_text(encoding="utf-8"))
+                existing_questions = prior.get("exam", {}).get("questions", [])
+                exam_id = prior.get("exam", {}).get("id", stem)
+                _print(
+                    f"  WARNING: force-overwriting existing exam '{exam_id}' "
+                    f"({len(existing_questions)} questions). "
+                    f"Verify no submitted DB results reference these question IDs before proceeding."
+                )
+            except Exception:
+                pass
+
         url = f"{AOPS_WIKI_BASE}{title}"
-        print(f"  scraping: {title} → {output_path.name}")
+        _print(f"  scraping: {title} → {output_path.name}")
         exam = scrape_prior_amc_exam(url)
+
+        if existing_questions:
+            exam["questions"] = _preserve_question_ids(existing_questions, exam["questions"])
+
         output_path.write_text(
             json.dumps({"format": "explicit_curated_exam", "exam": exam}, indent=2),
             encoding="utf-8",

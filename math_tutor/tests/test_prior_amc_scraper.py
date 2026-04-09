@@ -306,6 +306,84 @@ class OptionParsingTests(unittest.TestCase):
         self.assertEqual(len(options), 5)
 
 
+class ForceRescrapeTests(unittest.TestCase):
+    def test_preserve_question_ids_reuses_existing_id_when_text_matches(self) -> None:
+        from math_tutor.prior_amc_scraper import _preserve_question_ids
+
+        existing = [
+            {"id": "exam-q01", "text": "Question Alpha"},
+            {"id": "exam-q02", "text": "Question Beta"},
+            {"id": "exam-q03", "text": "Question Gamma"},
+        ]
+        # Simulate rescrape returning same questions in a different order
+        new_questions = [
+            {"id": "exam-q01", "text": "Question Beta"},   # positionally q01 but text = old q02
+            {"id": "exam-q02", "text": "Question Alpha"},  # positionally q02 but text = old q01
+            {"id": "exam-q03", "text": "Question Gamma"},  # unchanged
+        ]
+        result = _preserve_question_ids(existing, new_questions)
+        self.assertEqual(result[0]["id"], "exam-q02")  # Beta → keeps its old id
+        self.assertEqual(result[1]["id"], "exam-q01")  # Alpha → keeps its old id
+        self.assertEqual(result[2]["id"], "exam-q03")  # Gamma → unchanged
+
+    def test_preserve_question_ids_keeps_new_positional_id_when_text_has_no_match(self) -> None:
+        from math_tutor.prior_amc_scraper import _preserve_question_ids
+
+        existing = [
+            {"id": "exam-q01", "text": "Question Alpha"},
+        ]
+        # Rescrape returns a completely different question (text changed)
+        new_questions = [
+            {"id": "exam-q01", "text": "A completely different question"},
+        ]
+        result = _preserve_question_ids(existing, new_questions)
+        # No text match → keep the new positional id as-is
+        self.assertEqual(result[0]["id"], "exam-q01")
+        self.assertEqual(result[0]["text"], "A completely different question")
+
+    def test_scrape_all_warns_when_force_overwriting_existing_file(self) -> None:
+        import io
+        import sys
+        import unittest.mock as mock
+        from math_tutor.prior_amc_scraper import scrape_all_amc_10_exams
+
+        with tempfile.TemporaryDirectory() as tmp:
+            output_dir = Path(tmp)
+            # Pre-create one exam file to simulate existing data
+            existing = {
+                "format": "explicit_curated_exam",
+                "exam": {
+                    "id": "prior-amc-2024-amc-10b",
+                    "title": "2024 AMC 10B",
+                    "questions": [{"id": "prior-amc-2024-amc-10b-q01", "text": "Q1"}],
+                },
+            }
+            (output_dir / "prior_amc_2024_amc_10b.json").write_text(
+                json.dumps(existing), encoding="utf-8"
+            )
+
+            captured = io.StringIO()
+            # stub out the actual network scrape so the test is fast and offline
+            def fake_scrape(url):
+                # Return a minimal valid exam so the loop can proceed to the file
+                # that already exists (2024 AMC 10B) and emit the warning.
+                return {
+                    "id": "prior-amc-stub",
+                    "title": "Stub",
+                    "bank": "prior-amc",
+                    "bank_title": "Prior AMC",
+                    "questions": [],
+                    "question_count": 0,
+                }
+
+            with mock.patch("math_tutor.prior_amc_scraper.scrape_prior_amc_exam", fake_scrape):
+                scrape_all_amc_10_exams(output_dir, skip_existing=False, _out=captured)
+
+            output = captured.getvalue()
+            self.assertIn("WARNING", output.upper())
+            self.assertIn("prior-amc-2024-amc-10b", output)
+
+
 class DateParsingTests(unittest.TestCase):
     def test_held_on_date_format(self) -> None:
         exam = _scrape(MAIN_PAGE_HTML_HELD_ON)
