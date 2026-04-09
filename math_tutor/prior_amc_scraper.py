@@ -116,25 +116,47 @@ def scrape_prior_amc_exam_from_html(
 
 
 def _parse_main_page(*, main_page_html: str, source_url: str) -> dict[str, Any]:
-    title_match = re.search(r"<p><b>([^<]+)</b>\s+problems and solutions\.", main_page_html)
-    date_match = re.search(r"test was administered on ([^.]+)\.", main_page_html)
+    # Replace inline LaTeX images (e.g. <img alt="$16$">) with their numeric values so date
+    # strings like "November <img alt="$16$">, <img alt="$2022$">." parse correctly.
+    processed_html = re.sub(
+        r'<img\s[^>]*alt="\$([^$<>]+)\$"[^>]*/?>',
+        lambda m: m.group(1),
+        main_page_html,
+    )
+
+    title_match = re.search(r"<p><b>([^<]+)</b>\s+problems and solutions\.", processed_html)
+    date_match = re.search(
+        r"(?:administered|held|will be held) on ([^.<]+)\.",
+        processed_html,
+    )
     problems_page_match = re.search(
         r'href="([^"]+)"[^>]*title="[^"]+Problems"[^>]*>\s*[^<]*Problems\s*</a>',
-        main_page_html,
+        processed_html,
     )
     answer_key_match = re.search(
         r'href="([^"]+)"[^>]*title="[^"]+Answer Key"[^>]*>\s*[^<]*Answer Key\s*</a>',
-        main_page_html,
+        processed_html,
     )
-    if not title_match or not date_match or not problems_page_match or not answer_key_match:
-        raise ValueError("Could not find the expected title/date/problem-key links on the AoPS main page.")
+    if not title_match or not problems_page_match or not answer_key_match:
+        raise ValueError("Could not find the expected title/problem-key links on the AoPS main page.")
 
     title = unescape(title_match.group(1)).strip()
+
+    administered_on = None
+    if date_match:
+        date_str = re.sub(r"\s+", " ", unescape(date_match.group(1))).strip()
+        for fmt in ("%A, %B %d, %Y", "%B %d, %Y"):
+            try:
+                administered_on = datetime.strptime(date_str, fmt).date().isoformat()
+                break
+            except ValueError:
+                continue
+
     return {
         "title": title,
         "contest": re.sub(r"^\d+\s+", "", title).strip(),
         "year": int(title.split()[0]),
-        "administered_on": datetime.strptime(date_match.group(1).strip(), "%A, %B %d, %Y").date().isoformat(),
+        "administered_on": administered_on,
         "problems_page": urljoin(source_url, unescape(problems_page_match.group(1))),
         "answer_key_page": urljoin(source_url, unescape(answer_key_match.group(1))),
     }
@@ -179,8 +201,9 @@ def _parse_problems_page(problems_page_html: str, *, base_url: str) -> list[dict
             paragraph.feed(paragraph_html)
             paragraph.close()
 
-            if paragraph.option_alt:
-                options = _parse_option_alt(paragraph.option_alt)
+            if paragraph.option_alts:
+                for alt in paragraph.option_alts:
+                    options.extend(_parse_option_alt(alt))
 
             if paragraph.text:
                 text_paragraphs.append(paragraph.text)
@@ -206,13 +229,23 @@ def _parse_option_alt(option_alt: str) -> list[str]:
     if latex.startswith("$") and latex.endswith("$"):
         latex = latex[1:-1]
 
+    # Standard format: \textbf{(A) } or \textbf {(A) }
     matches = list(
         re.finditer(
-            r"\\textbf\{\(([A-E])\)\s*\}\s*~?\s*(.*?)(?=(?:\\qquad\s*\\textbf\{\([A-E]\)\s*\})|$)",
+            r"\\textbf\s*\{\(([A-E])\)\s*\}\s*~?\s*(.*?)(?=(?:\\qquad\s*\\textbf\s*\{\([A-E]\)\s*\})|$)",
             latex,
             flags=re.DOTALL,
         )
     )
+    if not matches:
+        # Alternate format: (\textbf{A})\: text  (used in 2021 Fall exams)
+        matches = list(
+            re.finditer(
+                r"\(\\textbf\{([A-E])\}\)\s*\\?\s*:\s*(.*?)(?=(?:\\qquad\s*\(\\textbf\{[A-E]\})|$)",
+                latex,
+                flags=re.DOTALL,
+            )
+        )
     if not matches:
         raise ValueError(f"Could not parse MCQ options from option block: {option_alt!r}")
 
@@ -231,7 +264,11 @@ class _ParagraphParser(HTMLParser):
         self._base_url = base_url
         self._parts: list[str] = []
         self.question_images: list[dict[str, Any]] = []
-        self.option_alt = ""
+        self.option_alts: list[str] = []
+
+    @property
+    def option_alt(self) -> str:
+        return self.option_alts[0] if self.option_alts else ""
 
     @property
     def text(self) -> str:
@@ -248,7 +285,7 @@ class _ParagraphParser(HTMLParser):
             src = attr_map.get("src", "").strip()
             class_name = attr_map.get("class", "")
             if self._looks_like_option_block(alt):
-                self.option_alt = alt
+                self.option_alts.append(alt)
                 return
             if _should_preserve_as_image(alt=alt, class_name=class_name):
                 self.question_images.append(
@@ -270,7 +307,8 @@ class _ParagraphParser(HTMLParser):
 
     @staticmethod
     def _looks_like_option_block(alt: str) -> bool:
-        return bool(re.search(r"\\textbf\{\([A-E]\)\s*\}", alt))
+        # Matches \textbf{(A)} / \textbf {(A)} style AND (\textbf{A}) style
+        return bool(re.search(r"\\textbf\s*\{\([A-E]\)\s*\}|\(\\textbf\{[A-E]\}\)", alt))
 
 
 def _parse_optional_int(value: str | None) -> int | None:
@@ -292,15 +330,72 @@ def _slugify(value: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", value.lower()).strip("-")
 
 
+# AMC 10 exams from 2020–2025 (excluding 2025 AMC 10A which is already scraped).
+# Key: output filename stem, Value: AoPS wiki title parameter.
+AMC_10_EXAMS_2020_2025: dict[str, str] = {
+    "prior_amc_2020_amc_10a": "2020_AMC_10A",
+    "prior_amc_2020_amc_10b": "2020_AMC_10B",
+    "prior_amc_2021_amc_10a": "2021_AMC_10A",
+    "prior_amc_2021_amc_10b": "2021_AMC_10B",
+    "prior_amc_2021_fall_amc_10a": "2021_Fall_AMC_10A",
+    "prior_amc_2021_fall_amc_10b": "2021_Fall_AMC_10B",
+    "prior_amc_2022_amc_10a": "2022_AMC_10A",
+    "prior_amc_2022_amc_10b": "2022_AMC_10B",
+    "prior_amc_2023_amc_10a": "2023_AMC_10A",
+    "prior_amc_2023_amc_10b": "2023_AMC_10B",
+    "prior_amc_2024_amc_10a": "2024_AMC_10A",
+    "prior_amc_2024_amc_10b": "2024_AMC_10B",
+    "prior_amc_2025_amc_10b": "2025_AMC_10B",
+}
+
+AOPS_WIKI_BASE = "https://artofproblemsolving.com/wiki/index.php?title="
+
+
+def scrape_all_amc_10_exams(output_dir: Path, *, skip_existing: bool = True) -> list[Path]:
+    """Scrape all AMC 10 exams from 2020–2025 into output_dir.
+
+    Returns the list of paths written (or skipped if already present).
+    """
+    output_dir.mkdir(parents=True, exist_ok=True)
+    written: list[Path] = []
+    for stem, title in AMC_10_EXAMS_2020_2025.items():
+        output_path = output_dir / f"{stem}.json"
+        if skip_existing and output_path.exists():
+            print(f"  skip (exists): {output_path.name}")
+            written.append(output_path)
+            continue
+        url = f"{AOPS_WIKI_BASE}{title}"
+        print(f"  scraping: {title} → {output_path.name}")
+        exam = scrape_prior_amc_exam(url)
+        output_path.write_text(
+            json.dumps({"format": "explicit_curated_exam", "exam": exam}, indent=2),
+            encoding="utf-8",
+        )
+        written.append(output_path)
+    return written
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Scrape an AoPS AMC exam into an explicit curated exam JSON file.")
-    parser.add_argument("url", help="AoPS wiki URL such as https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A")
-    parser.add_argument("output", help="Output JSON path")
+    parser = argparse.ArgumentParser(description="Scrape AoPS AMC exam(s) into explicit curated exam JSON files.")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    single = subparsers.add_parser("scrape", help="Scrape a single exam by URL.")
+    single.add_argument("url", help="AoPS wiki URL, e.g. https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A")
+    single.add_argument("output", help="Output JSON path")
+
+    batch = subparsers.add_parser("scrape-all", help="Scrape all AMC 10 exams 2020–2025 into a directory.")
+    batch.add_argument("output_dir", help="Directory to write JSON files into")
+    batch.add_argument("--force", action="store_true", help="Re-scrape even if the output file already exists")
+
     args = parser.parse_args()
 
-    exam = scrape_prior_amc_exam(args.url)
-    output_path = Path(args.output)
-    output_path.write_text(json.dumps({"format": "explicit_curated_exam", "exam": exam}, indent=2), encoding="utf-8")
+    if args.command == "scrape":
+        exam = scrape_prior_amc_exam(args.url)
+        output_path = Path(args.output)
+        output_path.write_text(json.dumps({"format": "explicit_curated_exam", "exam": exam}, indent=2), encoding="utf-8")
+    elif args.command == "scrape-all":
+        paths = scrape_all_amc_10_exams(Path(args.output_dir), skip_existing=not args.force)
+        print(f"Done: {len(paths)} exam(s) written to {args.output_dir}")
 
 
 if __name__ == "__main__":

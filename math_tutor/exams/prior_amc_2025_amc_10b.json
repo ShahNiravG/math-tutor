@@ -1,0 +1,856 @@
+{
+  "format": "explicit_curated_exam",
+  "exam": {
+    "format": "explicit_curated_exam",
+    "source_type": "explicit_curated_exam",
+    "id": "prior-amc-2025-amc-10b",
+    "title": "2025 AMC 10B",
+    "bank": "prior-amc",
+    "bank_title": "Prior AMC",
+    "question_count": 25,
+    "questions": [
+      {
+        "id": "prior-amc-2025-amc-10b-q01",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_1",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_1",
+        "curated_problem_number": 1,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_1",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_1",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 1",
+        "question_number": 1,
+        "text": "The instructions on a $350$-gram bag of coffee beans say that proper brewing of a large mug of pour-over coffee requires $20$ grams of coffee beans. What is the greatest number of properly brewed large mugs of coffee that can be made from the coffee beans in that bag?",
+        "question_images": [],
+        "options": [
+          "(A) 16",
+          "(B) 17",
+          "(C) 18",
+          "(D) 19",
+          "(E) 20"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q02",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_2",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_2",
+        "curated_problem_number": 2,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_2",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_2",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 2",
+        "question_number": 2,
+        "text": "Jerry wrote down the ones digit of each of the first $2025$ positive squares: $1,4,9,6,5,6,\\dots$. What is the sum of all the numbers Jerry wrote down?",
+        "question_images": [],
+        "options": [
+          "(A) 9025",
+          "(B) 9070",
+          "(C) 9090",
+          "(D) 9115",
+          "(E) 9160"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q03",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_3",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_3",
+        "curated_problem_number": 3,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_3",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_3",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/7/f/c/7fc103a8585ee1823137ee0493b2a9fbb457dbd9.png",
+              "alt": "$\\begin{tabular}{ccccccc} &&&10&&&\\\\ &&10&&1&& \\\\ &10&&11&&1& \\\\ 10&&21&&12&&1 \\\\ \\end{tabular}$",
+              "width": 241,
+              "height": 82
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 3",
+        "question_number": 3,
+        "text": "A Pascal-like triangle has $10$ as the top row and $10$ followed by $1$ as the second row. In each subsequent row the first number is $10$, the last number is $1$, and, as in the standard Pascal's Triangle, each other number in the row is the sum of the two numbers directly above it. The first four rows are shown below:\n\nWhat is the sum of the digits of the sum of the numbers in the 11th row?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/7/f/c/7fc103a8585ee1823137ee0493b2a9fbb457dbd9.png",
+            "alt": "$\\begin{tabular}{ccccccc} &&&10&&&\\\\ &&10&&1&& \\\\ &10&&11&&1& \\\\ 10&&21&&12&&1 \\\\ \\end{tabular}$",
+            "width": 241,
+            "height": 82
+          }
+        ],
+        "options": [
+          "(A) 11",
+          "(B) 13",
+          "(C) 14",
+          "(D) 16",
+          "(E) 17"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q04",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_4",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_4",
+        "curated_problem_number": 4,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_4",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_4",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 4",
+        "question_number": 4,
+        "text": "The value of the two-digit number $\\underline{a}~\\underline{b}$ in base seven equals the value of the two-digit number $\\underline{b}~\\underline{a}$ in base nine. What is $a+b?$",
+        "question_images": [],
+        "options": [
+          "(A) 7",
+          "(B) 9",
+          "(C) 10",
+          "(D) 11",
+          "(E) 14"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q05",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_5",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_5",
+        "curated_problem_number": 5,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_5",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_5",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 5",
+        "question_number": 5,
+        "text": "In $\\triangle ABC$, $AB=10$, $AC=18$, and $\\angle B=130^\\circ.$ Let $O$ be the center of the circle containing $A$, $B$, and $C.$ What is the degree measure of $\\angle CAO$?",
+        "question_images": [],
+        "options": [
+          "(A) 20",
+          "(B) 30",
+          "(C) 40",
+          "(D) 50",
+          "(E) 60"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q06",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_6",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_6",
+        "curated_problem_number": 6,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_6",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_6",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 6",
+        "question_number": 6,
+        "text": "The line $y = \\frac{1}{3}x + 1$ divides the square region defined by $0 \\leq x \\leq 2$ and $0 \\leq y \\leq 2$ into an upper and lower region. The line $x=a$ divides the lower region into two regions of equal area. Then $a$ can be written as $\\sqrt{s} - t$, where $s$ and $t$ are positive integers. What is $s+t$?",
+        "question_images": [],
+        "options": [
+          "(A) 18",
+          "(B) 19",
+          "(C) 20",
+          "(D) 21",
+          "(E) 22"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q07",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_7",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_7",
+        "curated_problem_number": 7,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_7",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_7",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 7",
+        "question_number": 7,
+        "text": "Frances stands $15$ meters directly south of a locked gate in a fence that runs east-west. Immediately behind the fence is a box of chocolates, located $x$ meters east of the locked gate. An unlocked gate lies $9$ meters east of the box, and another unlocked gate lies $8$ meters west of the locked gate. Frances can reach the box by walking toward an unlocked gate, passing through it, and walking toward the box. It happens that the total distance Frances would travel is the same via either unlocked gate. What is the value of $x$?",
+        "question_images": [],
+        "options": [
+          "(A) 3\\frac27",
+          "(B) 3\\frac37",
+          "(C) 3\\frac47",
+          "(D) 3\\frac57",
+          "(E) 3\\frac67"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q08",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_8",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_8",
+        "curated_problem_number": 8,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_8",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_8",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 8",
+        "question_number": 8,
+        "text": "Emmy says to Max, \"I ordered $36$ math club sweatshirts today.\" Max asks, \"How much did each shirt cost?\" Emmy responds, \"I'll give you a hint. The total cost was $\\$ \\underline A~\\underline B~\\underline B.\\underline B~\\underline A$, where $A$ and $B$ are digits and $A \\neq 0$.\" After a pause, Max says, \"That was a good price.\" What is $A + B$?",
+        "question_images": [],
+        "options": [
+          "(A) 7",
+          "(B) 8",
+          "(C) 11",
+          "(D) 14",
+          "(E) 15"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q09",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_9",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_9",
+        "curated_problem_number": 9,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_9",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_9",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 9",
+        "question_number": 9,
+        "text": "How many ordered triples of integers $(x, y, z)$ satisfy the following system of inequalities?\n\n\\begin{align*} -x-y-z&\\le -2\\\\ -x+y+z&\\le 2\\\\ x-y+z&\\le 2\\\\ x+y-z&\\le 2 \\end{align*}",
+        "question_images": [],
+        "options": [
+          "(A) \\ 4",
+          "(B) \\ 8",
+          "(C) \\ 11",
+          "(D) \\ 15",
+          "(E) \\ 17 \\qquad"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q10",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_10",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_10",
+        "curated_problem_number": 10,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_10",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_10",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 10",
+        "question_number": 10,
+        "text": "Let $f(n)=n^3-5n^2+2n+8$ and $g(n)=n^3-6n^2+5n+12.$ What is the sum of all integers $n$ such that $\\tfrac{f(n)}{g(n)}$ is an integer?",
+        "question_images": [],
+        "options": [
+          "(A) 2",
+          "(B) 3",
+          "(C) 4",
+          "(D) 5",
+          "(E) 6"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q11",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_11",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_11",
+        "curated_problem_number": 11,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_11",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_11",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 11",
+        "question_number": 11,
+        "text": "On Monday, $6$ students went to the tutoring center at the same time, and each one was randomly assigned to one of the $6$ tutors on duty. On Tuesday, the same $6$ students showed up, the same $6$ tutors were on duty, and the students were again randomly assigned to the tutors. What is the probability that exactly $2$ students met with the same tutor both Monday and Tuesday?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{1}{16}",
+          "(B) \\frac{3}{16}",
+          "(C) \\frac{1}{4}",
+          "(D) \\frac{3}{8}",
+          "(E) \\frac{1}{2}"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q12",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_12",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_12",
+        "curated_problem_number": 12,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_12",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_12",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/7/1/1/711c02df86e960f2a652815bf750152f1aaa53a0.png",
+              "alt": "[asy] /* Figure by reda */ unitsize(15); real r = 1 + sqrt(3); draw(r*dir(90) -- r*dir(210) -- r*dir(330) -- cycle); filldraw(circle(dir(90), sqrt(3)/2), mediumgrey); filldraw(circle(dir(210), sqrt(3)/2), mediumgrey); filldraw(circle(dir(330), sqrt(3)/2), mediumgrey);  draw(shift(8, 0)*(r*dir(90) -- r*dir(180)/sqrt(3) -- r*dir(270) -- r*dir(0)/sqrt(3) -- cycle)); filldraw(shift(8, 0)*circle(dir(90)*r/3, r/3), mediumgrey); filldraw(shift(8, 0)*circle(dir(270)*r/3, r/3), mediumgrey);  draw(shift(16, 0)*(r*dir(0) -- r*dir(60) -- r*dir(120) -- r*dir(180) -- r*dir(240) -- r*dir(300) -- cycle)); for (int i = 30; i <= 330; i = i + 60) {     filldraw(shift(16, 0)*circle(r*dir(i)/sqrt(3), r/2/sqrt(3)), mediumgrey); } [/asy]",
+              "width": 528,
+              "height": 138
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 12",
+        "question_number": 12,
+        "text": "The figure below shows an equilateral triangle, a rhombus with a $60^\\circ$ angle, and a regular hexagon, each of them containing some mutually tangent congruent disks. Let $T, R,$ and $H,$ respectively, denote the ratio in each case of the total area of the disks to the area of the enclosing polygon. Which of the following is true?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/7/1/1/711c02df86e960f2a652815bf750152f1aaa53a0.png",
+            "alt": "[asy] /* Figure by reda */ unitsize(15); real r = 1 + sqrt(3); draw(r*dir(90) -- r*dir(210) -- r*dir(330) -- cycle); filldraw(circle(dir(90), sqrt(3)/2), mediumgrey); filldraw(circle(dir(210), sqrt(3)/2), mediumgrey); filldraw(circle(dir(330), sqrt(3)/2), mediumgrey);  draw(shift(8, 0)*(r*dir(90) -- r*dir(180)/sqrt(3) -- r*dir(270) -- r*dir(0)/sqrt(3) -- cycle)); filldraw(shift(8, 0)*circle(dir(90)*r/3, r/3), mediumgrey); filldraw(shift(8, 0)*circle(dir(270)*r/3, r/3), mediumgrey);  draw(shift(16, 0)*(r*dir(0) -- r*dir(60) -- r*dir(120) -- r*dir(180) -- r*dir(240) -- r*dir(300) -- cycle)); for (int i = 30; i <= 330; i = i + 60) {     filldraw(shift(16, 0)*circle(r*dir(i)/sqrt(3), r/2/sqrt(3)), mediumgrey); } [/asy]",
+            "width": 528,
+            "height": 138
+          }
+        ],
+        "options": [
+          "(A) \\ T=H=R",
+          "(B) \\ H<R=T",
+          "(C) \\ H=R<T",
+          "(D) \\ H<R<T",
+          "(E) \\ H<T<R \\qquad"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q13",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_13",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_13",
+        "curated_problem_number": 13,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_13",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_13",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 13",
+        "question_number": 13,
+        "text": "The altitude to the hypotenuse of a $30{-}60{-}90^\\circ$ right triangle is divided into two segments of lengths $x < y$ by the median to the shortest side of the triangle. What is the ratio $\\tfrac{x}{x+y}$?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac 37",
+          "(B) \\frac{\\sqrt3}{4}",
+          "(C) \\frac 49",
+          "(D) \\frac{5}{11}",
+          "(E) \\frac{4\\sqrt3}{15}"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q14",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_14",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_14",
+        "curated_problem_number": 14,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_14",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_14",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 14",
+        "question_number": 14,
+        "text": "Nine athletes, no two of whom are the same height, try out for the basketball team. One at a time, they draw a wristband at random, without replacement, from a bag containing $3$ blue bands, $3$ red bands, and $3$ green bands. They are divided into a blue group, a red group, and a green group. The tallest member of each group is named the group captain. What is the probability that the group captains are the three tallest athletes?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac29",
+          "(B) \\frac 27",
+          "(C) \\frac9{28}",
+          "(D) \\frac13",
+          "(E) \\frac38"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q15",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_15",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_15",
+        "curated_problem_number": 15,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_15",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_15",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 15",
+        "question_number": 15,
+        "text": "The sum \\[\\sum_{k=1}^{\\infty} \\frac{1}{k^3 + 6k^2 + 8k}\\] can be expressed as $\\frac{a}{b}$, where $a$ and $b$ are relatively prime positive integers. What is $a + b$?",
+        "question_images": [],
+        "options": [
+          "(A) 89",
+          "(B) 97",
+          "(C) 102",
+          "(D) 107",
+          "(E) 129"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q16",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_16",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_16",
+        "curated_problem_number": 16,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_16",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_16",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/6/b/7/6b7e8cd09a60150882ac48e52bae47f0c3f442f1.png",
+              "alt": "[asy] unitsize(1.7cm); pair O = (0, 0); real R = 2;  pair A = (R, 0); pair B = (0.5*R, 0.866*R); pair C = (0, R); pair D = (-R, 0); pair E = (-0.954*R, -0.3*R); pair F = (-0.22*R, -0.975*R);  path sector1 = O -- A .. arc(O,A,B) -- cycle; path sector2 = O -- B .. arc(O,B,C) -- cycle; path sector3 = O -- C .. arc(O,C,D) -- cycle; path sector4 = O -- D .. arc(O,D,E) -- cycle; path sector5 = O -- E .. arc(O,E,F) -- cycle; path sector6 = O -- F .. arc(O,F,A) -- cycle;  pen r = rgb(255, 120, 120);  pen g = rgb(120, 255, 120);  pen b = rgb(120, 120, 255); filldraw(sector1, g); filldraw(sector2, r); filldraw(sector3, b); filldraw(sector4, r); filldraw(sector5, g); filldraw(sector6, b);  draw(circle(O, R));  defaultpen(fontsize(12pt)); label(\"green\", (0.57*R, 0.32*R)); label(\"red\", (0.16*R, 0.63*R)); label(\"blue\", (-0.45*R, 0.45*R)); label(\"red\", (-0.69*R, -0.1*R)); label(\"green\", (-0.45*R, -0.5*R)); label(\"blue\", (0.39*R, -0.49*R)); [/asy]",
+              "width": 325,
+              "height": 325
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 16",
+        "question_number": 16,
+        "text": "A circle has been divided into 6 sectors of different sizes. Then 2 of the sectors are painted red, 2 painted green, and 2 painted blue so that no two neighboring sectors are painted the same color. One such coloring is shown below.\n\nHow many different colorings are possible?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/6/b/7/6b7e8cd09a60150882ac48e52bae47f0c3f442f1.png",
+            "alt": "[asy] unitsize(1.7cm); pair O = (0, 0); real R = 2;  pair A = (R, 0); pair B = (0.5*R, 0.866*R); pair C = (0, R); pair D = (-R, 0); pair E = (-0.954*R, -0.3*R); pair F = (-0.22*R, -0.975*R);  path sector1 = O -- A .. arc(O,A,B) -- cycle; path sector2 = O -- B .. arc(O,B,C) -- cycle; path sector3 = O -- C .. arc(O,C,D) -- cycle; path sector4 = O -- D .. arc(O,D,E) -- cycle; path sector5 = O -- E .. arc(O,E,F) -- cycle; path sector6 = O -- F .. arc(O,F,A) -- cycle;  pen r = rgb(255, 120, 120);  pen g = rgb(120, 255, 120);  pen b = rgb(120, 120, 255); filldraw(sector1, g); filldraw(sector2, r); filldraw(sector3, b); filldraw(sector4, r); filldraw(sector5, g); filldraw(sector6, b);  draw(circle(O, R));  defaultpen(fontsize(12pt)); label(\"green\", (0.57*R, 0.32*R)); label(\"red\", (0.16*R, 0.63*R)); label(\"blue\", (-0.45*R, 0.45*R)); label(\"red\", (-0.69*R, -0.1*R)); label(\"green\", (-0.45*R, -0.5*R)); label(\"blue\", (0.39*R, -0.49*R)); [/asy]",
+            "width": 325,
+            "height": 325
+          }
+        ],
+        "options": [
+          "(A) 12",
+          "(B) 16",
+          "(C) 18",
+          "(D) 24",
+          "(E) 28"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q17",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_17",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_17",
+        "curated_problem_number": 17,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_17",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_17",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 17",
+        "question_number": 17,
+        "text": "Consider a decreasing sequence of $n$ positive integers $x_1>x_2>\\cdots>x_n$ that satisfies the following conditions:\nThe average of the first $3$ terms in the sequence is $2025$.\nFor all $4 \\le k \\le n,$ the average of the first $k$ terms is $1$ less than the average of the first $k - 1$ terms.\nWhat is the greatest possible value of ${n?}$",
+        "question_images": [],
+        "options": [
+          "(A) 1013",
+          "(B) 1014",
+          "(C) 1016",
+          "(D) 2016",
+          "(E) 2025"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q18",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_18",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_18",
+        "curated_problem_number": 18,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_18",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_18",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 18",
+        "question_number": 18,
+        "text": "What is the ones digit of the sum\n\\[\\lfloor \\sqrt{1} \\rfloor + \\lfloor \\sqrt{2} \\rfloor + \\lfloor \\sqrt{3} \\rfloor + \\dots + \\lfloor \\sqrt{2025} \\rfloor?\\](Recall that $\\lfloor x \\rfloor$ represents the greatest integer less than or equal to $x$.)",
+        "question_images": [],
+        "options": [
+          "(A) 1",
+          "(B) 2",
+          "(C) 3",
+          "(D) 5",
+          "(E) 8"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q19",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_19",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_19",
+        "curated_problem_number": 19,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_19",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_19",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/a/c/8/ac8786da0ec57de7c9a5ee050bf71c98142c4364.png",
+              "alt": "[asy] import graph3; size(200); real a = 1; real d = 0.6; real h = 0.9; triple A1 = (a,0,0); triple B1 = (0,a,0); triple C1 = (-a,0,0); triple D1 = (0,-a,0); triple A2 = (a+d,0,h); triple B2 = (0,a+d,h); triple C2 = (-(a+d),0,h); triple D2 = (0,-(a+d),h); triple A3 = (a+2*d,0,2*h); triple B3 = (0,a+2*d,2*h); triple C3 = (-(a+2*d),0,2*h); triple D3 = (0,-(a+2*d),2*h);  path3 bottom = A1--B1--C1--D1--cycle; path3 backright = A1--B1--B2--A2--cycle; path3 backleft = B1--C1--C2--B2--cycle; path3 frontleft = C1--D1--D3--C3--cycle; path3 frontright = D1--A1--A3--D3--cycle;  defaultpen(1); pen blue = rgb(202, 201, 255); pen red = rgb(255, 164, 164);  // colored surfaces draw(surface(bottom), emissive(gray)); draw(surface(backright), emissive(blue)); draw(surface(backleft), emissive(blue)); draw(surface(frontleft), emissive(red)); draw(surface(frontright), emissive(red)); // black outlines draw(A1--D1--C1); draw(A2--D2--C2); draw(A3--D3--C3, linewidth(1.4)); draw((0.32,0.68,0)--B1--(-0.32,0.68,0)); draw((1.25,0.35,h)--B2--(-1.25,0.35,h)); draw(A3--B3--C3); draw(A1--A3); draw(B1--B3); draw(C1--C3); draw(D1--D3, linewidth(1.4));  currentprojection=perspective((0,-4,3)); [/asy]",
+              "width": 335,
+              "height": 208
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 19",
+        "question_number": 19,
+        "text": "A container has a $1\\times 1$ square bottom, a $3\\times 3$ open square top, and four congruent trapezoidal sides, as shown. Starting when the container is empty, a hose that runs water at a constant rate takes $35$ minutes to fill the container up to the midline of the trapezoids.\n\nHow many more minutes will it take to fill the remainder of the container?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/a/c/8/ac8786da0ec57de7c9a5ee050bf71c98142c4364.png",
+            "alt": "[asy] import graph3; size(200); real a = 1; real d = 0.6; real h = 0.9; triple A1 = (a,0,0); triple B1 = (0,a,0); triple C1 = (-a,0,0); triple D1 = (0,-a,0); triple A2 = (a+d,0,h); triple B2 = (0,a+d,h); triple C2 = (-(a+d),0,h); triple D2 = (0,-(a+d),h); triple A3 = (a+2*d,0,2*h); triple B3 = (0,a+2*d,2*h); triple C3 = (-(a+2*d),0,2*h); triple D3 = (0,-(a+2*d),2*h);  path3 bottom = A1--B1--C1--D1--cycle; path3 backright = A1--B1--B2--A2--cycle; path3 backleft = B1--C1--C2--B2--cycle; path3 frontleft = C1--D1--D3--C3--cycle; path3 frontright = D1--A1--A3--D3--cycle;  defaultpen(1); pen blue = rgb(202, 201, 255); pen red = rgb(255, 164, 164);  // colored surfaces draw(surface(bottom), emissive(gray)); draw(surface(backright), emissive(blue)); draw(surface(backleft), emissive(blue)); draw(surface(frontleft), emissive(red)); draw(surface(frontright), emissive(red)); // black outlines draw(A1--D1--C1); draw(A2--D2--C2); draw(A3--D3--C3, linewidth(1.4)); draw((0.32,0.68,0)--B1--(-0.32,0.68,0)); draw((1.25,0.35,h)--B2--(-1.25,0.35,h)); draw(A3--B3--C3); draw(A1--A3); draw(B1--B3); draw(C1--C3); draw(D1--D3, linewidth(1.4));  currentprojection=perspective((0,-4,3)); [/asy]",
+            "width": 335,
+            "height": 208
+          }
+        ],
+        "options": [
+          "(A) 70",
+          "(B) 85",
+          "(C) 90",
+          "(D) 95",
+          "(E) 105"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q20",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_20",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_20",
+        "curated_problem_number": 20,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_20",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_20",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/9/9/9/999d7699134dfd106175595beed0f608becea47c.png",
+              "alt": "[asy] import geometry; size(6cm);  real r = (sqrt(3)-1)/2, R = (sqrt(2) - 1)*(sqrt(3)-1)/2; draw((0,0) -- (1,0) -- (1, 1) -- (0,1) -- cycle); draw(arc((r, 0), r, 0, 180)); draw(arc((1, r), r, 90, 270)); draw(arc((1 - r, 1), r, 180, 360)); draw(arc((0, 1 - r), r, 270, 450)); draw(circle((1/2,1/2),R)); [/asy]",
+              "width": 285,
+              "height": 285
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 20",
+        "question_number": 20,
+        "text": "Four congruent semicircles are inscribed in a square of side length $1$ so that their diameters are on the sides of the square, one endpoint of each diameter is at a vertex of the square, and adjacent semicircles are tangent to each other. A small circle centered at the center of the square is tangent to each of the four semicircles, as shown below.\nThe diameter of the small circle can be written as $(\\sqrt a+b)(\\sqrt c+d)$, where $a$, $b$, $c$, and $d$ are integers. What is $a + b + c + d$?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/9/9/9/999d7699134dfd106175595beed0f608becea47c.png",
+            "alt": "[asy] import geometry; size(6cm);  real r = (sqrt(3)-1)/2, R = (sqrt(2) - 1)*(sqrt(3)-1)/2; draw((0,0) -- (1,0) -- (1, 1) -- (0,1) -- cycle); draw(arc((r, 0), r, 0, 180)); draw(arc((1, r), r, 90, 270)); draw(arc((1 - r, 1), r, 180, 360)); draw(arc((0, 1 - r), r, 270, 450)); draw(circle((1/2,1/2),R)); [/asy]",
+            "width": 285,
+            "height": 285
+          }
+        ],
+        "options": [
+          "(A) 3",
+          "(B) 5",
+          "(C) 8",
+          "(D) 9",
+          "(E) 11"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q21",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_21",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_21",
+        "curated_problem_number": 21,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_21",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_21",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 21",
+        "question_number": 21,
+        "text": "Each of the $9$ squares in a $3 \\times 3$ grid is to be colored red, blue, or yellow in such a way that each red square shares an edge with at least one blue square, each blue square shares an edge with at least one yellow square, and each yellow square shares an edge with at least one red square. Colorings that can be obtained from one another by rotations and/or reflections are to be considered the same. How many different colorings are possible?",
+        "question_images": [],
+        "options": [
+          "(A) 3",
+          "(B) 9",
+          "(C) 12",
+          "(D) 18",
+          "(E) 27"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q22",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_22",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_22",
+        "curated_problem_number": 22,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_22",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_22",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 22",
+        "question_number": 22,
+        "text": "A seven-digit positive integer is chosen at random. What is the probability that the number is divisible by $11$, given that the sum of its digits is $61$?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{3}{14}",
+          "(B) \\frac{3}{11}",
+          "(C) \\frac{2}{7}",
+          "(D) \\frac{4}{11}",
+          "(E) \\frac{3}{7}"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q23",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_23",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_23",
+        "curated_problem_number": 23,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_23",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_23",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 23",
+        "question_number": 23,
+        "text": "A rectangular grid of squares has $141$ rows and $91$ columns. Each square has room for two numbers. Horace and Vera each fill in the grid by putting the numbers from $1$ through $141 \\cdot 91 = 12,831$ into the squares. Horace fills the grid horizontally: he puts $1$ through $91$ in order from left to right into row $1$, puts $92$ through $182$ into row $2$ in order from left to right, and continues similarly through row $141$. Vera fills the grid vertically: she puts $1$ through $141$ in order from top to bottom into column $1$, then $142$ through $282$ into column $2$ in order from top to bottom, and continues similarly through column $91$. How many squares get two copies of the same number?",
+        "question_images": [],
+        "options": [
+          "(A) 7",
+          "(B) 10",
+          "(C) 11",
+          "(D) 12",
+          "(E) 19"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q24",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_24",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_24",
+        "curated_problem_number": 24,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_24",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_24",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 24",
+        "question_number": 24,
+        "text": "A frog hops along the number line according to the following rules.\n\n$\\bullet$ It starts at $0$.\n\n$\\bullet$ If it is at $0$, then it moves to $1$ with probability $\\tfrac{1}{2}$ and it disappears with probability $\\tfrac{1}{2}$.\n\n$\\bullet$ For $n=$ $1$, $2$ or $3$, if it is at $n$, then it moves to $n+1$ with probability $\\tfrac{1}{4}$, it moves to $n-1$ with probability $\\tfrac{1}{4}$, and it disappears with probability $\\tfrac{1}{2}$.\n\nWhat is the probability that the frog reaches 4?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{1}{101}",
+          "(B) \\frac{1}{100}",
+          "(C) \\frac{1}{99}",
+          "(D) \\frac{1}{98}",
+          "(E) \\frac{1}{97}"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "prior-amc-2025-amc-10b-q25",
+        "source_stem": "prior-amc-2025-amc-10b",
+        "curated_source": "2025 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_25",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_25",
+        "curated_problem_number": 25,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems#Problem_25",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems/Problem_25",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/f/c/2/fc2a97046f56f475b9dbc35ed58049bd41666b3d.png",
+              "alt": "[asy] size(8cm); defaultpen(linewidth(0.9)); dotfactor = 3; pair A=(0,0), B=(4,0), C=(4,4), D=(0,4); pair P=(0, 8/5);           pair Q=(10/3, 4);      draw(A--B--C--D--cycle); draw(P--Q, red+linewidth(1.2)); label(\"$A$\",A,SW); label(\"$B$\",B,SE); label(\"$C$\",C,NE); label(\"$D$\",D,NW); label(\"$P$\",P,W); label(\"$Q$\",Q,N); draw(arc(Q,0.3,0, -35.78)); draw(arc(Q,0.3,180,180+35.78));  pair arrow_dir = Q + 0.75*dir(-35.78); draw(Q--arrow_dir, red+linewidth(1.2), EndArrow(size=10, FillDraw(red)));  dot(A); dot(B); dot(C); dot(D); dot(P); dot(Q); [/asy]",
+              "width": 378,
+              "height": 378
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10B / Problem 25",
+        "question_number": 25,
+        "text": "Square $ABCD$ has sides of length $4$. Points $P$ and $Q$ lie on $\\overline{AD}$ and $\\overline{CD}$, respectively, with $AP=\\frac{8}{5}$ and $DQ=\\frac{10}{3}$. A path begins along the segment from $P$ to $Q$ and continues by reflecting against the sides of $ABCD$ (with congruent incoming and outgoing angles). If the path hits a vertex of the square, it terminates there; otherwise it continues forever. At which vertex does the path terminate?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/f/c/2/fc2a97046f56f475b9dbc35ed58049bd41666b3d.png",
+            "alt": "[asy] size(8cm); defaultpen(linewidth(0.9)); dotfactor = 3; pair A=(0,0), B=(4,0), C=(4,4), D=(0,4); pair P=(0, 8/5);           pair Q=(10/3, 4);      draw(A--B--C--D--cycle); draw(P--Q, red+linewidth(1.2)); label(\"$A$\",A,SW); label(\"$B$\",B,SE); label(\"$C$\",C,NE); label(\"$D$\",D,NW); label(\"$P$\",P,W); label(\"$Q$\",Q,N); draw(arc(Q,0.3,0, -35.78)); draw(arc(Q,0.3,180,180+35.78));  pair arrow_dir = Q + 0.75*dir(-35.78); draw(Q--arrow_dir, red+linewidth(1.2), EndArrow(size=10, FillDraw(red)));  dot(A); dot(B); dot(C); dot(D); dot(P); dot(Q); [/asy]",
+            "width": 378,
+            "height": 378
+          }
+        ],
+        "options": [
+          "(A) A",
+          "(B) B",
+          "(C) C",
+          "(D) D",
+          "(E) \\text{The path continues forever.}"
+        ],
+        "correct": "B"
+      }
+    ],
+    "curated_metadata": {
+      "year": 2025,
+      "contest": "AMC 10B",
+      "administered_on": "2025-11-13",
+      "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B",
+      "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems",
+      "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Answer_Key"
+    }
+  }
+}

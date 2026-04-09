@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from math_tutor.challenge_builder import sync_curated_exam_bundle
-from math_tutor.prior_amc_scraper import scrape_prior_amc_exam_from_html
+from math_tutor.prior_amc_scraper import _ParagraphParser, scrape_prior_amc_exam_from_html
 
 
 MAIN_PAGE_HTML = """
@@ -144,6 +144,158 @@ class PriorAmcScraperTests(unittest.TestCase):
             self.assertEqual(bundle["exams"][0]["questions"][1]["id"], "prior-amc-2025-amc-10a-q02")
             self.assertEqual(bundle["exams"][0]["questions"][2]["id"], "prior-amc-2025-amc-10a-q03")
             self.assertEqual(bundle["exams"][0]["question_count"], 3)
+
+
+MAIN_PAGE_HTML_HELD_ON = MAIN_PAGE_HTML.replace(
+    "The test was administered on Wednesday, November 5, 2025.",
+    "The test was held on Thursday, November 10, 2022.",
+)
+
+MAIN_PAGE_HTML_NO_WEEKDAY = MAIN_PAGE_HTML.replace(
+    "The test was administered on Wednesday, November 5, 2025.",
+    "This test was held on January 30, 2020.",
+)
+
+MAIN_PAGE_HTML_LATEX_DATE = MAIN_PAGE_HTML.replace(
+    "The test was administered on Wednesday, November 5, 2025.",
+    'The test was held on Wednesday, November <img src="//latex.artofproblemsolving.com/a.png" class="latex" alt="$16$" width="20" height="14" />, <img src="//latex.artofproblemsolving.com/b.png" class="latex" alt="$2022$" width="38" height="14" />.',
+)
+
+MAIN_PAGE_HTML_FUTURE_LATEX_DATE = MAIN_PAGE_HTML.replace(
+    "The test was administered on Wednesday, November 5, 2025.",
+    'The test will be held on Thursday, February <img src="//latex.artofproblemsolving.com/c.png" class="latex" alt="$4$" width="11" height="14" />, <img src="//latex.artofproblemsolving.com/d.png" class="latex" alt="$2021$" width="35" height="13" />.',
+)
+
+MAIN_PAGE_HTML_NO_DATE = MAIN_PAGE_HTML.replace(
+    "The test was administered on Wednesday, November 5, 2025.",
+    "The test date has not been announced.",
+)
+
+MAIN_PAGE_HTML_DATE_NO_WEEKDAY_HELD = MAIN_PAGE_HTML.replace(
+    "The test was administered on Wednesday, November 5, 2025.",
+    "The test was held on November 14, 2023.",
+)
+
+
+def _scrape(main_page_html: str) -> dict:
+    return scrape_prior_amc_exam_from_html(
+        main_page_html=main_page_html,
+        problems_page_html=PROBLEMS_PAGE_HTML,
+        answer_key_html=ANSWER_KEY_HTML,
+        source_url="https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A",
+    )
+
+
+class OptionParsingTests(unittest.TestCase):
+    def test_parse_option_alt_handles_space_before_brace(self) -> None:
+        # Some exams use \textbf {(A) } (space before {) instead of \textbf{(A) }
+        alt = r"$\textbf {(A) } 6\sqrt{3}-3\pi \qquad \textbf {(B) } \frac{9\sqrt{3}}{2} - 2\pi \qquad \textbf {(C) } \frac{3\sqrt{3}}{2} - \frac{\pi}{3} \qquad \textbf {(D) } 3\sqrt{3} - \pi \qquad \textbf {(E) } 4\sqrt{3} - \frac{4\pi}{3}$"
+        from math_tutor.prior_amc_scraper import _parse_option_alt
+        options = _parse_option_alt(alt)
+        self.assertEqual(len(options), 5)
+        self.assertTrue(options[0].startswith("(A)"))
+        self.assertTrue(options[4].startswith("(E)"))
+
+    def test_problem_with_spaced_textbf_options_is_detected_as_option_block(self) -> None:
+        # _looks_like_option_block must match \textbf {(A)} (space before {)
+        # so it gets routed through option parsing, not appended as question text
+        spaced_options_html = (
+            '<img src="//latex.artofproblemsolving.com/x.png" class="latex" '
+            r'alt="$\textbf {(A) } 6\sqrt{3}-3\pi \qquad \textbf {(B) } \frac{9}{2}$" />'
+        )
+        p = _ParagraphParser(base_url="https://artofproblemsolving.com/")
+        p.feed(spaced_options_html)
+        p.close()
+        self.assertNotEqual(p.option_alt, "", "option_alt should be set for spaced \\textbf {(A)} format")
+        self.assertEqual(p.text, "")
+
+    def test_parse_option_alt_handles_paren_textbf_format(self) -> None:
+        # 2021 Fall exams use (\textbf{A})\: text instead of \textbf{(A) } text
+        from math_tutor.prior_amc_scraper import _parse_option_alt
+        alt = r"$(\textbf{A})\: 10{,}000\qquad(\textbf{B}) \: 10{,}010\qquad(\textbf{C}) \: 10{,}110\qquad(\textbf{D}) \: 11{,}000\qquad(\textbf{E}) \: 11{,}110$"
+        options = _parse_option_alt(alt)
+        self.assertEqual(len(options), 5)
+        self.assertTrue(options[0].startswith("(A)"), options[0])
+        self.assertTrue(options[4].startswith("(E)"), options[4])
+
+    def test_paren_textbf_options_are_detected_as_option_block(self) -> None:
+        # _looks_like_option_block must match (\textbf{A}) format (parens outside \textbf)
+        html = (
+            '<img src="//latex.artofproblemsolving.com/x.png" class="latex" '
+            r'alt="$(\textbf{A})\: 8\qquad(\textbf{B}) \: 9$" />'
+        )
+        p = _ParagraphParser(base_url="https://artofproblemsolving.com/")
+        p.feed(html)
+        p.close()
+        self.assertNotEqual(p.option_alt, "", "option_alt should be set for (\\textbf{A}) format")
+        self.assertEqual(p.text, "")
+
+    def test_split_options_across_two_images_in_one_paragraph(self) -> None:
+        # P17 of 2021 Fall 10B has options (A)-(C) in one image and (D)-(E) in another
+        from math_tutor.prior_amc_scraper import _parse_option_alt
+        html = (
+            '<img src="//latex.artofproblemsolving.com/x.png" class="latex" '
+            r'alt="$(\textbf{A})\: 5x+2y=0\qquad(\textbf{B}) \: 3x+2y=0\qquad(\textbf{C}) \: x-3y=0$" />'
+            "\n"
+            '<img src="//latex.artofproblemsolving.com/y.png" class="latex" '
+            r'alt="$(\textbf{D}) \: 2x-3y=0\qquad(\textbf{E}) \: 7x+y=0$" />'
+        )
+        p = _ParagraphParser(base_url="https://artofproblemsolving.com/")
+        p.feed(html)
+        p.close()
+        self.assertEqual(len(p.option_alts), 2, "both option images should be collected")
+        all_options: list[str] = []
+        for alt in p.option_alts:
+            all_options.extend(_parse_option_alt(alt))
+        self.assertEqual(len(all_options), 5)
+        self.assertTrue(all_options[0].startswith("(A)"))
+        self.assertTrue(all_options[4].startswith("(E)"))
+
+    def test_options_and_text_in_same_paragraph(self) -> None:
+        # P19 of 2021 Fall 10B has question text and options in a single <p>
+        from math_tutor.prior_amc_scraper import _parse_option_alt
+        html = (
+            "<p>"
+            'Question text here. '
+            '<img src="//latex.artofproblemsolving.com/x.png" class="latexcenter" '
+            r'alt="\[f(2)+f(3)?\]" width="200" height="18" />'
+            '<img src="//latex.artofproblemsolving.com/y.png" class="latex" '
+            r'alt="$(\textbf{A})\: 8\qquad(\textbf{B}) \: 9\qquad(\textbf{C}) \: 11\qquad(\textbf{D}) \: 22\qquad(\textbf{E}) \: 29$" />'
+            "</p>"
+        )
+        p = _ParagraphParser(base_url="https://artofproblemsolving.com/")
+        p.feed(html)
+        p.close()
+        self.assertIn("Question text", p.text)
+        self.assertNotEqual(p.option_alt, "")
+        options = _parse_option_alt(p.option_alt)
+        self.assertEqual(len(options), 5)
+
+
+class DateParsingTests(unittest.TestCase):
+    def test_held_on_date_format(self) -> None:
+        exam = _scrape(MAIN_PAGE_HTML_HELD_ON)
+        self.assertEqual(exam["curated_metadata"]["administered_on"], "2022-11-10")
+
+    def test_no_weekday_date_format(self) -> None:
+        exam = _scrape(MAIN_PAGE_HTML_NO_WEEKDAY)
+        self.assertEqual(exam["curated_metadata"]["administered_on"], "2020-01-30")
+
+    def test_latex_image_date(self) -> None:
+        exam = _scrape(MAIN_PAGE_HTML_LATEX_DATE)
+        self.assertEqual(exam["curated_metadata"]["administered_on"], "2022-11-16")
+
+    def test_future_tense_with_latex_date(self) -> None:
+        exam = _scrape(MAIN_PAGE_HTML_FUTURE_LATEX_DATE)
+        self.assertEqual(exam["curated_metadata"]["administered_on"], "2021-02-04")
+
+    def test_no_date_returns_none(self) -> None:
+        exam = _scrape(MAIN_PAGE_HTML_NO_DATE)
+        self.assertIsNone(exam["curated_metadata"]["administered_on"])
+
+    def test_date_without_weekday_held(self) -> None:
+        exam = _scrape(MAIN_PAGE_HTML_DATE_NO_WEEKDAY_HELD)
+        self.assertEqual(exam["curated_metadata"]["administered_on"], "2023-11-14")
 
 
 if __name__ == "__main__":

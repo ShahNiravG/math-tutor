@@ -1,0 +1,786 @@
+{
+  "format": "explicit_curated_exam",
+  "exam": {
+    "format": "explicit_curated_exam",
+    "source_type": "explicit_curated_exam",
+    "id": "prior-amc-2023-amc-10b",
+    "title": "2023 AMC 10B",
+    "bank": "prior-amc",
+    "bank_title": "Prior AMC",
+    "question_count": 25,
+    "questions": [
+      {
+        "id": "prior-amc-2023-amc-10b-q01",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_1",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_1",
+        "curated_problem_number": 1,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_1",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_1",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 1",
+        "question_number": 1,
+        "text": "Mrs. Jones is pouring orange juice into four identical glasses for her four sons. She fills the first three glasses completely but runs out of juice when the fourth glass is only $\\frac{1}{3}$ full. What fraction of a glass must Mrs. Jones pour from each of the first three glasses into the fourth glass so that all four glasses will have the same amount of juice?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{1}{12}",
+          "(B) \\frac{1}{4}",
+          "(C) \\frac{1}{6}",
+          "(D) \\frac{1}{8}",
+          "(E) \\frac{2}{9}"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q02",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_2",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_2",
+        "curated_problem_number": 2,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_2",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_2",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 2",
+        "question_number": 2,
+        "text": "Carlos went to a sports store to buy running shoes. Running shoes were on sale, with prices reduced by $20\\%$on every pair of shoes. Carlos also knew that he had to pay a $7.5\\%$ sales tax on the discounted price. He had $43$ dollars. What is the original (before discount) price of the most expensive shoes he could afford to buy?",
+        "question_images": [],
+        "options": [
+          "(A) \\$46",
+          "(B) \\$50",
+          "(C) \\$48",
+          "(D) \\$47",
+          "(E) \\$49"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q03",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_3",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_3",
+        "curated_problem_number": 3,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_3",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_3",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 3",
+        "question_number": 3,
+        "text": "A $3-4-5$ right triangle is inscribed in circle $A$, and a $5-12-13$ right triangle is inscribed in circle $B$. What is the ratio of the area of circle $A$ to the area of circle $B$?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{9}{25}",
+          "(B) \\frac{1}{9}",
+          "(C) \\frac{1 }{5}",
+          "(D) \\frac{25}{169}",
+          "(E) \\frac{4}{25}"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q04",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_4",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_4",
+        "curated_problem_number": 4,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_4",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_4",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 4",
+        "question_number": 4,
+        "text": "Jackson's paintbrush makes a narrow strip with a width of $6.5$ millimeters. Jackson has enough paint to make a strip $25$ meters long. How many square centimeters of paper could Jackson cover with paint?",
+        "question_images": [],
+        "options": [
+          "(A) 162{,}500",
+          "(B) 162.5",
+          "(C) 1{,}625",
+          "(D) 1{,}625{,}000",
+          "(E) 16{,}250"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q05",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_5",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_5",
+        "curated_problem_number": 5,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_5",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_5",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 5",
+        "question_number": 5,
+        "text": "Maddy and Lara see a list of numbers written on a blackboard. Maddy adds $3$ to each number in the list and finds that the sum of her new numbers is $45$. Lara multiplies each number in the list by $3$ and finds that the sum of her new numbers is also $45$. How many numbers are written on the blackboard?",
+        "question_images": [],
+        "options": [
+          "(A) 10",
+          "(B) 5",
+          "(C) 6",
+          "(D) 8",
+          "(E) 9"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q06",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_6",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_6",
+        "curated_problem_number": 6,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_6",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_6",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 6",
+        "question_number": 6,
+        "text": "Let $L_1 = 1$, $L_2 = 3$, and $L_{n+2} = L_{n+1}+L_n$ for $n \\geq 1$. How many terms in the sequence $L_1, L_2, L_3, \\cdots, L_{2023}$ are even?",
+        "question_images": [],
+        "options": [
+          "(A) 673",
+          "(B) 1011",
+          "(C) 675",
+          "(D) 1010",
+          "(E) 674"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q07",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_7",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_7",
+        "curated_problem_number": 7,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_7",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_7",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/3/e/5/3e58c26719e5c366165b8d9c7154b74f9b6f431b.png",
+              "alt": "[asy] size(170); defaultpen(linewidth(0.6)); real r = 25; draw(dir(135)--dir(45)--dir(315)--dir(225)--cycle); draw(dir(135-r)--dir(45-r)--dir(315-r)--dir(225-r)--cycle); label(\"$A$\",dir(135),NW); label(\"$B$\",dir(45),NE); label(\"$C$\",dir(315),SE); label(\"$D$\",dir(225),SW); label(\"$E$\",dir(135-r),N); label(\"$F$\",dir(45-r),E); label(\"$G$\",dir(315-r),S); label(\"$H$\",dir(225-r),W); [/asy]",
+              "width": 285,
+              "height": 278
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 7",
+        "question_number": 7,
+        "text": "Square $ABCD$ is rotated $20^{\\circ}$ clockwise about its center to obtain square $EFGH$, as shown below. What is the degree measure of $\\angle{EAB}$?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/3/e/5/3e58c26719e5c366165b8d9c7154b74f9b6f431b.png",
+            "alt": "[asy] size(170); defaultpen(linewidth(0.6)); real r = 25; draw(dir(135)--dir(45)--dir(315)--dir(225)--cycle); draw(dir(135-r)--dir(45-r)--dir(315-r)--dir(225-r)--cycle); label(\"$A$\",dir(135),NW); label(\"$B$\",dir(45),NE); label(\"$C$\",dir(315),SE); label(\"$D$\",dir(225),SW); label(\"$E$\",dir(135-r),N); label(\"$F$\",dir(45-r),E); label(\"$G$\",dir(315-r),S); label(\"$H$\",dir(225-r),W); [/asy]",
+            "width": 285,
+            "height": 278
+          }
+        ],
+        "options": [
+          "(A) 24^{\\circ}",
+          "(B) 35^{\\circ}",
+          "(C) 30^{\\circ}",
+          "(D) 32^{\\circ}",
+          "(E) 20^{\\circ}"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q08",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_8",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_8",
+        "curated_problem_number": 8,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_8",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_8",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 8",
+        "question_number": 8,
+        "text": "What is the units digit of $2022^{2023} + 2023^{2022}$?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 7",
+          "(B) \\ 1",
+          "(C) \\ 9",
+          "(D) \\ 5",
+          "(E) \\ 3"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q09",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_9",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_9",
+        "curated_problem_number": 9,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_9",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_9",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 9",
+        "question_number": 9,
+        "text": "The numbers $16$ and $25$ are a pair of consecutive positive squares whose difference is $9$. How many pairs of consecutive positive perfect squares have a difference of less than or equal to $2023$?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 674",
+          "(B) \\ 1011",
+          "(C) \\ 1010",
+          "(D) \\ 2019",
+          "(E) \\ 2017"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q10",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_10",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_10",
+        "curated_problem_number": 10,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_10",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_10",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 10",
+        "question_number": 10,
+        "text": "You are playing a game. A $2$ $\\times$ $1$ rectangle covers two adjacent squares (oriented either horizontally or vertically) of a $3$ $\\times$ $3$ grid of squares, but you are not told which two squares are covered. Your goal is to find at least one square that is covered by the rectangle. A \"turn\" consists of you guessing a square, after which you are told whether that square is covered by the hidden rectangle. What is the minimum number of turns you need to ensure that at least one of your guessed squares is covered by the rectangle?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 3",
+          "(B) \\ 5",
+          "(C) \\ 4",
+          "(D) \\ 8",
+          "(E) \\ 6"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q11",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_11",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_11",
+        "curated_problem_number": 11,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_11",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_11",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 11",
+        "question_number": 11,
+        "text": "Suzanne went to the bank and withdrew $\\$800$. The teller gave her this amount using $\\$20$ bills, $\\$50$ bills, and $\\$100$ bills, with at least one of each denomination. How many different collections of bills could Suzanne have received?",
+        "question_images": [],
+        "options": [
+          "(A) 45",
+          "(B) 21",
+          "(C) 36",
+          "(D) 28",
+          "(E) 32"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q12",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_12",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_12",
+        "curated_problem_number": 12,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_12",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_12",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 12",
+        "question_number": 12,
+        "text": "When the roots of the polynomial\n\n\\[P(x) = (x-1)^1 (x-2)^2 (x-3)^3 \\cdot \\cdot \\cdot (x-10)^{10}\\]\n\nare removed from the number line, what remains is the union of $11$ disjoint open intervals. On how many of these intervals is $P(x)$ positive?",
+        "question_images": [],
+        "options": [
+          "(A) 3",
+          "(B) 7",
+          "(C) 6",
+          "(D) 4",
+          "(E) 5"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q13",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_13",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_13",
+        "curated_problem_number": 13,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_13",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_13",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 13",
+        "question_number": 13,
+        "text": "What is the area of the region in the coordinate plane defined by\n\n\\[| | x | - 1 | + | | y | - 1 | \\le 1?\\]",
+        "question_images": [],
+        "options": [
+          "(A) \\ 2",
+          "(B) \\ 8",
+          "(C) \\ 4",
+          "(D) \\ 15",
+          "(E) \\ 12"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q14",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_14",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_14",
+        "curated_problem_number": 14,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_14",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_14",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 14",
+        "question_number": 14,
+        "text": "How many ordered pairs of integers $(m,n)$ satisfy the equation $m^2+mn+n^2 = m^2n^2$?",
+        "question_images": [],
+        "options": [
+          "(A) 7",
+          "(B) 1",
+          "(C) 3",
+          "(D) 6",
+          "(E) 5"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q15",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_15",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_15",
+        "curated_problem_number": 15,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_15",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_15",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 15",
+        "question_number": 15,
+        "text": "What is the least positive integer $m$ such that $m \\cdot 2! \\cdot 3!\\cdot 4!\\cdot 5! \\dots 16!$ is a perfect square?",
+        "question_images": [],
+        "options": [
+          "(A) 30",
+          "(B) 30030",
+          "(C) 70",
+          "(D) 1430",
+          "(E) 1001"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q16",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_16",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_16",
+        "curated_problem_number": 16,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_16",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_16",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 16",
+        "question_number": 16,
+        "text": "Define an $upno$ to be a positive integer of $2$ or more digits where the digits are strictly\nincreasing moving left to right. Similarly, define a $downno$ to be a positive integer\nof $2$ or more digits where the digits are strictly decreasing moving left to right. For\ninstance, the number $258$ is an upno and $8620$ is a downno. Let $U$ equal the total\nnumber of $upnos$ and let $D$ equal the total number of $downnos$. What is $|U-D|$?",
+        "question_images": [],
+        "options": [
+          "(A) 512",
+          "(B) 10",
+          "(C) 0",
+          "(D) 9",
+          "(E) 511"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q17",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_17",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_17",
+        "curated_problem_number": 17,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_17",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_17",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 17",
+        "question_number": 17,
+        "text": "A rectangular box $P$ has distinct edge lengths $a$, $b$, and $c$. The sum of the lengths of\nall $12$ edges of $P$ is $13$, the sum of the areas of all $6$ faces of $P$ is $\\dfrac{11}{2}$, and the volume of $P$ is $\\dfrac{1}{2}$. What is the length of the longest interior diagonal connecting two vertices of $P$?",
+        "question_images": [],
+        "options": [
+          "(A) 2",
+          "(B) \\frac{3}{8}",
+          "(C) \\frac{9}{8}",
+          "(D) \\frac{9}{4}",
+          "(E) \\frac{3}{2}"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q18",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_18",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_18",
+        "curated_problem_number": 18,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_18",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_18",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 18",
+        "question_number": 18,
+        "text": "Suppose $a$, $b$, and $c$ are positive integers such that\n\\[\\dfrac{a}{14}+\\dfrac{b}{15}=\\dfrac{c}{210}.\\]\n\nWhich of the following statements are necessarily true?\n\nI. If $\\gcd(a,14)=1$ or $\\gcd(b,15)=1$ or both, then $\\gcd(c,210)=1$.\n\nII. If $\\gcd(c,210)=1$, then $\\gcd(a,14)=1$ or $\\gcd(b,15)=1$ or both.\n\nIII. $\\gcd(c,210)=1$ if and only if $\\gcd(a,14)=\\gcd(b,15)=1$.",
+        "question_images": [],
+        "options": [
+          "(A) \\text{I, II, and III}",
+          "(B) \\text{I only}",
+          "(C) \\text{I and II only}",
+          "(D) \\text{III only}",
+          "(E) \\text{II and III only}"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q19",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_19",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_19",
+        "curated_problem_number": 19,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_19",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_19",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 19",
+        "question_number": 19,
+        "text": "Sonya the frog chooses a point uniformly at random lying within the square\n$[0, 6]$ $\\times$ $[6, 0]$ in the coordinate plane and hops to that point. She then randomly\nchooses a distance uniformly at random from $[0, 1]$ and a direction uniformly at\nrandom from {north, south, east, west}. All her choices are independent. She now\nhops the distance in the chosen direction. What is the probability that she lands\noutside the square?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{1}{6}",
+          "(B) \\frac{1}{12}",
+          "(C) \\frac{1}{4}",
+          "(D) \\frac{1}{10}",
+          "(E) \\frac{1}{9}"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q20",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_20",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_20",
+        "curated_problem_number": 20,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_20",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_20",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 20",
+        "question_number": 20,
+        "text": "Four congruent semicircles are drawn on the surface of a sphere with radius $2$, as\nshown, creating a close curve that divides the surface into two congruent regions.\nThe length of the curve is $\\pi\\sqrt{n}$. What is $n$?",
+        "question_images": [],
+        "options": [
+          "(A) 32",
+          "(B) 12",
+          "(C) 48",
+          "(D) 36",
+          "(E) 27"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q21",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_21",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_21",
+        "curated_problem_number": 21,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_21",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_21",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 21",
+        "question_number": 21,
+        "text": "Each of $2023$ balls is randomly placed into one of $3$ bins. Which of the following is closest to the probability that each of the bins will contain an odd number of balls?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{2}{3}",
+          "(B) \\frac{3}{10}",
+          "(C) \\frac{1}{2}",
+          "(D) \\frac{1}{3}",
+          "(E) \\frac{1}{4}"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q22",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_22",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_22",
+        "curated_problem_number": 22,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_22",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_22",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 22",
+        "question_number": 22,
+        "text": "How many distinct values of $x$ satisfy\n$\\lfloor{x}\\rfloor^2-3x+2=0,$\nwhere $\\lfloor{x}\\rfloor$ denotes the largest integer less than or equal to $x$?",
+        "question_images": [],
+        "options": [
+          "(A) \\text{an infinite number}",
+          "(B) 4",
+          "(C) 2",
+          "(D) 3",
+          "(E) 0"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q23",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_23",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_23",
+        "curated_problem_number": 23,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_23",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_23",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 23",
+        "question_number": 23,
+        "text": "An arithmetic sequence of positive integers has $n\\ge3$ terms, initial term $a$, and common difference $d>1$. Carl wrote down all the terms in this sequence correctly except for one term, which was off by $1$. The sum of the terms he wrote down was $222$. What is $a+d+n$?",
+        "question_images": [],
+        "options": [
+          "(A) 24",
+          "(B) 20",
+          "(C) 22",
+          "(D) 28",
+          "(E) 26"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q24",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_24",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_24",
+        "curated_problem_number": 24,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_24",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_24",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 24",
+        "question_number": 24,
+        "text": "What is the perimeter of the boundary of the region consisting of all points which can be expressed as $(2u-3w, v+4w)$ with $0\\le u\\le1$, $0\\le v\\le1,$ and $0\\le w\\le1$?",
+        "question_images": [],
+        "options": [
+          "(A) 10\\sqrt{3}",
+          "(B) 13",
+          "(C) 12",
+          "(D) 18",
+          "(E) 16"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "prior-amc-2023-amc-10b-q25",
+        "source_stem": "prior-amc-2023-amc-10b",
+        "curated_source": "2023 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_25",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_25",
+        "curated_problem_number": 25,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems#Problem_25",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems/Problem_25",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "prior-amc",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2023 AMC 10B / Problem 25",
+        "question_number": 25,
+        "text": "A regular pentagon with area $1+\\sqrt5$ is printed on paper and cut out. All five vertices are folded to the center of the pentagon, creating a smaller pentagon. What is the area of the new pentagon?",
+        "question_images": [],
+        "options": [
+          "(A) 4-\\sqrt{5}",
+          "(B) \\sqrt{5}-1",
+          "(C) 8-3\\sqrt{5}",
+          "(D) \\frac{\\sqrt{5}+1}{2}",
+          "(E) \\frac{2+\\sqrt{5}}{3}"
+        ],
+        "correct": "B"
+      }
+    ],
+    "curated_metadata": {
+      "year": 2023,
+      "contest": "AMC 10B",
+      "administered_on": "2023-11-14",
+      "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B",
+      "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Problems",
+      "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2023_AMC_10B_Answer_Key"
+    }
+  }
+}
