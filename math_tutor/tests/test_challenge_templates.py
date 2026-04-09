@@ -41,6 +41,16 @@ class ChallengeTemplateTests(unittest.TestCase):
         self.assertIn("[A-E]", result_template)
         self.assertIn("[A-E]", partial_template)
 
+    def test_exam_and_partial_result_templates_preserve_curated_source_metadata(self) -> None:
+        exam_template = (ROOT / "challenges_src" / "exam.html").read_text(encoding="utf-8")
+        partial_template = (ROOT / "challenges_src" / "partial_result.php").read_text(encoding="utf-8")
+
+        self.assertIn("curated_source: q.curated_source || ''", exam_template)
+        self.assertIn("curated_concept: q.curated_concept || ''", exam_template)
+        self.assertIn("curated_source_link: q.curated_source_link || ''", exam_template)
+        self.assertIn("Review Source", partial_template)
+        self.assertIn("curated_source_link", partial_template)
+
     def test_progress_views_use_saved_question_counts(self) -> None:
         reports = (ROOT / "challenges_src" / "reports.php").read_text(encoding="utf-8")
         admin_delete = (ROOT / "challenges_src" / "admin" / "delete.php").read_text(encoding="utf-8")

@@ -203,6 +203,17 @@ foreach ($answers as $item) {
     .badge-current   { background:var(--amber-bg); color:var(--amber); }
     .badge-not-reached { background:#f3f4f6; color:#9ca3af; }
     .q-source { font-size:.82rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    .q-meta-row { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px; }
+    .q-meta-chip {
+      display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px;
+      background:#eef2ff; color:#334155; font-size:.8rem; font-weight:600; font-family:system-ui,sans-serif;
+    }
+    .q-meta-link {
+      display:inline-flex; align-items:center; padding:5px 10px; border-radius:999px;
+      border:1px solid var(--line); color:var(--accent); text-decoration:none; font-size:.8rem; font-weight:700;
+      font-family:system-ui,sans-serif; background:#fff;
+    }
+    .q-meta-link:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
     .q-text { line-height:1.75; margin-bottom:18px; font-size:1.05rem; }
     .q-text p { margin:.4em 0; }
 
@@ -386,6 +397,14 @@ foreach ($answers as $item) {
     $qnum    = $i + 1;
     $source_raw = $item['source_label'] ?? '';
     $source  = htmlspecialchars($source_raw);
+    $curated_source_raw = trim((string)($item['curated_source'] ?? ''));
+    $curated_concept_raw = trim((string)($item['curated_concept'] ?? ''));
+    $curated_source_link_raw = trim((string)($item['curated_source_link'] ?? ''));
+    $curated_source = htmlspecialchars($curated_source_raw);
+    $curated_concept = htmlspecialchars($curated_concept_raw);
+    $curated_source_link = (
+      $curated_source_link_raw !== '' && preg_match('/^https?:\/\//i', $curated_source_link_raw)
+    ) ? htmlspecialchars($curated_source_link_raw) : '';
     $qtext   = $item['question_text'] ?? '';
     $options = $item['options'] ?? [];
     $correct = $item['correct'] ?? '';
@@ -424,6 +443,15 @@ foreach ($answers as $item) {
         <button class="copy-btn" type="button" onclick="copyRawText(this)">&#128203;</button>
       </span>
     </div>
+    <?php if ($curated_source || $curated_concept || $curated_source_link): ?>
+    <div class="q-meta-row">
+      <?php if ($curated_source): ?><span class="q-meta-chip">Source: <?= $curated_source ?></span><?php endif; ?>
+      <?php if ($curated_concept): ?><span class="q-meta-chip">Concept: <?= $curated_concept ?></span><?php endif; ?>
+      <?php if ($curated_source_link): ?>
+      <a class="q-meta-link" href="<?= $curated_source_link ?>" target="_blank" rel="noopener noreferrer">Review Source</a>
+      <?php endif; ?>
+    </div>
+    <?php endif; ?>
     <div class="q-text" id="qt-<?= $qnum ?>"></div>
 
     <?php if (!empty($options)): ?>

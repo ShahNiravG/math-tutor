@@ -468,6 +468,9 @@ function saveProgressToServer() {
         return {
           question_id:   q.id,
           source_label:  q.source_label,
+          curated_source: q.curated_source || '',
+          curated_concept: q.curated_concept || '',
+          curated_source_link: q.curated_source_link || '',
           question_text: q.text,
           options:       q.options || [],
           correct:       q.correct || '',
@@ -681,6 +684,9 @@ async function doSubmit() {
       return {
         question_id: q.id,
         source_label: q.source_label,
+        curated_source: q.curated_source || '',
+        curated_concept: q.curated_concept || '',
+        curated_source_link: q.curated_source_link || '',
         question_text: q.text,
         options: q.options || [],
         correct: q.correct || '',

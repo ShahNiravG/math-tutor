@@ -156,7 +156,10 @@ def _normalize_curated_bundle(bundle: dict[str, Any], *, generated_at: str) -> d
     question_counts: dict[str, int] = {}
     for exam in bundle.get("exams", []):
         bank_id = str(exam.get("bank", "")).strip().lower() or "curated"
-        bank_title = str(exam.get("bank_title", "")).strip() or bank_id.upper()
+        bank_title = _canonical_curated_bank_title(
+            bank_id,
+            fallback_title=str(exam.get("bank_title", "")).strip() or bank_id.upper(),
+        )
         exam_counts[bank_id] = exam_counts.get(bank_id, 0) + 1
         exam_number = exam_counts[bank_id]
         normalized_questions: list[dict[str, Any]] = []
@@ -183,6 +186,12 @@ def _normalize_curated_bundle(bundle: dict[str, Any], *, generated_at: str) -> d
         "generated_at": bundle.get("generated_at") or generated_at,
         "exams": normalized_exams,
     }
+
+
+def _canonical_curated_bank_title(bank_id: str, *, fallback_title: str) -> str:
+    if bank_id == "amc":
+        return "AMC & AIME"
+    return fallback_title
 
 
 def _canonicalize_curated_question(question: dict[str, Any], *, bank_id: str, question_index: int) -> dict[str, Any]:

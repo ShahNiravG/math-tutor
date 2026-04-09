@@ -3,9 +3,9 @@
   "exams": [
     {
       "id": "amc-01",
-      "title": "AMC Exam 1",
+      "title": "AMC & AIME Exam 1",
       "bank": "amc",
-      "bank_title": "AMC",
+      "bank_title": "AMC & AIME",
       "questions": [
         {
           "id": "amc-q001",
@@ -116,9 +116,9 @@
     },
     {
       "id": "amc-02",
-      "title": "AMC Exam 2",
+      "title": "AMC & AIME Exam 2",
       "bank": "amc",
-      "bank_title": "AMC",
+      "bank_title": "AMC & AIME",
       "questions": [
         {
           "id": "amc-q006",
@@ -229,9 +229,9 @@
     },
     {
       "id": "amc-03",
-      "title": "AMC Exam 3",
+      "title": "AMC & AIME Exam 3",
       "bank": "amc",
-      "bank_title": "AMC",
+      "bank_title": "AMC & AIME",
       "questions": [
         {
           "id": "amc-q011",
@@ -342,9 +342,9 @@
     },
     {
       "id": "amc-04",
-      "title": "AMC Exam 4",
+      "title": "AMC & AIME Exam 4",
       "bank": "amc",
-      "bank_title": "AMC",
+      "bank_title": "AMC & AIME",
       "questions": [
         {
           "id": "amc-q016",
@@ -455,9 +455,9 @@
     },
     {
       "id": "amc-05",
-      "title": "AMC Exam 5",
+      "title": "AMC & AIME Exam 5",
       "bank": "amc",
-      "bank_title": "AMC",
+      "bank_title": "AMC & AIME",
       "questions": [
         {
           "id": "amc-q021",
@@ -568,9 +568,9 @@
     },
     {
       "id": "amc-06",
-      "title": "AMC Exam 6",
+      "title": "AMC & AIME Exam 6",
       "bank": "amc",
-      "bank_title": "AMC",
+      "bank_title": "AMC & AIME",
       "questions": [
         {
           "id": "amc-q026",
@@ -676,6 +676,984 @@
           "correct": "B",
           "curated_problem_number": 30,
           "curated_question_checksum": "6205c581e8de36507ad2c722a37b3cc528d8683bfa135793034493e91567a9b5"
+        }
+      ]
+    },
+    {
+      "id": "amc-07",
+      "title": "AMC & AIME Exam 7",
+      "bank": "amc",
+      "bank_title": "AMC & AIME",
+      "questions": [
+        {
+          "id": "amc-q031",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1983 AIME, Problem 3",
+          "curated_concept": "Circles and Parametric Equations",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1983_AIME_Problems/Problem_3",
+          "curated_problem_number": 31,
+          "curated_metadata": {
+            "problem_number": 31,
+            "source": "1983 AIME, Problem 3",
+            "concept": "Circles and Parametric Equations",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1983_AIME_Problems/Problem_3"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1983 AIME, Problem 3 / Circles and Parametric Equations / Q31",
+          "question_number": 31,
+          "text": "What is the largest value of $3x+4y$ if $x$ and $y$ are real numbers such that $x^2+y^2=14x+6y+6$?",
+          "options": [
+            "(A) 68",
+            "(B) 73",
+            "(C) 75",
+            "(D) 80",
+            "(E) 85"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "6915810fea1f86ee44cf4fd513ba5b9e0f19c64f2d8ae87ff3734efdfb04d9cb"
+        },
+        {
+          "id": "amc-q032",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1988 AIME, Problem 4",
+          "curated_concept": "Fundamental Trigonometric Identities",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1988_AIME_Problems/Problem_4",
+          "curated_problem_number": 32,
+          "curated_metadata": {
+            "problem_number": 32,
+            "source": "1988 AIME, Problem 4",
+            "concept": "Fundamental Trigonometric Identities",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1988_AIME_Problems/Problem_4"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1988 AIME, Problem 4 / Fundamental Trigonometric Identities / Q32",
+          "question_number": 32,
+          "text": "Suppose that $|x_i| < 1$ for $i=1, 2, \\dots, n$. Suppose further that $|x_1| + |x_2| + \\dots + |x_n| = 19 + |x_1 + x_2 + \\dots + x_n|$. What is the smallest possible value of $n$?",
+          "options": [
+            "(A) 19",
+            "(B) 20",
+            "(C) 38",
+            "(D) 39",
+            "(E) 40"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "9ca05538d25c0fe3e951ac53d90ca18e4bd3bd648d7d17be080fa4ce95bac8a7"
+        },
+        {
+          "id": "amc-q033",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1989 AIME, Problem 3",
+          "curated_concept": "Right Triangle Trigonometry",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1989_AIME_Problems/Problem_3",
+          "curated_problem_number": 33,
+          "curated_metadata": {
+            "problem_number": 33,
+            "source": "1989 AIME, Problem 3",
+            "concept": "Right Triangle Trigonometry",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1989_AIME_Problems/Problem_3"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1989 AIME, Problem 3 / Right Triangle Trigonometry / Q33",
+          "question_number": 33,
+          "text": "Point $P$ is inside triangle $ABC$. Line segments $PD$, $PE$, and $PF$ are drawn perpendicular to sides $BC$, $CA$, and $AB$, respectively. Given that $AB=c=13$, $BC=a=14$, $CA=b=15$, and $PD=PE=PF$, find the common length of these segments.",
+          "options": [
+            "(A) 3",
+            "(B) 4",
+            "(C) 5",
+            "(D) 6",
+            "(E) 7"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "bfbf63990c0f68c2e7b4c594c9aa96587134cdaa0e98905813e6ff288da4094f"
+        },
+        {
+          "id": "amc-q034",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1994 AIME, Problem 3",
+          "curated_concept": "Trigonometric Functions of Angles",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1994_AIME_Problems/Problem_3",
+          "curated_problem_number": 34,
+          "curated_metadata": {
+            "problem_number": 34,
+            "source": "1994 AIME, Problem 3",
+            "concept": "Trigonometric Functions of Angles",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1994_AIME_Problems/Problem_3"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1994 AIME, Problem 3 / Trigonometric Functions of Angles / Q34",
+          "question_number": 34,
+          "text": "The function $f(x)$ satisfies $f(x)+f(x-1)=x^2$ for all $x$. Given that $f(19)=94$, find $f(94)$.",
+          "options": [
+            "(A) 3515",
+            "(B) 4215",
+            "(C) 4615",
+            "(D) 5015",
+            "(E) 5615"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "8dbdbe75e7d2a1609a251d446fdaf5de7433198738b2df7de31ccf4c6e8e89a7"
+        },
+        {
+          "id": "amc-q035",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1995 AIME, Problem 7",
+          "curated_concept": "Addition and Subtraction Formulas",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1995_AIME_Problems/Problem_7",
+          "curated_problem_number": 35,
+          "curated_metadata": {
+            "problem_number": 35,
+            "source": "1995 AIME, Problem 7",
+            "concept": "Addition and Subtraction Formulas",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1995_AIME_Problems/Problem_7"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1995 AIME, Problem 7 / Addition and Subtraction Formulas / Q35",
+          "question_number": 35,
+          "text": "Given that $(1+\\sin t)(1+\\cos t)=5/4$ and $(1-\\sin t)(1-\\cos t) = \\frac{m}{n}-\\sqrt{k}$, where $m, n, k$ are positive integers and $m,n$ are relatively prime, find $m+n+k$.",
+          "options": [
+            "(A) 25",
+            "(B) 27",
+            "(C) 29",
+            "(D) 31",
+            "(E) 33"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "734f824721fd7f5c412a27a2d460adf1edefa7d5bbdbfa8a9a865ce8e80ccad9"
+        }
+      ]
+    },
+    {
+      "id": "amc-08",
+      "title": "AMC & AIME Exam 8",
+      "bank": "amc",
+      "bank_title": "AMC & AIME",
+      "questions": [
+        {
+          "id": "amc-q036",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1996 AIME, Problem 5",
+          "curated_concept": "Law of Sines and Cosines",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1996_AIME_Problems/Problem_5",
+          "curated_problem_number": 36,
+          "curated_metadata": {
+            "problem_number": 36,
+            "source": "1996 AIME, Problem 5",
+            "concept": "Law of Sines and Cosines",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1996_AIME_Problems/Problem_5"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1996 AIME, Problem 5 / Law of Sines and Cosines / Q36",
+          "question_number": 36,
+          "text": "Suppose that the roots of $x^3 + 3x^2 + 4x - 11 = 0$ are $a$, $b$, and $c$, and that the roots of $x^3 + rx^2 + sx + t = 0$ are $a+b$, $b+c$, and $c+a$. Find $t$.",
+          "options": [
+            "(A) 13",
+            "(B) 17",
+            "(C) 21",
+            "(D) 23",
+            "(E) 27"
+          ],
+          "correct": "D",
+          "curated_question_checksum": "2969835afdd7d1e887720ff1169c0c0b2221e686415d3fbd5b9f415b552def2b"
+        },
+        {
+          "id": "amc-q037",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1997 AIME, Problem 4",
+          "curated_concept": "Circles and Radians",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1997_AIME_Problems/Problem_4",
+          "curated_problem_number": 37,
+          "curated_metadata": {
+            "problem_number": 37,
+            "source": "1997 AIME, Problem 4",
+            "concept": "Circles and Radians",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1997_AIME_Problems/Problem_4"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1997 AIME, Problem 4 / Circles and Radians / Q37",
+          "question_number": 37,
+          "text": "Circles of radii $5, 5, 8$, and $m/n$ are mutually externally tangent, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
+          "options": [
+            "(A) 11",
+            "(B) 13",
+            "(C) 15",
+            "(D) 17",
+            "(E) 19"
+          ],
+          "correct": "D",
+          "curated_question_checksum": "dafaa345609f04f8ab8e98fc2a97d1157e174e67f83313d8ad9e78b0e8dea532"
+        },
+        {
+          "id": "amc-q038",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1998 AIME, Problem 2",
+          "curated_concept": "Fundamental Trigonometric Identities",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1998_AIME_Problems/Problem_2",
+          "curated_problem_number": 38,
+          "curated_metadata": {
+            "problem_number": 38,
+            "source": "1998 AIME, Problem 2",
+            "concept": "Fundamental Trigonometric Identities",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1998_AIME_Problems/Problem_2"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1998 AIME, Problem 2 / Fundamental Trigonometric Identities / Q38",
+          "question_number": 38,
+          "text": "Find the number of solutions to the equation $\\cos^2(x) + \\cos^2(2x) + \\cos^2(3x) = 1$ in the interval $[0, \\pi]$.",
+          "options": [
+            "(A) 2",
+            "(B) 3",
+            "(C) 4",
+            "(D) 5",
+            "(E) 6"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "390aea2242985b57be95590f876b6b2f20a453b7239af961df1aa6f6720d890f"
+        },
+        {
+          "id": "amc-q039",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "1999 AIME, Problem 6",
+          "curated_concept": "Solving Trigonometric Equations",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/1999_AIME_Problems/Problem_6",
+          "curated_problem_number": 39,
+          "curated_metadata": {
+            "problem_number": 39,
+            "source": "1999 AIME, Problem 6",
+            "concept": "Solving Trigonometric Equations",
+            "link": "https://artofproblemsolving.com/wiki/index.php/1999_AIME_Problems/Problem_6"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 1999 AIME, Problem 6 / Solving Trigonometric Equations / Q39",
+          "question_number": 39,
+          "text": "Find the sum of all values of $x$ in $[0, 2\\pi]$ such that $\\sin x + \\sin 2x + \\sin 3x = 0$.",
+          "options": [
+            "(A) $2\\pi$",
+            "(B) $3\\pi$",
+            "(C) $4\\pi$",
+            "(D) $5\\pi$",
+            "(E) $6\\pi$"
+          ],
+          "correct": "E",
+          "curated_question_checksum": "44d67bbab33fc192cd4d00bd1e3f003e3a518982c57fd21eb127930b5feda7b0"
+        },
+        {
+          "id": "amc-q040",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2000 AIME I, Problem 4",
+          "curated_concept": "Shifted Conics",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2000_AIME_I_Problems/Problem_4",
+          "curated_problem_number": 40,
+          "curated_metadata": {
+            "problem_number": 40,
+            "source": "2000 AIME I, Problem 4",
+            "concept": "Shifted Conics",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2000_AIME_I_Problems/Problem_4"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2000 AIME I, Problem 4 / Shifted Conics / Q40",
+          "question_number": 40,
+          "text": "In the $xy$-plane, what is the length of the shortest path from $(0,0)$ to $(12,16)$ that does not go inside the circle $(x-6)^2+(y-8)^2=25$?",
+          "options": [
+            "(A) $10 + \\frac{5\\pi}{3}$",
+            "(B) $10\\sqrt{3} + \\frac{5\\pi}{3}$",
+            "(C) $12 + \\frac{5\\pi}{2}$",
+            "(D) $15 + 2\\pi$",
+            "(E) $10\\sqrt{3} + \\frac{10\\pi}{3}$"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "779a0f2debac94a6632604ff7f1765d46d8b1f23bc3ddfd0e888c595d9486bba"
+        }
+      ]
+    },
+    {
+      "id": "amc-09",
+      "title": "AMC & AIME Exam 9",
+      "bank": "amc",
+      "bank_title": "AMC & AIME",
+      "questions": [
+        {
+          "id": "amc-q041",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2001 AIME I, Problem 3",
+          "curated_concept": "Double-Angle Formulas",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2001_AIME_I_Problems/Problem_3",
+          "curated_problem_number": 41,
+          "curated_metadata": {
+            "problem_number": 41,
+            "source": "2001 AIME I, Problem 3",
+            "concept": "Double-Angle Formulas",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2001_AIME_I_Problems/Problem_3"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2001 AIME I, Problem 3 / Double-Angle Formulas / Q41",
+          "question_number": 41,
+          "text": "Find the sum of the roots, in degrees, of the equation $\\tan^2 x - 3 \\tan x + 1 = 0$ in the interval $0^\\circ < x < 360^\\circ$.",
+          "options": [
+            "(A) 180",
+            "(B) 360",
+            "(C) 540",
+            "(D) 720",
+            "(E) 900"
+          ],
+          "correct": "D",
+          "curated_question_checksum": "1bc4157234ca45a0384134aea89f37cb24577c1c74e0a8f3cff3119b335d9e1b"
+        },
+        {
+          "id": "amc-q042",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2002 AIME I, Problem 12",
+          "curated_concept": "Trigonometric Functions on the Unit Circle",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2002_AIME_I_Problems/Problem_12",
+          "curated_problem_number": 42,
+          "curated_metadata": {
+            "problem_number": 42,
+            "source": "2002 AIME I, Problem 12",
+            "concept": "Trigonometric Functions on the Unit Circle",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2002_AIME_I_Problems/Problem_12"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2002 AIME I, Problem 12 / Trigonometric Functions on the Unit Circle / Q42",
+          "question_number": 42,
+          "text": "Let $f(x) = \\sin x + \\cos x + \\tan x + \\cot x + \\sec x + \\csc x$. If $f(x) = 2$ and $x$ is not a multiple of $\\pi/2$, find the absolute value of $\\sin(2x)$.",
+          "options": [
+            "(A) 0.4",
+            "(B) 0.5",
+            "(C) 0.6",
+            "(D) 0.75",
+            "(E) 0.8"
+          ],
+          "correct": "D",
+          "curated_question_checksum": "d01fdff3f6c791107ffd74813849dea1e41efc576ef936d0d1b15a4a33b84d19"
+        },
+        {
+          "id": "amc-q043",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2003 AIME I, Problem 8",
+          "curated_concept": "Ellipses",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2003_AIME_I_Problems/Problem_8",
+          "curated_problem_number": 43,
+          "curated_metadata": {
+            "problem_number": 43,
+            "source": "2003 AIME I, Problem 8",
+            "concept": "Ellipses",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2003_AIME_I_Problems/Problem_8"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2003 AIME I, Problem 8 / Ellipses / Q43",
+          "question_number": 43,
+          "text": "The ellipse $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$ has its center at the origin and passes through $(3,4)$. Its foci are at $(\\pm c, 0)$. If $c^2=16$, what is the area of the ellipse?",
+          "options": [
+            "(A) $15\\pi$",
+            "(B) $20\\pi$",
+            "(C) $25\\pi$",
+            "(D) $30\\pi$",
+            "(E) $35\\pi$"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "c926f639c1d5a547fdd284b684ec581bcbf9f2ebe67a239fdbc6e6541bea16c3"
+        },
+        {
+          "id": "amc-q044",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2004 AIME I, Problem 9",
+          "curated_concept": "Law of Cosines",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2004_AIME_I_Problems/Problem_9",
+          "curated_problem_number": 44,
+          "curated_metadata": {
+            "problem_number": 44,
+            "source": "2004 AIME I, Problem 9",
+            "concept": "Law of Cosines",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2004_AIME_I_Problems/Problem_9"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2004 AIME I, Problem 9 / Law of Cosines / Q44",
+          "question_number": 44,
+          "text": "In triangle $ABC$, $\\cos A = -0.6$, and the lengths of the medians from $B$ and $C$ to the opposite sides are $12$ and $15$, respectively. Find the square of the length of $BC$.",
+          "options": [
+            "(A) 180",
+            "(B) 205",
+            "(C) 225",
+            "(D) 260",
+            "(E) 288"
+          ],
+          "correct": "D",
+          "curated_question_checksum": "8df10d1c17ee14c23623943b4d4a444ccb14fa0b75c33a1b08b3603b91adc4b2"
+        },
+        {
+          "id": "amc-q045",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2005 AIME I, Problem 7",
+          "curated_concept": "Circles and Parabolas",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2005_AIME_I_Problems/Problem_7",
+          "curated_problem_number": 45,
+          "curated_metadata": {
+            "problem_number": 45,
+            "source": "2005 AIME I, Problem 7",
+            "concept": "Circles and Parabolas",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2005_AIME_I_Problems/Problem_7"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2005 AIME I, Problem 7 / Circles and Parabolas / Q45",
+          "question_number": 45,
+          "text": "Find the number of positive integers $x$ such that there exists a positive integer $y$ for which $\\log_2 x + \\log_2 y = \\log_2(x+y+25)$.",
+          "options": [
+            "(A) 3",
+            "(B) 4",
+            "(C) 5",
+            "(D) 6",
+            "(E) 7"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "2e21c5b623af30ac5b54422b8e4766873b56b553caf24677f819e4501258e500"
+        }
+      ]
+    },
+    {
+      "id": "amc-10",
+      "title": "AMC & AIME Exam 10",
+      "bank": "amc",
+      "bank_title": "AMC & AIME",
+      "questions": [
+        {
+          "id": "amc-q046",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2006 AIME I, Problem 4",
+          "curated_concept": "Half-Angle Formulas",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2006_AIME_I_Problems/Problem_4",
+          "curated_problem_number": 46,
+          "curated_metadata": {
+            "problem_number": 46,
+            "source": "2006 AIME I, Problem 4",
+            "concept": "Half-Angle Formulas",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2006_AIME_I_Problems/Problem_4"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2006 AIME I, Problem 4 / Half-Angle Formulas / Q46",
+          "question_number": 46,
+          "text": "Let $x$ be an angle such that $\\sin x + \\cos x = 1/5$. What is the value of $\\tan(x/2)$ if $0 < x < \\pi$?",
+          "options": [
+            "(A) 1/2",
+            "(B) 2",
+            "(C) 3",
+            "(D) 1/3",
+            "(E) -1/3"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "70e3766c164ce5aa3036ac871ec4910535dca4f4965a08df171c127e816e0328"
+        },
+        {
+          "id": "amc-q047",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2007 AIME I, Problem 6",
+          "curated_concept": "Hyperbolas",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2007_AIME_I_Problems/Problem_6",
+          "curated_problem_number": 47,
+          "curated_metadata": {
+            "problem_number": 47,
+            "source": "2007 AIME I, Problem 6",
+            "concept": "Hyperbolas",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2007_AIME_I_Problems/Problem_6"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2007 AIME I, Problem 6 / Hyperbolas / Q47",
+          "question_number": 47,
+          "text": "The hyperbola $xy = 1$ intersects the circle $x^2 + y^2 = 4$ in four points. Find the area of the quadrilateral formed by these four points.",
+          "options": [
+            "(A) 4",
+            "(B) $4\\sqrt{2}$",
+            "(C) 8",
+            "(D) $4\\sqrt{3}$",
+            "(E) 12"
+          ],
+          "correct": "D",
+          "curated_question_checksum": "77d27dd8090f2ad1d23619be57b241190e073d517f398b33147e1c71c21c9c91"
+        },
+        {
+          "id": "amc-q048",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2008 AIME I, Problem 5",
+          "curated_concept": "Trigonometric Properties",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2008_AIME_I_Problems/Problem_5",
+          "curated_problem_number": 48,
+          "curated_metadata": {
+            "problem_number": 48,
+            "source": "2008 AIME I, Problem 5",
+            "concept": "Trigonometric Properties",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2008_AIME_I_Problems/Problem_5"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2008 AIME I, Problem 5 / Trigonometric Properties / Q48",
+          "question_number": 48,
+          "text": "Let $P(x)$ be a polynomial such that $P(\\sin \\theta) = \\cos 2\\theta$ for all $\\theta$. What is the value of $P(1/3)$?",
+          "options": [
+            "(A) 1/9",
+            "(B) 5/9",
+            "(C) 7/9",
+            "(D) 8/9",
+            "(E) 1"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "83474c8f367f4d6c7cc6332077f87524801e3cef08bdb98268165ecd437186f9"
+        },
+        {
+          "id": "amc-q049",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2009 AIME I, Problem 8",
+          "curated_concept": "Law of Sines",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2009_AIME_I_Problems/Problem_8",
+          "curated_problem_number": 49,
+          "curated_metadata": {
+            "problem_number": 49,
+            "source": "2009 AIME I, Problem 8",
+            "concept": "Law of Sines",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2009_AIME_I_Problems/Problem_8"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2009 AIME I, Problem 8 / Law of Sines / Q49",
+          "question_number": 49,
+          "text": "In triangle $ABC$, the lengths of the sides are $a=7, b=8, c=9$. Let $H$ be the orthocenter. Find the length of the segment $AH$.",
+          "options": [
+            "(A) 2",
+            "(B) $17/5$",
+            "(C) $16/5$",
+            "(D) 4",
+            "(E) $19/5$"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "28b67496d85d6b135f097d03240f22aef3a400a93fb9a6cef8f8fbb4be06a2a8"
+        },
+        {
+          "id": "amc-q050",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2010 AIME I, Problem 7",
+          "curated_concept": "Inverse Trigonometric Functions",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2010_AIME_I_Problems/Problem_7",
+          "curated_problem_number": 50,
+          "curated_metadata": {
+            "problem_number": 50,
+            "source": "2010 AIME I, Problem 7",
+            "concept": "Inverse Trigonometric Functions",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2010_AIME_I_Problems/Problem_7"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2010 AIME I, Problem 7 / Inverse Trigonometric Functions / Q50",
+          "question_number": 50,
+          "text": "Evaluate $\\sum_{n=1}^{10} \\arctan \\left( \\frac{1}{n^2+n+1} \\right)$ as $\\arctan(a/b)$ where $a,b$ are coprime. Find $a+b$.",
+          "options": [
+            "(A) 11",
+            "(B) 13",
+            "(C) 17",
+            "(D) 21",
+            "(E) 23"
+          ],
+          "correct": "E",
+          "curated_question_checksum": "1b3a681adcdcc08bf15fdeb4b24e6084479c1f728fb43032a39c833df8238988"
+        }
+      ]
+    },
+    {
+      "id": "amc-11",
+      "title": "AMC & AIME Exam 11",
+      "bank": "amc",
+      "bank_title": "AMC & AIME",
+      "questions": [
+        {
+          "id": "amc-q051",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2011 AIME I, Problem 6",
+          "curated_concept": "Solving Trigonometric Equations",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2011_AIME_I_Problems/Problem_6",
+          "curated_problem_number": 51,
+          "curated_metadata": {
+            "problem_number": 51,
+            "source": "2011 AIME I, Problem 6",
+            "concept": "Solving Trigonometric Equations",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2011_AIME_I_Problems/Problem_6"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2011 AIME I, Problem 6 / Solving Trigonometric Equations / Q51",
+          "question_number": 51,
+          "text": "Find the number of values of $x$ in the interval $(0, 2\\pi)$ that satisfy $\\cos(x) + \\cos(2x) + \\cos(3x) = 0$.",
+          "options": [
+            "(A) 4",
+            "(B) 5",
+            "(C) 6",
+            "(D) 7",
+            "(E) 8"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "8f3b358f9c877b4719a9ae5129d1e2818f8b70f58b38adc0f0dd99da470d0ab9"
+        },
+        {
+          "id": "amc-q052",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2012 AIME I, Problem 3",
+          "curated_concept": "Circles and Sectors",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2012_AIME_I_Problems/Problem_3",
+          "curated_problem_number": 52,
+          "curated_metadata": {
+            "problem_number": 52,
+            "source": "2012 AIME I, Problem 3",
+            "concept": "Circles and Sectors",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2012_AIME_I_Problems/Problem_3"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2012 AIME I, Problem 3 / Circles and Sectors / Q52",
+          "question_number": 52,
+          "text": "Two circles of radii $10$ and $14$ intersect. The length of the common chord is $16$. What is the sum of the areas of the two distinct regions bounded by the arcs of the circles?",
+          "options": [
+            "(A) $296\\pi - 84$",
+            "(B) $296\\pi - 96$",
+            "(C) $296\\pi - 128$",
+            "(D) $296\\pi - 160$",
+            "(E) $296\\pi - 192$"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "3a21f5d7cb07f8f2bf842750a99d17ae26afa7d386671c450e7a9fa17f0bd1b6"
+        },
+        {
+          "id": "amc-q053",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2013 AIME I, Problem 9",
+          "curated_concept": "Trigonometric Addition Formulas",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2013_AIME_I_Problems/Problem_9",
+          "curated_problem_number": 53,
+          "curated_metadata": {
+            "problem_number": 53,
+            "source": "2013 AIME I, Problem 9",
+            "concept": "Trigonometric Addition Formulas",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2013_AIME_I_Problems/Problem_9"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2013 AIME I, Problem 9 / Trigonometric Addition Formulas / Q53",
+          "question_number": 53,
+          "text": "If $\\tan \\alpha + \\tan \\beta = 2$ and $\\cos \\alpha \\cos \\beta = 1/3$, what is $\\cos(\\alpha-\\beta)$?",
+          "options": [
+            "(A) 1/3",
+            "(B) 4/9",
+            "(C) 5/9",
+            "(D) 2/3",
+            "(E) 7/9"
+          ],
+          "correct": "E",
+          "curated_question_checksum": "8067d285b48a947df73fdef02f2e53df81ada2094f110bb1a50562a5e4a21bd1"
+        },
+        {
+          "id": "amc-q054",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2014 AIME I, Problem 2",
+          "curated_concept": "Law of Sines and Right Triangles",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2014_AIME_I_Problems/Problem_2",
+          "curated_problem_number": 54,
+          "curated_metadata": {
+            "problem_number": 54,
+            "source": "2014 AIME I, Problem 2",
+            "concept": "Law of Sines and Right Triangles",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2014_AIME_I_Problems/Problem_2"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2014 AIME I, Problem 2 / Law of Sines and Right Triangles / Q54",
+          "question_number": 54,
+          "text": "In right triangle $ABC$ with right angle at $C$, the median $CM$ has length $5$, and the altitude $CH$ has length $4$. What is the area of the triangle?",
+          "options": [
+            "(A) 15",
+            "(B) 18",
+            "(C) 20",
+            "(D) 24",
+            "(E) 25"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "3c948ad928d2e50703168d19b9ee3960508ce2396e7721bbe50243cde80cc820"
+        },
+        {
+          "id": "amc-q055",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2015 AIME I, Problem 5",
+          "curated_concept": "Shifted Conics",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2015_AIME_I_Problems/Problem_5",
+          "curated_problem_number": 55,
+          "curated_metadata": {
+            "problem_number": 55,
+            "source": "2015 AIME I, Problem 5",
+            "concept": "Shifted Conics",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2015_AIME_I_Problems/Problem_5"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2015 AIME I, Problem 5 / Shifted Conics / Q55",
+          "question_number": 55,
+          "text": "An ellipse is defined by the equation $9x^2 + 16y^2 - 36x + 96y + 36 = 0$. What is the distance between the foci of the ellipse?",
+          "options": [
+            "(A) $2\\sqrt{5}$",
+            "(B) $2\\sqrt{7}$",
+            "(C) $4$",
+            "(D) $6$",
+            "(E) $2\\sqrt{10}$"
+          ],
+          "correct": "B",
+          "curated_question_checksum": "a83f5519ca810b9c5e2f351beae8d8966c84cce87035f42efb1d4471b694336a"
+        }
+      ]
+    },
+    {
+      "id": "amc-12",
+      "title": "AMC & AIME Exam 12",
+      "bank": "amc",
+      "bank_title": "AMC & AIME",
+      "questions": [
+        {
+          "id": "amc-q056",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2016 AIME I, Problem 6",
+          "curated_concept": "Graphs of Sine and Cosine",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2016_AIME_I_Problems/Problem_6",
+          "curated_problem_number": 56,
+          "curated_metadata": {
+            "problem_number": 56,
+            "source": "2016 AIME I, Problem 6",
+            "concept": "Graphs of Sine and Cosine",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2016_AIME_I_Problems/Problem_6"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2016 AIME I, Problem 6 / Graphs of Sine and Cosine / Q56",
+          "question_number": 56,
+          "text": "How many solutions are there to the equation $\\sin(x) = x/10$?",
+          "options": [
+            "(A) 3",
+            "(B) 5",
+            "(C) 7",
+            "(D) 9",
+            "(E) 11"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "279ab86ab08bcda35f8d33fdd4ee8457ee800629fed1ce247c8bdf0d692a71ed"
+        },
+        {
+          "id": "amc-q057",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2017 AIME I, Problem 3",
+          "curated_concept": "Double-Angle Formulas",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2017_AIME_I_Problems/Problem_3",
+          "curated_problem_number": 57,
+          "curated_metadata": {
+            "problem_number": 57,
+            "source": "2017 AIME I, Problem 3",
+            "concept": "Double-Angle Formulas",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2017_AIME_I_Problems/Problem_3"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2017 AIME I, Problem 3 / Double-Angle Formulas / Q57",
+          "question_number": 57,
+          "text": "If $\\sin x + \\cos x = 1/3$, what is the value of $\\sin^3 x + \\cos^3 x$?",
+          "options": [
+            "(A) 13/27",
+            "(B) 14/27",
+            "(C) 15/27",
+            "(D) 16/27",
+            "(E) 17/27"
+          ],
+          "correct": "A",
+          "curated_question_checksum": "9646e563484c0b01b35e27c43515decdb7b034945964c1a6eb3b2005f6217435"
+        },
+        {
+          "id": "amc-q058",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2018 AIME I, Problem 7",
+          "curated_concept": "Right Triangle Trigonometry",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2018_AIME_I_Problems/Problem_7",
+          "curated_problem_number": 58,
+          "curated_metadata": {
+            "problem_number": 58,
+            "source": "2018 AIME I, Problem 7",
+            "concept": "Right Triangle Trigonometry",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2018_AIME_I_Problems/Problem_7"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2018 AIME I, Problem 7 / Right Triangle Trigonometry / Q58",
+          "question_number": 58,
+          "text": "In a right triangle $ABC$ with $\\angle C = 90^\\circ$, $\\tan A = 3/4$. If the inradius of the triangle is $2$, what is the perimeter of the triangle?",
+          "options": [
+            "(A) 20",
+            "(B) 22",
+            "(C) 24",
+            "(D) 26",
+            "(E) 28"
+          ],
+          "correct": "C",
+          "curated_question_checksum": "636ede0ddb9f3937e2e61f5f1fe3ce84279a4cf230225dd89bb58ddd922cbf1f"
+        },
+        {
+          "id": "amc-q059",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2019 AIME I, Problem 4",
+          "curated_concept": "Law of Cosines",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2019_AIME_I_Problems/Problem_4",
+          "curated_problem_number": 59,
+          "curated_metadata": {
+            "problem_number": 59,
+            "source": "2019 AIME I, Problem 4",
+            "concept": "Law of Cosines",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2019_AIME_I_Problems/Problem_4"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2019 AIME I, Problem 4 / Law of Cosines / Q59",
+          "question_number": 59,
+          "text": "In $\\triangle ABC$, $AB=13, BC=14, CA=15$. Let $D$ be a point on $BC$ such that $BD=5$. What is the length of $AD$?",
+          "options": [
+            "(A) 9",
+            "(B) 10",
+            "(C) $10\\sqrt{2}$",
+            "(D) 12",
+            "(E) 13"
+          ],
+          "correct": "D",
+          "curated_question_checksum": "12caca83d0d2841b67ce7889e3ae6c24a11a018540ba44316646eabd4208cfda"
+        },
+        {
+          "id": "amc-q060",
+          "source_stem": "aimi-gemini-pro",
+          "source_file": "AIMI-gemini-pro.json",
+          "curated_source": "2020 AIME I, Problem 6",
+          "curated_concept": "Circles and Tangents",
+          "curated_source_link": "https://artofproblemsolving.com/wiki/index.php/2020_AIME_I_Problems/Problem_6",
+          "curated_problem_number": 60,
+          "curated_metadata": {
+            "problem_number": 60,
+            "source": "2020 AIME I, Problem 6",
+            "concept": "Circles and Tangents",
+            "link": "https://artofproblemsolving.com/wiki/index.php/2020_AIME_I_Problems/Problem_6"
+          },
+          "chapter": "",
+          "type": "amc",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "AMC & AIME / 2020 AIME I, Problem 6 / Circles and Tangents / Q60",
+          "question_number": 60,
+          "text": "A circle is tangent to the lines $y=x$ and $y=-x$ and passes through the point $(4, 0)$. What is the sum of the possible radii of this circle?",
+          "options": [
+            "(A) 4",
+            "(B) $4\\sqrt{2}$",
+            "(C) 8",
+            "(D) $8\\sqrt{2}$",
+            "(E) 16"
+          ],
+          "correct": "D",
+          "curated_question_checksum": "c6b8a5dbb0583fa55d0a26d74dd963c18273f88f1de20cc8fabe1a2a36f7aa2b"
         }
       ]
     }

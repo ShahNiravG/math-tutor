@@ -111,11 +111,11 @@ class ChallengeBuilderTests(unittest.TestCase):
             self.assertEqual([exam["id"] for exam in exams], ["amc-01", "amc-02", "amc-03", "amc-04"])
             self.assertEqual([len(exam["questions"]) for exam in exams], [5, 5, 5, 1])
             self.assertEqual(exams[0]["bank"], "amc")
-            self.assertEqual(exams[0]["bank_title"], "AMC")
+            self.assertEqual(exams[0]["bank_title"], "AMC & AIME")
             self.assertEqual(exams[2]["bank"], "amc")
-            self.assertEqual(exams[2]["bank_title"], "AMC")
+            self.assertEqual(exams[2]["bank_title"], "AMC & AIME")
             self.assertEqual(exams[:2], original_exams)
-            self.assertEqual(exams[0]["title"], "AMC Exam 1")
+            self.assertEqual(exams[0]["title"], "AMC & AIME Exam 1")
             self.assertEqual([question["id"] for question in exams[2]["questions"]], ["amc-q011", "amc-q012", "amc-q013", "amc-q014", "amc-q015"])
             self.assertEqual(exams[0]["questions"][0]["options"][-1], "(E) 5")
             self.assertEqual(exams[0]["questions"][0]["correct"], "E")
@@ -228,6 +228,53 @@ class ChallengeBuilderTests(unittest.TestCase):
             self.assertEqual(second_bundle["exams"][0]["questions"][0]["curated_source"], "AMC")
             self.assertEqual(len(second_bundle["exams"][0]["questions"][0]["curated_question_checksum"]), 64)
             self.assertNotIn("curated_fingerprint", second_bundle["exams"][0]["questions"][0])
+
+    def test_sync_curated_exam_bundle_preserves_source_metadata_and_link_for_aime_questions(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            exams_dir = temp_root / "exams"
+            exams_dir.mkdir()
+            canonical_path = temp_root / "curated_exams.json"
+
+            aime_path = exams_dir / "AIMI-gemini-pro.json"
+            aime_path.write_text(
+                json.dumps(
+                    [
+                        {
+                            "problem_number": 31,
+                            "source": "1983 AIME, Problem 3",
+                            "concept": "Circles and Parametric Equations",
+                            "question": "What is the largest value of 3x+4y?",
+                            "options": {
+                                "A": "68",
+                                "B": "73",
+                                "C": "75",
+                                "D": "80",
+                                "E": "85",
+                            },
+                            "correct_option": "B",
+                            "link": "https://artofproblemsolving.com/wiki/index.php/1983_AIME_Problems/Problem_3",
+                        }
+                    ]
+                ),
+                encoding="utf-8",
+            )
+
+            bundle = sync_curated_exam_bundle(
+                exams_dir=exams_dir,
+                canonical_curated_exams_json=canonical_path,
+            )
+
+            self.assertEqual(bundle["exams"][0]["bank"], "amc")
+            self.assertEqual(bundle["exams"][0]["bank_title"], "AMC & AIME")
+            self.assertEqual(bundle["exams"][0]["title"], "AMC & AIME Exam 1")
+            question = bundle["exams"][0]["questions"][0]
+            self.assertEqual(question["curated_source"], "1983 AIME, Problem 3")
+            self.assertEqual(question["curated_concept"], "Circles and Parametric Equations")
+            self.assertEqual(
+                question["curated_source_link"],
+                "https://artofproblemsolving.com/wiki/index.php/1983_AIME_Problems/Problem_3",
+            )
 
     def test_sync_curated_exam_bundle_migrates_legacy_source_named_canonical_ids(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

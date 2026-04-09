@@ -309,10 +309,16 @@ def _load_curated_questions(path: Path) -> list[dict]:
 
         source = str(entry.get("source", bank_title)).strip() or bank_title
         concept = str(entry.get("concept", "")).strip()
+        source_link = str(entry.get("link", "")).strip()
         source_parts = [bank_title, source]
         if concept:
             source_parts.append(concept)
         source_parts.append(f"Q{question_number}")
+        curated_metadata = {
+            key: value
+            for key, value in entry.items()
+            if key not in {"question", "options", "correct_option"}
+        }
         questions.append(
             {
                 "id": f"{bank}-q{question_number}",
@@ -320,7 +326,9 @@ def _load_curated_questions(path: Path) -> list[dict]:
                 "source_file": path.name,
                 "curated_source": source,
                 "curated_concept": concept,
+                "curated_source_link": source_link,
                 "curated_problem_number": question_number,
+                "curated_metadata": curated_metadata,
                 "chapter": "",
                 "type": bank_id,
                 "model": "gem",
@@ -337,8 +345,8 @@ def _load_curated_questions(path: Path) -> list[dict]:
 
 def _curated_bank_identity(path: Path) -> tuple[str, str]:
     stem = path.stem
-    if stem.lower().startswith("amc"):
-        return ("amc", "AMC")
+    if stem.lower().startswith(("amc", "aime", "aimi")):
+        return ("amc", "AMC & AIME")
     return (stem.lower(), _humanize_bank_title(stem))
 
 
