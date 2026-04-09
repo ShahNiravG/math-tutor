@@ -55,7 +55,12 @@ def build_deploy_exam_bundle(*, classic_bundle: dict[str, Any], curated_exams: l
     }
 
 
-def sync_curated_exam_bundle(*, exams_dir: Path, canonical_curated_exams_json: Path) -> dict[str, Any]:
+def sync_curated_exam_bundle(
+    *,
+    exams_dir: Path,
+    canonical_curated_exams_json: Path,
+    skip_existing_explicit: bool = False,
+) -> dict[str, Any]:
     now_iso = datetime.now(timezone.utc).isoformat()
     if canonical_curated_exams_json.exists():
         bundle = json.loads(canonical_curated_exams_json.read_text(encoding="utf-8"))
@@ -73,7 +78,7 @@ def sync_curated_exam_bundle(*, exams_dir: Path, canonical_curated_exams_json: P
         if existing_index is None:
             merged_exams.append(explicit_exam)
             explicit_exam_indexes[exam_id] = len(merged_exams) - 1
-        else:
+        elif not skip_existing_explicit:
             merged_exams[existing_index] = explicit_exam
     existing_checksums_by_bank: dict[str, set[str]] = {}
     next_exam_number_by_bank: dict[str, int] = {}
@@ -369,6 +374,8 @@ def main() -> None:
                         help="Site directory where challenges/ will be written.")
     parser.add_argument("--force", action="store_true",
                         help="Regenerate exams.json even if it already exists.")
+    parser.add_argument("--sync-exams-only", action="store_true",
+                        help="Only sync exams/ source files into curated_exams.json; skip full site build.")
     parser.add_argument(
         "--experience",
         choices=CLI_EXPERIENCE_CHOICES,
@@ -379,6 +386,15 @@ def main() -> None:
         ),
     )
     args = parser.parse_args()
+    if args.sync_exams_only:
+        bundle = sync_curated_exam_bundle(
+            exams_dir=CURATED_EXAMS_DIR,
+            canonical_curated_exams_json=CANONICAL_CURATED_EXAMS_JSON,
+            skip_existing_explicit=True,
+        )
+        exam_count = len(bundle.get("exams", []))
+        print(f"Synced {exam_count} exam(s) into {CANONICAL_CURATED_EXAMS_JSON}")
+        return
     build_challenges(
         output_dir=Path(args.output_dir).resolve(),
         site_dir=Path(args.site_dir).resolve(),

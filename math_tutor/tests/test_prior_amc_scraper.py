@@ -145,6 +145,40 @@ class PriorAmcScraperTests(unittest.TestCase):
             self.assertEqual(bundle["exams"][0]["questions"][2]["id"], "prior-amc-2025-amc-10a-q03")
             self.assertEqual(bundle["exams"][0]["question_count"], 3)
 
+    def test_sync_curated_exam_bundle_skip_existing_explicit_leaves_existing_entry_unchanged(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            exams_dir = temp_root / "exams"
+            exams_dir.mkdir()
+            canonical_path = temp_root / "curated_exams.json"
+
+            exam = scrape_prior_amc_exam_from_html(
+                main_page_html=MAIN_PAGE_HTML,
+                problems_page_html=PROBLEMS_PAGE_HTML,
+                answer_key_html=ANSWER_KEY_HTML,
+                source_url="https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A",
+            )
+            exam_json = {"format": "explicit_curated_exam", "exam": exam}
+            (exams_dir / "prior_amc_2025_amc_10a.json").write_text(
+                json.dumps(exam_json), encoding="utf-8"
+            )
+
+            # First sync seeds the bundle
+            sync_curated_exam_bundle(exams_dir=exams_dir, canonical_curated_exams_json=canonical_path)
+
+            # Manually edit the bundle entry to mark it as "already customised"
+            bundle_data = json.loads(canonical_path.read_text())
+            bundle_data["exams"][0]["_custom_flag"] = "preserved"
+            canonical_path.write_text(json.dumps(bundle_data))
+
+            # Second sync with skip_existing_explicit=True must NOT overwrite the edited entry
+            bundle = sync_curated_exam_bundle(
+                exams_dir=exams_dir,
+                canonical_curated_exams_json=canonical_path,
+                skip_existing_explicit=True,
+            )
+            self.assertEqual(bundle["exams"][0].get("_custom_flag"), "preserved")
+
 
 MAIN_PAGE_HTML_HELD_ON = MAIN_PAGE_HTML.replace(
     "The test was administered on Wednesday, November 5, 2025.",
