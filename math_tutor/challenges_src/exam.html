@@ -40,6 +40,8 @@
     }
     .brand-title { margin:0; font-size:1.2rem; line-height:1.02; color:var(--ink); }
     .topbar-title { font-weight:700; font-size:.88rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    .exam-meta-row { display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+    .exam-time-limit { font-size:.78rem; color:var(--muted); font-family:system-ui,sans-serif; }
     .exam-subtitle { display:none; }
     .timer { font-family:system-ui,monospace; font-size:1.1rem; font-weight:700;
              color:var(--accent); min-width:56px; text-align:right; }
@@ -231,10 +233,25 @@
       color: var(--stage-ink);
       letter-spacing: -0.03em;
     }
+    html.experience-staging .exam-meta-row {
+      margin-top: 10px;
+    }
+    html.experience-staging .exam-time-limit {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.15);
+      color: var(--stage-muted);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
     html.experience-staging .topbar-title {
       display: inline-flex;
       align-items: center;
-      margin-top: 10px;
+      margin-top: 0;
       padding: 6px 11px;
       border-radius: 999px;
       background: var(--stage-blue-50);
@@ -335,7 +352,10 @@
       <div>
         <span class="brand-eyebrow">Math Delight</span>
         <h1 class="brand-title">Algebra II Trig Tutor</h1>
-        <div class="topbar-title" id="exam-title"></div>
+        <div class="exam-meta-row">
+          <div class="topbar-title" id="exam-title"></div>
+          <div class="exam-time-limit" id="exam-time-limit" style="display:none"></div>
+        </div>
       </div>
     </div>
     <p class="exam-subtitle">Challenge mode keeps the work focused, the feedback calm, and the next move obvious.</p>
@@ -387,11 +407,7 @@ function firstUnansweredIndex(start) {
 
 function bestResumeIndex(savedIdx) {
   if (!S.exam || !S.exam.questions.length) return 0;
-  var idx = Math.max(0, Math.min(savedIdx || 0, S.exam.questions.length - 1));
-  var currentQ = S.exam.questions[idx];
-  if (currentQ && !(S.answers[currentQ.id] || '').trim()) return idx;
-  var firstSkipped = firstUnansweredIndex(0);
-  return firstSkipped >= 0 ? firstSkipped : idx;
+  return Math.max(0, Math.min(savedIdx || 0, S.exam.questions.length - 1));
 }
 
 function mergeServerAnswers(items) {
@@ -505,8 +521,11 @@ function mdToHtml(text) {
   text = text.replace(/\\\[[\s\S]*?\\\]/g, function(m){ dm.push(m); return '\x00DM'+(dm.length-1)+'\x00'; });
   text = text.replace(/\\\([\s\S]*?\\\)|\$[^$\n]+\$/g, function(m){ im.push(m); return '\x00IM'+(im.length-1)+'\x00'; });
   text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  text = text.replace(/\\emph\{([^}]*)\}/g,'<em>$1</em>');
+  text = text.replace(/\\textit\{([^}]*)\}/g,'<em>$1</em>');
+  text = text.replace(/\\textbf\{([^}]*)\}/g,'<strong>$1</strong>');
   text = text.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');
-  text = text.replace(/\n\n+/g,'</p><p>').replace(/\n/g,'<br>');
+  text = text.replace(/\n\n+/g,'</p><p>').replace(/\n/g,' ');
   dm.forEach(function(m,i){ text = text.replace('\x00DM'+i+'\x00', m); });
   im.forEach(function(m,i){ text = text.replace('\x00IM'+i+'\x00', m); });
   return '<p>'+text+'</p>';
@@ -772,6 +791,11 @@ async function doSubmit() {
 
   document.title = S.exam.title + ' \u2014 Challenge Exam';
   document.getElementById('exam-title').textContent = S.exam.title;
+  if (/^prior-amc-/.test(S.exam.id)) {
+    var tl = document.getElementById('exam-time-limit');
+    tl.textContent = '75 min total';
+    tl.style.display = '';
+  }
   document.getElementById('topbar').style.display = 'flex';
   document.getElementById('progress-bar').style.display = 'flex';
   if (returnHref) {
