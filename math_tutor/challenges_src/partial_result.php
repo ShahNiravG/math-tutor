@@ -203,13 +203,20 @@ foreach ($answers as $item) {
     .badge-current   { background:var(--amber-bg); color:var(--amber); }
     .badge-not-reached { background:#f3f4f6; color:#9ca3af; }
     .q-source { font-size:.82rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    a.q-source { text-decoration:underline; text-underline-offset:2px; }
+    a.q-source:hover { color:var(--accent); }
     .q-meta-row { display:flex; flex-wrap:wrap; gap:8px; margin:0 0 14px; }
     .q-meta-chip {
       display:inline-flex; align-items:center; gap:6px; padding:5px 10px; border-radius:999px;
       background:#eef2ff; color:#334155; font-size:.8rem; font-weight:600; font-family:system-ui,sans-serif;
     }
+    a.q-meta-chip { text-decoration:none; }
+    a.q-meta-chip:hover { color:var(--accent); }
     .q-text { line-height:1.75; margin-bottom:18px; font-size:1.05rem; }
     .q-text p { margin:.4em 0; }
+    .question-images { display:flex; flex-direction:column; gap:10px; margin:0 0 18px; }
+    .question-image-card { margin:0; padding:12px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .question-image { display:block; width:100%; height:auto; max-height:380px; object-fit:contain; margin:0 auto; }
 
     .answer-label { font-size:.82rem; font-weight:700; color:var(--muted);
                     text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px;
@@ -393,9 +400,12 @@ foreach ($answers as $item) {
     $source  = htmlspecialchars($source_raw);
     $curated_source_raw = trim((string)($item['curated_source'] ?? ''));
     $curated_concept_raw = trim((string)($item['curated_concept'] ?? ''));
+    $curated_source_link_raw = trim((string)($item['curated_source_link'] ?? ''));
     $curated_source = htmlspecialchars($curated_source_raw);
     $curated_concept = htmlspecialchars($curated_concept_raw);
+    $curated_source_link = htmlspecialchars($curated_source_link_raw);
     $qtext   = $item['question_text'] ?? '';
+    $question_images = $item['question_images'] ?? [];
     $options = $item['options'] ?? [];
     $correct = $item['correct'] ?? '';
     $ans     = $item['answer'] ?? '';
@@ -428,18 +438,42 @@ foreach ($answers as $item) {
         <?php if ($not_reached):  ?><span class="badge badge-not-reached">Not reached</span><?php endif; ?>
       </span>
       <span class="q-tools">
+        <?php if ($curated_source_link_raw): ?>
+        <a class="q-source" id="qs-<?= $qnum ?>" data-raw="<?= $source ?>" href="<?= $curated_source_link ?>" target="_blank" rel="noopener noreferrer"></a>
+        <?php else: ?>
         <span class="q-source" id="qs-<?= $qnum ?>" data-raw="<?= $source ?>"></span>
+        <?php endif; ?>
         <textarea class="copy-payload" hidden><?= htmlspecialchars($copy_text) ?></textarea>
         <button class="copy-btn" type="button" onclick="copyRawText(this)">&#128203;</button>
       </span>
     </div>
     <?php if ($curated_source || $curated_concept): ?>
     <div class="q-meta-row">
-      <?php if ($curated_source): ?><span class="q-meta-chip">Source: <?= $curated_source ?></span><?php endif; ?>
+      <?php if ($curated_source): ?>
+      <?php if ($curated_source_link_raw): ?>
+      <a class="q-meta-chip" href="<?= $curated_source_link ?>" target="_blank" rel="noopener noreferrer">Source: <?= $curated_source ?></a>
+      <?php else: ?>
+      <span class="q-meta-chip">Source: <?= $curated_source ?></span>
+      <?php endif; ?>
+      <?php endif; ?>
       <?php if ($curated_concept): ?><span class="q-meta-chip">Concept: <?= $curated_concept ?></span><?php endif; ?>
     </div>
     <?php endif; ?>
     <div class="q-text" id="qt-<?= $qnum ?>"></div>
+    <?php if (!empty($question_images)): ?>
+    <div class="question-images">
+      <?php foreach ($question_images as $image): ?>
+      <?php
+        $image_url = htmlspecialchars((string)($image['url'] ?? ''));
+        if ($image_url === '') { continue; }
+        $image_alt = htmlspecialchars((string)($image['alt'] ?? 'Question figure'));
+      ?>
+      <figure class="question-image-card">
+        <img class="question-image" src="<?= $image_url ?>" alt="<?= $image_alt ?>" loading="lazy" />
+      </figure>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
 
     <?php if (!empty($options)): ?>
     <div class="answer-label">Options</div>

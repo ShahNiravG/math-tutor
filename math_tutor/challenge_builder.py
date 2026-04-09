@@ -12,6 +12,7 @@ from math_tutor.challenge_catalog import (
     build_chapter_exam_sets,
     build_exam_sets,
     ensure_classic_bank_metadata,
+    load_explicit_curated_exams,
     load_curated_question_sources,
     load_all_questions,
 )
@@ -63,6 +64,17 @@ def sync_curated_exam_bundle(*, exams_dir: Path, canonical_curated_exams_json: P
 
     normalized_bundle = _normalize_curated_bundle(bundle, generated_at=now_iso)
     merged_exams = [dict(exam) for exam in normalized_bundle.get("exams", [])]
+    explicit_exam_indexes = {str(exam.get("id")): index for index, exam in enumerate(merged_exams)}
+    for explicit_exam in load_explicit_curated_exams(exams_dir):
+        exam_id = str(explicit_exam.get("id", "")).strip()
+        if not exam_id:
+            continue
+        existing_index = explicit_exam_indexes.get(exam_id)
+        if existing_index is None:
+            merged_exams.append(explicit_exam)
+            explicit_exam_indexes[exam_id] = len(merged_exams) - 1
+        else:
+            merged_exams[existing_index] = explicit_exam
     existing_checksums_by_bank: dict[str, set[str]] = {}
     next_exam_number_by_bank: dict[str, int] = {}
     next_question_number_by_bank: dict[str, int] = {}
@@ -155,6 +167,9 @@ def _normalize_curated_bundle(bundle: dict[str, Any], *, generated_at: str) -> d
     exam_counts: dict[str, int] = {}
     question_counts: dict[str, int] = {}
     for exam in bundle.get("exams", []):
+        if exam.get("source_type") == "explicit_curated_exam":
+            normalized_exams.append(_normalize_explicit_curated_exam_record(exam))
+            continue
         bank_id = str(exam.get("bank", "")).strip().lower() or "curated"
         bank_title = _canonical_curated_bank_title(
             bank_id,
@@ -186,6 +201,22 @@ def _normalize_curated_bundle(bundle: dict[str, Any], *, generated_at: str) -> d
         "generated_at": bundle.get("generated_at") or generated_at,
         "exams": normalized_exams,
     }
+
+
+def _normalize_explicit_curated_exam_record(exam: dict[str, Any]) -> dict[str, Any]:
+    normalized_exam = dict(exam)
+    normalized_exam["source_type"] = "explicit_curated_exam"
+    normalized_questions: list[dict[str, Any]] = []
+    for index, question in enumerate(normalized_exam.get("questions", []), 1):
+        normalized_question = dict(question)
+        normalized_question.setdefault("question_number", index)
+        normalized_question.setdefault("curated_problem_number", index)
+        normalized_question.setdefault("curated_problem_link", "")
+        normalized_question.setdefault("question_images", [])
+        normalized_questions.append(normalized_question)
+    normalized_exam["questions"] = normalized_questions
+    normalized_exam["question_count"] = len(normalized_questions)
+    return normalized_exam
 
 
 def _canonical_curated_bank_title(bank_id: str, *, fallback_title: str) -> str:

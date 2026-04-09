@@ -83,9 +83,14 @@
     .q-source { font-size:.85rem; font-family:system-ui,sans-serif;
                 background:var(--accent-soft); color:var(--accent); padding:4px 12px;
                 border-radius:999px; font-weight:600; }
+    a.q-source { text-decoration:none; }
+    a.q-source:hover { filter:brightness(.95); }
     .q-text { font-size:1.35rem; line-height:1.85; margin-bottom:28px; }
     .q-text p { margin:.5em 0; }
     .q-text strong { color:#213647; }
+    .question-images { display:flex; flex-direction:column; gap:12px; margin:0 0 24px; }
+    .question-image-card { margin:0; padding:12px; border:1px solid var(--line); border-radius:14px; background:#fff; }
+    .question-image { display:block; width:100%; height:auto; max-height:420px; object-fit:contain; margin:0 auto; }
 
     /* ── MCQ options ── */
     .answer-label { font-size:.88rem; font-weight:700; color:var(--muted);
@@ -470,7 +475,9 @@ function saveProgressToServer() {
           source_label:  q.source_label,
           curated_source: q.curated_source || '',
           curated_concept: q.curated_concept || '',
+          curated_problem_link: q.curated_problem_link || '',
           curated_source_link: q.curated_source_link || '',
+          question_images: q.question_images || [],
           question_text: q.text,
           options:       q.options || [],
           correct:       q.correct || '',
@@ -515,6 +522,19 @@ function normalizeOptionMath(text) {
 
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderQuestionImages(images) {
+  var items = Array.isArray(images) ? images : [];
+  if (!items.length) return '';
+  return '<div class="question-images">' + items.map(function(image) {
+    var url = escHtml(image.url || '');
+    if (!url) return '';
+    var alt = escHtml(image.alt || 'Question figure');
+    return '<figure class="question-image-card">' +
+      '<img class="question-image" src="' + url + '" alt="' + alt + '" loading="lazy">' +
+      '</figure>';
+  }).join('') + '</div>';
 }
 
 // ── Timer ──
@@ -607,13 +627,18 @@ function renderQuestion() {
   navHtml += '</div></div>';
 
   var root = document.getElementById('root');
+  var imageHtml = renderQuestionImages(q.question_images || []);
+  var sourceHtml = q.curated_problem_link
+    ? '<a class="q-source" href="' + escHtml(q.curated_problem_link) + '" target="_blank" rel="noopener noreferrer">' + escHtml(q.source_label) + '</a>'
+    : '<span class="q-source">' + escHtml(q.source_label) + '</span>';
   root.innerHTML = '<div class="q-card">' +
     '<div class="q-meta"><div class="q-meta-left">' +
     '<span class="q-counter">Question ' + (S.idx+1) + ' of ' + total + '</span>' +
-    '<span class="q-source">' + escHtml(q.source_label) + '</span>' +
+    sourceHtml +
     '</div>' +
     '</div>' +
     '<div class="q-text" id="q-text-render"></div>' +
+    imageHtml +
     optHtml + navHtml + '</div>';
 
   // Render question text
@@ -686,7 +711,9 @@ async function doSubmit() {
         source_label: q.source_label,
         curated_source: q.curated_source || '',
         curated_concept: q.curated_concept || '',
+        curated_problem_link: q.curated_problem_link || '',
         curated_source_link: q.curated_source_link || '',
+        question_images: q.question_images || [],
         question_text: q.text,
         options: q.options || [],
         correct: q.correct || '',

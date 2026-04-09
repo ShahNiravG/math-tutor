@@ -190,9 +190,14 @@ foreach ($answers as $item) {
     .badge-wrong   { background:var(--wrong-bg);   color:var(--wrong); }
     .badge-skipped { background:#f3f4f6; color:#6b7280; }
     .q-source { font-size:.82rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    a.q-source { text-decoration:underline; text-underline-offset:2px; }
+    a.q-source:hover { color:var(--accent); }
     .q-text { line-height:1.75; margin-bottom:18px; font-size:1.05rem; }
     .q-text p { margin:.4em 0; }
     .q-text strong { color:#213647; }
+    .question-images { display:flex; flex-direction:column; gap:10px; margin:0 0 18px; }
+    .question-image-card { margin:0; padding:12px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+    .question-image { display:block; width:100%; height:auto; max-height:380px; object-fit:contain; margin:0 auto; }
 
     /* ── MCQ result options ── */
     .answer-label { font-size:.82rem; font-weight:700; color:var(--muted);
@@ -379,9 +384,12 @@ foreach ($answers as $item) {
     $source_raw = $item['source_label'] ?? '';
     $source  = htmlspecialchars($source_raw);
     $qtext   = $item['question_text'] ?? '';
+    $question_images = $item['question_images'] ?? [];
     $options = $item['options'] ?? [];   // present in MCQ submissions
     $correct = $item['correct'] ?? '';
     $ans     = $item['answer'] ?? '';
+    $curated_source_link_raw = trim((string)($item['curated_source_link'] ?? ''));
+    $curated_source_link = htmlspecialchars($curated_source_link_raw);
 
     $is_correct = ($ans !== '' && $ans === $correct);
     $is_wrong   = ($ans !== '' && $ans !== $correct);
@@ -404,12 +412,30 @@ foreach ($answers as $item) {
         <?php if ($is_skipped): ?><span class="badge badge-skipped">&mdash; Skipped</span><?php endif; ?>
       </span>
       <span class="q-tools">
+        <?php if ($curated_source_link_raw): ?>
+        <a class="q-source" id="qs-<?= $qnum ?>" data-raw="<?= $source ?>" href="<?= $curated_source_link ?>" target="_blank" rel="noopener noreferrer"></a>
+        <?php else: ?>
         <span class="q-source" id="qs-<?= $qnum ?>" data-raw="<?= $source ?>"></span>
+        <?php endif; ?>
         <textarea class="copy-payload" hidden><?= htmlspecialchars($copy_text) ?></textarea>
         <button class="copy-btn" type="button" onclick="copyRawText(this)">&#128203;</button>
       </span>
     </div>
     <div class="q-text" id="qt-<?= $qnum ?>"></div>
+    <?php if (!empty($question_images)): ?>
+    <div class="question-images">
+      <?php foreach ($question_images as $image): ?>
+      <?php
+        $image_url = htmlspecialchars((string)($image['url'] ?? ''));
+        if ($image_url === '') { continue; }
+        $image_alt = htmlspecialchars((string)($image['alt'] ?? 'Question figure'));
+      ?>
+      <figure class="question-image-card">
+        <img class="question-image" src="<?= $image_url ?>" alt="<?= $image_alt ?>" loading="lazy" />
+      </figure>
+      <?php endforeach; ?>
+    </div>
+    <?php endif; ?>
 
     <?php if (!empty($options)): ?>
     <div class="answer-label">Options</div>

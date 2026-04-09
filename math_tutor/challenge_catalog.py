@@ -136,6 +136,19 @@ def load_curated_question_sources(exams_dir: Path) -> list[dict]:
     return sources
 
 
+def load_explicit_curated_exams(exams_dir: Path) -> list[dict]:
+    if not exams_dir.exists():
+        return []
+
+    exams: list[dict] = []
+    for path in sorted(exams_dir.glob("*.json"), key=_natural_path_sort_key):
+        payload = _load_explicit_curated_exam_payload(path)
+        if payload is None:
+            continue
+        exams.append(payload)
+    return exams
+
+
 def load_curated_exam_banks(exams_dir: Path) -> list[dict]:
     exams: list[dict] = []
     questions_by_bank: dict[str, list[dict]] = {}
@@ -163,6 +176,7 @@ def load_curated_exam_banks(exams_dir: Path) -> list[dict]:
                     "questions": exam_questions,
                 }
             )
+    exams.extend(load_explicit_curated_exams(exams_dir))
     return exams
 
 
@@ -341,6 +355,45 @@ def _load_curated_questions(path: Path) -> list[dict]:
             }
         )
     return questions
+
+
+def _load_explicit_curated_exam_payload(path: Path) -> dict | None:
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if not isinstance(payload, dict) or payload.get("format") != "explicit_curated_exam":
+        return None
+    exam = payload.get("exam")
+    if not isinstance(exam, dict):
+        return None
+    return _normalize_explicit_curated_exam(exam, source_path=path)
+
+
+def _normalize_explicit_curated_exam(exam: dict, *, source_path: Path) -> dict:
+    normalized_exam = dict(exam)
+    normalized_exam["source_type"] = "explicit_curated_exam"
+    normalized_exam.setdefault("bank", "prior-amc")
+    normalized_exam.setdefault("bank_title", "Prior AMC")
+    normalized_exam.setdefault("source_stem", normalized_exam.get("id", source_path.stem))
+    normalized_exam.setdefault("source_file", source_path.name)
+
+    normalized_questions: list[dict] = []
+    for index, question in enumerate(normalized_exam.get("questions", []), 1):
+        normalized_question = dict(question)
+        normalized_question.setdefault("id", f"{normalized_exam['id']}-q{index:02d}")
+        normalized_question.setdefault("source_stem", normalized_exam["source_stem"])
+        normalized_question.setdefault("source_file", source_path.name)
+        normalized_question.setdefault("type", normalized_exam["bank"])
+        normalized_question.setdefault("chapter", "")
+        normalized_question.setdefault("question_number", index)
+        normalized_question.setdefault("curated_problem_number", index)
+        normalized_question.setdefault("model", "official")
+        normalized_question.setdefault("model_label", "Official AMC")
+        normalized_question.setdefault("curated_problem_link", "")
+        normalized_question.setdefault("question_images", [])
+        normalized_questions.append(normalized_question)
+
+    normalized_exam["questions"] = normalized_questions
+    normalized_exam["question_count"] = len(normalized_questions)
+    return normalized_exam
 
 
 def _curated_bank_identity(path: Path) -> tuple[str, str]:

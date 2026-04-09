@@ -48,9 +48,32 @@ class ChallengeTemplateTests(unittest.TestCase):
         self.assertIn("curated_source: q.curated_source || ''", exam_template)
         self.assertIn("curated_concept: q.curated_concept || ''", exam_template)
         self.assertIn("curated_source_link: q.curated_source_link || ''", exam_template)
+        self.assertIn("curated_problem_link: q.curated_problem_link || ''", exam_template)
         self.assertIn("curated_source", partial_template)
         self.assertIn("curated_concept", partial_template)
-        self.assertNotIn("Review Source", partial_template)
+        self.assertIn("curated_source_link", partial_template)
+        self.assertIn('href="<?= $curated_source_link ?>"', partial_template)
+        self.assertIn("Source: <?= $curated_source ?>", partial_template)
+
+    def test_exam_template_renders_question_images_but_not_solution_links(self) -> None:
+        exam_template = (ROOT / "challenges_src" / "exam.html").read_text(encoding="utf-8")
+        partial_template = (ROOT / "challenges_src" / "partial_result.php").read_text(encoding="utf-8")
+
+        self.assertIn("question_images", exam_template)
+        self.assertIn("question_images", partial_template)
+        self.assertIn('class="question-image"', partial_template)
+        self.assertIn("curated_problem_link", exam_template)
+        self.assertIn("q.curated_problem_link", exam_template)
+        self.assertIn('<a class="q-source"', exam_template)
+        self.assertNotIn("Review Solution", exam_template)
+
+    def test_result_template_renders_solution_links_for_curated_questions(self) -> None:
+        result_template = (ROOT / "challenges_src" / "result.php").read_text(encoding="utf-8")
+
+        self.assertIn("curated_source_link", result_template)
+        self.assertIn('class="q-source"', result_template)
+        self.assertIn('href="<?= $curated_source_link ?>"', result_template)
+        self.assertNotIn("Review Solution", result_template)
 
     def test_progress_views_use_saved_question_counts(self) -> None:
         reports = (ROOT / "challenges_src" / "reports.php").read_text(encoding="utf-8")
