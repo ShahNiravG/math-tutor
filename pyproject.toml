@@ -15,6 +15,15 @@ dependencies = [
     "playwright>=1.45.0",
 ]
 
+[project.optional-dependencies]
+dev = [
+    "pytest>=8,<9",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["math_tutor/tests"]
+cache_dir = "math_tutor/.pytest_cache"
+
 [project.scripts]
 math-tutor = "math_tutor.cli:main"
 math-tutor-build-site = "math_tutor.site_builder:main"

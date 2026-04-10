@@ -28,6 +28,12 @@ pip install -e .
 playwright install chromium
 ```
 
+If you want local developer test tooling such as `pytest`, install the dev extras instead:
+
+```bash
+pip install -e ".[dev]"
+```
+
 ## Usage
 
 ```bash
@@ -185,6 +191,12 @@ Run the local validation workflow before refactoring core behavior:
 
 ```bash
 .venv/bin/python math_tutor/scripts/validate_project.py
+```
+
+You can also run the test suite with `pytest`:
+
+```bash
+.venv/bin/python -m pytest
 ```
 
 This validation path is intentionally safe for preserved artifacts:
