@@ -521,6 +521,8 @@ function mdToHtml(text) {
   text = text.replace(/\\\[[\s\S]*?\\\]/g, function(m){ dm.push(m); return '\x00DM'+(dm.length-1)+'\x00'; });
   text = text.replace(/\\\([\s\S]*?\\\)|\$[^$\n]+\$/g, function(m){ im.push(m); return '\x00IM'+(im.length-1)+'\x00'; });
   text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  text = text.replace(/\\[,;:!]/g, function(m){ return m === '\\!' ? '' : '\u2009'; });
+  text = text.replace(/\{([,.])\}/g,'$1');
   text = text.replace(/\\emph\{([^}]*)\}/g,'<em>$1</em>');
   text = text.replace(/\\textit\{([^}]*)\}/g,'<em>$1</em>');
   text = text.replace(/\\textbf\{([^}]*)\}/g,'<strong>$1</strong>');
