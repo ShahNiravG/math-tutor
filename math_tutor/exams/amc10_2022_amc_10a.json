@@ -1,0 +1,842 @@
+{
+  "format": "explicit_curated_exam",
+  "exam": {
+    "format": "explicit_curated_exam",
+    "source_type": "explicit_curated_exam",
+    "id": "amc10-2022-amc-10a",
+    "title": "2022 AMC 10A",
+    "bank": "amc10",
+    "bank_title": "AMC 10",
+    "question_count": 25,
+    "questions": [
+      {
+        "id": "amc10-2022-amc-10a-q01",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_1",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_1",
+        "curated_problem_number": 1,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_1",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_1",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 1",
+        "question_number": 1,
+        "text": "What is the value of \\[3+\\frac{1}{3+\\frac{1}{3+\\frac13}}?\\]",
+        "question_images": [],
+        "options": [
+          "(A) \\ \\frac{31}{10}",
+          "(B) \\ \\frac{49}{15}",
+          "(C) \\ \\frac{33}{10}",
+          "(D) \\ \\frac{109}{33}",
+          "(E) \\ \\frac{15}{4}"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q02",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_2",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_2",
+        "curated_problem_number": 2,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_2",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_2",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 2",
+        "question_number": 2,
+        "text": "Mike cycled $15$ laps in $57$ minutes. Assume he cycled at a constant speed throughout. Approximately how many laps did he complete in the first $27$ minutes?",
+        "question_images": [],
+        "options": [
+          "(A) 5",
+          "(B) 7",
+          "(C) 9",
+          "(D) 11",
+          "(E) 13"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q03",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_3",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_3",
+        "curated_problem_number": 3,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_3",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_3",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 3",
+        "question_number": 3,
+        "text": "The sum of three numbers is $96.$ The first number is $6$ times the third number, and the third number is $40$ less than the second number. What is the absolute value of the difference between the first and second numbers?",
+        "question_images": [],
+        "options": [
+          "(A) 1",
+          "(B) 2",
+          "(C) 3",
+          "(D) 4",
+          "(E) 5"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q04",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_4",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_4",
+        "curated_problem_number": 4,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_4",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_4",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 4",
+        "question_number": 4,
+        "text": "In some countries, automobile fuel efficiency is measured in liters per $100$ kilometers while other countries use miles per gallon. Suppose that 1 kilometer equals $m$ miles, and $1$ gallon equals $l$ liters. Which of the following gives the fuel efficiency in liters per $100$ kilometers for a car that gets $x$ miles per gallon?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{x}{100lm}",
+          "(B) \\frac{xlm}{100}",
+          "(C) \\frac{lm}{100x}",
+          "(D) \\frac{100}{xlm}",
+          "(E) \\frac{100lm}{x}"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q05",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_5",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_5",
+        "curated_problem_number": 5,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_5",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_5",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 5",
+        "question_number": 5,
+        "text": "Square $ABCD$ has side length $1$. Points $P$, $Q$, $R$, and $S$ each lie on a side of $ABCD$ such that $APQCRS$ is an equilateral convex hexagon with side length $s$. What is $s$?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{\\sqrt{2}}{3}",
+          "(B) \\frac{1}{2}",
+          "(C) 2 - \\sqrt{2}",
+          "(D) 1 - \\frac{\\sqrt{2}}{4}",
+          "(E) \\frac{2}{3}"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q06",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_6",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_6",
+        "curated_problem_number": 6,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_6",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_6",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 6",
+        "question_number": 6,
+        "text": "Which expression is equal to \\[\\left|a-2-\\sqrt{(a-1)^2}\\right|\\] for $a<0?$",
+        "question_images": [],
+        "options": [
+          "(A) 3-2a",
+          "(B) 1-a",
+          "(C) 1",
+          "(D) a+1",
+          "(E) 3"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q07",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_7",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_7",
+        "curated_problem_number": 7,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_7",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_7",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 7",
+        "question_number": 7,
+        "text": "The least common multiple of a positive integer $n$ and $18$ is $180$, and the greatest common divisor of $n$ and $45$ is $15$. What is the sum of the digits of $n$?",
+        "question_images": [],
+        "options": [
+          "(A) 3",
+          "(B) 6",
+          "(C) 8",
+          "(D) 9",
+          "(E) 12"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q08",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_8",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_8",
+        "curated_problem_number": 8,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_8",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_8",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 8",
+        "question_number": 8,
+        "text": "A data set consists of $6$ (not distinct) positive integers: $1$, $7$, $5$, $2$, $5$, and $X$. The average (arithmetic mean) of the $6$ numbers equals a value in the data set. What is the sum of all possible values of $X$?",
+        "question_images": [],
+        "options": [
+          "(A) 10",
+          "(B) 26",
+          "(C) 32",
+          "(D) 36",
+          "(E) 40"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q09",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_9",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_9",
+        "curated_problem_number": 9,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_9",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_9",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/c/5/3/c53adae322a3fcf0e0d1d0d2aa43ce0ad69527c9.png",
+              "alt": "[asy] size(5.5cm); draw((0,0)--(0,2)--(2,2)--(2,0)--cycle); draw((2,0)--(8,0)--(8,2)--(2,2)--cycle); draw((8,0)--(12,0)--(12,2)--(8,2)--cycle); draw((0,2)--(6,2)--(6,4)--(0,4)--cycle); draw((6,2)--(12,2)--(12,4)--(6,4)--cycle); [/asy]",
+              "width": 262,
+              "height": 88
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 9",
+        "question_number": 9,
+        "text": "A rectangle is partitioned into $5$ regions as shown. Each region is to be painted a solid color - red, orange, yellow, blue, or green - so that regions that touch are painted different colors, and colors can be used more than once. How many different colorings are possible?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/c/5/3/c53adae322a3fcf0e0d1d0d2aa43ce0ad69527c9.png",
+            "alt": "[asy] size(5.5cm); draw((0,0)--(0,2)--(2,2)--(2,0)--cycle); draw((2,0)--(8,0)--(8,2)--(2,2)--cycle); draw((8,0)--(12,0)--(12,2)--(8,2)--cycle); draw((0,2)--(6,2)--(6,4)--(0,4)--cycle); draw((6,2)--(12,2)--(12,4)--(6,4)--cycle); [/asy]",
+            "width": 262,
+            "height": 88
+          }
+        ],
+        "options": [
+          "(A) 120",
+          "(B) 270",
+          "(C) 360",
+          "(D) 540",
+          "(E) 720"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q10",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_10",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_10",
+        "curated_problem_number": 10,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_10",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_10",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/2/2/f/22f9f7a96f6ad58ba5a6b8396b925cd53152cf24.png",
+              "alt": "[asy] // Diagram by MRENTHUSIASM, edited by Djmathman size(200); defaultpen(linewidth(0.6)); draw((489.5,-213) -- (225.5,-213) -- (225.5,-185) -- (199.5,-185) -- (198.5,-62) -- (457.5,-62) -- (457.5,-93) -- (489.5,-93) -- cycle); draw((206.29,-70.89) -- (480.21,-207.11), linetype (\"6 6\"),Arrows(size=4,arrowhead=HookHead)); draw((237.85,-182.24) -- (448.65,-95.76),linetype (\"6 6\"),Arrows(size=4,arrowhead=HookHead)); label(\"$1$\",(450,-80)); label(\"$1$\",(475,-106)); label(\"$8$\",(300,-103)); label(\"$4\\sqrt 2$\",(300,-173)); [/asy]",
+              "width": 335,
+              "height": 175
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 10",
+        "question_number": 10,
+        "text": "Daniel finds a rectangular index card and measures its diagonal to be $8$ centimeters.\nDaniel then cuts out equal squares of side $1$ cm at two opposite corners of the index card and measures the distance between the two closest vertices of these squares to be $4\\sqrt{2}$ centimeters, as shown below. What is the area of the original index card?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/2/2/f/22f9f7a96f6ad58ba5a6b8396b925cd53152cf24.png",
+            "alt": "[asy] // Diagram by MRENTHUSIASM, edited by Djmathman size(200); defaultpen(linewidth(0.6)); draw((489.5,-213) -- (225.5,-213) -- (225.5,-185) -- (199.5,-185) -- (198.5,-62) -- (457.5,-62) -- (457.5,-93) -- (489.5,-93) -- cycle); draw((206.29,-70.89) -- (480.21,-207.11), linetype (\"6 6\"),Arrows(size=4,arrowhead=HookHead)); draw((237.85,-182.24) -- (448.65,-95.76),linetype (\"6 6\"),Arrows(size=4,arrowhead=HookHead)); label(\"$1$\",(450,-80)); label(\"$1$\",(475,-106)); label(\"$8$\",(300,-103)); label(\"$4\\sqrt 2$\",(300,-173)); [/asy]",
+            "width": 335,
+            "height": 175
+          }
+        ],
+        "options": [
+          "(A) 14",
+          "(B) 10\\sqrt{2}",
+          "(C) 16",
+          "(D) 12\\sqrt{2}",
+          "(E) 18"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q11",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_11",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_11",
+        "curated_problem_number": 11,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_11",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_11",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 11",
+        "question_number": 11,
+        "text": "Ted mistakenly wrote $2^m\\cdot\\sqrt{\\frac{1}{4096}}$ as $2\\cdot\\sqrt[m]{\\frac{1}{4096}}.$ What is the sum of all real numbers $m$ for which these two expressions have the same value?",
+        "question_images": [],
+        "options": [
+          "(A) 5",
+          "(B) 6",
+          "(C) 7",
+          "(D) 8",
+          "(E) 9"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q12",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_12",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_12",
+        "curated_problem_number": 12,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_12",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_12",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 12",
+        "question_number": 12,
+        "text": "On Halloween, $31$ children walked into the principal's office asking for candy. They\ncan be classified into three types: Some always lie; some always tell the truth; and\nsome alternately lie and tell the truth. The alternaters arbitrarily choose their first\nresponse, either a lie or the truth, but each subsequent statement has the opposite\ntruth value from its predecessor. The principal asked everyone the same three\nquestions in this order.\n\n\"Are you a truth-teller?\" The principal gave a piece of candy to each of the $22$\nchildren who answered yes.\n\n\"Are you an alternater?\" The principal gave a piece of candy to each of the $15$\nchildren who answered yes.\n\n\"Are you a liar?\" The principal gave a piece of candy to each of the $9$ children who\nanswered yes.\n\nHow many pieces of candy in all did the principal give to the children who always\ntell the truth?",
+        "question_images": [],
+        "options": [
+          "(A) 7",
+          "(B) 12",
+          "(C) 21",
+          "(D) 27",
+          "(E) 31"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q13",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_13",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_13",
+        "curated_problem_number": 13,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_13",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_13",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 13",
+        "question_number": 13,
+        "text": "Let $\\triangle ABC$ be a scalene triangle. Point $P$ lies on $\\overline{BC}$ so that $\\overline{AP}$ bisects $\\angle BAC.$ The line through $B$ perpendicular to $\\overline{AP}$ intersects the line through $A$ parallel to $\\overline{BC}$ at point $D.$ Suppose $BP=2$ and $PC=3.$ What is $AD?$",
+        "question_images": [],
+        "options": [
+          "(A) 8",
+          "(B) 9",
+          "(C) 10",
+          "(D) 11",
+          "(E) 12"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q14",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_14",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_14",
+        "curated_problem_number": 14,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_14",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_14",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 14",
+        "question_number": 14,
+        "text": "How many ways are there to split the integers $1$ through $14$ into $7$ pairs such that in each pair, the greater number is at least $2$ times the lesser number?",
+        "question_images": [],
+        "options": [
+          "(A) 108",
+          "(B) 120",
+          "(C) 126",
+          "(D) 132",
+          "(E) 144"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q15",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_15",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_15",
+        "curated_problem_number": 15,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_15",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_15",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 15",
+        "question_number": 15,
+        "text": "Quadrilateral $ABCD$ with side lengths $AB=7, BC=24, CD=20, DA=15$ is inscribed in a circle. The area interior to the circle but exterior to the quadrilateral can be written in the form $\\frac{a\\pi-b}{c},$ where $a,b,$ and $c$ are positive integers such that $a$ and $c$ have no common prime factor. What is $a+b+c?$",
+        "question_images": [],
+        "options": [
+          "(A) 260",
+          "(B) 855",
+          "(C) 1235",
+          "(D) 1565",
+          "(E) 1997"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q16",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_16",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_16",
+        "curated_problem_number": 16,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_16",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_16",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 16",
+        "question_number": 16,
+        "text": "The roots of the polynomial $10x^3 - 39x^2 + 29x - 6$ are the height, length, and width of a rectangular box (right rectangular prism). A new rectangular box is formed by lengthening each edge of the original box by $2$ units. What is the volume of the new box?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{24}{5}",
+          "(B) \\frac{42}{5}",
+          "(C) \\frac{81}{5}",
+          "(D) 30",
+          "(E) 48"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q17",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_17",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_17",
+        "curated_problem_number": 17,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_17",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_17",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 17",
+        "question_number": 17,
+        "text": "How many three-digit positive integers $\\underline{a} \\ \\underline{b} \\ \\underline{c}$ are there whose nonzero digits $a,b,$ and $c$ satisfy\n\\[0.\\overline{\\underline{a}~\\underline{b}~\\underline{c}} = \\frac{1}{3} (0.\\overline{a} + 0.\\overline{b} + 0.\\overline{c})?\\]\n(The bar indicates repetition, thus $0.\\overline{\\underline{a}~\\underline{b}~\\underline{c}}$ is the infinite repeating decimal $0.\\underline{a}~\\underline{b}~\\underline{c}~\\underline{a}~\\underline{b}~\\underline{c}~\\cdots$)",
+        "question_images": [],
+        "options": [
+          "(A) 9",
+          "(B) 10",
+          "(C) 11",
+          "(D) 13",
+          "(E) 14"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q18",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_18",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_18",
+        "curated_problem_number": 18,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_18",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_18",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 18",
+        "question_number": 18,
+        "text": "Let $T_k$ be the transformation of the coordinate plane that first rotates the plane $k$ degrees counterclockwise around the origin and then reflects the plane across the $y$-axis. What is the least positive integer $n$ such that performing the sequence of transformations $T_1, T_2, T_3,...,T_n$ returns the point $(1, 0)$ back to itself?",
+        "question_images": [],
+        "options": [
+          "(A) 359",
+          "(B) 360",
+          "(C) 719",
+          "(D) 720",
+          "(E) 721"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q19",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_19",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_19",
+        "curated_problem_number": 19,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_19",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_19",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 19",
+        "question_number": 19,
+        "text": "Define $L_n$ as the least common multiple of all the integers from $1$ to $n$ inclusive. There is a unique integer $h$ such that\n\\[\\frac{1}{1}+\\frac{1}{2}+\\frac{1}{3}+\\cdots+\\frac{1}{17}=\\frac{h}{L_{17}}\\]\nWhat is the remainder when $h$ is divided by $17$?",
+        "question_images": [],
+        "options": [
+          "(A) 1",
+          "(B) 3",
+          "(C) 5",
+          "(D) 7",
+          "(E) 9"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q20",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_20",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_20",
+        "curated_problem_number": 20,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_20",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_20",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 20",
+        "question_number": 20,
+        "text": "A four-term sequence is formed by adding each term of a four-term arithmetic sequence of positive integers to the corresponding term of a four-term geometric sequence of positive integers. The first three terms of the resulting four-term sequence are $57$, $60$, and $91$. What is the fourth term of this sequence?",
+        "question_images": [],
+        "options": [
+          "(A) 190",
+          "(B) 194",
+          "(C) 198",
+          "(D) 202",
+          "(E) 206"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q21",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_21",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_21",
+        "curated_problem_number": 21,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_21",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_21",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/d/6/0/d604f3d349df2224a285e329575fddb9ffb746a2.png",
+              "alt": "[asy] import three; size(225); currentprojection=   orthographic(camera=(-5.52541796301147,-2.61548797564715,1.6545450372312),                up=(0.00247902062334861,0.000877141782387748,0.00966536329192992),                target=(0,0,0),                zoom=0.570588560870951); currentpen = black+1.5bp; triple A = O; triple M = (X+Y)/2; triple B = (-1/2,-1/2,1/sqrt(2)); triple C = (-1,0,sqrt(2)); triple D = (0,-1,sqrt(2)); transform3 rho = rotate(90,M,M+Z);  //arrays of vertices for the lower level (the square), the middle level, //and the interleaves vertices of the upper level (the octagon) triple[] lVs = {A}; triple[] mVs = {B}; triple[] uVsl = {C}; triple[] uVsr = {D};  for(int i = 0; i < 3; ++i){   lVs.push(rho*lVs[i]);   mVs.push(rho*mVs[i]);   uVsl.push(rho*uVsl[i]);   uVsr.push(rho*uVsr[i]); }  lVs.cyclic = true; uVsl.cyclic = true;  for(int i : new int[] {0,1,2,3}){   draw(uVsl[i]--uVsr[i]);   draw(uVsr[i]--uVsl[i+1]); } draw(lVs[0]--lVs[1]^^lVs[0]--lVs[3]); for(int i : new int[] {0,1,3}){   draw(lVs[0]--lVs[i]);   draw(lVs[i]--mVs[i]);   draw(mVs[i]--uVsl[i]); } for(int i : new int[] {0,3}){   draw(mVs[i]--uVsr[i]); }  for(int i : new int[] {1,3}) draw(lVs[2]--lVs[i],dashed); draw(lVs[2]--mVs[2],dashed); draw(mVs[2]--uVsl[2]^^mVs[2]--uVsr[2],dashed); draw(mVs[1]--uVsr[1],dashed);  //Comment two lines below to remove red edges //draw(lVs[1]--lVs[3],red+2bp); //draw(uVsl[0]--uVsr[0],red+2bp); [/asy]",
+              "width": 375,
+              "height": 235
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 21",
+        "question_number": 21,
+        "text": "A bowl is formed by attaching four regular hexagons of side $1$ to a square of side $1$. The edges of the adjacent hexagons coincide, as shown in the figure. What is the area of the octagon obtained by joining the top eight vertices of the four hexagons, situated on the rim of the bowl?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/d/6/0/d604f3d349df2224a285e329575fddb9ffb746a2.png",
+            "alt": "[asy] import three; size(225); currentprojection=   orthographic(camera=(-5.52541796301147,-2.61548797564715,1.6545450372312),                up=(0.00247902062334861,0.000877141782387748,0.00966536329192992),                target=(0,0,0),                zoom=0.570588560870951); currentpen = black+1.5bp; triple A = O; triple M = (X+Y)/2; triple B = (-1/2,-1/2,1/sqrt(2)); triple C = (-1,0,sqrt(2)); triple D = (0,-1,sqrt(2)); transform3 rho = rotate(90,M,M+Z);  //arrays of vertices for the lower level (the square), the middle level, //and the interleaves vertices of the upper level (the octagon) triple[] lVs = {A}; triple[] mVs = {B}; triple[] uVsl = {C}; triple[] uVsr = {D};  for(int i = 0; i < 3; ++i){   lVs.push(rho*lVs[i]);   mVs.push(rho*mVs[i]);   uVsl.push(rho*uVsl[i]);   uVsr.push(rho*uVsr[i]); }  lVs.cyclic = true; uVsl.cyclic = true;  for(int i : new int[] {0,1,2,3}){   draw(uVsl[i]--uVsr[i]);   draw(uVsr[i]--uVsl[i+1]); } draw(lVs[0]--lVs[1]^^lVs[0]--lVs[3]); for(int i : new int[] {0,1,3}){   draw(lVs[0]--lVs[i]);   draw(lVs[i]--mVs[i]);   draw(mVs[i]--uVsl[i]); } for(int i : new int[] {0,3}){   draw(mVs[i]--uVsr[i]); }  for(int i : new int[] {1,3}) draw(lVs[2]--lVs[i],dashed); draw(lVs[2]--mVs[2],dashed); draw(mVs[2]--uVsl[2]^^mVs[2]--uVsr[2],dashed); draw(mVs[1]--uVsr[1],dashed);  //Comment two lines below to remove red edges //draw(lVs[1]--lVs[3],red+2bp); //draw(uVsl[0]--uVsr[0],red+2bp); [/asy]",
+            "width": 375,
+            "height": 235
+          }
+        ],
+        "options": [
+          "(A) 6",
+          "(B) 7",
+          "(C) 5+2\\sqrt{2}",
+          "(D) 8",
+          "(E) 9"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q22",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_22",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_22",
+        "curated_problem_number": 22,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_22",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_22",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/6/e/9/6e932ec00fe0f762da98425d4ce220c09f53bc99.png",
+              "alt": "[asy] size(11cm); draw((0,0)--(2,0)--(2,3)--(0,3)--cycle); label(\"7\", (1,1.5)); draw((3,0)--(5,0)--(5,3)--(3,3)--cycle); label(\"11\", (4,1.5)); draw((6,0)--(8,0)--(8,3)--(6,3)--cycle); label(\"8\", (7,1.5)); draw((9,0)--(11,0)--(11,3)--(9,3)--cycle); label(\"6\", (10,1.5)); draw((12,0)--(14,0)--(14,3)--(12,3)--cycle); label(\"4\", (13,1.5)); draw((15,0)--(17,0)--(17,3)--(15,3)--cycle); label(\"5\", (16,1.5)); draw((18,0)--(20,0)--(20,3)--(18,3)--cycle); label(\"9\", (19,1.5)); draw((21,0)--(23,0)--(23,3)--(21,3)--cycle); label(\"12\", (22,1.5)); draw((24,0)--(26,0)--(26,3)--(24,3)--cycle); label(\"1\", (25,1.5)); draw((27,0)--(29,0)--(29,3)--(27,3)--cycle); label(\"13\", (28,1.5)); draw((30,0)--(32,0)--(32,3)--(30,3)--cycle); label(\"10\", (31,1.5)); draw((33,0)--(35,0)--(35,3)--(33,3)--cycle); label(\"2\", (34,1.5)); draw((36,0)--(38,0)--(38,3)--(36,3)--cycle); label(\"3\", (37,1.5)); [/asy]",
+              "width": 522,
+              "height": 45
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 22",
+        "question_number": 22,
+        "text": "Suppose that $13$ cards numbered $1, 2, 3, \\ldots, 13$ are arranged in a row. The task is to pick them up in numerically increasing order, working repeatedly from left to right. In the example below, cards $1, 2, 3$ are picked up on the first pass, $4$ and $5$ on the second pass, $6$ on the third pass, $7, 8, 9, 10$ on the fourth pass, and $11, 12, 13$ on the fifth pass. For how many of the $13!$ possible orderings of the cards will the $13$ cards be picked up in exactly two passes?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/6/e/9/6e932ec00fe0f762da98425d4ce220c09f53bc99.png",
+            "alt": "[asy] size(11cm); draw((0,0)--(2,0)--(2,3)--(0,3)--cycle); label(\"7\", (1,1.5)); draw((3,0)--(5,0)--(5,3)--(3,3)--cycle); label(\"11\", (4,1.5)); draw((6,0)--(8,0)--(8,3)--(6,3)--cycle); label(\"8\", (7,1.5)); draw((9,0)--(11,0)--(11,3)--(9,3)--cycle); label(\"6\", (10,1.5)); draw((12,0)--(14,0)--(14,3)--(12,3)--cycle); label(\"4\", (13,1.5)); draw((15,0)--(17,0)--(17,3)--(15,3)--cycle); label(\"5\", (16,1.5)); draw((18,0)--(20,0)--(20,3)--(18,3)--cycle); label(\"9\", (19,1.5)); draw((21,0)--(23,0)--(23,3)--(21,3)--cycle); label(\"12\", (22,1.5)); draw((24,0)--(26,0)--(26,3)--(24,3)--cycle); label(\"1\", (25,1.5)); draw((27,0)--(29,0)--(29,3)--(27,3)--cycle); label(\"13\", (28,1.5)); draw((30,0)--(32,0)--(32,3)--(30,3)--cycle); label(\"10\", (31,1.5)); draw((33,0)--(35,0)--(35,3)--(33,3)--cycle); label(\"2\", (34,1.5)); draw((36,0)--(38,0)--(38,3)--(36,3)--cycle); label(\"3\", (37,1.5)); [/asy]",
+            "width": 522,
+            "height": 45
+          }
+        ],
+        "options": [
+          "(A) 4082",
+          "(B) 4095",
+          "(C) 4096",
+          "(D) 8178",
+          "(E) 8191"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q23",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_23",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_23",
+        "curated_problem_number": 23,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_23",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_23",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 23",
+        "question_number": 23,
+        "text": "Isosceles trapezoid $ABCD$ has parallel sides $\\overline{AD}$ and $\\overline{BC},$ with $BC < AD$ and $AB = CD.$ There is a point $P$ in the plane such that $PA=1, PB=2, PC=3,$ and $PD=4.$ What is $\\tfrac{BC}{AD}?$",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{1}{4}",
+          "(B) \\frac{1}{3}",
+          "(C) \\frac{1}{2}",
+          "(D) \\frac{2}{3}",
+          "(E) \\frac{3}{4}"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q24",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_24",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_24",
+        "curated_problem_number": 24,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_24",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_24",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 24",
+        "question_number": 24,
+        "text": "How many strings of length $5$ formed from the digits $0$, $1$, $2$, $3$, $4$ are there such that for each $j \\in \\{1,2,3,4\\}$, at least $j$ of the digits are less than $j$? (For example, $02214$ satisfies this condition\nbecause it contains at least $1$ digit less than $1$, at least $2$ digits less than $2$, at least $3$ digits less\nthan $3$, and at least $4$ digits less than $4$. The string $23404$ does not satisfy the condition because it\ndoes not contain at least $2$ digits less than $2$.)",
+        "question_images": [],
+        "options": [
+          "(A) 500",
+          "(B) 625",
+          "(C) 1089",
+          "(D) 1199",
+          "(E) 1296"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2022-amc-10a-q25",
+        "source_stem": "amc10-2022-amc-10a",
+        "curated_source": "2022 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_25",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_25",
+        "curated_problem_number": 25,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems#Problem_25",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems/Problem_25",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/d/1/9/d19ef900b6330bb16c3488ac1593a01dce4bedb8.png",
+              "alt": "[asy] size(8cm); label(scale(.8)*\"$y$\", (0,60), N); label(scale(.8)*\"$x$\", (60,0), E); filldraw((0,0)--(55,0)--(55,55)--(0,55)--cycle, yellow+orange+white+white); label(scale(1.3)*\"$R$\", (55/2,55/2)); filldraw((0,0)--(0,28)--(-28,28)--(-28,0)--cycle, green+white+white); label(scale(1.3)*\"$S$\",(-14,14)); filldraw((-10,0)--(15,0)--(15,25)--(-10,25)--cycle, red+white+white); label(scale(1.3)*\"$T$\",(3.5,25/2)); draw((0,-10)--(0,60),EndArrow()); draw((-34,0)--(60,0),EndArrow()); [/asy]",
+              "width": 378,
+              "height": 288
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2022 AMC 10A / Problem 25",
+        "question_number": 25,
+        "text": "Let $R$, $S$, and $T$ be squares that have vertices at lattice points (i.e., points whose coordinates are both integers) in the coordinate plane, together with their interiors. The bottom edge of each square is on the $x$-axis. The left edge of $R$ and the right edge of $S$ are on the $y$-axis, and $R$ contains $\\frac{9}{4}$ as many lattice points as does $S$. The top two vertices of $T$ are in $R \\cup S$, and $T$ contains $\\frac{1}{4}$ of the lattice points contained in $R \\cup S.$ See the figure (not drawn to scale).\n\nThe fraction of lattice points in $S$ that are in $S \\cap T$ is $27$ times the fraction of lattice points in $R$ that are in $R \\cap T$. What is the minimum possible value of the edge length of $R$ plus the edge length of $S$ plus the edge length of $T$?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/d/1/9/d19ef900b6330bb16c3488ac1593a01dce4bedb8.png",
+            "alt": "[asy] size(8cm); label(scale(.8)*\"$y$\", (0,60), N); label(scale(.8)*\"$x$\", (60,0), E); filldraw((0,0)--(55,0)--(55,55)--(0,55)--cycle, yellow+orange+white+white); label(scale(1.3)*\"$R$\", (55/2,55/2)); filldraw((0,0)--(0,28)--(-28,28)--(-28,0)--cycle, green+white+white); label(scale(1.3)*\"$S$\",(-14,14)); filldraw((-10,0)--(15,0)--(15,25)--(-10,25)--cycle, red+white+white); label(scale(1.3)*\"$T$\",(3.5,25/2)); draw((0,-10)--(0,60),EndArrow()); draw((-34,0)--(60,0),EndArrow()); [/asy]",
+            "width": 378,
+            "height": 288
+          }
+        ],
+        "options": [
+          "(A) 336",
+          "(B) 337",
+          "(C) 338",
+          "(D) 339",
+          "(E) 340"
+        ],
+        "correct": "B"
+      }
+    ],
+    "curated_metadata": {
+      "year": 2022,
+      "contest": "AMC 10A",
+      "administered_on": "2022-11-10",
+      "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A",
+      "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems",
+      "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Answer_Key"
+    }
+  }
+}

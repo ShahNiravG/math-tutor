@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 7.1 - Study guide</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 7.1</h1>
+      <p><strong>Study guide</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4564659_alg-2trig-h-chp-7-1-note.pdf">4564659_alg-2trig-h-chp-7-1-note.pdf</a></p>
+    </header>
+    <main>
+      <h2>Study Guide: Chp 7.1 – Trigonometric Identities</h2>
+<hr>
+<h3>1. Short Summary</h3>
+<p>This document introduces <strong>trigonometric identities</strong>, which are equations involving trigonometric functions that hold for all values in their domain. It covers the fundamental identities and properties (quotient, product, reciprocal, Pythagorean), and explains strategies for simplifying and proving trigonometric identities. Several examples and types of identities (even-odd, cofunction) are shown, along with guidance on algebraic manipulation and substitution.</p>
+<hr>
+<h3>2. Core Definitions, Theorems, and Formulas</h3>
+<h4>Definitions</h4>
+<ul>
+<li><strong>Identity:</strong> An equation that is true for all values of the variable(s).</li>
+<li><strong>Trigonometric Identity:</strong> An identity involving trigonometric functions.</li>
+</ul>
+<h4>Essential Properties and Identities</h4>
+<p><strong>Quotient Properties:</strong></p>
+<ul>
+<li>\(\tan(x) = \frac{\sin(x)}{\cos(x)}\)</li>
+<li>\(\cot(x) = \frac{\cos(x)}{\sin(x)}\)</li>
+</ul>
+<p><strong>Product Properties:</strong></p>
+<ul>
+<li>\(\tan(x)\cos(x) = \sin(x)\)</li>
+<li>\(\tan(x)\cot(x) = 1\)</li>
+</ul>
+<p><strong>Reciprocal Properties:</strong></p>
+<ul>
+<li>\(\sin(x) = \frac{1}{\csc(x)}\)</li>
+<li>\(\cos(x) = \frac{1}{\sec(x)}\)</li>
+<li>\(\tan(x) = \frac{1}{\cot(x)}\)</li>
+<li>\(\csc(x) = \frac{1}{\sin(x)}\)</li>
+<li>\(\sec(x) = \frac{1}{\cos(x)}\)</li>
+<li>\(\cot(x) = \frac{1}{\tan(x)}\)</li>
+</ul>
+<p><strong>Pythagorean Identities:</strong></p>
+<ul>
+<li>\(\sin^2(x) + \cos^2(x) = 1\)</li>
+<li>\(1 + \tan^2(x) = \sec^2(x)\)</li>
+<li>\(1 + \cot^2(x) = \csc^2(x)\)</li>
+</ul>
+<p><strong>Cofunction Identities:</strong></p>
+<ul>
+<li>\(\sin\left(\frac{\pi}{2} - x\right) = \cos(x)\)</li>
+<li>\(\cos\left(\frac{\pi}{2} - x\right) = \sin(x)\)</li>
+<li>\(\tan\left(\frac{\pi}{2} - x\right) = \cot(x)\)</li>
+<li>\(\cot\left(\frac{\pi}{2} - x\right) = \tan(x)\)</li>
+<li>\(\sec\left(\frac{\pi}{2} - x\right) = \csc(x)\)</li>
+<li>\(\csc\left(\frac{\pi}{2} - x\right) = \sec(x)\)</li>
+</ul>
+<p><strong>Even-Odd Identities:</strong> (Not all listed, but examples would include)</p>
+<ul>
+<li>\(\sin(-x) = -\sin(x)\) (odd)</li>
+<li>\(\cos(-x) = \cos(x)\) (even)</li>
+<li>\(\tan(-x) = -\tan(x)\) (odd)</li>
+</ul>
+<hr>
+<h3>3. Step-by-Step Study Guide</h3>
+<h4>A. Understanding the Identities</h4>
+<h4>1. <strong>Quotient, Product, and Reciprocal Properties</strong></h4>
+<ul>
+<li>Know how to rewrite tan, cot, sec, csc, etc., in terms of sin and cos or as reciprocals.</li>
+<li>Example: \(\tan(x) = \frac{\sin(x)}{\cos(x)}\), \(\cot(x) = \frac{\cos(x)}{\sin(x)}\).</li>
+</ul>
+<h4>2. <strong>Using Pythagorean Identities</strong></h4>
+<ul>
+<li>Start with \(\sin^2(x) + \cos^2(x) = 1\).</li>
+<li>Rearrangement gives two more forms:</li>
+<li>\(\sin^2(x) = 1 - \cos^2(x)\)</li>
+<li>\(\cos^2(x) = 1 - \sin^2(x)\)</li>
+<li>Divide the basic identity by \(\cos^2(x)\) or \(\sin^2(x)\) to derive the others.</li>
+</ul>
+<h4>3. <strong>Cofunction and Even-Odd Identities</strong></h4>
+<ul>
+<li>Cofunction identities relate the value of a function at angle \(x\) to its “partner” at \(\frac{\pi}{2} - x\).</li>
+<li>Even-odd identities reflect symmetry properties (e.g., sine and tangent are odd, cosine is even).</li>
+</ul>
+<h4>B. Simplifying Trigonometric Expressions</h4>
+<ul>
+<li><strong>Step 1:</strong> Change all functions to sines and cosines, if possible.</li>
+<li><strong>Step 2:</strong> Apply fundamental identities to simplify.</li>
+<li><strong>Step 3:</strong> Factor if there is a common factor.</li>
+<li><strong>Step 4:</strong> Combine terms using algebraic methods (common denominators, etc.).</li>
+</ul>
+<p><em>Example: Simplify \(\sin(\theta) \sec(\theta)\):</em> 1. \(\sec(\theta) = \frac{1}{\cos(\theta)}\) 2. \(\sin(\theta) \sec(\theta) = \frac{\sin(\theta)}{\cos(\theta)} = \tan(\theta)\)</p>
+<h4>C. Proving Identities</h4>
+<ul>
+<li>Work from one side of the equation to the other.</li>
+<li>If stuck, convert everything to sines and cosines.</li>
+<li>Use known identities and algebraic manipulation.</li>
+<li>If both sides can be separately reduced to the same expression, the identity is verified.</li>
+</ul>
+<h4>D. Trigonometric Substitution</h4>
+<ul>
+<li>Substitute a trigonometric function for a variable and simplify using identities.</li>
+<li>Example: If \(x = \sec(\theta)\), then \(x^2 - 1 = \sec^2(\theta) - 1 = \tan^2(\theta)\).</li>
+</ul>
+<hr>
+<h3>4. Practice Problems and Answers</h3>
+<h4>Problem 1</h4>
+<p><strong>Simplify:</strong> \(\cos(x)\sec(x)\)</p>
+<p><strong>Solution:</strong> \(\sec(x) = \frac{1}{\cos(x)}\), so \[ \cos(x)\sec(x) = \cos(x) \cdot \frac{1}{\cos(x)} = 1 \]</p>
+<hr>
+<h4>Problem 2</h4>
+<p><strong>Simplify:</strong> \(\frac{1}{1 + \tan^2(x)}\)</p>
+<p><strong>Solution:</strong> \(1 + \tan^2(x) = \sec^2(x)\) \[ \frac{1}{1 + \tan^2(x)} = \frac{1}{\sec^2(x)} = \cos^2(x) \]</p>
+<hr>
+<h4>Problem 3</h4>
+<p><strong>Write in terms of sines and cosines:</strong> \(\cot(x)\)</p>
+<p><strong>Solution:</strong> \[ \cot(x) = \frac{\cos(x)}{\sin(x)} \]</p>
+<hr>
+<h4>Problem 4</h4>
+<p><strong>Verify the identity:</strong> \(1 + \cot^2(x) = \csc^2(x)\)</p>
+<p><strong>Solution:</strong> This is a Pythagorean identity.</p>
+<hr>
+<h4>Problem 5</h4>
+<p><strong>Make the following substitution and simplify:</strong> If \(x = 2\tan(\theta)\), find \(4 + x^2\) in terms of \(\theta\).</p>
+<p><strong>Solution:</strong> \[ 4 + x^2 = 4 + (2\tan(\theta))^2 = 4 + 4\tan^2(\theta) = 4(1 + \tan^2(\theta)) = 4\sec^2(\theta) \]</p>
+<hr>
+<h3>5. Assumptions &amp; Ambiguities</h3>
+<ul>
+<li><strong>Even-odd identities:</strong> The document says to “list even-odd identities” but does not provide them. The common ones are included above.</li>
+<li><strong>Some formulas are in diagrams:</strong> Where formulas are referenced by the “Magic Hexagon,” equivalents are extracted and written out.</li>
+<li><strong>Range Restrictions:</strong> For trigonometric substitutions, it is assumed (as stated in the document) that \(0 &lt; \theta &lt; \frac{\pi}{2}\).</li>
+<li><strong>Not all example solutions are worked out in the original:</strong> Where possible, sample simplifications are shown in section 4.</li>
+</ul>
+<hr>
+<p><strong>End of Guide</strong></p>
+    </main>
+  </article>
+</body>
+</html>

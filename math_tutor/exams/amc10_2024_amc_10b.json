@@ -1,0 +1,800 @@
+{
+  "format": "explicit_curated_exam",
+  "exam": {
+    "format": "explicit_curated_exam",
+    "source_type": "explicit_curated_exam",
+    "id": "amc10-2024-amc-10b",
+    "title": "2024 AMC 10B",
+    "bank": "amc10",
+    "bank_title": "AMC 10",
+    "question_count": 25,
+    "questions": [
+      {
+        "id": "amc10-2024-amc-10b-q01",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_1",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_1",
+        "curated_problem_number": 1,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_1",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_1",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 1",
+        "question_number": 1,
+        "text": "In a long line of people arranged left to right, the 1013th person from the left is also the 1010th person from the right. How many people are in the line?",
+        "question_images": [],
+        "options": [
+          "(A) 2021",
+          "(B) 2022",
+          "(C) 2023",
+          "(D) 2024",
+          "(E) 2025"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q02",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_2",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_2",
+        "curated_problem_number": 2,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_2",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_2",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 2",
+        "question_number": 2,
+        "text": "What is $10! - 7! \\cdot 6!?$",
+        "question_images": [],
+        "options": [
+          "(A) -120",
+          "(B) 0",
+          "(C) 120",
+          "(D) 600",
+          "(E) 720"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q03",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_3",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_3",
+        "curated_problem_number": 3,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_3",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_3",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 3",
+        "question_number": 3,
+        "text": "For how many integer values of $x$ is $|2x| \\leq 7 \\pi$?",
+        "question_images": [],
+        "options": [
+          "(A) 16",
+          "(B) 17",
+          "(C) 19",
+          "(D) 20",
+          "(E) 21"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q04",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_4",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_4",
+        "curated_problem_number": 4,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_4",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_4",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 4",
+        "question_number": 4,
+        "text": "Balls numbered $1, 2, 3, \\dots$ are deposited in $5$ bins, labeled $A$, $B$, $C$, $D$, and $E$ using the following procedure. Ball $1$ is deposited in bin $A$, and balls $2$ and $3$ are deposited in bin $B$. The next $3$ balls are deposited in bin $C$, the next $4$ in bin $D$, and so on, cycling back to bin $A$ after balls are deposited in bin $E$. (For example, balls numbered $22, 23, \\dots, 28$ are deposited in bin $B$ at step $7$ of this process.) In which bin is ball $2024$ deposited?",
+        "question_images": [],
+        "options": [
+          "(A) A",
+          "(B) B",
+          "(C) C",
+          "(D) D",
+          "(E) E"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q05",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_5",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_5",
+        "curated_problem_number": 5,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_5",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_5",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 5",
+        "question_number": 5,
+        "text": "In the following expression, Melanie changed some of the plus signs to minus signs:\n\\[1+3+5+7+\\cdots+97+99\\]\nWhen the new expression was evaluated, it was negative. What is the least number of plus signs that Melanie could have changed to minus signs?",
+        "question_images": [],
+        "options": [
+          "(A) 14",
+          "(B) 15",
+          "(C) 16",
+          "(D) 17",
+          "(E) 18"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q06",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_6",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_6",
+        "curated_problem_number": 6,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_6",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_6",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 6",
+        "question_number": 6,
+        "text": "A rectangle has integer side lengths and an area of $2024$. What is the least possible perimeter of the rectangle?",
+        "question_images": [],
+        "options": [
+          "(A) 160",
+          "(B) 180",
+          "(C) 222",
+          "(D) 228",
+          "(E) 390"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q07",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_7",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_7",
+        "curated_problem_number": 7,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_7",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_7",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 7",
+        "question_number": 7,
+        "text": "What is the remainder when $7^{2024}+7^{2025}+7^{2026}$ is divided by $19$?",
+        "question_images": [],
+        "options": [
+          "(A) 0",
+          "(B) 1",
+          "(C) 7",
+          "(D) 11",
+          "(E) 18"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q08",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_8",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_8",
+        "curated_problem_number": 8,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_8",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_8",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 8",
+        "question_number": 8,
+        "text": "Let $N$ be the product of all the positive integer divisors of $42$. What is the units digit\nof $N$?",
+        "question_images": [],
+        "options": [
+          "(A) 0",
+          "(B) 2",
+          "(C) 4",
+          "(D) 6",
+          "(E) 8"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q09",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_9",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_9",
+        "curated_problem_number": 9,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_9",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_9",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 9",
+        "question_number": 9,
+        "text": "Real numbers $a, b,$ and $c$ have arithmetic mean $0$. The arithmetic mean of $a^2, b^2,$ and $c^2$ is $10$. What is the arithmetic mean of $ab, ac,$ and $bc$?",
+        "question_images": [],
+        "options": [
+          "(A) -5",
+          "(B) -\\dfrac{10}{3}",
+          "(C) -\\dfrac{10}{9}",
+          "(D) 0",
+          "(E) \\dfrac{10}{9}"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q10",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_10",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_10",
+        "curated_problem_number": 10,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_10",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_10",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 10",
+        "question_number": 10,
+        "text": "Quadrilateral $ABCD$ is a parallelogram, and $E$ is the midpoint of the side $\\overline{AD}$. Let $F$ be the intersection of lines $EB$ and $AC$. What is the ratio of the area of quadrilateral $CDEF$ to the area of $\\triangle CFB$?",
+        "question_images": [],
+        "options": [
+          "(A) 5:4",
+          "(B) 4:3",
+          "(C) 3:2",
+          "(D) 5:3",
+          "(E) 2:1"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q11",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_11",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_11",
+        "curated_problem_number": 11,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_11",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_11",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/a/e/9/ae9f151d0a601f719d48015b0f36651f319802a3.png",
+              "alt": "[asy] pair X = (0, 0); pair W = (0, 4); pair Y = (8, 0); pair Z = (8, 4); label(\"$X$\", X, dir(180)); label(\"$W$\", W, dir(180)); label(\"$Y$\", Y, dir(0)); label(\"$Z$\", Z, dir(0));  draw(W--X--Y--Z--cycle); dot(X); dot(Y); dot(W); dot(Z); pair M = (2, 0); pair A = (8, 3); label(\"$A$\", A, dir(0)); dot(M); dot(A); draw(W--M--A--cycle); markscalefactor = 0.05; draw(rightanglemark(W, M, A)); label(\"$M$\", M, dir(-90)); [/asy]",
+              "width": 252,
+              "height": 132
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 11",
+        "question_number": 11,
+        "text": "In the figure below $WXYZ$ is a rectangle with $WX=4$ and $WZ=8$. Point $M$ lies on $\\overline{XY}$, point $A$ lies on $\\overline{YZ}$, and $\\angle WMA$ is a right angle. The areas of $\\triangle WXM$ and $\\triangle W A Z$ are equal. What is the area of $\\triangle WMA$?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/a/e/9/ae9f151d0a601f719d48015b0f36651f319802a3.png",
+            "alt": "[asy] pair X = (0, 0); pair W = (0, 4); pair Y = (8, 0); pair Z = (8, 4); label(\"$X$\", X, dir(180)); label(\"$W$\", W, dir(180)); label(\"$Y$\", Y, dir(0)); label(\"$Z$\", Z, dir(0));  draw(W--X--Y--Z--cycle); dot(X); dot(Y); dot(W); dot(Z); pair M = (2, 0); pair A = (8, 3); label(\"$A$\", A, dir(0)); dot(M); dot(A); draw(W--M--A--cycle); markscalefactor = 0.05; draw(rightanglemark(W, M, A)); label(\"$M$\", M, dir(-90)); [/asy]",
+            "width": 252,
+            "height": 132
+          }
+        ],
+        "options": [
+          "(A) 13",
+          "(B) 14",
+          "(C) 15",
+          "(D) 16",
+          "(E) 17 \\qquad"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q12",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_12",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_12",
+        "curated_problem_number": 12,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_12",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_12",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 12",
+        "question_number": 12,
+        "text": "A group of $100$ students from different countries meet at a mathematics competition.\nEach student speaks the same number of languages, and, for every pair of\nstudents $A$ and $B$, student $A$ speaks some language that student $B$ does not speak,\nand student $B$ speaks some language that student $A$ does not speak. What is the\nleast possible total number of languages spoken by all the students?",
+        "question_images": [],
+        "options": [
+          "(A) 9",
+          "(B) 10",
+          "(C) 12",
+          "(D) 51",
+          "(E) 100"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q13",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_13",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_13",
+        "curated_problem_number": 13,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_13",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_13",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 13",
+        "question_number": 13,
+        "text": "Positive integers $x$ and $y$ satisfy the equation $\\sqrt{x} + \\sqrt{y} = \\sqrt{1183}$. What is the minimum possible value of $x+y$?",
+        "question_images": [],
+        "options": [
+          "(A) 585",
+          "(B) 595",
+          "(C) 623",
+          "(D) 700",
+          "(E) 791"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q14",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_14",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_14",
+        "curated_problem_number": 14,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_14",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_14",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 14",
+        "question_number": 14,
+        "text": "A dartboard is the region $B$ in the coordinate plane consisting of points $(x,y)$ such\nthat $|x| + |y| \\le 8$ . A target $T$ is the region where $(x^2 + y^2 - 25)^2 \\le 49.$ A dart is\nthrown and lands at a random point in $B$. The probability that the dart lands in $T$ can be\nexpressed as $\\frac{m}{n} \\cdot \\pi,$ where $m$ and $n$ are relatively prime positive integers. What\nis $m + n?$",
+        "question_images": [],
+        "options": [
+          "(A) 39",
+          "(B) 71",
+          "(C) 73",
+          "(D) 75",
+          "(E) 135"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q15",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_15",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_15",
+        "curated_problem_number": 15,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_15",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_15",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 15",
+        "question_number": 15,
+        "text": "A list of $9$ real numbers consists of $1$, $2.2$, $3.2$, $5.2$, $6.2$, and $7$, as well as $x$, $y$ , and $z$ with $x$ $\\le$ $y$ $\\le$ $z$. The range of the list is $7$, and the mean and the median are both positive integers. How many ordered triples ($x$, $y$, $z$) are possible?",
+        "question_images": [],
+        "options": [
+          "(A) 1",
+          "(B) 2",
+          "(C) 3",
+          "(D) 4",
+          "(E) \\text{infinitely many}"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q16",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_16",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_16",
+        "curated_problem_number": 16,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_16",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_16",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 16",
+        "question_number": 16,
+        "text": "Jerry likes to play with numbers. One day, he wrote all the integers from $1$ to $2024$ on the whiteboard. Then he repeatedly chose four numbers on the whiteboard, erased them, and replaced them by either their sum or their product. (For example, Jerry's first step might have been to erase $1$, $2$, $3$, and $5$, and then write either $11$, their sum, or $30$, their product, on the whiteboard.) After repeatedly performing this operation, Jerry noticed that all the remaining numbers on the whiteboard were odd. What is the maximum possible number of integers on the whiteboard at that time?",
+        "question_images": [],
+        "options": [
+          "(A) 1010",
+          "(B) 1011",
+          "(C) 1012",
+          "(D) 1013",
+          "(E) 1014"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q17",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_17",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_17",
+        "curated_problem_number": 17,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_17",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_17",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 17",
+        "question_number": 17,
+        "text": "In a race among 5 snails, there is at most one tie, but that tie can involve any number\nof snails. For example, the result of the race might be that Dazzler is first; Abby,\nCyrus, and Elroy are tied for second; and Bruna is fifth. How many different results\nof the race are possible?",
+        "question_images": [],
+        "options": [
+          "(A) 180",
+          "(B) 361",
+          "(C) 420",
+          "(D) 431",
+          "(E) 720"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q18",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_18",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_18",
+        "curated_problem_number": 18,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_18",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_18",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 18",
+        "question_number": 18,
+        "text": "How many different remainders can result when the $100$th power of an integer is\ndivided by $125$?",
+        "question_images": [],
+        "options": [
+          "(A) 1",
+          "(B) 2",
+          "(C) 5",
+          "(D) 25",
+          "(E) 125"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q19",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_19",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_19",
+        "curated_problem_number": 19,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_19",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_19",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 19",
+        "question_number": 19,
+        "text": "In the following table, each question mark is to be replaced by \"Possible\" or \"Not\nPossible\" to indicate whether a nonvertical line with the given slope can contain the\ngiven number of lattice points (points both of whose coordinates are integers). How\nmany of the 12 entries will be \"Possible\"?",
+        "question_images": [],
+        "options": [
+          "(A) 4",
+          "(B) 5",
+          "(C) 6",
+          "(D) 7",
+          "(E) 9"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q20",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_20",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_20",
+        "curated_problem_number": 20,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_20",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_20",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 20",
+        "question_number": 20,
+        "text": "Three different pairs of shoes are placed in a row so that no left shoe is next to a\nright shoe from a different pair. In how many ways can these six shoes be lined up?",
+        "question_images": [],
+        "options": [
+          "(A) 60",
+          "(B) 72",
+          "(C) 90",
+          "(D) 108",
+          "(E) 120"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q21",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_21",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_21",
+        "curated_problem_number": 21,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_21",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_21",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/4/0/9/4091eff69445abb83b260b3ccbdfa4e00b8f9182.png",
+              "alt": "[asy] size(6cm); draw(circle((0,1),1), linewidth(1.2)); draw((-1,0)--(1.25,0), linewidth(1.2)); draw(circle((1,1/4),1/4), linewidth(1.2)); [/asy]",
+              "width": 285,
+              "height": 255
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 21",
+        "question_number": 21,
+        "text": "Two straight pipes (circular cylinders), with radii $1$ and $\\frac{1}{4}$, lie parallel and in contact on a flat floor. The figure below shows a head-on view. What is the sum of the possible radii of a third parallel pipe lying on the same floor and in contact with both?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/4/0/9/4091eff69445abb83b260b3ccbdfa4e00b8f9182.png",
+            "alt": "[asy] size(6cm); draw(circle((0,1),1), linewidth(1.2)); draw((-1,0)--(1.25,0), linewidth(1.2)); draw(circle((1,1/4),1/4), linewidth(1.2)); [/asy]",
+            "width": 285,
+            "height": 255
+          }
+        ],
+        "options": [
+          "(A) \\frac{1}{9}",
+          "(B) 1",
+          "(C) \\frac{10}{9}",
+          "(D) \\frac{11}{9}",
+          "(E) \\frac{19}{9}"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q22",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_22",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_22",
+        "curated_problem_number": 22,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_22",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_22",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 22",
+        "question_number": 22,
+        "text": "A group of $16$ people will be partitioned into $4$ indistinguishable $4$-person\ncommittees. Each committee will have one chairperson and one secretary. The\nnumber of different ways to make these assignments can be written\nas ${3^r}M$, where $r$ and $M$ are positive integers and $M$ is not divisible by $3$. What is $r$?",
+        "question_images": [],
+        "options": [
+          "(A) 5",
+          "(B) 6",
+          "(C) 7",
+          "(D) 8",
+          "(E) 9"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q23",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_23",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_23",
+        "curated_problem_number": 23,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_23",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_23",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 23",
+        "question_number": 23,
+        "text": "The Fibonacci numbers are defined by $F_1 = 1, F_2 = 1,$ and $F_n = F_{n-1} + F_{n-2}$ for $n \\geq 3.$ What is \\[{\\frac{F_2}{F_1}} + {\\frac{F_4}{F_2}} + {\\frac{F_6}{F_3}} + ... + {\\frac{F_{20}}{F_{10}}}?\\]",
+        "question_images": [],
+        "options": [
+          "(A) 318",
+          "(B) 319",
+          "(C) 320",
+          "(D) 321",
+          "(E) 322"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q24",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_24",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_24",
+        "curated_problem_number": 24,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_24",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_24",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 24",
+        "question_number": 24,
+        "text": "Let\n\\[P(m)=\\frac{m}{2}+\\frac{m^2}{4}+\\frac{m^4}{8}+\\frac{m^8}{8}\\]\nHow many of the values $P(2022)$, $P(2023)$, $P(2024)$, and $P(2025)$ are integers?",
+        "question_images": [],
+        "options": [
+          "(A) 0",
+          "(B) 1",
+          "(C) 2",
+          "(D) 3",
+          "(E) 4"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2024-amc-10b-q25",
+        "source_stem": "amc10-2024-amc-10b",
+        "curated_source": "2024 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_25",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_25",
+        "curated_problem_number": 25,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems#Problem_25",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems/Problem_25",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2024 AMC 10B / Problem 25",
+        "question_number": 25,
+        "text": "Each of $27$ bricks (right rectangular prisms) has dimensions $a \\times b \\times c$, where $a$, $b$, and $c$ are pairwise relatively prime positive integers. These bricks are arranged to form a $3 \\times 3 \\times 3$ block, as shown on the left below. A $28$th brick with the same dimensions is introduced, and these bricks are reconfigured into a $2 \\times 2 \\times 7$ block, shown on the right. The new block is $1$ unit taller, $1$ unit wider, and $1$ unit deeper than the old one. What is $a + b + c$?",
+        "question_images": [],
+        "options": [
+          "(A) 88",
+          "(B) 89",
+          "(C) 90",
+          "(D) 91",
+          "(E) 92"
+        ],
+        "correct": "E"
+      }
+    ],
+    "curated_metadata": {
+      "year": 2024,
+      "contest": "AMC 10B",
+      "administered_on": "2024-11-12",
+      "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B",
+      "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Problems",
+      "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2024_AMC_10B_Answer_Key"
+    }
+  }
+}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 6.4 - Study guide</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 6.4</h1>
+      <p><strong>Study guide</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4533650_alg-2trig-h-chp-6-4-note.pdf">4533650_alg-2trig-h-chp-6-4-note.pdf</a></p>
+    </header>
+    <main>
+      <p>Certainly! Here is a self-contained study guide and summary based on the provided PDF.</p>
+<hr>
+<h3>1. Short Summary</h3>
+<p>This document covers the graphs and periodic properties of four key trigonometric functions: <strong>tangent (tan)</strong>, <strong>cotangent (cot)</strong>, <strong>secant (sec)</strong>, and <strong>cosecant (csc)</strong>. It explains their periods, describes how to find vertical asymptotes, and provides intervals for graphing both basic and transformed (shifted/scaled) versions of these functions. Examples and key formulas for graphing are included.</p>
+<hr>
+<h3>2. Core Definitions, Theorems, and Formulas</h3>
+<h4>Definitions &amp; Properties</h4>
+<ul>
+<li><strong>Tangent (tan x):</strong></li>
+<li>Period: π</li>
+<li>Vertical asymptotes: \( x = \frac{\pi}{2} + n\pi \), n ∈ ℤ</li>
+</ul>
+<ul>
+<li><strong>Cotangent (cot x):</strong></li>
+<li>Period: π</li>
+<li>Vertical asymptotes: \( x = n\pi \), n ∈ ℤ</li>
+</ul>
+<ul>
+<li><strong>Cosecant (csc x):</strong></li>
+<li>Period: 2π</li>
+<li>Vertical asymptotes: \( x = n\pi \), n ∈ ℤ</li>
+<li>Defined by: \( \csc x = \frac{1}{\sin x} \)</li>
+</ul>
+<ul>
+<li><strong>Secant (sec x):</strong></li>
+<li>Period: 2π</li>
+<li>Vertical asymptotes: \( x = \frac{\pi}{2} + n\pi \), n ∈ ℤ</li>
+<li>Defined by: \( \sec x = \frac{1}{\cos x} \)</li>
+</ul>
+<h4>Important Periodicity Properties</h4>
+<ul>
+<li>\( \tan(x + \pi) = \tan x \)</li>
+<li>\( \cot(x + \pi) = \cot x \)</li>
+<li>\( \csc(x + 2\pi) = \csc x \)</li>
+<li>\( \sec(x + 2\pi) = \sec x \)</li>
+</ul>
+<h4>Intervals for Graphing One Period</h4>
+<h4>Basic Functions</h4>
+<ul>
+<li>\( y = a\tan(kx) \): \( \left(-\frac{\pi}{2k},\ \frac{\pi}{2k}\right) \)</li>
+<li>\( y = a\cot(kx) \): \( (0, \frac{\pi}{k}) \)</li>
+<li>\( y = a\csc(kx) \) or \( y = a\sec(kx) \): \( [0, \frac{2\pi}{k}] \)</li>
+</ul>
+<h4>Shifted/Transformed Functions</h4>
+<ul>
+<li>\( y = a\tan k(x-b) \): \( \left(-\frac{\pi}{2k}+b,\ \frac{\pi}{2k}+b\right) \)</li>
+<li>\( y = a\cot k(x-b) \): \( (b,\ \frac{\pi}{k}+b) \)</li>
+<li>\( y = a\csc k(x-b) \) or \( y = a\sec k(x-b) \): \( [b,\ \frac{2\pi}{k}+b] \)</li>
+</ul>
+<hr>
+<h3>3. Step-by-Step Study Guide</h3>
+<h4>A. Graphing Tangent and Cotangent</h4>
+<h4>1. <strong>Tangent:</strong> \( y = a\tan(kx + c) \)</h4>
+<ul>
+<li><strong>Period:</strong> \( \frac{\pi}{k} \)</li>
+<li><strong>Asymptotes:</strong> Solve \( kx + c = \frac{\pi}{2} + n\pi \)</li>
+<li><strong>To Graph One Period:</strong></li>
+<li>Start: \( x = -\frac{\pi}{2k} \) (for standard \( kx \))</li>
+<li>End: \( x = \frac{\pi}{2k} \)</li>
+</ul>
+<h4>2. <strong>Cotangent:</strong> \( y = a\cot(kx + c) \)</h4>
+<ul>
+<li><strong>Period:</strong> \( \frac{\pi}{k} \)</li>
+<li><strong>Asymptotes:</strong> Solve \( kx + c = n\pi \)</li>
+<li><strong>To Graph One Period:</strong></li>
+<li>Start: \( x = 0 \)</li>
+<li>End: \( x = \frac{\pi}{k} \)</li>
+</ul>
+<h4>B. Graphing Secant and Cosecant</h4>
+<h4>1. <strong>Cosecant</strong> \( y = a\csc(kx + c) \)</h4>
+<ul>
+<li><strong>Period:</strong> \( \frac{2\pi}{k} \)</li>
+<li><strong>Asymptotes:</strong> Where \( \sin(kx + c) = 0 \) (i.e., \( kx + c = n\pi \))</li>
+<li><strong>To Graph One Period:</strong></li>
+<li>Interval: \( [0, \frac{2\pi}{k}] \)</li>
+<li><strong>Tip:</strong> Graph \( y = a\sin(kx + c) \) first, then draw vertical asymptotes where it crosses zero, and sketch branches for \( \csc \).</li>
+</ul>
+<h4>2. <strong>Secant</strong> \( y = a\sec(kx + c) \)</h4>
+<ul>
+<li><strong>Period:</strong> \( \frac{2\pi}{k} \)</li>
+<li><strong>Asymptotes:</strong> Where \( \cos(kx + c) = 0 \) (i.e., \( kx + c = \frac{\pi}{2} + n\pi \))</li>
+<li><strong>To Graph One Period:</strong></li>
+<li>Interval: \( [0, \frac{2\pi}{k}] \)</li>
+<li><strong>Tip:</strong> Graph \( y = a\cos(kx + c) \) first, then draw vertical asymptotes where it crosses zero, and sketch branches for \( \sec \).</li>
+</ul>
+<h4>C. General Steps for Graphing Any Transformation</h4>
+<p>1. <strong>Find the period:</strong> Use \( \frac{\pi}{k} \) for tan/cot, \( \frac{2\pi}{k} \) for sec/csc. 2. <strong>Find the interval:</strong> Use formulas above for shifts. 3. <strong>Locate asymptotes:</strong> Set the denomination of the trig fraction to 0. 4. <strong>Draw guide graph:</strong> Plot basic sine/cosine where needed. 5. <strong>Draw the function:</strong> Add asymptotes and sketch increasing/decreasing behavior.</p>
+<hr>
+<h3>4. Practice Problems with Solutions</h3>
+<h4>1. What is the period of \( y = 3 \tan 2x \)?</h4>
+<p><strong>Answer:</strong> \( \frac{\pi}{2} \) (since period = \( \frac{\pi}{k} \) and \( k = 2 \))</p>
+<h4>2. Find the vertical asymptotes of \( y = \cot(3x) \).</h4>
+<p><strong>Answer:</strong> Set \( 3x = n\pi \implies x = \frac{n\pi}{3} \) for integer n.</p>
+<h4>3. State the interval to graph one period of \( y = 2\sec(4x) \).</h4>
+<p><strong>Answer:</strong> \( [0, \frac{2\pi}{4}] = [0, \frac{\pi}{2}] \)</p>
+<h4>4. What are the vertical asymptotes of \( y = \csc(x - \frac{\pi}{4}) \)?</h4>
+<p><strong>Answer:</strong> Set \( x - \frac{\pi}{4} = n\pi \implies x = n\pi + \frac{\pi}{4} \), n ∈ ℤ.</p>
+<h4>5. Give the interval to graph one period of \( y = 5\cot(2x - \pi) \).</h4>
+<p><strong>Answer:</strong> Use formula for cotangent with shift: interval is \( (\frac{\pi}{2},\ \frac{\pi}{2} + \frac{\pi}{2}) = (\frac{\pi}{2},\ \pi) \), but using the document's format, \( (0+\frac{\pi}{2},\ \frac{\pi}{2}+\frac{\pi}{2})=(\frac{\pi}{2},\pi) \).</p>
+<hr>
+<h3>5. Assumptions &amp; Ambiguities</h3>
+<ul>
+<li>The document uses color highlights and diagrams; text interpretation lacks the visual aids.</li>
+<li>Some parentheses in interval notation were incomplete in OCR; completed based on context.</li>
+<li>Implicitly, all periods and intervals assume \( k &gt; 0 \).</li>
+<li>The direction to &quot;graph one period&quot; always means the domain interval for a complete cycle, not the range.</li>
+<li>For shifted functions, \( b \) denotes the horizontal (phase) shift.</li>
+</ul>
+<hr>
+<p>If you need more help with any specific example problem or graph, just ask!</p>
+    </main>
+  </article>
+</body>
+</html>

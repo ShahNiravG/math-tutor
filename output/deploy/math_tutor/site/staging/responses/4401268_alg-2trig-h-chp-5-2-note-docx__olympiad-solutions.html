@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.2 - Olympiad Solutions</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.2</h1>
+      <p><strong>Olympiad Solutions</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401268_alg-2trig-h-chp-5-2-note-docx.pdf">4401268_alg-2trig-h-chp-5-2-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<hr>
+<p><strong>1. Without using a calculator, evaluate \(\sin 75^\circ + \sin 15^\circ\) and explain any surprising symmetry in your answer.</strong></p>
+<p><em>Solution:</em></p>
+<p>Recall the sum-to-product identity: \[ \sin A + \sin B = 2\sin\left(\frac{A+B}{2}\right)\cos\left(\frac{A-B}{2}\right) \] Set \(A = 75^\circ, B = 15^\circ\): \[ \sin 75^\circ + \sin 15^\circ = 2\sin\left(\frac{75^\circ+15^\circ}{2}\right)\cos\left(\frac{75^\circ-15^\circ}{2}\right) = 2\sin(45^\circ)\cos(30^\circ) \] We know: \[ \sin 45^\circ = \frac{\sqrt{2}}{2},\qquad \cos 30^\circ = \frac{\sqrt{3}}{2} \] So, \[ 2 \cdot \frac{\sqrt{2}}{2} \cdot \frac{\sqrt{3}}{2} = \frac{\sqrt{2}\sqrt{3}}{2} = \frac{\sqrt{6}}{2} \]</p>
+<p><strong>Surprising symmetry:</strong> Note that \(75^\circ + 15^\circ = 90^\circ\); i.e., the two angles sum to a right angle, yet their sines sum to the (positive) product of &quot;means&quot; sines and cosines. This comes from the general identity: \[ \sin x + \sin(90^\circ-x) = 2\sin 45^\circ \cos(x-45^\circ) \]</p>
+<hr>
+<p><strong>2. Given that \(\cos\theta = \frac{12}{13}\) for an acute angle \(\theta\), determine \(\tan(2\theta)\) mentally, using identities and minimal computation.</strong></p>
+<p><em>Solution:</em></p>
+<p>First, \(\sin^2\theta = 1 - \cos^2\theta = 1 - \frac{144}{169} = \frac{25}{169}\), so \(\sin\theta = \frac{5}{13}\) (since \(\theta\) is acute, sine is positive).</p>
+<p>Recall: \[ \tan(2\theta) = \frac{2\tan\theta}{1 - \tan^2\theta} \] But \[ \tan\theta = \frac{\sin\theta}{\cos\theta} = \frac{5/13}{12/13} = \frac{5}{12} \] So \[ \tan(2\theta) = \frac{2 \cdot \frac{5}{12}}{1 - \left(\frac{5}{12}\right)^2} = \frac{\frac{10}{12}}{1 - \frac{25}{144}} = \frac{5}{6} \div \frac{119}{144} = \frac{5}{6} \cdot \frac{144}{119} = \frac{120}{119} \]</p>
+<hr>
+<p><strong>3. Compute \((\cos 60^\circ+\cos 120^\circ+\cos 240^\circ)^2\) without a calculator.</strong></p>
+<p><em>Solution:</em></p>
+<p>Compute each cosine: \[ \cos 60^\circ = \frac{1}{2} \] \[ \cos 120^\circ = \cos(180^\circ-60^\circ) = -\cos 60^\circ = -\frac{1}{2} \] \[ \cos 240^\circ = \cos(180^\circ+60^\circ) = -\cos 60^\circ = -\frac{1}{2} \]</p>
+<p>Sum: \[ \frac{1}{2} + \left(-\frac{1}{2}\right) + \left(-\frac{1}{2}\right) = -\frac{1}{2} \] Now square: \[ \left(-\frac{1}{2}\right)^2 = \frac{1}{4} \]</p>
+<hr>
+<p><strong>4. The sum \(S = \tan 15^\circ + \tan 45^\circ + \tan 75^\circ\) is an integer. Find its value, showing any clever simplification.</strong></p>
+<p><em>Solution:</em></p>
+<p>Let’s use the identity (for angles \(x, y, z\) with \(x+y+z=180^\circ\)): \[ \tan x + \tan y + \tan z = \tan x \tan y \tan z \]</p>
+<p>But \(15^\circ + 45^\circ + 75^\circ = 135^\circ\), <strong>not</strong> \(180^\circ\). Let's try direct calculation:</p>
+<p>Compute each: \[ \tan 45^\circ = 1 \] \[ \tan 15^\circ = 2 - \sqrt{3},\qquad \tan 75^\circ = 2 + \sqrt{3} \]</p>
+<p>So, \[ S = (2 - \sqrt{3}) + 1 + (2 + \sqrt{3}) = 2 - \sqrt{3} + 1 + 2 + \sqrt{3} = 2 + 2 + 1 + (-\sqrt{3} + \sqrt{3}) = 5 \]</p>
+<p>Thus, \(S = 5\).</p>
+<hr>
+<p><strong>5. Let \(x = \sin^2 30^\circ + \sin^2 45^\circ + \sin^2 60^\circ\). Find the exact value of \(x\), using symmetry or patterns among the special angles.</strong></p>
+<p><em>Solution:</em></p>
+<p>Compute each: \[ \sin^2 30^\circ = \left(\frac{1}{2}\right)^2 = \frac{1}{4} \] \[ \sin^2 45^\circ = \left(\frac{\sqrt{2}}{2}\right)^2 = \frac{2}{4} = \frac{1}{2} \] \[ \sin^2 60^\circ = \left(\frac{\sqrt{3}}{2}\right)^2 = \frac{3}{4} \]</p>
+<p>Sum: \[ x = \frac{1}{4} + \frac{1}{2} + \frac{3}{4} = \frac{1 + 2 + 3}{4} = \frac{6}{4} = \frac{3}{2} \]</p>
+<hr>
+<p><strong>6. For positive real numbers \(a\) and \(b\), the triangle with vertices \((0,0)\), \((a,0)\), and \((a,b)\) has angle \(\theta\) at the origin. If \(\sin \theta = \frac{b}{\sqrt{a^2+b^2}}\) and \(\cos \theta = \frac{a}{\sqrt{a^2+b^2}}\), what is \(\tan(2\theta)\) as a function of \(a\) and \(b\)?</strong></p>
+<p><em>Solution:</em></p>
+<p>We are given \(\sin\theta = \frac{b}{\sqrt{a^2+b^2}}\) and \(\cos\theta = \frac{a}{\sqrt{a^2+b^2}}\).</p>
+<p>Recall: \[ \tan(2\theta) = \frac{2\tan\theta}{1-\tan^2\theta} \] But \(\tan\theta = \frac{\sin\theta}{\cos\theta} = \frac{b}{a}\).</p>
+<p>Therefore, \[ \tan(2\theta) = \frac{2\frac{b}{a}}{1 - \left(\frac{b}{a}\right)^2} = \frac{2b/a}{1 - b^2/a^2} = \frac{2b}{a} \cdot \frac{a^2}{a^2 - b^2} = \frac{2ab}{a^2 - b^2} \] <strong>Answer:</strong> \(\boxed{\dfrac{2ab}{a^2-b^2}}\)</p>
+    </main>
+  </article>
+</body>
+</html>

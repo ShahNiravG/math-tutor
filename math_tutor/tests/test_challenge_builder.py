@@ -389,5 +389,113 @@ class ChallengeBuilderTests(unittest.TestCase):
             self.assertEqual(len(second_bundle["exams"][0]["questions"][0]["curated_question_checksum"]), 64)
 
 
+def _make_question(id: str, chapter: str, qtype: str) -> dict:
+    return {
+        "id": id,
+        "chapter": chapter,
+        "type": qtype,
+        "model": "gpt54",
+        "model_label": "GPT-5.4",
+        "source_label": f"{id} label",
+        "question_number": 1,
+        "text": f"Question {id}",
+        "options": ["(A) 1", "(B) 2", "(C) 3", "(D) 4"],
+        "correct": "A",
+    }
+
+
+class AppendOnlyClassicExamTests(unittest.TestCase):
+    def test_find_unassigned_questions_excludes_questions_already_in_exams(self) -> None:
+        from math_tutor.challenge_catalog import find_unassigned_questions
+
+        existing_exams = [
+            {
+                "id": "exam-01",
+                "questions": [
+                    _make_question("chp51-mm-gpt54-q1", "5.1", "mm"),
+                    _make_question("chp51-mm-gpt54-q2", "5.1", "mm"),
+                ],
+            }
+        ]
+        all_questions = [
+            _make_question("chp51-mm-gpt54-q1", "5.1", "mm"),  # already assigned
+            _make_question("chp51-mm-gpt54-q2", "5.1", "mm"),  # already assigned
+            _make_question("chp61-mm-gpt54-q1", "6.1", "mm"),  # new
+            _make_question("chp61-op-gpt54-q1", "6.1", "op"),  # new
+        ]
+
+        new_qs = find_unassigned_questions(all_questions, existing_exams)
+        self.assertEqual([q["id"] for q in new_qs], ["chp61-mm-gpt54-q1", "chp61-op-gpt54-q1"])
+
+    def test_find_unassigned_questions_returns_all_when_no_existing_exams(self) -> None:
+        from math_tutor.challenge_catalog import find_unassigned_questions
+
+        all_questions = [
+            _make_question("chp51-mm-gpt54-q1", "5.1", "mm"),
+            _make_question("chp51-op-gpt54-q1", "5.1", "op"),
+        ]
+        new_qs = find_unassigned_questions(all_questions, [])
+        self.assertEqual(len(new_qs), 2)
+
+    def test_append_classic_exams_continues_numbering_after_existing(self) -> None:
+        from math_tutor.challenge_catalog import append_classic_exams
+
+        new_questions = [
+            _make_question("chp61-mm-gpt54-q1", "6.1", "mm"),
+            _make_question("chp61-mm-gpt54-q2", "6.1", "mm"),
+            _make_question("chp61-mm-gpt54-q3", "6.1", "mm"),
+            _make_question("chp61-mm-gpt54-q4", "6.1", "mm"),
+            _make_question("chp61-mm-gpt54-q5", "6.1", "mm"),
+            _make_question("chp61-mm-gpt54-q6", "6.1", "mm"),
+            _make_question("chp61-mm-gpt54-q7", "6.1", "mm"),
+            _make_question("chp61-op-gpt54-q1", "6.1", "op"),
+            _make_question("chp61-op-gpt54-q2", "6.1", "op"),
+            _make_question("chp61-op-gpt54-q3", "6.1", "op"),
+        ]
+
+        new_exams = append_classic_exams(new_questions, last_exam_number=5)
+
+        # Should start at exam-06
+        self.assertTrue(all(e["id"].startswith("exam-") for e in new_exams))
+        first_num = int(new_exams[0]["id"].split("-")[1])
+        self.assertEqual(first_num, 6)
+        # IDs must be sequentially numbered with no gaps
+        for i, exam in enumerate(new_exams):
+            expected_id = f"exam-{6 + i:02d}"
+            self.assertEqual(exam["id"], expected_id)
+
+    def test_append_classic_exams_produces_same_output_given_same_input(self) -> None:
+        from math_tutor.challenge_catalog import append_classic_exams
+
+        new_questions = [_make_question(f"chp61-mm-gpt54-q{i}", "6.1", "mm") for i in range(1, 8)]
+        result_a = append_classic_exams(new_questions, last_exam_number=3)
+        result_b = append_classic_exams(new_questions, last_exam_number=3)
+        self.assertEqual(result_a, result_b)
+
+    def test_append_classic_exams_does_not_modify_existing_exams(self) -> None:
+        from math_tutor.challenge_catalog import append_classic_exams, find_unassigned_questions
+
+        existing_exams = [
+            {
+                "id": "exam-01",
+                "bank": "classic",
+                "bank_title": "Classic",
+                "title": "Challenge Exam 1",
+                "questions": [_make_question(f"chp51-mm-gpt54-q{i}", "5.1", "mm") for i in range(1, 8)],
+            }
+        ]
+        import copy
+        existing_snapshot = copy.deepcopy(existing_exams)
+
+        all_questions = existing_exams[0]["questions"] + [
+            _make_question("chp61-mm-gpt54-q1", "6.1", "mm"),
+        ]
+        new_qs = find_unassigned_questions(all_questions, existing_exams)
+        append_classic_exams(new_qs, last_exam_number=1)
+
+        # existing_exams must be completely unchanged
+        self.assertEqual(existing_exams, existing_snapshot)
+
+
 if __name__ == "__main__":
     unittest.main()

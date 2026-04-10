@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.5 - Olympiad Solutions</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.5</h1>
+      <p><strong>Olympiad Solutions</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4465374_alg-2trig-h-chp-5-5-note-docx-1.pdf">4465374_alg-2trig-h-chp-5-5-note-docx-1.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<hr>
+<h4>1. In triangle ABC, angle A is twice angle B and side a is twice side b. What is the value of angle C?</h4>
+<p>Let angles be \( A, B, C \) (in degrees), and sides opposite them be \( a, b, c \). We are told \( A = 2B \), \( a = 2b \).</p>
+<p><strong>By Law of Sines:</strong> \[ \frac{a}{\sin A} = \frac{b}{\sin B} \] Given \( a = 2b, A = 2B \), so: \[ \frac{2b}{\sin 2B} = \frac{b}{\sin B} \] \[ \Rightarrow \frac{2}{\sin 2B} = \frac{1}{\sin B} \] \[ \Rightarrow 2\sin B = \sin 2B \] Recall \(\sin 2B = 2 \sin B \cos B\): \[ 2\sin B = 2\sin B \cos B \] \[ \Rightarrow \sin B (1 - \cos B) = 0 \] Either \(\sin B = 0\) (impossible for a triangle), or \(\cos B = 1\) (then \(B=0^\circ\)), both invalid.</p>
+<p>But let's check for \(\cos B = 1\)—not allowed. This means our earlier steps may need a re-examination.</p>
+<p>Let's try a different view:</p>
+<p>From the Law of Sines and given \(a = 2b\), \(A = 2B\): \[ \frac{a}{b} = \frac{\sin A}{\sin B} = \frac{\sin 2B}{\sin B} = \frac{2 \sin B \cos B}{\sin B} = 2\cos B \] But \(a/b = 2\), so: \[ 2\cos B = 2 \implies \cos B = 1 \implies B = 0^\circ \] Again impossible.</p>
+<p>Why? If you try in radians, identical conclusion. So, <strong>no such triangle exists</strong>.</p>
+<p><strong>However, the intent of the problem suggests there should be a solution; perhaps the constants are more subtle.</strong></p>
+<p>Suppose \(A = 2B\) and \(a = 2b\). Try to set up sum of angles: \[ A + B + C = 180^\circ \implies 2B + B + C = 180^\circ \implies C = 180^\circ - 3B \] From Law of Sines: \[ \frac{a}{\sin A} = \frac{b}{\sin B} \implies \frac{2b}{\sin 2B} = \frac{b}{\sin B} \implies \frac{2}{\sin 2B} = \frac{1}{\sin B} \Rightarrow 2 \sin B = \sin 2B = 2 \sin B \cos B \Rightarrow 2\sin B - 2\sin B \cos B = 0 \Rightarrow 2\sin B (1 - \cos B) = 0 \] So either \(\sin B = 0\) (impossible), or \(\cos B = 1\) (impossible).</p>
+<p><strong>Thus, there is no triangle with these properties.</strong></p>
+<p><strong>Answer:</strong> \(\boxed{\text{No such triangle exists; the problem has no solution.}}\)</p>
+<hr>
+<h4>2. In triangle PQR, PQ = 5, QR = 7, and angle Q = 60°. Without using a calculator, determine whether two distinct triangles can be constructed with these parameters. Justify mentally.</h4>
+<p>Let triangle \( PQR \) have sides \( PQ = 5 \), \( QR = 7 \), and angle \( Q = 60^\circ \). Assume \( PR = x \).</p>
+<p>Given two sides and a non-included angle: this is the ambiguous case (SSA).</p>
+<p>Let’s &quot;swing&quot; side \( PQ \) from \( Q \) at \( 60^\circ \): depending on length, get 0, 1, or 2 triangles.</p>
+<p>Let’s call \( a = QR = 7 \), \( b = PQ = 5 \), and angle \( Q = 60^\circ \) is between them.</p>
+<p>But which sides are adjacent? Label \( Q \) between \( P \) and \( R \), so</p>
+<ul>
+<li>\( PQ \) and \( QR \) meet at \( Q \), angle at \( Q \).</li>
+</ul>
+<p>Use Law of Sines: \[ \frac{PQ}{\sin R} = \frac{QR}{\sin P} \] But easier is to use the fact that the side opposite the given angle (\( Q \)) is not given.</p>
+<p>To check for ambiguous case, assign the known quantities:</p>
+<p>Let’s try to use Law of Cosines to see if the third side is uniquely determined.</p>
+<p>Let</p>
+<ul>
+<li>\( Q \) is at the known \( 60^\circ \),</li>
+<li>Sides \( PQ = 5 \), \( QR = 7 \), enclosed angle \( 60^\circ \).</li>
+</ul>
+<p>So the triangle is determined completely by two sides and the included angle.</p>
+<p>In such a case, <strong>only one triangle can be constructed</strong> (SAS). There is no ambiguity, since the angle is between the given sides.</p>
+<p><strong>Answer:</strong> \(\boxed{\text{Exactly one triangle can be constructed; there is no ambiguity since the given angle is between the two given sides (SAS).}}\)</p>
+<hr>
+<h4>3. Let triangle XYZ have sides \( x = 8, y = 15 \), and angle \( X = 30^\circ \). Show mentally whether a triangle exists, and if so, whether more than one triangle is possible (the ambiguous case).</h4>
+<p>SSA case: sides \( x = 8 \), \( y = 15 \), angle \( X = 30^\circ \) (angle opposite side \( x = 8 \)).</p>
+<p>Apply Law of Sines to check possible number of triangles:</p>
+<p>\[ \frac{x}{\sin X} = \frac{y}{\sin Y} \implies \frac{8}{\sin 30^\circ} = \frac{15}{\sin Y} \]</p>
+<p>But \(\sin 30^\circ = 1/2\): \[ \frac{8}{1/2} = 16 = \frac{15}{\sin Y} \implies \sin Y = \frac{15}{16} &lt; 1 \]</p>
+<p>So:</p>
+<ul>
+<li>\(\sin Y &lt; 1\) and \( 0 &lt; \sin Y &lt; 1 \) ⇒ <strong>two possible values for angle \( Y \)</strong>:</li>
+<li>\(Y_1 = \arcsin(15/16)\)</li>
+<li>\(Y_2 = 180^\circ - Y_1\)</li>
+</ul>
+<p>But the sum of the two known angles \( X + Y_2 \) must be &lt; 180°. Let's check:</p>
+<ul>
+<li>\(Y_2 = 180^\circ - \arcsin(15/16)\)</li>
+<li>\(X = 30^\circ\)</li>
+<li>If \(30^\circ + Y_2 = 210^\circ - \arcsin(15/16) &gt; 180^\circ\) always, so only \(Y_1\) possible.</li>
+</ul>
+<p>Thus, <strong>only one triangle exists</strong> (the ambiguous solution with obtuse angle is not possible).</p>
+<p><strong>Answer:</strong> \(\boxed{\text{Exactly one triangle exists (no ambiguity); }\sin Y = 15/16 &lt; 1, \text{ but the &quot;swung&quot; triangle would have angles summing over } 180^\circ.}\)</p>
+<hr>
+<h4>4. Triangle DEF has angles D, E, F such that \(\sin D + \sin E = \sin F\). If sides \(d, e, f\) are opposite these angles respectively, what can you say about the ratios \(d : e : f\)?</h4>
+<p>Law of Sines: \[ \frac{d}{\sin D} = \frac{e}{\sin E} = \frac{f}{\sin F} = 2R \implies d : e : f = \sin D : \sin E : \sin F \]</p>
+<p>Given: \(\sin D + \sin E = \sin F\). Thus: \[ d : e : f = \sin D : \sin E : (\sin D + \sin E) \]</p>
+<p><strong>Answer:</strong> \(\boxed{d : e : f = \sin D : \sin E : (\sin D + \sin E)}\)</p>
+<hr>
+<h4>5. In triangle LMN, \(LM = 10\), \(MN = 7\), and angle \(N = 90^\circ\). Find \(\sin L + \sin M\) using only properties of sines in a triangle.</h4>
+<p>Let’s label sides:</p>
+<ul>
+<li>Opposite \(L, M, N\) are \(l, m, n\) respectively.</li>
+<li>So: angle at \(N = 90^\circ\).</li>
+<li>\(LM\) is the side opposite \(N\) ⇒ \(n = LM = 10\).</li>
+<li>The other known side: \(MN = 7\), which is side \(l\) (opposite \(L\))? By order of letters, yes.</li>
+<li>\(MN\) is side \(l\), so \(l = 7\).</li>
+</ul>
+<p>Use Law of Sines: \[ \frac{n}{\sin N} = \frac{l}{\sin L} \]</p>
+<p>\(\sin N = 1\) since \(N = 90^\circ\). \[ \frac{10}{1} = \frac{7}{\sin L} \implies \sin L = \frac{7}{10} \]</p>
+<p>Similarly, for angle \(M\), side \(m\) is opposite \(M\), but not given directly.</p>
+<p>But \(\sin L + \sin M = ?\)</p>
+<p>But since \(L + M = 90^\circ\), as \(N = 90^\circ\).</p>
+<p>Therefore: \[ \sin L + \sin M = \sin L + \sin (90^\circ - L) = \sin L + \cos L \]</p>
+<p>We have \(\sin L = 0.7\). Find \(\cos L\):</p>
+<p>\[ \cos L = \sqrt{1 - \sin^2 L} = \sqrt{1 - (0.7)^2} = \sqrt{1 - 0.49} = \sqrt{0.51} \]</p>
+<p>Thus, \[ \sin L + \sin M = 0.7 + \sqrt{0.51} \]</p>
+<p>But the question says &quot;using properties of sines&quot;, i.e., just express in terms of \(\sin L\): \[ \boxed{\sin L + \sin M = \sin L + \cos L} \]</p>
+<p>So, using the sides: \[ \sin L = \frac{7}{10} \] \[ \sin M = \cos L = \sqrt{1 - (\frac{7}{10})^2} = \sqrt{\frac{51}{100}} = \frac{\sqrt{51}}{10} \] Therefore, \[ \sin L + \sin M = \frac{7}{10} + \frac{\sqrt{51}}{10} = \frac{7 + \sqrt{51}}{10} \]</p>
+<p><strong>Answer:</strong> \(\boxed{\sin L + \sin M = \frac{7 + \sqrt{51}}{10}}\)</p>
+<hr>
+<h4>6. Triangle ABC has sides \(a = \sqrt{3}, b = 1\), and angle \(C = 120^\circ\). Find, without explicit calculation, whether triangle ABC is isosceles, scalene, or impossible.</h4>
+<p>Let sides \(a, b, c\) be opposite angles \(A, B, C\).</p>
+<p>Given: \(a = \sqrt{3}\), \(b = 1\), and angle \(C = 120^\circ\).</p>
+<p>Let’s use Law of Cosines to see if \(c\) is possible, and to deduce side lengths.</p>
+<p>Law of Cosines: \[ c^2 = a^2 + b^2 - 2ab\cos C \] But to judge isosceles-ness, let's check if any two sides can be equal, or if any triangle exists.</p>
+<p>First, since \(C\) is the largest angle, side \(c\) should be the largest side.</p>
+<p>Compare \(a = \sqrt{3} \approx 1.732\), \(b = 1\):</p>
+<p>Is it possible for side \(c &gt; a, b\)? Let's compute: \[ c^2 = a^2 + b^2 - 2ab \cos 120^\circ \] \(\cos 120^\circ = -1/2\):</p>
+<p>\[ c^2 = (\sqrt{3})^2 + 1^2 - 2 \cdot \sqrt{3} \cdot 1 \cdot (-1/2) = 3 + 1 + \sqrt{3} = 4 + \sqrt{3} &gt; 0 \] Therefore \(c = \sqrt{4+\sqrt{3}}\), which is larger than \(a\) and \(b\).</p>
+<p>Now, compare side lengths:</p>
+<ul>
+<li>\(c &gt; a &gt; b\) (distinct).</li>
+<li>All sides are different ⇒ <strong>scalene</strong>.</li>
+</ul>
+<p><strong>Answer:</strong> \(\boxed{\text{The triangle is scalene, since all three side lengths are distinct and positive.}}\)</p>
+    </main>
+  </article>
+</body>
+</html>

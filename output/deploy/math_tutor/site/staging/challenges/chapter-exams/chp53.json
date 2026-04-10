@@ -1,0 +1,32 @@
+{
+  "generated_at": "2026-04-03T00:38:25.088604+00:00",
+  "chapter": "5.3",
+  "exams": [
+    {
+      "id": "chp53-mm",
+      "title": "Chapter 5.3 Mental Math Challenge",
+      "chapter": "5.3",
+      "challenge_type": "mm",
+      "mm": 20,
+      "op": 0,
+      "question_count": 20,
+      "models": [
+        "GPT-5.4",
+        "Gemini 3.1 Pro"
+      ]
+    },
+    {
+      "id": "chp53-op",
+      "title": "Chapter 5.3 Olympiad Challenge",
+      "chapter": "5.3",
+      "challenge_type": "op",
+      "mm": 0,
+      "op": 12,
+      "question_count": 12,
+      "models": [
+        "GPT-5.4",
+        "Gemini 3.1 Pro"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 11.1 - Olympiad Solutions (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 11.1</h1>
+      <p><strong>Olympiad Solutions (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4652951_alg-2trig-h-chp-11-1-note-docx.pdf">4652951_alg-2trig-h-chp-11-1-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<p><strong>1. A circle is tangent to the line $y = -4$ and passes through the point $(0, 4)$. As the circle's size and position vary, its center traces out a curve with the equation $y = ax^2$. Find the exact value of $a$.</strong></p>
+<p><em>Solution:</em> Let the center of the circle be $(x, y)$. Since the circle is tangent to the line $y = -4$, its radius is the vertical distance from its center to this line, which is $|y - (-4)| = |y + 4|$. Because the circle also passes through $(0, 4)$, the distance from the center to $(0, 4)$ must equal the radius. Thus, the center $(x, y)$ is always equidistant from the point $(0, 4)$ and the line $y = -4$.</p>
+<p>By the geometric definition of a parabola, the locus of such centers is a parabola with its focus at $(0, 4)$ and its directrix being $y = -4$. The vertex of this parabola lies midway between the focus and the directrix at the origin $(0, 0)$. The focal distance is $p = 4$. Using the standard equation of a vertical parabola $x^2 = 4py$, we get $x^2 = 16y$. Rearranging for $y$ yields $y = \frac{1}{16}x^2$. Comparing this to $y = ax^2$, we find exactly $a = \frac{1}{16}$.</p>
+<p>***</p>
+<p><strong>2. A circle is constructed such that the latus rectum of the parabola $y^2 = 28x$ serves as its diameter. Find the $(x, y)$ coordinates of the point(s) where this circle intersects the parabola's directrix.</strong></p>
+<p><em>Solution:</em> The equation of the parabola is $y^2 = 28x$, which takes the form $y^2 = 4px$ with $4p = 28$, or $p = 7$. Thus, the focus of the parabola is $(p, 0) = (7, 0)$ and its directrix is the vertical line $x = -p = -7$.</p>
+<p>The latus rectum is the vertical segment passing through the focus with its endpoints on the parabola. Its length is $4p = 28$. Because the circle has the latus rectum as its diameter, the center of the circle is the midpoint of the latus rectum, which is the focus $(7, 0)$. The radius is half the length of the latus rectum, so $r = 14$. The equation of the circle is $(x - 7)^2 + y^2 = 14^2 = 196$.</p>
+<p>To find where the circle intersects the directrix, we substitute $x = -7$ into the circle's equation: $$(-7 - 7)^2 + y^2 = 196 \implies (-14)^2 + y^2 = 196 \implies 196 + y^2 = 196 \implies y^2 = 0 \implies y = 0.$$ Hence, the circle intersects the directrix at exactly one point: $(-7, 0)$. <em>(This elegant result highlights a universal property: a circle with a parabola's latus rectum as its diameter is always tangent to the directrix at the axis of symmetry.)</em></p>
+<p>***</p>
+<p><strong>3. A line with a positive slope passes through the origin and intersects the parabola $x^2 = 8y$ at a second point $P$. If the distance from $P$ to the parabola's focus is exactly 10, what is the slope of the line?</strong></p>
+<p><em>Solution:</em> The parabola is given by $x^2 = 8y$, which follows the form $x^2 = 4py$ with $4p = 8$, yielding $p = 2$. The focus is $(0, p) = (0, 2)$ and the directrix is the line $y = -p = -2$.</p>
+<p>By the fundamental definition of a parabola, the distance from any point $P(x_0, y_0)$ on the curve to the focus is equal to its perpendicular distance to the directrix. We are given that the distance from $P$ to the focus is 10. Consequently, the distance from $P$ to the directrix $y = -2$ must also be 10. Setting up the distance equation: $y_0 - (-2) = 10 \implies y_0 = 8$.</p>
+<p>Since $P$ lies on the parabola $x^2 = 8y$, we substitute $y_0 = 8$ to find $x_0$: $$x_0^2 = 8(8) = 64 \implies x_0 = \pm 8.$$ The point $P$ is either $(8, 8)$ or $(-8, 8)$. The line passes through the origin $(0, 0)$ and $P$, so its slope $m$ is $\frac{y_0}{x_0} = \frac{8}{\pm 8} = \pm 1$. Because the line is specified to have a positive slope, the slope must be $1$.</p>
+<p>***</p>
+<p><strong>4. A circle is centered at the focus of the parabola $y = \frac{1}{12}x^2$ and is tangent to its directrix. What is the straight-line distance between the two points where this circle intersects the parabola?</strong></p>
+<p><em>Solution:</em> The parabola $y = \frac{1}{12}x^2$ can be rewritten as $x^2 = 12y$. This matches the form $x^2 = 4py$ with $4p = 12$, yielding $p = 3$. The focus is at $(0, 3)$ and the directrix is $y = -3$.</p>
+<p>The circle is centered at the focus $(0, 3)$ and is tangent to the directrix $y = -3$. The radius of this circle is the distance from the focus to the directrix, which is $2p = 6$. By definition, any point on the parabola is equidistant from the focus and the directrix. For an intersection point to lie on both the parabola and the circle, its distance to the focus must be exactly the circle's radius, 6. Therefore, its distance to the directrix must also be 6.</p>
+<p>Let the intersection point be $(x, y)$. Its distance to the directrix $y = -3$ is $y - (-3) = y + 3$. Setting $y + 3 = 6$ yields $y = 3$. Substitute $y = 3$ back into the parabola's equation to find $x$: $$x^2 = 12(3) = 36 \implies x = \pm 6.$$ The intersection points are $(6, 3)$ and $(-6, 3)$. The straight-line distance between them is $6 - (-6) = 12$.</p>
+<p>***</p>
+<p><strong>5. A line segment passes through the focus of the parabola $x^2 = 24y$, with both of its endpoints lying on the parabola. If one endpoint is exactly 18 units away from the parabola's directrix, what is the exact distance from the other endpoint to the directrix?</strong></p>
+<p><em>Solution:</em> The parabola $x^2 = 24y$ matches $x^2 = 4py$ with $4p = 24$, so the focal distance is $p = 6$. A line segment passing through the focus with endpoints on the parabola is known as a focal chord. Let the distances from the two endpoints to the directrix be $d_1$ and $d_2$. By the definition of a parabola, the lengths of the segments of the focal chord from the focus to the endpoints are also $d_1$ and $d_2$.</p>
+<p>A widely known and elegant property of focal chords is that the harmonic mean of the two focal segments equals the semi-latus rectum $2p$. That is: $$\frac{1}{d_1} + \frac{1}{d_2} = \frac{1}{p}$$ We are given $p = 6$ and one of the distances $d_1 = 18$. Substituting these into the harmonic relation: $$\frac{1}{18} + \frac{1}{d_2} = \frac{1}{6}$$ Solving for $\frac{1}{d_2}$: $$\frac{1}{d_2} = \frac{1}{6} - \frac{1}{18} = \frac{3}{18} - \frac{1}{18} = \frac{2}{18} = \frac{1}{9}$$ Thus, $d_2 = 9$. The exact distance from the other endpoint to the directrix is 9.</p>
+<p>***</p>
+<p><strong>6. The parabola $y^2 = cx$ (where $c &gt; 0$) and the circle $x^2 + y^2 = 80$ intersect at exactly two points. If the straight-line distance between these two intersection points is equal to the focal diameter of the parabola, what is the value of $c$?</strong></p>
+<p><em>Solution:</em> The focal diameter (or latus rectum) of the parabola $y^2 = cx$ is given by $4p = c$. To find the intersection of the parabola and the circle, we substitute $y^2 = cx$ into the circle's equation $x^2 + y^2 = 80$, obtaining: $$x^2 + cx - 80 = 0$$ Since $c &gt; 0$ and $x \ge 0$ (required by $y^2 \ge 0$), this quadratic equation has exactly one positive root, say $x_0$. For this $x_0$, $y^2 = cx_0$ dictates two symmetrical values for $y$: $y = \pm \sqrt{cx_0}$. The two intersection points are $(x_0, \sqrt{cx_0})$ and $(x_0, -\sqrt{cx_0})$.</p>
+<p>The straight-line distance between these points is the difference in their $y$-coordinates: $2\sqrt{cx_0}$. We are given that this distance equals the focal diameter $c$, so: $$2\sqrt{cx_0} = c$$ Squaring both sides gives $4cx_0 = c^2$. Since $c &gt; 0$, we can divide by $c$ to get $x_0 = \frac{c}{4}$. Because $x_0$ is the root of the intersection equation $x^2 + cx - 80 = 0$, we substitute $x_0 = \frac{c}{4}$ into it: $$\left(\frac{c}{4}\right)^2 + c\left(\frac{c}{4}\right) - 80 = 0$$ $$\frac{c^2}{16} + \frac{c^2}{4} = 80$$ Multiply by 16 to clear the denominator: $$c^2 + 4c^2 = 1280 \implies 5c^2 = 1280 \implies c^2 = 256$$ Since $c &gt; 0$, we conclude that $c = 16$.</p>
+    </main>
+  </article>
+</body>
+</html>

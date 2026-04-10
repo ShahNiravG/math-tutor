@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.4 - Study Guide (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+  </style>
+
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.4</h1>
+      <p><strong>Study Guide (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401270_alg-2trig-h-chp-5-4-note-docx.pdf">4401270_alg-2trig-h-chp-5-4-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <p>Here is a comprehensive study guide based on the provided document.</p>
+<h4>1. Summary of the Document</h4>
+<p>This document covers Section 5.4, which introduces Inverse Trigonometric Functions ($\sin^{-1}$, $\cos^{-1}$, and $\tan^{-1}$) and their applications to right triangles. Because standard trigonometric functions are not one-to-one (they fail the horizontal line test), their domains must be restricted to create inverse functions. The text explains these restricted domains, provides the resulting domains and ranges for the inverse functions, introduces reciprocal inverse identities, and shows how to evaluate expressions (exactly and approximately). It also demonstrates how to use inverse trig functions to solve for unknown angles in geometric word problems and how to rewrite composite trigonometric functions as algebraic expressions.</p>
+<hr>
+<h4>2. Core Definitions, Theorems, and Formulas</h4>
+<p><strong>Definitions:</strong></p>
+<ul>
+<li><strong>One-to-One Restriction</strong>: To make trig functions invertible, their domains are restricted:</li>
+<li>Sine is restricted to $[-\pi/2, \pi/2]$</li>
+<li>Cosine is restricted to $[0, \pi]$</li>
+<li>Tangent is restricted to $(-\pi/2, \pi/2)$</li>
+<li><strong>Inverse Trigonometric Functions</strong>: Functions that return the <em>angle</em> that produces a given trigonometric ratio. They are denoted using a $-1$ superscript (e.g., $\sin^{-1} x$) or the &quot;arc&quot; prefix (e.g., $\arcsin x$).</li>
+</ul>
+<p><strong>Formulas (Domains &amp; Ranges of Inverse Functions):</strong></p>
+<ul>
+<li><strong>Inverse Sine ($\sin^{-1} x$ or $\arcsin x$)</strong>:</li>
+<li>Domain: $[-1, 1]$</li>
+<li>Range: $[-\pi/2, \pi/2]$</li>
+<li><strong>Inverse Cosine ($\cos^{-1} x$ or $\arccos x$)</strong>:</li>
+<li>Domain: $[-1, 1]$</li>
+<li>Range: $[0, \pi]$</li>
+<li><strong>Inverse Tangent ($\tan^{-1} x$ or $\arctan x$)</strong>:</li>
+<li>Domain: All Real Numbers ($\mathbb{R}$)</li>
+<li>Range: $(-\pi/2, \pi/2)$</li>
+</ul>
+<p><strong>Reciprocal Inverse Identities:</strong></p>
+<ul>
+<li>$\sec^{-1} x = \cos^{-1}\left(\frac{1}{x}\right)$ (Document specifies for $x \ge 1$)</li>
+<li>$\csc^{-1} x = \sin^{-1}\left(\frac{1}{x}\right)$ (Document specifies for $x \ge 1$)</li>
+<li>$\cot^{-1} x = \tan^{-1}\left(\frac{1}{x}\right)$ (Document specifies for $x &gt; 0$)</li>
+</ul>
+<hr>
+<h4>3. Worked Study Guide: Step-by-Step Concepts</h4>
+<p><strong>Concept 1: Evaluating Basic Inverse Trig Functions (Example 1)</strong> When you see an expression like $\sin^{-1}(\frac{1}{2})$, you are being asked a specific question: <em>&quot;What angle within the restricted range $[-\pi/2, \pi/2]$ gives a sine ratio of $\frac{1}{2}$?&quot;</em></p>
+<ul>
+<li><em>Step 1</em>: Recall your unit circle. The angles that yield a sine of $1/2$ are $\pi/6$ and $5\pi/6$.</li>
+<li><em>Step 2</em>: Check the allowed range. For $\sin^{-1}$, the answer <em>must</em> be between $-\pi/2$ and $\pi/2$ (Quadrants I and IV).</li>
+<li><em>Step 3</em>: Select the correct angle. $\pi/6$ is in Quadrant I, so $\sin^{-1}(1/2) = \pi/6$.</li>
+</ul>
+<p><strong>Concept 2: Evaluating Composite Functions Using Right Triangles (Example 5)</strong> How to evaluate an expression like $\cos(\tan^{-1}(\frac{4}{3}))$:</p>
+<ul>
+<li><em>Step 1</em>: Work from the inside out. Let $\theta = \tan^{-1}(\frac{4}{3})$. This translates to $\tan \theta = \frac{4}{3}$.</li>
+<li><em>Step 2</em>: Draw a right triangle for $\theta$. Since tangent is $\frac{\text{Opposite}}{\text{Adjacent}}$, label the Opposite side $4$ and the Adjacent side $3$. (Because $4/3$ is positive, we assume Quadrant I).</li>
+<li><em>Step 3</em>: Use the Pythagorean Theorem to find the hypotenuse: $3^2 + 4^2 = c^2 \Rightarrow 9 + 16 = c^2 \Rightarrow c = 5$.</li>
+<li><em>Step 4</em>: Evaluate the outer function. Now you need $\cos \theta$. Cosine is $\frac{\text{Adjacent}}{\text{Hypotenuse}}$, which is $\frac{3}{5}$.</li>
+</ul>
+<p><strong>Concept 3: Rewriting as an Algebraic Expression (Example 6)</strong> How to rewrite an expression like $\cot(\cos^{-1} x)$:</p>
+<ul>
+<li><em>Step 1</em>: Set the inner function to $\theta$: let $\theta = \cos^{-1} x$. Therefore, $\cos \theta = x$, which can be written as $\frac{x}{1}$.</li>
+<li><em>Step 2</em>: Draw a right triangle. Cosine is $\frac{\text{Adjacent}}{\text{Hypotenuse}}$. Label the Adjacent side $x$ and the Hypotenuse $1$.</li>
+<li><em>Step 3</em>: Use the Pythagorean theorem to find the Opposite side. $x^2 + \text{Opp}^2 = 1^2 \Rightarrow \text{Opp} = \sqrt{1 - x^2}$.</li>
+<li><em>Step 4</em>: Evaluate the outer function: $\cot \theta = \frac{\text{Adjacent}}{\text{Opposite}}$. Substitute the sides you found to get $\frac{x}{\sqrt{1 - x^2}}$.</li>
+</ul>
+<p><strong>Concept 4: Solving Word Problems (Example 7)</strong></p>
+<ul>
+<li><em>Step 1</em>: Sketch the scenario. For a 96-foot tree casting a 120-foot shadow, the tree is the vertical side (Opposite), and the shadow is the horizontal side (Adjacent).</li>
+<li><em>Step 2</em>: Choose the right trig ratio. We have Opposite and Adjacent, so we use Tangent. $\tan \theta = \frac{96}{120}$.</li>
+<li><em>Step 3</em>: Use the inverse function to find the angle. $\theta = \tan^{-1}(\frac{96}{120})$. Use a calculator set to degrees to find $\theta \approx 38.7^\circ$.</li>
+</ul>
+<hr>
+<h4>4. Practice Problems (Based on the Document)</h4>
+<p><strong>Problem 1:</strong> Find the exact value of the expression in radians: $\sin^{-1}(-\frac{1}{2})$. <strong>Problem 2:</strong> Use the reciprocal identities provided to rewrite and evaluate the exact value of $\sec^{-1}(2)$ in radians. <strong>Problem 3:</strong> Find the exact value of the composite function: $\sin(\cos^{-1}(\frac{5}{13}))$. <strong>Problem 4:</strong> Rewrite the following as an algebraic expression in $x$: $\tan(\sin^{-1} x)$. <strong>Problem 5:</strong> A 50-foot building casts a shadow that is 50 feet long. What is the exact angle of elevation of the sun in degrees?</p>
+<p><strong>Answers:</strong> 1.  <strong>$-\pi/6$</strong> (The sine is negative in Quadrant IV, and we must use the restricted range $[-\pi/2, \pi/2]$). 2.  $\sec^{-1}(2) = \cos^{-1}(\frac{1}{2}) =$ <strong>$\pi/3$</strong>. 3.  Let $\theta = \cos^{-1}(\frac{5}{13})$, meaning $\cos \theta = \frac{5}{13}$. Draw a triangle with Adjacent = 5, Hypotenuse = 13. By Pythagorean theorem, Opposite = 12. We want $\sin \theta = \frac{\text{Opp}}{\text{Hyp}} =$ <strong>$\frac{12}{13}$</strong>. 4.  Let $\theta = \sin^{-1} x \Rightarrow \sin \theta = \frac{x}{1}$. Draw a triangle with Opposite = $x$, Hypotenuse = 1. By Pythagorean theorem, Adjacent = $\sqrt{1 - x^2}$. We want $\tan \theta = \frac{\text{Opp}}{\text{Adj}} =$ <strong>$\frac{x}{\sqrt{1 - x^2}}$</strong>. 5.  Let $\theta$ be the angle of elevation. $\tan \theta = \frac{\text{Opp}}{\text{Adj}} = \frac{50}{50} = 1$. Therefore, $\theta = \tan^{-1}(1) =$ <strong>$45^\circ$</strong>.</p>
+<hr>
+<h4>5. Assumptions and Ambiguities Resolved</h4>
+<ul>
+<li><strong>Domain restrictions on reciprocal identities</strong>: Under the &quot;NOTE&quot; section on page 1, the document states $x \ge 1$ for both $\sec^{-1}$ and $\csc^{-1}$. In standard mathematical contexts, this domain is actually $|x| \ge 1$ (meaning $x \ge 1$ or $x \le -1$). I assumed the document simplified the domain to positive values to focus on right-triangle geometry (where side lengths are always positive), but kept the formulas exactly as presented in your text.</li>
+<li><strong>Example 4 (&quot;Find <em>all</em> angles between $0^\circ$ and $180^\circ$&quot;)</strong>: For $\sin \theta = \frac{2}{3}$, sine is positive in <em>both</em> Quadrant I and Quadrant II. To fully answer that specific document example, a student would need to provide both the primary angle $\theta \approx 41.8^\circ$ and the supplementary angle $180^\circ - 41.8^\circ = 138.2^\circ$. I assumed the phrasing implies checking all quadrants valid under the $0^\circ$ to $180^\circ$ domain limit.</li>
+<li><strong>Graph Reading in Example 3b</strong>: The document features a small graph with a point seemingly at $(3, -2)$. It asks for the angle $\theta$. Because the text specifically requests solving for angles in <em>right triangles</em>, I assumed the student is meant to drop a perpendicular line to the x-axis, form a right triangle with sides 3 and 2, and use $\tan^{-1}(2/3)$ to find the reference angle.</li>
+</ul>
+    </main>
+  </article>
+</body>
+</html>

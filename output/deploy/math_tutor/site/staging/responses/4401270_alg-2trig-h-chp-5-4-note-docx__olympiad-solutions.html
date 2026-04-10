@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.4 - Olympiad Solutions</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.4</h1>
+      <p><strong>Olympiad Solutions</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401270_alg-2trig-h-chp-5-4-note-docx.pdf">4401270_alg-2trig-h-chp-5-4-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<hr>
+<h4>1. Compute the exact value of \(\arccos\left(\sin\left(\arctan\frac{3}{4}\right)\right)\).</h4>
+<p><strong>Step 1:</strong> Let \(\theta = \arctan\frac{3}{4}\).</p>
+<p>Draw a right triangle with legs 3 (opposite) and 4 (adjacent). Then, \[ \sin\theta = \frac{3}{5} \] where \(5 = \sqrt{3^2 + 4^2}\).</p>
+<p><strong>Step 2:</strong> Compute \(\arccos(\sin\theta)\):</p>
+<p>\[ \arccos\left( \sin\left( \arctan\frac{3}{4} \right) \right) = \arccos\left( \frac{3}{5} \right) \]</p>
+<p>But, \(\theta = \arctan\frac{3}{4}\) is in \((0, \pi/2)\), so \(\sin\theta &gt; 0\) and \(\arccos(\sin\theta)\) is in \([0, \pi]\).</p>
+<p>Let \(\alpha = \arccos(\sin\theta)\), so \(\cos\alpha = \sin\theta\).</p>
+<p>But observe: \[ \sin\theta = \sin(\pi/2 - \theta) = \cos\theta \] But with our triangle, \(\cos\theta = \frac{4}{5}\), which is not \(\frac{3}{5}\). Thus, not the same.</p>
+<p>Instead, proceed:</p>
+<p>Let \(\phi = \arcsin\left(\frac{3}{5}\right)\implies \phi \in (0, \pi/2)\). Then, \[ \arccos\left(\frac{3}{5}\right) + \arcsin\left(\frac{3}{5}\right) = \frac{\pi}{2} \] So, \[ \arccos\left(\sin\left(\arctan\frac{3}{4}\right)\right) = \arccos\left( \frac{3}{5} \right) =\frac{\pi}{2}-\arcsin\left( \frac{3}{5} \right) \] But \(\arcsin\left( \frac{3}{5} \right) = \arctan\left(\frac{3}{4}\right) \), since in the reference triangle, opposite/adjacent \(= 3/4\).</p>
+<p>Thus, \[ \boxed{\,\arccos\left(\sin\left(\arctan\frac{3}{4}\right)\right) = \frac{\pi}{2} - \arctan\frac{3}{4} \,} \]</p>
+<p>Or, explicitly, \(\arccos(\sin(\arctan(3/4))) = \arctan\left(\frac{4}{3}\right)\), since \[ \tan\left(\frac{\pi}{2} - x\right) = \cot x, \] and \(\cot(\arctan(3/4)) = 4/3\), so \(\arctan(4/3)\).</p>
+<p><strong>Final Answer:</strong> \[ \boxed{\, \arctan\left(\frac{4}{3}\right) \,} \]</p>
+<hr>
+<h4>2. Given that \(\theta = \arcsin\left(\frac{5}{13}\right)\), find \(\cot(2\theta)\).</h4>
+<p><strong>Step 1:</strong> We have \(\sin\theta = \frac{5}{13}\).</p>
+<p>So, \(\cos\theta = \sqrt{1-\sin^2\theta} = \sqrt{1-\left(\frac{25}{169}\right)} = \sqrt{\frac{144}{169}} = \frac{12}{13}\).</p>
+<p><strong>Step 2:</strong> Compute \(\tan\theta\):</p>
+<p>\[ \tan\theta = \frac{\sin\theta}{\cos\theta} = \frac{5}{12} \]</p>
+<p><strong>Step 3:</strong> Double angle formula for cotangent: \[ \cot(2\theta) = \frac{1 - \tan^2\theta}{2\tan\theta} \] Plug in \(\tan\theta = 5/12\):</p>
+<p>\[ \cot(2\theta) = \frac{1 - (5/12)^2}{2 \times (5/12)} = \frac{1 - 25/144}{10/12} = \frac{119/144}{10/12} = \frac{119}{144} \cdot \frac{12}{10} = \frac{119 \cdot 12}{144 \cdot 10} = \frac{1428}{1440} = \frac{119}{120} \]</p>
+<p><strong>Final Answer:</strong> \[ \boxed{\, \frac{119}{120} \,} \]</p>
+<hr>
+<h4>3. If \(\arctan x + \arctan y = \frac{\pi}{4}\), what is the value of \(x + y + xy\)?</h4>
+<p><strong>Step 1:</strong> Recall \[ \arctan x + \arctan y = \arctan\left(\frac{x + y}{1 - xy}\right)\quad \text{(if } xy &lt; 1 \text{)} \]</p>
+<p>Set equal to \(\pi/4\):</p>
+<p>\[ \arctan\left(\frac{x+y}{1 - xy}\right) = \frac{\pi}{4} \implies \frac{x+y}{1 - xy} = \tan\frac{\pi}{4} = 1 \]</p>
+<p>So, \[ x + y = 1 - xy \implies x + y + xy = 1 \]</p>
+<p><strong>Final Answer:</strong> \[ \boxed{\, 1 \,} \]</p>
+<hr>
+<h4>4. Let \( a = \arccos\left(\frac{1}{3}\right) \) and \( b = \arcsin\left(\frac{2\sqrt{2}}{3}\right) \). Without a calculator, determine whether \(a = b\).</h4>
+<p>Let’s check if \(\cos a = \sin b\) or if the numbers are related.</p>
+<p><strong>Step 1:</strong> Note that \(\arcsin t + \arccos t = \frac{\pi}{2}\), so unless \(b = \frac{\pi}{2} - a\), they are not equal.</p>
+<p><strong>Step 2:</strong> Compare \(\cos a = \frac{1}{3}\), \(\sin b = \frac{2\sqrt{2}}{3}\).</p>
+<p>Set \(a = b\) and see if \(\cos a = \sin a\):</p>
+<p>\[ \cos a = \frac{1}{3} \] \[ \sin a = \sqrt{1 - \frac{1}{9}} = \sqrt{\frac{8}{9}} = \frac{2\sqrt{2}}{3} \] So \(\sin a = \frac{2\sqrt{2}}{3}\).</p>
+<p>Thus, \[ b = \arcsin\left(\frac{2\sqrt{2}}{3}\right) \] But \(a = \arccos\left(\frac{1}{3}\right)\).</p>
+<p>But since \(\sin a = \sin b\) and both \(a, b \in [0, \pi/2]\), and since sine is injective on \([0, \pi/2]\):</p>
+<p>Thus, \(a = b\).</p>
+<p><strong>Final Answer:</strong> \[ \boxed{\, a = b \,} \]</p>
+<hr>
+<h4>5. Evaluate \(\sin\left(\arccos\left(\frac{x}{\sqrt{1+x^2}}\right)\right)\) in terms of \(x\).</h4>
+<p>Let \(\theta = \arccos\left(\frac{x}{\sqrt{1+x^2}}\right)\), so \(\cos\theta = \frac{x}{\sqrt{1+x^2}}\).</p>
+<p>\[ \sin\theta = \sqrt{1 - \cos^2\theta} = \sqrt{1 - \frac{x^2}{1+x^2}} = \sqrt{\frac{1+x^2 - x^2}{1 + x^2}} = \sqrt{\frac{1}{1 + x^2}} = \frac{1}{\sqrt{1 + x^2}} \]</p>
+<p><strong>Final Answer:</strong> \[ \boxed{\, \frac{1}{\sqrt{1 + x^2}} \,} \]</p>
+<hr>
+<h4>6. Find all real \(x\) such that \(\arcsin x + \arccos x = \arctan (2x)\).</h4>
+<p><strong>Step 1:</strong> For all \(x \in [-1,1]\), \[ \arcsin x + \arccos x = \frac{\pi}{2} \] So, \[ \frac{\pi}{2} = \arctan(2x) \implies 2x \to \infty \implies x \to +\infty \] But \(x \leq 1\). So no real \(x\) in \([-1,1]\).</p>
+<p>But let's check: are there any real \(x\) outside this interval for which both sides are defined? For \(x \notin [-1,1]\), \(\arcsin x, \arccos x\) are not real.</p>
+<p>Thus, <strong>no real solutions</strong>.</p>
+<p><strong>Final Answer:</strong> \[ \boxed{\, \text{No real solutions for } x. \,} \]</p>
+    </main>
+  </article>
+</body>
+</html>

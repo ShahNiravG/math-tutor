@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.1 - Mental Math (GPT-5.4)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.1</h1>
+      <p><strong>Mental Math (GPT-5.4)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401267_alg-2trig-h-chp-5-1-note-docx.pdf">4401267_alg-2trig-h-chp-5-1-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <p>1. <strong>Degrees to Radians</strong> Convert \(150^\circ\) to radians.</p>
+<p>2. <strong>Radians to Degrees</strong> Convert \(\frac{3\pi}{4}\) radians to degrees.</p>
+<p>3. <strong>Positive or Negative</strong> If an angle rotates clockwise from its initial side, is its measure positive or negative?</p>
+<p>4. <strong>Coterminal Angle Check</strong> Are \(45^\circ\) and \(405^\circ\) coterminal?</p>
+<p>5. <strong>Another Coterminal Check</strong> Are \(\frac{\pi}{3}\) and \(\frac{7\pi}{3}\) coterminal?</p>
+<p>6. <strong>Quick Arc Length</strong> In a circle of radius 5, what is the arc length subtended by an angle of 2 radians?</p>
+<p>7. <strong>Find the Angle from Arc Length</strong> In a circle of radius 4, an arc has length 12. What is the central angle in radians?</p>
+<p>8. <strong>Quick Sector Area</strong> What is the area of a sector with radius 6 and central angle 2 radians?</p>
+<p>9. <strong>Angular Speed</strong> A point sweeps out \(8\pi\) radians in 4 seconds. What is its angular speed?</p>
+<p>10. <strong>Linear Speed from Angular Speed</strong> A point moves on a circle of radius 3 with angular speed 2 radians per second. What is its linear speed?</p>
+    </main>
+  </article>
+</body>
+</html>

@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Challenge Exams</title>
+  <script src="experience.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f1e8;
+      --paper: #fffaf2;
+      --ink: #1f2a33;
+      --muted: #5b6a74;
+      --accent: #a14d2e;
+      --accent-soft: #ead2c5;
+      --line: #d8cfc2;
+      --teal: #134f59;
+      --teal-light: #e0f2f5;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f8dfc8 0, transparent 28%),
+        linear-gradient(180deg, #f6efe3 0%, var(--bg) 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      padding: 48px 0 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    .hero-shell {
+      width: 100%;
+      background: rgba(255, 250, 242, 0.92);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: 0 12px 30px rgba(78, 55, 32, 0.08);
+      padding: 26px 26px 30px;
+      margin-bottom: 26px;
+    }
+    .site-nav {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .nav-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      color: var(--ink);
+      text-decoration: none;
+      font-family: system-ui, sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+    }
+    .nav-pill.active {
+      background: var(--accent-soft);
+      border-color: #cabaa4;
+      color: #6a2e16;
+    }
+    .nav-pill:hover { border-color: var(--accent); }
+    .auth-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-right: 7px;
+      border-radius: 999px;
+      background: #8b4a2c;
+      color: #fff7f0;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,.16);
+    }
+    .brand-bar {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .brand-mark {
+      width: 60px;
+      height: 60px;
+      flex: 0 0 60px;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 24px rgba(78, 55, 32, 0.12);
+    }
+    .brand-mark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .brand-eyebrow {
+      display: inline-block;
+      font-size: .78rem;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .brand-title {
+      margin: 0;
+      font-size: 1.7rem;
+      line-height: 1.02;
+      color: var(--ink);
+    }
+
+    /* Hero */
+    .hero-icon {
+      font-size: 4rem;
+      line-height: 1;
+      margin-bottom: 16px;
+      animation: bounce 2.4s ease-in-out infinite;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .hero-heading {
+      font-size: 2rem;
+      margin: 0 0 8px;
+      text-align: center;
+      color: var(--teal);
+    }
+    .hero-sub {
+      color: var(--muted);
+      text-align: center;
+      margin: 0 0 36px;
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Challenge card */
+    .challenge-card {
+      width: min(560px, 100%);
+      background: var(--paper);
+      border: 1.5px solid var(--line);
+      border-radius: 24px;
+      padding: 32px 28px 28px;
+      box-shadow: 0 8px 32px rgba(78, 55, 32, .10);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card-label {
+      font-size: .78rem;
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .card-title {
+      font-size: 1.55rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-family: system-ui, sans-serif;
+    }
+    .tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: .82rem;
+      font-weight: 600;
+    }
+    .tag-mm  { background: #dbeafe; color: #1e40af; }
+    .tag-op  { background: #dcfce7; color: #166534; }
+    .tag-ch  { background: var(--teal-light); color: var(--teal); }
+    .tag-q   { background: var(--accent-soft); color: var(--accent); }
+
+    .start-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      background: var(--teal);
+      color: #fff;
+      font: inherit;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 16px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: background .15s, transform .1s;
+      margin-top: 4px;
+    }
+    .start-btn:hover { background: #0d3347; transform: translateY(-1px); }
+    .start-btn:active { transform: translateY(0); }
+
+    .another-link {
+      display: block;
+      text-align: center;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: .9rem;
+      font-family: system-ui, sans-serif;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .another-link:hover { color: var(--ink); }
+
+    /* Resume card */
+    .resume-card {
+      width: min(560px, 100%);
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 24px;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .resume-label {
+      font-size: .78rem;
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #166534;
+    }
+    .resume-title { font-size: 1.15rem; font-weight: 700; margin: 0; }
+    .resume-meta { font-size: .85rem; font-family: system-ui, sans-serif; color: var(--muted); }
+    .resume-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: 4px; }
+    .resume-btn {
+      display: inline-block;
+      text-decoration: none;
+      background: #166534;
+      color: #fff;
+      font: inherit;
+      font-size: .95rem;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      transition: opacity .15s;
+    }
+    .resume-btn:hover { opacity: .85; }
+    .discard-link {
+      font-size: .82rem;
+      font-family: system-ui, sans-serif;
+      color: var(--muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .discard-link:hover { color: #991b1b; }
+
+    /* Loading / error */
+    .loading {
+      color: var(--muted);
+      font-size: 1.1rem;
+      text-align: center;
+      padding: 40px 0;
+    }
+    .error-box {
+      width: min(560px, 100%);
+      background: #fee2e2;
+      color: #991b1b;
+      border-radius: 12px;
+      padding: 20px;
+      font-size: .95rem;
+    }
+    #resume-container {
+      width: min(560px, 100%);
+    }
+    #bundle-info {
+      font-size: .78rem;
+      font-family: system-ui, sans-serif;
+      color: var(--muted);
+      margin: 0 0 28px;
+    }
+    .progress-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--teal-light);
+      color: var(--teal);
+      font-family: system-ui, sans-serif;
+      font-size: .82rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .progress-bar-wrap {
+      flex: 1;
+      height: 6px;
+      background: #b2dce4;
+      border-radius: 999px;
+      min-width: 60px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--teal);
+      border-radius: 999px;
+      transition: width .4s;
+    }
+    .tag-done { background: #d1fae5; color: #065f46; }
+    .all-done-box {
+      width: min(560px, 100%);
+      background: var(--teal-light);
+      border: 1.5px solid #5fbdd1;
+      border-radius: 24px;
+      padding: 32px 28px;
+      text-align: center;
+      color: var(--teal);
+    }
+    .all-done-box h2 { margin: 0 0 8px; font-size: 1.4rem; }
+    .all-done-box p  { margin: 0 0 18px; font-family: system-ui, sans-serif; font-size: .95rem; }
+    .all-done-box a  {
+      display: inline-block;
+      padding: 10px 24px; border-radius: 999px;
+      background: var(--teal); color: #fff;
+      text-decoration: none; font-family: system-ui, sans-serif;
+      font-weight: 700; font-size: .95rem;
+    }
+    .all-done-box a:hover { background: #0d3347; }
+    @media (max-width: 640px) {
+      body { align-items: flex-start; }
+      .page {
+        width: min(920px, calc(100vw - 24px));
+        padding: 24px 0 56px;
+      }
+      .hero-shell,
+      .challenge-card,
+      .resume-card,
+      .all-done-box {
+        border-radius: 20px;
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+      .site-nav { margin-bottom: 24px; }
+      .brand-bar { align-items: flex-start; }
+      .brand-title { font-size: 1.45rem; }
+      .hero-icon { font-size: 3.2rem; margin-bottom: 12px; }
+      .hero-heading { font-size: 1.65rem; }
+      .hero-sub { margin-bottom: 24px; }
+      .start-btn,
+      .resume-btn,
+      .all-done-box a {
+        width: 100%;
+      }
+      .resume-actions {
+        align-items: stretch;
+        flex-direction: column;
+      }
+    }
+    html.experience-staging {
+      --stage-ink: #10233b;
+      --stage-muted: #516173;
+      --stage-blue-50: #dbeafe;
+      --stage-blue-700: #1e3a8a;
+      --stage-orange-500: #f97316;
+      --stage-success: #15803d;
+      --stage-success-bg: #dcfce7;
+      --stage-amber: #d97706;
+      --stage-amber-bg: #fef3c7;
+    }
+    html.experience-staging body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      color: var(--stage-ink);
+      background:
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 24%),
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.08), transparent 26%),
+        linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
+    }
+    html.experience-staging .hero-shell,
+    html.experience-staging .challenge-card,
+    html.experience-staging .resume-card,
+    html.experience-staging .all-done-box {
+      border-radius: 24px;
+      border-color: rgba(148, 163, 184, 0.24);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+    }
+    html.experience-staging .nav-pill {
+      background: #fff;
+      border-color: rgba(148, 163, 184, 0.28);
+      color: var(--stage-ink);
+    }
+    html.experience-staging .nav-pill.active {
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+      border-color: rgba(29, 78, 216, 0.24);
+    }
+    html.experience-staging .brand-title,
+    html.experience-staging .hero-heading,
+    html.experience-staging .card-title {
+      color: var(--stage-ink);
+      letter-spacing: -0.03em;
+    }
+    html.experience-staging .hero-sub,
+    html.experience-staging .resume-meta,
+    html.experience-staging .another-link,
+    html.experience-staging #bundle-info {
+      color: var(--stage-muted);
+    }
+    html.experience-staging .tag-mm {
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+    }
+    html.experience-staging .tag-op,
+    html.experience-staging .tag-done {
+      background: var(--stage-success-bg);
+      color: var(--stage-success);
+    }
+    html.experience-staging .tag-q,
+    html.experience-staging .progress-chip {
+      background: var(--stage-amber-bg);
+      color: var(--stage-amber);
+    }
+    html.experience-staging .progress-bar-wrap {
+      background: #f5d7b6;
+    }
+    html.experience-staging .progress-bar-fill,
+    html.experience-staging .start-btn,
+    html.experience-staging .resume-btn,
+    html.experience-staging .all-done-box a {
+      background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+      box-shadow: 0 14px 28px rgba(249, 115, 22, 0.24);
+    }
+    html.experience-staging .start-btn:hover,
+    html.experience-staging .resume-btn:hover,
+    html.experience-staging .all-done-box a:hover {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+  <section class="hero-shell">
+    <div class="brand-bar">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="challengeBrandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fff5da"/>
+              <stop offset="55%" stop-color="#f3c98f"/>
+              <stop offset="100%" stop-color="#cf7c43"/>
+            </linearGradient>
+          </defs>
+          <rect width="72" height="72" rx="16" fill="url(#challengeBrandGlow)"/>
+          <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
+          <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
+          <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
+          <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
+          <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
+          <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
+        </svg>
+      </div>
+      <div>
+        <span class="brand-eyebrow">Math Delight</span>
+        <h1 class="brand-title">Algebra II Trig Tutor</h1>
+      </div>
+    </div>
+    <nav class="site-nav" aria-label="Site sections">
+      <a class="nav-pill" href="../index.html">Home</a>
+      <a class="nav-pill" href="../library.html">Library</a>
+      <a class="nav-pill" href="../live-tutor.html">Live Tutor</a>
+      <a class="nav-pill active" href="index.html">Challenge Exams</a>
+      <a class="nav-pill" href="reports.php"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>Reports</a>
+    </nav>
+  </section>
+
+  <div class="hero-icon">&#127942;</div>
+  <h1 class="hero-heading">Ready for a Challenge?</h1>
+  <p class="hero-sub">A timed mix of Mental Math &amp; Olympiad Problems.<br>10 questions, picked just for you.</p>
+  <p id="bundle-info"></p>
+
+  <div id="resume-container"></div>
+  <div id="root"><div class="loading">Loading&hellip;</div></div>
+</div>
+
+<script>
+const LEGACY_SESSION_KEY = 'math_tutor_challenge_session';
+const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';
+
+function readStoredSession(key) {
+  try {
+    var saved = JSON.parse(localStorage.getItem(key) || 'null');
+    if (!saved || !saved.exam_id) return null;
+    saved.__storageKey = key;
+    return saved;
+  } catch (e) {
+    return null;
+  }
+}
+
+function sessionSavedAtMs(saved) {
+  var value = Date.parse(saved && saved.savedAt ? saved.savedAt : '');
+  return isNaN(value) ? 0 : value;
+}
+
+function getAllLocalSessions() {
+  var byExam = {};
+  for (var i = 0; i < localStorage.length; i++) {
+    var key = localStorage.key(i);
+    if (!key || key.indexOf(SESSION_KEY_PREFIX) !== 0) continue;
+    var saved = readStoredSession(key);
+    if (!saved) continue;
+    var existing = byExam[saved.exam_id];
+    if (!existing || sessionSavedAtMs(saved) >= sessionSavedAtMs(existing)) {
+      byExam[saved.exam_id] = saved;
+    }
+  }
+
+  var legacySaved = readStoredSession(LEGACY_SESSION_KEY);
+  if (legacySaved) {
+    var current = byExam[legacySaved.exam_id];
+    if (!current || sessionSavedAtMs(legacySaved) > sessionSavedAtMs(current)) {
+      byExam[legacySaved.exam_id] = legacySaved;
+    }
+  }
+
+  return Object.values(byExam).sort(function(a, b) {
+    return sessionSavedAtMs(b) - sessionSavedAtMs(a);
+  });
+}
+
+function discardStoredSession(storageKey) {
+  if (!storageKey) return;
+  localStorage.removeItem(storageKey);
+}
+
+function questionCountForSavedSession(saved, examIndexById) {
+  if (saved && saved.questionCount) return saved.questionCount;
+  var exam = examIndexById && examIndexById[saved.exam_id];
+  if (!exam) return 0;
+  if (typeof exam.question_count === 'number' && exam.question_count > 0) return exam.question_count;
+  return (exam.mm || 0) + (exam.op || 0);
+}
+
+function renderResumeCards(completedSet, examIndexById) {
+  var container = document.getElementById('resume-container');
+  var sessions = getAllLocalSessions().filter(function(saved) {
+    if (completedSet && completedSet.has(saved.exam_id)) {
+      discardStoredSession(saved.__storageKey);
+      return false;
+    }
+    return true;
+  });
+
+  if (!sessions.length) {
+    container.innerHTML = '';
+    return;
+  }
+
+  container.innerHTML = sessions.map(function(saved) {
+    var answered = Object.values(saved.answers || {}).filter(function(v) {
+      return (v || '').trim();
+    }).length;
+    var total = questionCountForSavedSession(saved, examIndexById);
+    var m = Math.floor((saved.timerSecs || 0) / 60), s = (saved.timerSecs || 0) % 60;
+    var timeStr = m + ':' + (s < 10 ? '0' : '') + s;
+    var questionNumber = total > 0 ? Math.min((saved.idx || 0) + 1, total) : ((saved.idx || 0) + 1);
+    var questionStr = total > 0
+      ? ('Question ' + questionNumber + ' of ' + total)
+      : ('Question ' + questionNumber);
+    var answeredStr = total > 0
+      ? (answered + '/' + total + ' answered')
+      : (answered + ' answered');
+    return `
+      <div class="resume-card">
+        <div class="resume-label">&#9654; Resume challenge in progress</div>
+        <p class="resume-title">${saved.exam_title || 'Challenge Exam'}</p>
+        <div class="resume-meta">${questionStr} &middot; ${answeredStr} &middot; ${timeStr} elapsed</div>
+        <div class="resume-actions">
+          <a class="resume-btn" href="exam.html?id=${encodeURIComponent(saved.exam_id)}">Continue Challenge &rarr;</a>
+          <button class="discard-link" type="button" data-discard-key="${saved.__storageKey}">Discard &amp; start fresh</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.querySelectorAll('[data-discard-key]').forEach(function(button) {
+    button.addEventListener('click', function() {
+      discardStoredSession(button.getAttribute('data-discard-key'));
+      renderResumeCards(completedSet, examIndexById);
+    });
+  });
+}
+
+(async function () {
+  const root = document.getElementById('root');
+
+  // Fetch exam index and completed list in parallel
+  let data, completedIds = [];
+  try {
+    const [indexRes, completedRes] = await Promise.all([
+      fetch('exams-index.json'),
+      fetch('completed.php').catch(function() { return null; }),
+    ]);
+    data = await indexRes.json();
+    if (completedRes && completedRes.ok) {
+      const cdata = await completedRes.json();
+      completedIds = cdata.completed || [];
+    }
+  } catch (e) {
+    root.innerHTML = '<div class="error-box">Could not load exams. Please try again later.</div>';
+    return;
+  }
+
+  const allExams = data.exams || [];
+  if (!allExams.length) {
+    root.innerHTML = '<div class="error-box">No exams found.</div>';
+    return;
+  }
+
+  const completedSet = new Set(completedIds);
+  const examIndexById = {};
+  allExams.forEach(function(exam) {
+    examIndexById[exam.id] = exam;
+  });
+
+  // Render resumable sessions now that we know which exams are already completed
+  renderResumeCards(completedSet, examIndexById);
+
+  // Show bundle timestamp and progress
+  if (data.generated_at) {
+    const d = new Date(data.generated_at);
+    const label = d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
+    document.getElementById('bundle-info').textContent =
+      `${allExams.length} exams · Bundle generated ${label}`;
+  }
+
+  const availableExams = allExams.filter(function(e) { return !completedSet.has(e.id); });
+  const doneCount = completedSet.size;
+
+  // Show progress chip if at least one exam is completed
+  if (doneCount > 0) {
+    const pct = Math.round((doneCount / allExams.length) * 100);
+    const progressContainer = document.createElement('div');
+    progressContainer.innerHTML = `
+      <div class="progress-chip">
+        &#127942; ${doneCount} / ${allExams.length} completed
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" style="width:${pct}%"></div>
+        </div>
+      </div>
+    `;
+    document.getElementById('resume-container').before(progressContainer.firstElementChild);
+  }
+
+  // All exams completed
+  if (!availableExams.length) {
+    root.innerHTML = `
+      <div class="all-done-box">
+        <h2>&#127881; All Challenges Completed!</h2>
+        <p>You've finished all ${allExams.length} challenge exams. Check your results below.</p>
+        <a href="reports.php"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>View Reports &rarr;</a>
+      </div>
+    `;
+    return;
+  }
+
+  // Track recently shown exams to avoid immediate repeats
+  const shown = new Set();
+
+  function pickRandom() {
+    if (shown.size >= availableExams.length) shown.clear();
+    let exam;
+    do { exam = availableExams[Math.floor(Math.random() * availableExams.length)]; }
+    while (shown.has(exam.id));
+    shown.add(exam.id);
+    return exam;
+  }
+
+  function render(exam) {
+    const mm = exam.mm;
+    const op = exam.op;
+    const chapters = exam.chapters || [];
+    const chapterText = chapters.length > 5
+      ? chapters.slice(0, 4).join(', ') + ` +${chapters.length - 4} more`
+      : chapters.join(', ');
+
+    root.innerHTML = `
+      <div class="challenge-card">
+        <div class="card-label">Your Challenge</div>
+        <p class="card-title">${exam.title}</p>
+        <div class="tag-row">
+          <span class="tag tag-q">10 Questions</span>
+          <span class="tag tag-mm">${mm} Mental Math</span>
+          <span class="tag tag-op">${op} Olympiad</span>
+        </div>
+        <div class="tag-row">
+          <span class="tag tag-ch">Chapters: ${chapterText}</span>
+        </div>
+        <a class="start-btn" href="exam.html?id=${encodeURIComponent(exam.id)}">Start Challenge! &rarr;</a>
+      </div>
+      <button class="another-link" id="another-btn">&#128256; Try a Different Challenge</button>
+    `;
+
+    document.getElementById('another-btn').addEventListener('click', function () {
+      render(pickRandom());
+    });
+  }
+
+  render(pickRandom());
+})();
+</script>
+</body>
+</html>

@@ -191,6 +191,8 @@ def ensure_classic_bank_metadata(exams: list[dict]) -> list[dict]:
 
 
 def _stratified_shuffle(questions: list[dict], seed: int) -> list[dict]:
+    if not questions:
+        return []
     rng = random.Random(seed)
     by_chapter: dict[str, list[dict]] = {}
     for question in questions:
@@ -205,6 +207,61 @@ def _stratified_shuffle(questions: list[dict], seed: int) -> list[dict]:
             if index < len(by_chapter[chapter]):
                 result.append(by_chapter[chapter][index])
     return result
+
+
+def find_unassigned_questions(all_questions: list[dict], existing_exams: list[dict]) -> list[dict]:
+    """Return questions from all_questions whose IDs are not in any existing exam."""
+    assigned_ids: set[str] = set()
+    for exam in existing_exams:
+        for q in exam.get("questions", []):
+            assigned_ids.add(q["id"])
+    return [q for q in all_questions if q["id"] not in assigned_ids]
+
+
+def append_classic_exams(new_questions: list[dict], *, last_exam_number: int) -> list[dict]:
+    """Build new classic exams from new_questions, numbering from last_exam_number + 1.
+
+    Uses the same stratified-shuffle + packing logic as build_exam_sets().
+    Existing exams are never touched — only new exams are returned.
+    """
+    mm_questions = _stratified_shuffle(
+        [q for q in new_questions if q["type"] == "mm" and "correct" in q],
+        SHUFFLE_SEED,
+    )
+    op_questions = _stratified_shuffle(
+        [q for q in new_questions if q["type"] == "op" and "correct" in q],
+        SHUFFLE_SEED + 1,
+    )
+
+    exams: list[dict] = []
+    mm_index = 0
+    op_index = 0
+    exam_number = last_exam_number + 1
+
+    while mm_index < len(mm_questions) or op_index < len(op_questions):
+        mm_take = min(TARGET_MM_PER_EXAM, len(mm_questions) - mm_index)
+        op_take = min(MAX_OP_PER_EXAM, len(op_questions) - op_index, MAX_EXAM_SIZE - mm_take)
+        total = mm_take + op_take
+        if total == 0:
+            break
+        exam_questions = (
+            mm_questions[mm_index : mm_index + mm_take]
+            + op_questions[op_index : op_index + op_take]
+        )
+        exams.append(
+            {
+                "id": f"exam-{exam_number:02d}",
+                "title": f"Challenge Exam {exam_number}",
+                "bank": "classic",
+                "bank_title": "Classic",
+                "questions": exam_questions,
+            }
+        )
+        mm_index += mm_take
+        op_index += op_take
+        exam_number += 1
+
+    return exams
 
 
 def build_exam_sets(questions: list[dict]) -> list[dict]:
@@ -370,8 +427,8 @@ def _load_explicit_curated_exam_payload(path: Path) -> dict | None:
 def _normalize_explicit_curated_exam(exam: dict, *, source_path: Path) -> dict:
     normalized_exam = dict(exam)
     normalized_exam["source_type"] = "explicit_curated_exam"
-    normalized_exam.setdefault("bank", "prior-amc")
-    normalized_exam.setdefault("bank_title", "Prior AMC")
+    normalized_exam.setdefault("bank", "amc10")
+    normalized_exam.setdefault("bank_title", "AMC 10")
     normalized_exam.setdefault("source_stem", normalized_exam.get("id", source_path.stem))
     normalized_exam.setdefault("source_file", source_path.name)
 

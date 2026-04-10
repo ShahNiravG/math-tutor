@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 11.1 - Study Guide (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+  </style>
+
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 11.1</h1>
+      <p><strong>Study Guide (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4652951_alg-2trig-h-chp-11-1-note-docx.pdf">4652951_alg-2trig-h-chp-11-1-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <p>Here is a comprehensive study guide and tutor response based on the provided document.</p>
+<h4>1. Document Summary</h4>
+<p>This document is a guided notes handout for an Algebra 2/Trigonometry Honors class. It introduces conic sections, briefly touches on circles, and then provides a deep dive into the geometric definition and standard equations of parabolas. Specifically, it focuses on parabolas with vertices at the origin $(0,0)$, exploring how to find the focus, directrix, axis of symmetry, and focal diameter based on whether the parabola opens vertically or horizontally.</p>
+<h4>2. Core Definitions, Theorems, and Formulas</h4>
+<p><strong>Definitions:</strong></p>
+<ul>
+<li><strong>Conic Sections:</strong> Shapes formed by the intersection of a right circular cone and a plane (circle, parabola, ellipse, hyperbola).</li>
+<li><strong>Circle:</strong> The set of all points in a plane equidistant from a fixed point (the center).</li>
+<li><strong>Parabola (Geometric Definition):</strong> The set of all points in a plane equidistant from a fixed point (<strong>focus</strong>) and a fixed line (<strong>directrix</strong>).</li>
+<li><strong>Vertex:</strong> The point on the parabola that lies exactly halfway between the focus and the directrix.</li>
+<li><strong>Axis of Symmetry:</strong> The line that runs through the focus and is perpendicular to the directrix.</li>
+<li><strong>Latus Rectum:</strong> The line segment that runs through the focus, is perpendicular to the axis of symmetry, and has its endpoints on the parabola.</li>
+<li><strong>Focal Diameter:</strong> The length of the latus rectum.</li>
+</ul>
+<p><strong>Formulas for Parabolas (Vertex at Origin):</strong></p>
+<ul>
+<li><strong>Vertical Axis (Opens Up/Down):</strong> $x^2 = 4py$</li>
+<li><em>Focus:</em> $(0, p)$</li>
+<li><em>Directrix:</em> $y = -p$</li>
+<li><em>Direction:</em> Opens upward if $p &gt; 0$, downward if $p &lt; 0$.</li>
+<li><strong>Horizontal Axis (Opens Left/Right):</strong> $y^2 = 4px$</li>
+<li><em>Focus:</em> $(p, 0)$</li>
+<li><em>Directrix:</em> $x = -p$</li>
+<li><em>Direction:</em> Opens to the right if $p &gt; 0$, to the left if $p &lt; 0$.</li>
+</ul>
+<hr>
+<h4>3. Worked Study Guide: Understanding Parabolas</h4>
+<p>To master this material, you need to understand how the algebra of the equation $x^2 = 4py$ or $y^2 = 4px$ connects to the geometry of the graph. Here is a step-by-step breakdown:</p>
+<p><strong>Step 1: Identify the opening direction</strong> Look at the standard equations. The variable that is <em>not</em> squared tells you which axis the parabola wraps around.</p>
+<ul>
+<li>If you have <strong>$x^2$</strong>, the parabola wraps around the <strong>y-axis</strong> (it opens up or down).</li>
+<li>If you have <strong>$y^2$</strong>, the parabola wraps around the <strong>x-axis</strong> (it opens left or right).</li>
+</ul>
+<p><strong>Step 2: Find the magic number &quot;$p$&quot;</strong> The value $p$ is the directed distance from the vertex to the focus. Because the formula uses $4p$, you must divide the coefficient of the non-squared variable by 4 to find $p$.</p>
+<ul>
+<li><em>Example:</em> If the equation is $x^2 = -8y$.</li>
+<li>Set $4p = -8$. Solving for $p$ gives $p = -2$.</li>
+<li>Because $p$ is negative and the equation is an $x^2$ equation, the parabola opens <strong>downward</strong>.</li>
+</ul>
+<p><strong>Step 3: Locate the Focus and Directrix</strong> Because the vertex in this lesson is always at $(0,0)$, you use $p$ to find the focus and directrix.</p>
+<ul>
+<li><strong>Focus:</strong> Move $p$ units from the origin <em>inside</em> the parabola. For $x^2 = -8y$ ($p=-2$), the focus is at $(0, -2)$.</li>
+<li><strong>Directrix:</strong> Move $p$ units from the origin in the <em>opposite</em> direction to draw a line. The formula is $y = -p$, so $y = -(-2) \implies y = 2$.</li>
+</ul>
+<p><strong>Step 4: Use the Focal Diameter to sketch</strong> To know how &quot;wide&quot; to draw your parabola, use the focal diameter (the length of the latus rectum). Based on the diagrams in the text, the total width of the parabola at the focus is exactly $|4p|$.</p>
+<ul>
+<li>In our example $x^2 = -8y$, the coefficient is $-8$, so the focal diameter is $|-8| = 8$.</li>
+<li>To sketch, go to the focus $(0, -2)$ and move 4 units left and 4 units right. This gives you two definite points on the curve to connect!</li>
+</ul>
+<hr>
+<h4>4. Practice Problems</h4>
+<p><em>These problems are taken directly from the &quot;Examples&quot; sections of the provided document. Try them using the study guide above before looking at the answers!</em></p>
+<p><strong>Problem 1:</strong> Find the focus, directrix, and focal diameter of the parabola: $x^2 = -8y$. <strong>Problem 2:</strong> Find the focus, directrix, and focal diameter of the parabola: $y^2 = 24x$. <strong>Problem 3:</strong> Find the standard equation for the parabola with its vertex at the origin and a focus at $(-\frac{1}{12}, 0)$. <strong>Problem 4:</strong> Find the standard equation for the parabola with its vertex at the origin and a directrix of $y = -5$. <strong>Problem 5:</strong> Based on Example 3a in the text, find the standard equation of a parabola with its vertex at the origin that opens downward and has a focus at $(0, -3)$.</p>
+<h4>Answers:</h4>
+<p>1.  <strong>Focus:</strong> $(0, -2)$; <strong>Directrix:</strong> $y = 2$; <strong>Focal Diameter:</strong> $8$. <em>(Reasoning: $4p = -8 \implies p = -2$. Since $x$ is squared, it's vertical).</em> 2.  <strong>Focus:</strong> $(6, 0)$; <strong>Directrix:</strong> $x = -6$; <strong>Focal Diameter:</strong> $24$. <em>(Reasoning: $4p = 24 \implies p = 6$. Since $y$ is squared, it's horizontal).</em> 3.  <strong>Equation:</strong> $y^2 = -\frac{1}{3}x$. <em>(Reasoning: The focus is on the x-axis, so it is a horizontal parabola $y^2 = 4px$. Here, $p = -1/12$. Multiplying $4(-\frac{1}{12})$ gives $-\frac{1}{3}$.)</em> 4.  <strong>Equation:</strong> $x^2 = 20y$. <em>(Reasoning: A horizontal directrix $y = -5$ means the axis of symmetry is vertical, so we use $x^2 = 4py$. The directrix is $y = -p$, so $-p = -5 \implies p = 5$. Therefore $4p = 20$.)</em> 5.  <strong>Equation:</strong> $x^2 = -12y$. <em>(Reasoning: The graph shows a vertical parabola opening down, meaning $x$ is squared. The focus is at $p = -3$. Therefore, $4p = -12$.)</em></p>
+<hr>
+<h4>5. Assumptions and Ambiguities Resolved</h4>
+<p>While reading the document, I had to resolve the following minor ambiguities to provide a complete lesson:</p>
+<ul>
+<li><strong>Fill-in-the-blanks:</strong> Page 1 contains several blank spaces intended for students to write in the circle equations and the old standard parabola equation. Because the text leaves them blank, I focused the study guide strictly on the newly defined geometric parabolas which are fully detailed in the text.</li>
+<li><strong>Focal Diameter Formula:</strong> The text defines the focal diameter conceptually but leaves out the explicit algebraic formula. However, by looking at the provided latus rectum diagram on page 3 (which shows coordinate distances of $2p$ on either side of the y-axis), I deduced and explicitly stated the formula $Focal Diameter = |4p|$ to allow you to solve the math problems given in the document.</li>
+<li><strong>Rearranging Equations:</strong> Example 1, part iii asks for the properties of $5x + 3y^2 = 0$. The text implies, but does not state, that students must first isolate the squared term using algebra ($y^2 = -\frac{5}{3}x$) before finding $p$.</li>
+</ul>
+    </main>
+  </article>
+</body>
+</html>

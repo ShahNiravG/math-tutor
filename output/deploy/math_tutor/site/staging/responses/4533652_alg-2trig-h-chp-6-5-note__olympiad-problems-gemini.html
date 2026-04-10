@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 6.5 - Olympiad Problems (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 6.5</h1>
+      <p><strong>Olympiad Problems (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4533652_alg-2trig-h-chp-6-5-note.pdf">4533652_alg-2trig-h-chp-6-5-note.pdf</a></p>
+    </header>
+    <main>
+      <h4>Problems</h4>
+<p>1. <strong>Phase Shift Estimation:</strong> Evaluate exactly: $\arcsin(\sin 10) + \arccos(\cos 10)$. <em>(Assume the angle $10$ is in radians).</em></p>
+<p>2. <strong>Nested Invariant:</strong> Find the exact value of $\tan(\arcsin(\cos(\arctan 2024)))$.</p>
+<p>3. <strong>Algebraic Optimization:</strong> Find the maximum possible value of the function $f(x) = (\arcsin x)^3 + (\arccos x)^3$ over its real domain.</p>
+<p>4. <strong>Trigonometric Equation:</strong> Determine the unique positive real number $x$ that satisfies the equation $\arcsin(x) + \arcsin(2x) = \arccos(x)$.</p>
+<p>5. <strong>Telescoping Arguments:</strong> Evaluate exactly, using purely mental arithmetic: $\arctan\left(\frac{1}{3}\right) + \arctan\left(\frac{1}{5}\right) + \arctan\left(\frac{1}{7}\right) + \arctan\left(\frac{1}{8}\right)$.</p>
+<p>6. <strong>Periodic Cancellation Graphs:</strong> Determine the total combined length of all intervals within the domain $x \in [0, 100\pi]$ for which the equation $\arcsin(\sin x) = \arccos(\cos x)$ holds true.</p>
+    </main>
+  </article>
+</body>
+</html>

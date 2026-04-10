@@ -9,9 +9,11 @@ from pathlib import Path
 from typing import Any
 
 from math_tutor.challenge_catalog import (
+    append_classic_exams,
     build_chapter_exam_sets,
     build_exam_sets,
     ensure_classic_bank_metadata,
+    find_unassigned_questions,
     load_explicit_curated_exams,
     load_curated_question_sources,
     load_all_questions,
@@ -257,7 +259,6 @@ def _normalize_curated_text(text: str) -> str:
 def build_challenges(
     output_dir: Path,
     site_dir: Path,
-    force: bool = False,
     experience_variant: str = DEFAULT_EXPERIENCE_VARIANT,
 ) -> None:
     experience_variant = normalize_experience_variant(experience_variant)
@@ -266,18 +267,40 @@ def build_challenges(
 
     # Canonical files live in challenges_src/ so they are tracked in git
     canonical_exams_json = CHALLENGES_SRC_DIR / "exams.json"
-    canonical_master_json = CHALLENGES_SRC_DIR / "master_questions.json"
     canonical_chapter_exams_json = CHALLENGES_SRC_DIR / "chapter_exams.json"
     canonical_curated_exams_json = CANONICAL_CURATED_EXAMS_JSON
 
-    if canonical_exams_json.exists() and canonical_master_json.exists() and canonical_chapter_exams_json.exists():
-        existing = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
-        generated_at = existing.get("generated_at", "unknown")
-        exam_count = len(existing.get("exams", []))
-        action_label = "Preserving existing classic challenge mappings"
-        if force:
-            action_label += " (force keeps canonical classic catalogs unchanged)"
-        print(f"{action_label} ({exam_count} exams, bundle: {generated_at}).")
+    if canonical_exams_json.exists() and canonical_chapter_exams_json.exists():
+        existing_bundle = json.loads(canonical_exams_json.read_text(encoding="utf-8"))
+        existing_exams = existing_bundle.get("exams", [])
+        generated_at = existing_bundle.get("generated_at", "unknown")
+        print(f"Preserving existing classic challenge mappings ({len(existing_exams)} exams, bundle: {generated_at}).")
+
+        # Append-only: check for questions from new AI responses not yet in any exam
+        all_questions = load_all_questions(output_dir)
+        new_questions = find_unassigned_questions(all_questions, existing_exams)
+        new_with_mcq = [q for q in new_questions if "correct" in q]
+        if new_with_mcq:
+            last_exam_number = max(
+                (int(e["id"].split("-")[1]) for e in existing_exams if e.get("id", "").startswith("exam-")),
+                default=0,
+            )
+            new_exams = append_classic_exams(new_with_mcq, last_exam_number=last_exam_number)
+            updated_exams = existing_exams + new_exams
+            updated_bundle = {"generated_at": generated_at, "exams": updated_exams}
+            # chapter_exams covers all questions (existing + new)
+            chapter_exams = build_chapter_exam_sets(all_questions)
+            write_canonical_challenge_catalogs(
+                canonical_exams_json=canonical_exams_json,
+                canonical_chapter_exams_json=canonical_chapter_exams_json,
+                generated_at=generated_at,
+                exams=updated_exams,
+                chapter_exams=chapter_exams,
+            )
+            print(f"  Appended {len(new_exams)} new classic exam(s) (questions from new AI responses).")
+        else:
+            if new_questions:
+                print(f"  {len(new_questions)} new question(s) found but none have MCQ data yet — skipping append.")
     else:
         print("Generating challenge exams for the first time...")
         questions = load_all_questions(output_dir)
@@ -292,15 +315,12 @@ def build_challenges(
         print(f"  Generated {len(exams)} challenge exams (bundle: {generated_at})")
         catalog_stats = write_canonical_challenge_catalogs(
             canonical_exams_json=canonical_exams_json,
-            canonical_master_json=canonical_master_json,
             canonical_chapter_exams_json=canonical_chapter_exams_json,
             generated_at=generated_at,
             exams=exams,
             chapter_exams=chapter_exams,
-            questions=questions,
         )
-        print(f"  Wrote {canonical_exams_json}")
-        print(f"  Wrote {canonical_master_json.name} ({catalog_stats['question_count']} questions)")
+        print(f"  Wrote {canonical_exams_json} ({catalog_stats['exam_count']} exams)")
         print(f"  Wrote {canonical_chapter_exams_json.name} ({catalog_stats['chapter_exam_count']} chapter exams)")
 
     curated_bundle = sync_curated_exam_bundle(
@@ -320,7 +340,7 @@ def build_challenges(
     # Skip exams.json — it's only needed to generate individual exam files, not served directly.
     copy_static_challenge_assets(source_dir=CHALLENGES_SRC_DIR, challenges_dir=challenges_dir)
     for source_path in CHALLENGES_SRC_DIR.glob("*"):
-        if source_path.name in ("exams.json", "master_questions.json", "chapter_exams.json", "curated_exams.json"):
+        if source_path.name in ("exams.json", "chapter_exams.json", "curated_exams.json"):
             continue
         suffix = "/" if source_path.is_dir() else ""
         print(f"  Copied {source_path.name}{suffix}")
@@ -372,8 +392,6 @@ def main() -> None:
                         help="Directory containing responses/ and other outputs.")
     parser.add_argument("--site-dir", default=str(PACKAGE_DIR / "output" / "deploy" / "math_tutor" / "site"),
                         help="Site directory where challenges/ will be written.")
-    parser.add_argument("--force", action="store_true",
-                        help="Regenerate exams.json even if it already exists.")
     parser.add_argument("--sync-exams-only", action="store_true",
                         help="Only sync exams/ source files into curated_exams.json; skip full site build.")
     parser.add_argument(
@@ -398,6 +416,5 @@ def main() -> None:
     build_challenges(
         output_dir=Path(args.output_dir).resolve(),
         site_dir=Path(args.site_dir).resolve(),
-        force=args.force,
         experience_variant=normalize_experience_variant(args.experience),
     )

@@ -791,7 +791,7 @@ async function doSubmit() {
 
   document.title = S.exam.title + ' \u2014 Challenge Exam';
   document.getElementById('exam-title').textContent = S.exam.title;
-  if (/^prior-amc-/.test(S.exam.id)) {
+  if (/^amc10-/.test(S.exam.id)) {
     var tl = document.getElementById('exam-time-limit');
     tl.textContent = '75 min total';
     tl.style.display = '';

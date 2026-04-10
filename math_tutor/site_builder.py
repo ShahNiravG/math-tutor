@@ -68,11 +68,6 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
-        "--force-challenges",
-        action="store_true",
-        help="Regenerate challenge exams even if exams.json already exists.",
-    )
-    parser.add_argument(
         "--experience",
         choices=CLI_EXPERIENCE_CHOICES,
         default=DEFAULT_EXPERIENCE_VARIANT,
@@ -93,7 +88,6 @@ def main() -> None:
         base_path=args.base_path,
         limit=args.limit,
         include_guided_learning=args.include_guided_learning,
-        force_challenges=args.force_challenges,
         experience_variant=normalize_experience_variant(args.experience),
     )
     print(f"Built tutoring page at {index_path}")
@@ -107,7 +101,6 @@ def build_site(
     limit: int | None = None,
     include_guided_learning: bool = False,
     file_ids: set[str] | None = None,
-    force_challenges: bool = False,
     experience_variant: str = DEFAULT_EXPERIENCE_VARIANT,
 ) -> Path:
     experience_variant = normalize_experience_variant(experience_variant)
@@ -116,7 +109,6 @@ def build_site(
     build_challenges(
         output_dir=output_dir,
         site_dir=resolved_site_dir,
-        force=force_challenges,
         experience_variant=experience_variant,
     )
     resolved_base_path = determine_base_path(

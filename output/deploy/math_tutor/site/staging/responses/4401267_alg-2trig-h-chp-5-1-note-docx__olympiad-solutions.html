@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.1 - Olympiad Solutions</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.1</h1>
+      <p><strong>Olympiad Solutions</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401267_alg-2trig-h-chp-5-1-note-docx.pdf">4401267_alg-2trig-h-chp-5-1-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<hr>
+<h4>1. Suppose a circle of radius \( r \) has a sector with central angle \( \theta \) (in radians) whose area equals the arc length of the same sector. Find, in terms of \( r \), all positive values of \( \theta \) that satisfy this property.</h4>
+<p><strong>Solution.</strong></p>
+<ul>
+<li><strong>Sector area</strong>: \( \frac{1}{2} r^2 \theta \)</li>
+<li><strong>Arc length</strong>: \( r \theta \)</li>
+</ul>
+<p>Set equal: \[ \frac{1}{2} r^2 \theta = r \theta \]</p>
+<p>If \( \theta &gt; 0 \), divide both sides by \( r \theta \):</p>
+<p>\[ \frac{1}{2} r = 1 \implies r = 2 \]</p>
+<p>But we’re asked for values of \( \theta \) in terms of \( r \). Alternatively, suppose the area equals the arc length:</p>
+<p>\[ \frac{1}{2}r^2 \theta = r \theta \] If \( r \neq 0 \) and \( \theta \neq 0 \), \[ \frac{1}{2} r \theta = \theta \implies r = 2 \]</p>
+<p>Thus, for any positive \( \theta \), \( r = 2 \) is required, not the other way.</p>
+<p>But perhaps the intended meaning is that, <strong>for given \( r \), find all positive \( \theta \)</strong> that make the equality hold. So, \[ \frac{1}{2} r^2 \theta = r \theta \implies \frac{1}{2} r^2 \theta - r \theta = 0 \implies r \theta \left( \frac{1}{2} r - 1 \right) = 0 \] Since \( r, \theta &gt; 0 \), this means \( r = 2 \).</p>
+<p><strong>Thus, for all positive values of \( \theta \), the equality can only happen if \( r = 2 \).</strong></p>
+<p>Or perhaps you want \( \theta \) on both sides: area \( = \) arc length: \[ \frac{1}{2} r^2 \theta = r \theta' \]</p>
+<p>But it asks for <strong>values of \( \theta \)</strong>, so that's clear: <strong>no positive value of \( \theta \neq 0 \) works unless \( r = 2 \)</strong>; if \( r = 2 \), any positive \( \theta \) works.</p>
+<p><strong>Answer:</strong> \[ \boxed{ \text{All positive values of } \theta,\ \text{but only if } r = 2. } \] If \( r \) is arbitrary and fixed, there are <strong>no positive</strong> \( \theta \) unless \( r = 2 \), otherwise none.</p>
+<hr>
+<h4>2. How many distinct positive integers \( n \) are there such that \( n^\circ \) and \( 2n^\circ \) are coterminal angles in standard position?</h4>
+<p><strong>Solution.</strong></p>
+<p>\( n^\circ \) and \( 2n^\circ \) are coterminal if their difference is a multiple of 360°: \[ 2n - n = n \equiv 0 \pmod{360} \implies 360 \mid n \]</p>
+<p>So positive integers \( n \leq 360 \) divide 360.</p>
+<p><em>Number of positive divisors of 360:</em></p>
+<p>\( 360 = 2^3 \cdot 3^2 \cdot 5^1 \), so number of divisors: \[ (3+1)(2+1)(1+1) = 4 \times 3 \times 2 = 24 \]</p>
+<p><strong>Answer:</strong> \[ \boxed{24} \]</p>
+<hr>
+<h4>3. The minute and hour hand of a clock are both 10 cm long. At exactly 12:00, both hands are superimposed. After one hour, what is the exact total area traced out by the tips of the hands, treating each path as a sector swept on a circle of radius 10 cm? Express your answer in terms of \( \pi \).</h4>
+<p><strong>Solution.</strong></p>
+<ul>
+<li><strong>Minute hand:</strong> Completes one full revolution ( \( 2\pi \) radians) in one hour.</li>
+<li><strong>Hour hand:</strong> Moves from 12:00 to 1:00. In 1 hour, it moves \( \frac{1}{12} \) of a circle, i.e., \( \frac{2\pi}{12} = \frac{\pi}{6} \) radians.</li>
+</ul>
+<ul>
+<li><strong>Area traced by the tip = area of sector:</strong> \( \frac{1}{2} r^2 \theta \), with \( r = 10 \) cm.</li>
+</ul>
+<p>For the minute hand (full circle): \[ A_m = \frac{1}{2} (10^2) (2\pi) = 50 \times 2\pi = 100\pi\, \text{cm}^2 \]</p>
+<p>For the hour hand: \[ A_h = \frac{1}{2} \times 10^2 \times \frac{\pi}{6} = 50 \times \frac{\pi}{6} = \frac{25\pi}{3}\, \text{cm}^2 \]</p>
+<ul>
+<li><strong>Total area:</strong></li>
+</ul>
+<p>\[ 100\pi + \frac{25\pi}{3} = \frac{300\pi + 25\pi}{3} = \frac{325\pi}{3} \]</p>
+<p><strong>Answer:</strong> \[ \boxed{\dfrac{325\pi}{3} \ \text{cm}^2} \]</p>
+<hr>
+<h4>4. Let \( A \) and \( B \) be two angles (in degrees), both less than \( 360^\circ \), such that the arc lengths subtended by \( A \) in a circle of radius \( r \) and by \( B \) in a circle of radius \( 2r \) are equal. If \( A:B = 3:1 \), what is the value of \( A \)?</h4>
+<p><strong>Solution.</strong></p>
+<ul>
+<li>Arc length for \( A \) on radius \( r \): \( \ell_A = r \cdot (\frac{\pi}{180}A) \)</li>
+<li>Arc length for \( B \) on radius \( 2r \): \( \ell_B = 2r \cdot (\frac{\pi}{180}B) \)</li>
+<li>Equate: \( r \cdot \frac{\pi}{180}A = 2r \cdot \frac{\pi}{180}B \implies A = 2B \)</li>
+</ul>
+<p>But, \( A:B = 3:1 \implies A = 3k, B = k \). But above, \( A = 2B \implies 3k = 2k \implies k = 0 \).</p>
+<p>This suggests a contradiction. Let's check the equation:</p>
+<p>Alternatively, perhaps we should check the equality: \[ r \left( \frac{\pi}{180} A \right) = 2r \left( \frac{\pi}{180} B \right) \implies A = 2B. \] But given \( A:B = 3:1 \), so \( A = 3x, B = x \), thus \( 3x = 2x \implies x=0 \). Contradicts \( x &gt; 0 \). Alternatively, perhaps the correct ratio is &quot;the length subtended by \( A \) in radius \( r \)&quot; to &quot;the length subtended by \( B \) in radius \( 2r \)&quot; is <strong>1:1</strong>, but with ratio \( 3:1 \) for the angles.</p>
+<p>Is there a misinterpretation? Or perhaps the question expects another approach.</p>
+<p>Suppose \( A = 3B \):</p>
+<p>Then, \[ r \cdot \frac{\pi}{180}A = 2r \cdot \frac{\pi}{180}B \implies A = 2B \] But also \( A = 3B \). So the only solution is \( B=0 \).</p>
+<p>But both angles must be less than \( 360^\circ \), and positive.</p>
+<p>Therefore, perhaps no such value.</p>
+<p>Alternatively, perhaps the intended meaning is &quot;if the ratio \( A:B = 3:1 \)&quot;, what is \( A \) such that arc lengths are equal.</p>
+<p>That is: \[ A = 3x, \ B = x \] Arc length equality: \[ r \cdot \frac{\pi}{180}(3x) = 2r \cdot \frac{\pi}{180} (x) \implies 3x = 2x \implies x = 0 \] No positive solution.</p>
+<p><strong>Conclusion:</strong> The only values are zero, which are excluded. Possibly a typo in the problem.</p>
+<p>However, perhaps the question was meant for ratios \( 1:3 \) or \( 2:1 \). In the current wording, <strong>no positive solution exists</strong>.</p>
+<hr>
+<h4>5. A Ferris wheel with radius 15 m completes one full counterclockwise revolution every 40 seconds. Another identical Ferris wheel next to it rotates in the opposite direction, making exactly \( n \) revolutions during the same amount of time. If the points at the topmost positions of the wheels align every 10 seconds, what is the value of \( n \)?</h4>
+<p><strong>Solution.</strong></p>
+<p>Let their angular speeds be \( \omega_1 = \frac{2\pi}{40} = \frac{\pi}{20} \) (counterclockwise), \( \omega_2 = -n \frac{2\pi}{40} = -\frac{n\pi}{20} \) (clockwise, negative).</p>
+<p>Topmost point alignment means their angular displacement <strong>sum</strong> equals an integer multiple of \( 2\pi \):</p>
+<p>Let \( t \) be the time elapsed (in seconds), at which their top points align: \[ \omega_1 t + |\omega_2| t = 2\pi k,\quad \text{for some integer } k \] Here, \( |\omega_2| = \frac{n\pi}{20} \).</p>
+<p>\[ (\frac{\pi}{20} + \frac{n\pi}{20}) t = 2\pi k \implies \frac{(1+n)\pi}{20} t = 2\pi k \implies (1 + n) t = 40 k \]</p>
+<p>Given that this happens every \( t = 10 \) seconds, so the smallest such \( t \):</p>
+<p>Set \( t = 10 \), \[ (1+n) \cdot 10 = 40k \implies (1+n) = 4k \] Both \( n \) and \( k \) are positive integers, and in 40 seconds, the second wheel must complete exactly \( n \) revolutions (\( n \) integer, \( t=40 \) is a period).</p>
+<p>But with \( t=10 \), \( (1+n) = 4k \rightarrow n = 4k-1 \), for integer \( k \geq 1 \).</p>
+<p>Now, \( t = 40 \) seconds must also be a time at which alignment occurs, i.e. \( 40 \) must be a multiple of \( 10 \).</p>
+<p>Let’s check what value of \( n \) makes \( n \) integer when \( t = 40 \):</p>
+<p>\[ n = 4k - 1 \] Set \( t = 40 \): this must align; what integer \( k \) yields that the second wheel's number of revolutions is an integer in 40 seconds? Use the other constraint:</p>
+<p>In 40 seconds, second wheel rotates \( n \) times, so \( n \) is integer.</p>
+<p>Let us check \( k = 1,2,3,4\):</p>
+<ul>
+<li>\( k=1 \): \( n=3 \)</li>
+<li>\( k=2 \): \( n=7 \)</li>
+<li>\( k=3 \): \( n=11 \)</li>
+<li>\( k=4 \): \( n=15 \)</li>
+</ul>
+<p>Since \( n \) must also result in the wheels aligning every 10 seconds, and the period is 40 seconds:</p>
+<p>Let’s check if \( n = 3 \) satisfies this:</p>
+<p>For \( n = 3 \):</p>
+<ul>
+<li>In 40 s, second wheel makes 3 revolutions (as required).</li>
+<li>Every 10 s, \( t = 10 \), \( (1+3)\cdot10 = 40 \), so \( k=1 \), so yes, every 10 s they align.</li>
+</ul>
+<p>Thus,</p>
+<p><strong>Answer:</strong> \[ \boxed{3} \]</p>
+<hr>
+<h4>6. The area of a sector of a circle is numerically equal (in the same units) to five times the circumference of the circle. Find the central angle of the sector in radians, in terms of \( r \).</h4>
+<p><strong>Solution.</strong></p>
+<ul>
+<li><strong>Circumference:</strong> \( 2\pi r \)</li>
+<li><strong>Sector area:</strong> \( \frac{1}{2} r^2 \theta \)</li>
+</ul>
+<p>Given: \[ \frac{1}{2} r^2 \theta = 5 \cdot 2\pi r = 10\pi r \]</p>
+<p>Divide both sides by \( r \) (\( r &gt; 0 \)): \[ \frac{1}{2} r \theta = 10\pi \implies r \theta = 20\pi \implies \theta = \frac{20\pi}{r} \]</p>
+<p><strong>Answer:</strong> \[ \boxed{\theta = \dfrac{20\pi}{r}} \]</p>
+    </main>
+  </article>
+</body>
+</html>

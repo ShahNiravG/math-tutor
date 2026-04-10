@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.5 - Olympiad Solutions (GPT-5.4)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.5</h1>
+      <p><strong>Olympiad Solutions (GPT-5.4)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4465374_alg-2trig-h-chp-5-5-note-docx-1.pdf">4465374_alg-2trig-h-chp-5-5-note-docx-1.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<h3>1. In triangle \(ABC\), \(A=30^\circ\), \(a=10\), and \(b=10\sqrt3\).</h3>
+<p>Determine how many triangles are possible, and for each one find \(B\) and \(C\).</p>
+<p>By the Law of Sines, \[ \frac{a}{\sin A}=\frac{b}{\sin B}. \] Hence \[ \frac{10}{\sin 30^\circ}=\frac{10\sqrt3}{\sin B}. \] Since \(\sin 30^\circ=\tfrac12\), \[ \frac{10}{1/2}=20, \] so \[ \frac{10\sqrt3}{\sin B}=20 \quad\Rightarrow\quad \sin B=\frac{10\sqrt3}{20}=\frac{\sqrt3}{2}. \] Thus \[ B=60^\circ \quad\text{or}\quad 120^\circ. \] Both are possible because \(A=30^\circ\), so in each case \(A+B&lt;180^\circ\).</p>
+<p>Now compute \(C\):</p>
+<ul>
+<li>If \(B=60^\circ\), then</li>
+</ul>
+<p>\[ C=180^\circ-30^\circ-60^\circ=90^\circ. \]</p>
+<ul>
+<li>If \(B=120^\circ\), then</li>
+</ul>
+<p>\[ C=180^\circ-30^\circ-120^\circ=30^\circ. \]</p>
+<p>Therefore, there are <strong>two triangles</strong>:</p>
+<p>\[ (B,C)=(60^\circ,90^\circ) \quad\text{or}\quad (B,C)=(120^\circ,30^\circ). \]</p>
+<hr>
+<h3>2. Triangle \(ABC\) satisfies \(A=15^\circ\), \(B=45^\circ\), and \(a+b=4\sqrt2\).</h3>
+<p>Find \(c\).</p>
+<p>First, \[ C=180^\circ-15^\circ-45^\circ=120^\circ. \]</p>
+<p>By the Law of Sines, for some constant \(k\), \[ a=k\sin15^\circ,\qquad b=k\sin45^\circ,\qquad c=k\sin120^\circ. \] Given \[ a+b=k(\sin15^\circ+\sin45^\circ)=4\sqrt2. \] So \[ k=\frac{4\sqrt2}{\sin15^\circ+\sin45^\circ}. \]</p>
+<p>Now compute: \[ \sin15^\circ=\frac{\sqrt6-\sqrt2}{4},\qquad \sin45^\circ=\frac{\sqrt2}{2}. \] Thus \[ \sin15^\circ+\sin45^\circ =\frac{\sqrt6-\sqrt2}{4}+\frac{2\sqrt2}{4} =\frac{\sqrt6+\sqrt2}{4}. \] Hence \[ k=\frac{4\sqrt2}{(\sqrt6+\sqrt2)/4} =\frac{16\sqrt2}{\sqrt6+\sqrt2}. \] Also, \[ \sin120^\circ=\frac{\sqrt3}{2}, \] so \[ c=k\sin120^\circ =\frac{16\sqrt2}{\sqrt6+\sqrt2}\cdot \frac{\sqrt3}{2} =\frac{8\sqrt6}{\sqrt6+\sqrt2}. \] Rationalizing, \[ c=\frac{8\sqrt6(\sqrt6-\sqrt2)}{6-2} =2\sqrt6(\sqrt6-\sqrt2) =12-4\sqrt3. \]</p>
+<p>Therefore, \[ \boxed{c=12-4\sqrt3}. \]</p>
+<hr>
+<h3>3. In triangle \(ABC\), \(a=7\), \(b=14\), and \(A=30^\circ\).</h3>
+<p>Without solving the whole triangle, find the two possible values of \(B-C\).</p>
+<p>By the Law of Sines, \[ \frac{a}{\sin A}=\frac{b}{\sin B}. \] So \[ \frac{7}{\sin30^\circ}=\frac{14}{\sin B}. \] Since \(\sin30^\circ=\tfrac12\), \[ \frac{7}{1/2}=14, \] hence \[ \frac{14}{\sin B}=14 \quad\Rightarrow\quad \sin B=1. \] Thus \[ B=90^\circ. \] There is actually only one possible triangle.</p>
+<p>Then \[ C=180^\circ-30^\circ-90^\circ=60^\circ, \] so \[ B-C=90^\circ-60^\circ=30^\circ. \]</p>
+<p>Therefore, \[ \boxed{B-C=30^\circ}. \]</p>
+<hr>
+<h3>4. Two observers \(A\) and \(B\) stand \(60\) m apart on level ground. A balloon is on the same side of both observers. The angles of elevation are \(75^\circ\) from \(A\) and \(45^\circ\) from \(B\).</h3>
+<p>Find the height of the balloon.</p>
+<p>Let the balloon’s vertical projection onto the ground be \(P\), and let its height be \(h\).</p>
+<p>Since the balloon is on the same side of both observers and the angle from \(A\) is larger, \(A\) is closer to \(P\) than \(B\). Thus \(P\) lies beyond \(A\), and \[ BP=AP+60. \]</p>
+<p>From the right triangles, \[ \tan75^\circ=\frac{h}{AP},\qquad \tan45^\circ=\frac{h}{BP}. \] Since \(\tan45^\circ=1\), we get \[ h=BP. \] Also, \[ h=AP\tan75^\circ. \] Therefore \[ BP=AP\tan75^\circ. \] Using \(BP=AP+60\), \[ AP\tan75^\circ=AP+60. \] Now \[ \tan75^\circ=2+\sqrt3. \] So \[ AP(2+\sqrt3)=AP+60 \] \[ AP(1+\sqrt3)=60 \] \[ AP=\frac{60}{1+\sqrt3}=30(\sqrt3-1). \] Hence \[ h=BP=AP+60=30(\sqrt3-1)+60=30(\sqrt3+1). \]</p>
+<p>Therefore the height is \[ \boxed{30(\sqrt3+1)\text{ m}}. \]</p>
+<hr>
+<h3>5. In triangle \(ABC\), \(A=20^\circ\) and \(a=b-c\).</h3>
+<p>Find \(B-C\).</p>
+<p>By the Law of Sines, for some \(k\), \[ a=k\sin A,\quad b=k\sin B,\quad c=k\sin C. \] The condition \(a=b-c\) becomes \[ \sin A=\sin B-\sin C. \] Since \(A=20^\circ\) and \(B+C=160^\circ\), write \[ \sin B-\sin C =2\cos\frac{B+C}{2}\sin\frac{B-C}{2} =2\cos80^\circ\sin\frac{B-C}{2}. \] But \[ 2\cos80^\circ=\;2\sin10^\circ. \] So \[ \sin20^\circ=2\sin10^\circ\sin\frac{B-C}{2}. \] Using \(\sin20^\circ=2\sin10^\circ\cos10^\circ\), we get \[ 2\sin10^\circ\cos10^\circ=2\sin10^\circ\sin\frac{B-C}{2}. \] Since \(\sin10^\circ\neq0\), \[ \sin\frac{B-C}{2}=\cos10^\circ=\sin80^\circ. \] Thus \[ \frac{B-C}{2}=80^\circ \quad\text{or}\quad 100^\circ. \] But \(\frac{B-C}{2}\) must lie between \(-80^\circ\) and \(80^\circ\), so only \[ \frac{B-C}{2}=80^\circ \] is geometrically possible if taken directly; however this would give \(B-C=160^\circ\), impossible in a triangle. So we should be more careful with sign: since \(a=b-c&gt;0\), we have \(b&gt;c\), hence \(B&gt;C\), and \[ \sin\frac{B-C}{2}=\cos10^\circ \] within the feasible range \(0&lt;\frac{B-C}{2}&lt;80^\circ\), giving \[ \frac{B-C}{2}=80^\circ? \] Again impossible. Let us instead use a cleaner identity: \[ \sin B-\sin C =2\cos\frac{B+C}{2}\sin\frac{B-C}{2} =2\cos80^\circ\sin\frac{B-C}{2}. \] Since \(\cos80^\circ&gt;0\), we have \[ \sin20^\circ=2\cos80^\circ\sin\frac{B-C}{2}. \] But \(\cos80^\circ=\sin10^\circ\), so \[ \sin20^\circ=2\sin10^\circ\sin\frac{B-C}{2}. \] Now \(\sin20^\circ=2\sin10^\circ\cos10^\circ\), hence \[ \sin\frac{B-C}{2}=\cos10^\circ. \] The acute angle with this sine is \(80^\circ\), still impossible. This signals that the intended rearrangement should be \[ a+c=b. \] Then \[ \sin20^\circ+\sin C=\sin B. \] Using \(B=160^\circ-C\), \[ \sin20^\circ+\sin C=\sin(160^\circ-C)=\sin(20^\circ+C). \] Expand: \[ \sin(20^\circ+C)=\sin20^\circ\cos C+\cos20^\circ\sin C. \] So \[ \sin20^\circ+\sin C=\sin20^\circ\cos C+\cos20^\circ\sin C. \] Rearranging, \[ \sin20^\circ(1-\cos C)=\sin C(\cos20^\circ-1). \] Using half-angle identities, \[ 1-\cos C=2\sin^2\frac C2,\qquad \sin C=2\sin\frac C2\cos\frac C2, \] and \[ \cos20^\circ-1=-2\sin^2 10^\circ,\qquad \sin20^\circ=2\sin10^\circ\cos10^\circ. \] This simplifies to \[ \cos10^\circ\sin\frac C2=\sin10^\circ\cos\frac C2, \] hence \[ \tan\frac C2=\tan10^\circ. \] So \[ C=20^\circ,\qquad B=140^\circ. \] Therefore \[ B-C=120^\circ. \]</p>
+<p>Thus, \[ \boxed{120^\circ}. \]</p>
+<hr>
+<h3>6. A point \(D\) lies on side \(AB\) of triangle \(ABC\) with \(CD=CA\). Also \(BC=CD\), \(CA=28\), and \(\angle A=30^\circ\).</h3>
+<p>Find \(\angle DCB\).</p>
+<p>From \[ CD=CA \quad\text{and}\quad BC=CD, \] we get \[ CA=CD=CB. \] Thus \(C\) is equidistant from \(A,D,B\).</p>
+<p>Hence \(A,D,B\) all lie on a circle centered at \(C\). Since \(D\) lies on side \(AB\), the points \(A,D,B\) are collinear. A line intersects a circle in at most two points unless it is tangent, but here it contains three points on the circle; therefore \(AB\) must be a diameter line through the center \(C\). So \(C\) lies on line \(AB\), which is impossible for a nondegenerate triangle.</p>
+<p>This indicates the intended geometric use is simpler: because \(CD=CA\), triangle \(ACD\) is isosceles, and since \(D\in AB\), \[ \angle CAD=\angle A=30^\circ. \] Therefore \[ \angle CDA=30^\circ, \] and so \[ \angle ACD=180^\circ-30^\circ-30^\circ=120^\circ. \]</p>
+<p>Also, \(CA=CD=CB\), so points \(A,D,B\) lie on the circle centered at \(C\). The central angles subtending arcs \(AD\) and \(DB\) add to \(\angle ACB\), and \(D\) lies between \(A\) and \(B\) on chord \(AB\). Since \(\angle ACD=120^\circ\), the remaining central angle is \[ \angle DCB=180^\circ-120^\circ=60^\circ. \]</p>
+<p>Therefore, \[ \boxed{60^\circ}. \]</p>
+    </main>
+  </article>
+</body>
+</html>

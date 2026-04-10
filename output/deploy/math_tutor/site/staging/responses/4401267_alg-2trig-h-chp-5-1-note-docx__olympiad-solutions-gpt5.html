@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.1 - Olympiad Solutions (GPT-5.4)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.1</h1>
+      <p><strong>Olympiad Solutions (GPT-5.4)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401267_alg-2trig-h-chp-5-1-note-docx.pdf">4401267_alg-2trig-h-chp-5-1-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<h3>1. Find the least positive angle in degrees coterminal with</h3>
+<p>\[ \frac{37\pi}{12}-845^\circ. \]</p>
+<p>First convert the radian measure to degrees: \[ \frac{37\pi}{12}\cdot \frac{180^\circ}{\pi}=37\cdot 15^\circ=555^\circ. \] So the angle is \[ 555^\circ-845^\circ=-290^\circ. \] To find the least positive coterminal angle, add \(360^\circ\): \[ -290^\circ+360^\circ=70^\circ. \]</p>
+<p>\[ \boxed{70^\circ} \]</p>
+<hr>
+<h3>2. A sector has perimeter \(20\) and central angle \(2\) radians. Find its area.</h3>
+<p>For a sector of radius \(r\) and angle \(\theta\), the perimeter is \[ 2r+r\theta. \] Here \(\theta=2\), so \[ 2r+2r=4r=20. \] Thus \[ r=5. \]</p>
+<p>The area of a sector is \[ \frac12 r^2\theta. \] Hence \[ \text{Area}=\frac12\cdot 25\cdot 2=25. \]</p>
+<p>\[ \boxed{25} \]</p>
+<hr>
+<h3>3. In a circle, the numerical value of the arc length of a sector equals the numerical value of the area of that sector. If the central angle is not \(0\), find it.</h3>
+<p>Let the radius be \(r\) and the central angle be \(\theta\) radians.</p>
+<p>The arc length is \[ s=r\theta, \] and the sector area is \[ A=\frac12 r^2\theta. \]</p>
+<p>We are told these numerical values are equal: \[ r\theta=\frac12 r^2\theta. \] Since \(\theta\ne 0\), divide by \(\theta\): \[ r=\frac12 r^2. \] So \[ 2r=r^2 \quad \Rightarrow \quad r(r-2)=0. \] Since a circle cannot have radius \(0\), we get \[ r=2. \]</p>
+<p>The equation imposes no further restriction on \(\theta\) besides \(\theta\ne 0\). Thus the central angle can be <strong>any nonzero radian measure</strong>.</p>
+<p>\[ \boxed{\theta\text{ may be any nonzero real number (in radians)}} \]</p>
+<hr>
+<h3>4. A point moves on a circle of radius \(6\) cm. In the first half of a trip it turns through \(150^\circ\); in the second half it turns through \(\frac{5\pi}{6}\) radians. Find the total distance traveled.</h3>
+<p>Distance traveled along a circle is arc length: \[ s=r\theta, \] with \(\theta\) in radians.</p>
+<p>Convert \(150^\circ\) to radians: \[ 150^\circ=\frac{5\pi}{6}. \] So in the first half, the arc length is \[ 6\cdot \frac{5\pi}{6}=5\pi. \] In the second half, the angle is also \(\frac{5\pi}{6}\), so the arc length is again \[ 6\cdot \frac{5\pi}{6}=5\pi. \]</p>
+<p>Therefore the total distance is \[ 5\pi+5\pi=10\pi. \]</p>
+<p>\[ \boxed{10\pi\text{ cm}} \]</p>
+<hr>
+<h3>5. Two angles in standard position satisfy</h3>
+<p>\[ \alpha+\beta=7\pi,\qquad \alpha-\beta=250^\circ. \] Find the least positive coterminal angle of \(\alpha\).</p>
+<p>We first express everything in one unit. Convert \(250^\circ\) to radians: \[ 250^\circ=\frac{250\pi}{180}=\frac{25\pi}{18}. \]</p>
+<p>Now solve the system \[ \alpha+\beta=7\pi,\qquad \alpha-\beta=\frac{25\pi}{18}. \] Add the equations: \[ 2\alpha=7\pi+\frac{25\pi}{18} =\frac{126\pi+25\pi}{18} =\frac{151\pi}{18}. \] Hence \[ \alpha=\frac{151\pi}{36}. \]</p>
+<p>Now reduce modulo \(2\pi=\frac{72\pi}{36}\): \[ \frac{151\pi}{36}-\frac{72\pi}{36}=\frac{79\pi}{36}, \] and again \[ \frac{79\pi}{36}-\frac{72\pi}{36}=\frac{7\pi}{36}. \] This is positive and less than \(2\pi\), so it is the least positive coterminal angle.</p>
+<p>\[ \boxed{\frac{7\pi}{36}} \]</p>
+<hr>
+<h3>6. A wheel of radius \(r\) rolls without slipping. After exactly \(9\) revolutions, the distance traveled equals the area of a sector of a circle of radius \(r\) and angle \(\theta\) radians. Find \(\theta\).</h3>
+<p>When a wheel of radius \(r\) rolls without slipping, one revolution covers one circumference: \[ 2\pi r. \] So after \(9\) revolutions, the distance traveled is \[ 9(2\pi r)=18\pi r. \]</p>
+<p>The area of a sector of radius \(r\) and angle \(\theta\) is \[ \frac12 r^2\theta. \]</p>
+<p>Set these equal: \[ 18\pi r=\frac12 r^2\theta. \] Assuming \(r&gt;0\), divide by \(r\): \[ 18\pi=\frac12 r\theta. \] Thus \[ \theta=\frac{36\pi}{r}. \]</p>
+<p>\[ \boxed{\theta=\frac{36\pi}{r}} \]</p>
+    </main>
+  </article>
+</body>
+</html>

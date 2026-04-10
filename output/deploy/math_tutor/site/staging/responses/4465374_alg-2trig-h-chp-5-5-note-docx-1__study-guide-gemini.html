@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.5 - Study Guide (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+  </style>
+
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.5</h1>
+      <p><strong>Study Guide (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4465374_alg-2trig-h-chp-5-5-note-docx-1.pdf">4465374_alg-2trig-h-chp-5-5-note-docx-1.pdf</a></p>
+    </header>
+    <main>
+      <p>Here is a comprehensive study guide and set of resources based on the provided document about the Law of Sines.</p>
+<h4>1. Short Summary</h4>
+<p>This document covers Section 5.5, which introduces the <strong>Law of Sines</strong> as a method for solving oblique triangles (triangles without a right angle). It primarily focuses on two triangle configurations: Case 1 (ASA or SAA, where two angles and a side are known) and Case 2 (SSA, where two sides and a non-included angle are known). The document dedicates significant attention to the <strong>Ambiguous Case (SSA)</strong>, explaining how to determine whether the given information results in zero, one, or two possible triangles based on the height of the triangle and the lengths of the given sides.</p>
+<hr>
+<h4>2. Core Definitions, Theorems, and Formulas</h4>
+<p><strong>Definitions:</strong></p>
+<ul>
+<li><strong>Oblique Triangle:</strong> A triangle that does not contain a $90^\circ$ (right) angle.</li>
+<li><strong>Ambiguous Case (SSA):</strong> A triangle situation where two sides and the angle opposite one of those sides are known. It is &quot;ambiguous&quot; because this combination of constraints can yield no triangle, exactly one triangle, or two different triangles.</li>
+<li><strong>Height of a Triangle ($h$):</strong> The perpendicular distance from a base to the opposite vertex. In an SSA triangle where angle $A$ and sides $a$ and $b$ are given, $h = b \sin A$.</li>
+</ul>
+<p><strong>Theorems &amp; Rules (The Ambiguous Case - SSA):</strong> Given sides $a, b$ and angle $A$:</p>
+<ul>
+<li><strong>If Angle $A$ is Acute ($A &lt; 90^\circ$):</strong></li>
+<li><em>Two Solutions (Two Triangles):</em> If $h &lt; a &lt; b$ (notated in the text as $b &gt; a &gt; b \sin A$).</li>
+<li><em>One Solution (One Triangle):</em> If $a \ge b$.</li>
+<li><em>No Solution (No Triangle):</em> If $a &lt; h$ (notated as $a &lt; b \sin A$).</li>
+<li><strong>If Angle $A$ is Obtuse ($A \ge 90^\circ$):</strong></li>
+<li><em>One Solution (One Triangle):</em> If $a &gt; b$.</li>
+<li><em>No Solution (No Triangle):</em> If $a \le b$.</li>
+</ul>
+<p><strong>Formulas:</strong></p>
+<ul>
+<li><strong>The Law of Sines (Finding an Angle):</strong> $\frac{\sin A}{a} = \frac{\sin B}{b} = \frac{\sin C}{c}$</li>
+<li><strong>The Law of Sines (Finding a Side):</strong> $\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}$</li>
+</ul>
+<hr>
+<h4>3. Worked Study Guide: Step-by-Step</h4>
+<p><strong>Goal:</strong> Solve a triangle using the Law of Sines.</p>
+<ul>
+<li><strong>Step 1: Identify your known variables.</strong></li>
+</ul>
+<p>Look at the triangle given to you. Do you know two angles and one side (ASA / SAA)? Or do you know two sides and an angle opposite one of them (SSA)?</p>
+<ul>
+<li><em>Note:</em> If you have ASA or SAA, there is only one solution. Jump to Step 3. If you have SSA, proceed to Step 2.</li>
+<li><strong>Step 2: Check for the Ambiguous Case (SSA only).</strong></li>
+</ul>
+<p>If you are given an SSA triangle, you must test how many triangles are possible. 1.  Identify the given angle (let's call it $A$), the side opposite it ($a$), and the other adjacent side ($b$). 2.  Calculate the height: $h = b \sin A$. 3.  Check if $A$ is acute or obtuse. 4.  Compare your values using the rules from Section 2. For example, if $A$ is acute and your $a$ side is shorter than the $b$ side but longer than the height $h$, you must prepare to solve for <strong>two</strong> different triangles!</p>
+<ul>
+<li><strong>Step 3: Set up the Law of Sines.</strong></li>
+</ul>
+<p>Group your known angle and its opposite side as one fraction (e.g., $\frac{a}{\sin A}$). Set this equal to a fraction containing the variable you want to find.</p>
+<ul>
+<li><em>Tip:</em> Keep the unknown variable in the numerator. Use $\frac{a}{\sin A} = \frac{b}{\sin B}$ if finding a side, or $\frac{\sin A}{a} = \frac{\sin B}{b}$ if finding an angle.</li>
+<li><strong>Step 4: Solve and find the remaining parts.</strong></li>
+</ul>
+<p>Cross-multiply and isolate the unknown.</p>
+<ul>
+<li>If you are finding an angle, use the inverse sine ($\sin^{-1}$) on your calculator.</li>
+<li><em>Important for 2-Solution Cases:</em> The calculator will only give you the acute angle. To find the second valid angle, subtract the calculator's answer from $180^\circ$ (since supplementary angles have the same sine value).</li>
+<li>Finally, use the fact that the interior angles of a triangle always add up to $180^\circ$ to find the third angle, and use the Law of Sines one last time to find the third side.</li>
+</ul>
+<hr>
+<h4>4. Practice Problems</h4>
+<p><em>These problems are taken directly from the examples provided in the document.</em></p>
+<p><strong>Problem 1 (Based on Example 1a):</strong> In $\triangle ABC$, $\angle A = 52^\circ$, $\angle B = 70^\circ$, and side $c = 26.7$. Find side $a$ (labeled as $x$).</p>
+<p><strong>Problem 2 (Based on Example 3b):</strong> Sketch the triangle, and then solve it using the Law of Sines: $\angle B = 10^\circ$, $\angle C = 100^\circ$, and side $c = 115$. Find $\angle A$, side $a$, and side $b$.</p>
+<p><strong>Problem 3 (Based on Example 4i):</strong> Determine the number of possible triangles and solve for all possible parts: side $a = 28$, side $b = 15$, and $\angle A = 110^\circ$.</p>
+<p><strong>Problem 4 (Based on Example 4ii):</strong> Determine the number of possible triangles: side $a = 20$, side $c = 45$, and $\angle A = 125^\circ$.</p>
+<p><strong>Problem 5 (Based on Example 4iii):</strong> Determine the number of possible triangles (you do not need to fully solve): side $b = 25$, side $c = 30$, and $\angle B = 25^\circ$.</p>
+<hr>
+<p><strong>Answers to Practice Problems:</strong></p>
+<ul>
+<li><strong>Answer 1:</strong> First, find $\angle C = 180^\circ - (52^\circ + 70^\circ) = 58^\circ$. Then use the Law of Sines: $\frac{x}{\sin(52^\circ)} = \frac{26.7}{\sin(58^\circ)}$. Solving for $x$ yields $x \approx 24.8$.</li>
+<li><strong>Answer 2:</strong></li>
+<li>$\angle A = 180^\circ - (10^\circ + 100^\circ) = 70^\circ$.</li>
+<li>Find $b$: $\frac{b}{\sin(10^\circ)} = \frac{115}{\sin(100^\circ)} \implies b \approx 20.3$.</li>
+<li>Find $a$: $\frac{a}{\sin(70^\circ)} = \frac{115}{\sin(100^\circ)} \implies a \approx 109.7$.</li>
+<li><strong>Answer 3:</strong> Because $\angle A$ is obtuse and $a &gt; b$ ($28 &gt; 15$), there is exactly <strong>one</strong> triangle.</li>
+<li>Find $\angle B$: $\frac{\sin B}{15} = \frac{\sin(110^\circ)}{28} \implies \sin B \approx 0.5034 \implies \angle B \approx 30.2^\circ$.</li>
+<li>Find $\angle C$: $180^\circ - (110^\circ + 30.2^\circ) \implies \angle C \approx 39.8^\circ$.</li>
+<li>Find $c$: $\frac{c}{\sin(39.8^\circ)} = \frac{28}{\sin(110^\circ)} \implies c \approx 19.1$.</li>
+<li><strong>Answer 4:</strong> $\angle A$ is obtuse. For an obtuse triangle, the side opposite the given angle must be the longest side. Here, $a \le c$ ($20 \le 45$), so there is <strong>no solution (0 triangles)</strong>.</li>
+<li><strong>Answer 5:</strong> $\angle B$ is acute. Calculate the height $h = c \sin B = 30 \sin(25^\circ) \approx 12.68$. Since $h &lt; b &lt; c$ ($12.68 &lt; 25 &lt; 30$), there are <strong>two solutions (2 triangles)</strong>.</li>
+</ul>
+<hr>
+<h4>5. Assumptions and Ambiguities Resolved</h4>
+<p>As a careful tutor, I noted a few visual and typographical ambiguities in the provided document and resolved them to ensure mathematical accuracy: 1.  <strong>Typographical errors in the formulas:</strong> In the &quot;Case I: Acute Angle&quot; section, the text labels the condition for two triangles as &quot;$b &gt; a &gt; b \sin A$&quot;. A few lines down, the OCR captures rules for one and zero triangles with contradictory letters. I corrected this in the definitions section by relying on standard mathematical rules: If the given angle is $A$, the condition for two solutions is indeed $h &lt; a &lt; b$ (or $b \sin A &lt; a &lt; b$). The condition for one solution is $a \ge b$, and the condition for no solution is $a &lt; h$ (or $a &lt; b \sin A$). 2.  <strong>Image clarity in Example 1a:</strong> The exact placement of the $70^\circ$ angle and side $c=26.7$ is slightly ambiguous due to resolution. I assumed standard triangle vertex notation (angle $B = 70^\circ$, side $c = 26.7$, and side $a = x$) to formulate a valid, solvable geometry problem. 3.  <strong>Example labels (Example 2b):</strong> Visually, Example 2b looks like a Side-Angle-Side (SAS) setup based on the drawing, but solving it with the Law of Sines requires an SSA alignment. By following standard vertex naming conventions (Side $AC = b$, Side $BC = a$), it successfully reads as an SSA problem ($A = 80^\circ, b = 3.4, a = 6.5$), which allows standard Law of Sines application.</p>
+    </main>
+  </article>
+</body>
+</html>

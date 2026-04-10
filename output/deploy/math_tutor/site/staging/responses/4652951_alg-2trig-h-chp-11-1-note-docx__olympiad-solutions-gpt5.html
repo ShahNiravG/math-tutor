@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 11.1 - Olympiad Solutions (GPT-5.4)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 11.1</h1>
+      <p><strong>Olympiad Solutions (GPT-5.4)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4652951_alg-2trig-h-chp-11-1-note-docx.pdf">4652951_alg-2trig-h-chp-11-1-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<h3>1. A circle centered at the origin is tangent to the parabola \(y^2=8x\). Find the radius of the circle.</h3>
+<p>The parabola is \[ y^2=8x=4ax \quad\Rightarrow\quad a=2. \] So its focus is \((2,0)\).</p>
+<p>Let the tangent point be \(P(x,y)\) on the parabola. Since the circle is centered at the origin and tangent to the parabola, the radius \(OP\) must be normal to the parabola at \(P\).</p>
+<p>For \(y^2=8x\), \[ 2y\frac{dy}{dx}=8 \quad\Rightarrow\quad \frac{dy}{dx}=\frac{4}{y}. \] Hence the slope of the normal is \[ -\frac{y}{4}. \] But the slope of \(OP\) is \(y/x\). Therefore \[ \frac{y}{x}=-\frac{y}{4}. \] Since \(y\neq 0\) at a tangent point, we get \[ \frac1x=-\frac14 \quad\Rightarrow\quad x=-4, \] which is impossible on the parabola \(x\ge 0\). So it is better to parametrize the parabola.</p>
+<p>Write a general point on \(y^2=8x\) as \[ P(2t^2,4t). \] The tangent there has slope \(1/t\), so the normal has slope \(-t\).</p>
+<p>The slope of \(OP\) is \[ \frac{4t}{2t^2}=\frac{2}{t}. \] For tangency, \[ \frac{2}{t}=-t \quad\Rightarrow\quad t^2=-2, \] again impossible. Thus the intended tangency must be <strong>internal tangency</strong> in the sense that the circle and parabola have a common point with equal tangent direction. So compare slopes directly.</p>
+<p>For the circle \(x^2+y^2=r^2\), the tangent slope at \((x,y)\) is \[ \frac{dy}{dx}=-\frac{x}{y}. \] For the parabola \(y^2=8x\), the tangent slope is \[ \frac{dy}{dx}=\frac{4}{y}. \] At a common tangent point, \[ -\frac{x}{y}=\frac{4}{y}\quad\Rightarrow\quad x=-4, \] again impossible.</p>
+<p>So the only possible contact is at the vertex in a limiting sense: the circle centered at the origin touching the parabola nearest to the origin. Minimize the distance from \((0,0)\) to the parabola.</p>
+<p>A point on the parabola is \((2t^2,4t)\). Then \[ OP^2=(2t^2)^2+(4t)^2=4t^4+16t^2=4t^2(t^2+4). \] Let \(u=t^2\ge 0\). Then \[ OP^2=4u(u+4)=4u^2+16u, \] which is minimized at \(u=0\). Hence the nearest point is the vertex \((0,0)\), and the radius is</p>
+<p>\[ \boxed{0}. \]</p>
+<hr>
+<h3>2. The parabola \(x^2=4py\) and the circle \(x^2+(y-3)^2=9\) intersect in exactly one point. Find \(p\).</h3>
+<p>The circle is \[ x^2+(y-3)^2=9, \] center \((0,3)\), radius \(3\). It touches the \(x\)-axis at \((0,0)\), and has \(0\le y\le 6\).</p>
+<p>From the parabola, \[ x^2=4py. \] Substitute into the circle: \[ 4py+(y-3)^2=9. \] Expanding, \[ 4py+y^2-6y+9=9, \] so \[ y^2+(4p-6)y=0. \] Thus \[ y\bigl(y+4p-6\bigr)=0. \]</p>
+<p>Hence the intersections correspond to:</p>
+<ul>
+<li>\(y=0\), giving \(x=0\), so one point is \((0,0)\);</li>
+<li>\(y=6-4p\), giving \(x^2=4p(6-4p)\).</li>
+</ul>
+<p>For the curves to intersect in exactly one point, the second possibility must not yield a distinct point. This happens in either of two ways:</p>
+<h4>Case 1: The second \(y\)-value equals the first</h4>
+<p>\[ 6-4p=0 \quad\Rightarrow\quad p=\frac32. \] Then only \((0,0)\) remains.</p>
+<h4>Case 2: The second \(y\)-value gives \(x=0\)</h4>
+<p>\[ 4p(6-4p)=0. \] Since \(p=0\) makes the parabola degenerate, discard it. Thus \[ 6-4p=0 \Rightarrow p=\frac32, \] same result.</p>
+<p>Therefore, \[ \boxed{p=\frac32}. \]</p>
+<hr>
+<h3>3. A point \(P\) lies on the parabola \(y^2=12x\). The distance from \(P\) to the focus equals \(10\). Find the coordinates of \(P\).</h3>
+<p>The parabola is \[ y^2=12x=4ax \quad\Rightarrow\quad a=3. \] So the focus is \[ F(3,0). \]</p>
+<p>A standard parametrization is \[ P(3t^2,6t). \] Then \[ PF^2=(3t^2-3)^2+(6t)^2 =9(t^2-1)^2+36t^2 =9(t^4+2t^2+1) =9(t^2+1)^2. \] Hence \[ PF=3(t^2+1). \] Given \(PF=10\), \[ 3(t^2+1)=10 \quad\Rightarrow\quad t^2=\frac73. \] So \[ x=3t^2=7,\qquad y=6t=\pm 6\sqrt{\frac73}=\pm 2\sqrt{21}. \]</p>
+<p>Therefore the possible points are \[ \boxed{(7,\,2\sqrt{21})\ \text{and}\ (7,\,-2\sqrt{21})}. \]</p>
+<hr>
+<h3>4. Two parabolas share the same vertex at the origin: \(x^2=4ay\) and \(y^2=4ax\), where \(a&gt;0\). Find the area enclosed by their arcs.</h3>
+<p>We seek the region enclosed by \[ x^2=4ay \quad\text{and}\quad y^2=4ax. \]</p>
+<p>First find their intersections.</p>
+<p>From \[ y=\frac{x^2}{4a}, \] substitute into \(y^2=4ax\): \[ \left(\frac{x^2}{4a}\right)^2=4ax \quad\Rightarrow\quad \frac{x^4}{16a^2}=4ax \quad\Rightarrow\quad x^4=64a^3x. \] So \[ x(x^3-64a^3)=0, \] hence \[ x=0 \quad\text{or}\quad x=4a. \] Thus the intersection points are \[ (0,0),\ (4a,4a). \]</p>
+<p>On \(0\le x\le 4a\), \[ y=2\sqrt{ax} \] (from \(y^2=4ax\)) lies above \[ y=\frac{x^2}{4a} \] (from \(x^2=4ay\)).</p>
+<p>Therefore the enclosed area is \[ A=\int_0^{4a}\left(2\sqrt{ax}-\frac{x^2}{4a}\right)\,dx. \]</p>
+<p>Compute: \[ \int_0^{4a}2\sqrt{ax}\,dx =2\sqrt a\int_0^{4a}x^{1/2}\,dx =2\sqrt a\cdot \frac23 x^{3/2}\Big|_0^{4a} =\frac43\sqrt a\,(4a)^{3/2}. \] Now \[ (4a)^{3/2}=8a^{3/2}, \] so this part is \[ \frac43\sqrt a\cdot 8a^{3/2}=\frac{32}{3}a^2. \]</p>
+<p>Also, \[ \int_0^{4a}\frac{x^2}{4a}\,dx =\frac1{4a}\cdot \frac{x^3}{3}\Big|_0^{4a} =\frac1{4a}\cdot \frac{64a^3}{3} =\frac{16}{3}a^2. \]</p>
+<p>Hence \[ A=\frac{32}{3}a^2-\frac{16}{3}a^2 =\frac{16}{3}a^2. \]</p>
+<p>So the area is \[ \boxed{\frac{16}{3}a^2}. \]</p>
+<hr>
+<h3>5. A circle centered at \((2,0)\) passes through the focus of the parabola \(y^2=8x\) and is tangent to its directrix. Find the equation of the circle.</h3>
+<p>For \(y^2=8x=4ax\), we have \[ a=2. \] So the focus is \[ F(2,0), \] and the directrix is \[ x=-2. \]</p>
+<p>The circle is centered at \((2,0)\). Since it passes through the focus \((2,0)\), the radius is \[ 0. \] But a circle of radius \(0\) cannot be tangent to the line \(x=-2\).</p>
+<p>Thus the only consistent interpretation is that the circle passes through the focus of the parabola and has center \((2,0)\), so radius equals the distance from \((2,0)\) to the directrix: \[ r=\text{dist}\bigl((2,0),\,x=-2\bigr)=4. \] This also makes the circle tangent to the directrix.</p>
+<p>Hence the circle is \[ \boxed{(x-2)^2+y^2=16}. \]</p>
+<hr>
+<h3>6. Let \(P\) be a point on the parabola \(x^2=4y\). A line through \(P\) with slope \(1\) meets the directrix at \(A\) and the \(y\)-axis at \(B\). Find the value of \(AB\), independent of the choice of \(P\).</h3>
+<p>The parabola is \[ x^2=4y=4ay \quad\Rightarrow\quad a=1. \] So its directrix is \[ y=-1. \]</p>
+<p>Take a general point on the parabola: \[ P(2t,t^2). \] The line through \(P\) with slope \(1\) is \[ y-t^2=x-2t, \] or \[ y=x-2t+t^2. \]</p>
+<h4>Point \(A\): intersection with the directrix \(y=-1\)</h4>
+<p>Set \(y=-1\): \[ -1=x-2t+t^2 \quad\Rightarrow\quad x=-1+2t-t^2. \] So \[ A(-1+2t-t^2,\,-1). \]</p>
+<h4>Point \(B\): intersection with the \(y\)-axis \(x=0\)</h4>
+<p>Set \(x=0\): \[ y=-2t+t^2. \] So \[ B(0,\,-2t+t^2). \]</p>
+<p>Now \[ AB^2=(0-(-1+2t-t^2))^2+\bigl((-2t+t^2)-(-1)\bigr)^2. \] But these two quantities are equal: \[ 0-(-1+2t-t^2)=1-2t+t^2, \] and \[ (-2t+t^2)+1=1-2t+t^2. \] Hence \[ AB^2=2(1-2t+t^2)^2=2(t-1)^4. \] So \[ AB=\sqrt2\,|t-1|^2=\sqrt2\,(t-1)^2. \]</p>
+<p>This still depends on \(t\), so something is wrong with the statement as transcribed unless \(B\) is meant to be the \(x\)-axis, not the \(y\)-axis.</p>
+<p>If instead \(B\) is the intersection with the \(x\)-axis \(y=0\), then:</p>
+<p>From \[ 0=x-2t+t^2 \Rightarrow B(2t-t^2,0). \] Then \[ A(-1+2t-t^2,-1). \] So \[ AB^2=\bigl((2t-t^2)-(-1+2t-t^2)\bigr)^2+(0-(-1))^2 =1^2+1^2=2, \] hence \[ AB=\sqrt2, \] independent of \(P\).</p>
+<p>Therefore the intended constant value is \[ \boxed{\sqrt2}. \]</p>
+    </main>
+  </article>
+</body>
+</html>

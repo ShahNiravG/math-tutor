@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 11.4 - Olympiad Solutions (GPT-5.4)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 11.4</h1>
+      <p><strong>Olympiad Solutions (GPT-5.4)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4672988_alg-2trig-h-chp-11-4-note-docx-1.pdf">4672988_alg-2trig-h-chp-11-4-note-docx-1.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<p>1. Find the center and classify the conic: \[ 4x^2+9y^2-24x+54y+36=0. \]</p>
+<p>Complete the squares: \[ 4x^2-24x+9y^2+54y+36=0 \] \[ 4(x^2-6x)+9(y^2+6y)+36=0 \] \[ 4\bigl((x-3)^2-9\bigr)+9\bigl((y+3)^2-9\bigr)+36=0. \] So \[ 4(x-3)^2-36+9(y+3)^2-81+36=0, \] hence \[ 4(x-3)^2+9(y+3)^2=81. \] Divide by \(81\): \[ \frac{(x-3)^2}{81/4}+\frac{(y+3)^2}{9}=1. \]</p>
+<p>Thus the conic is an <strong>ellipse</strong> with center \[ \boxed{(3,-3)}. \]</p>
+<hr>
+<p>2. A parabola has focus \((5,-1)\) and directrix \(x=-1\). Without writing the full equation first, find its vertex and the value of \(y\) when \(x=8\).</p>
+<p>The directrix is vertical, so the axis is horizontal through the focus: \[ y=-1. \] The vertex is midway between the focus \((5,-1)\) and the directrix \(x=-1\). Since the distance from \(x=5\) to \(x=-1\) is \(6\), the midpoint in the horizontal direction is \[ x=\frac{5+(-1)}2=2. \] Hence the vertex is \[ \boxed{(2,-1)}. \]</p>
+<p>The focal distance is \[ p=5-2=3. \] So the parabola has form \[ (y+1)^2=4p(x-2)=12(x-2). \] Now set \(x=8\): \[ (y+1)^2=12(6)=72, \] so \[ y+1=\pm 6\sqrt2, \] and therefore \[ \boxed{y=-1\pm 6\sqrt2}. \]</p>
+<hr>
+<p>3. An ellipse has center \((2,1)\), passes through \((2,5)\), and has foci \((2,-2)\) and \((2,4)\). Find its equation.</p>
+<p>The foci and center all have \(x=2\), so the major axis is vertical.</p>
+<p>The center is \((2,1)\), and the foci are \((2,-2)\) and \((2,4)\). Thus \[ c=3. \]</p>
+<p>Since the ellipse passes through \((2,5)\), and this point lies on the major axis, it must be a vertex. Its distance from the center is \[ a=|5-1|=4. \]</p>
+<p>For an ellipse, \[ c^2=a^2-b^2. \] Thus \[ b^2=a^2-c^2=16-9=7. \]</p>
+<p>With vertical major axis, the equation is \[ \frac{(x-2)^2}{b^2}+\frac{(y-1)^2}{a^2}=1. \] Therefore \[ \boxed{\frac{(x-2)^2}{7}+\frac{(y-1)^2}{16}=1}. \]</p>
+<hr>
+<p>4. A hyperbola has asymptotes \[ y-3=\pm 2(x+1), \] and one vertex at \((1,3)\). Find its equation.</p>
+<p>The asymptotes intersect at the center, so the center is \[ \boxed{(-1,3)}. \]</p>
+<p>Since the asymptotes are \[ y-3=\pm 2(x+1), \] the hyperbola is centered at \((-1,3)\) and has either \[ \frac{(y-3)^2}{a^2}-\frac{(x+1)^2}{b^2}=1 \quad\text{with}\quad \frac ab=2, \] or \[ \frac{(x+1)^2}{a^2}-\frac{(y-3)^2}{b^2}=1 \quad\text{with}\quad \frac ba=2. \]</p>
+<p>Now the given vertex is \((1,3)\), which lies horizontally \(2\) units from the center. So the transverse axis is horizontal, and \[ a=2. \] Hence the equation has form \[ \frac{(x+1)^2}{a^2}-\frac{(y-3)^2}{b^2}=1. \] Its asymptotes are \[ y-3=\pm \frac ba (x+1). \] Comparing with slope \(2\), we get \[ \frac ba=2. \] Since \(a=2\), it follows that \[ b=4. \]</p>
+<p>Therefore \[ \boxed{\frac{(x+1)^2}{4}-\frac{(y-3)^2}{16}=1}. \]</p>
+<hr>
+<p>5. Determine all real values of \(k\) for which \[ x^2-4x+y^2+2ky+4k-5=0 \] represents exactly one point.</p>
+<p>Complete the squares: \[ x^2-4x=(x-2)^2-4, \] \[ y^2+2ky=(y+k)^2-k^2. \] So the equation becomes \[ (x-2)^2-4+(y+k)^2-k^2+4k-5=0, \] that is, \[ (x-2)^2+(y+k)^2=k^2-4k+9. \]</p>
+<p>This is a circle centered at \((2,-k)\) with radius squared \[ r^2=k^2-4k+9=(k-2)^2+5. \] For the graph to represent exactly one point, we need \(r=0\), i.e. \(r^2=0\). But \[ (k-2)^2+5&gt;0 \] for all real \(k\).</p>
+<p>Hence there is <strong>no</strong> real \(k\) for which the equation represents exactly one point.</p>
+<p>\[ \boxed{\text{No real value of }k} \]</p>
+<hr>
+<p>6. A conic is given by \[ 9x^2-16y^2-54x-64y+19=0. \] Find its center, identify the conic, and determine its asymptotes mentally by transforming it to standard form.</p>
+<p>Group and complete squares: \[ 9x^2-54x-16y^2-64y+19=0 \] \[ 9(x^2-6x)-16(y^2+4y)+19=0. \] Now \[ x^2-6x=(x-3)^2-9,\qquad y^2+4y=(y+2)^2-4. \] So \[ 9\bigl((x-3)^2-9\bigr)-16\bigl((y+2)^2-4\bigr)+19=0. \] Thus \[ 9(x-3)^2-81-16(y+2)^2+64+19=0, \] hence \[ 9(x-3)^2-16(y+2)^2+2=0, \] or \[ 16(y+2)^2-9(x-3)^2=2. \] Divide by \(2\): \[ 8(y+2)^2-\frac92(x-3)^2=1. \] More usefully, \[ \frac{(y+2)^2}{1/8}-\frac{(x-3)^2}{2/9}=1. \]</p>
+<p>So the center is \[ \boxed{(3,-2)}, \] and the conic is a <strong>hyperbola</strong> with vertical transverse axis.</p>
+<p>For asymptotes, from \[ 16(y+2)^2-9(x-3)^2=2, \] we ignore the constant on the right and set \[ 16(y+2)^2-9(x-3)^2=0. \] Then \[ 4(y+2)=\pm 3(x-3), \] so the asymptotes are \[ \boxed{y+2=\pm \frac34(x-3)}. \]</p>
+<p>So the final answers are:</p>
+<ul>
+<li>Center: \(\boxed{(3,-2)}\)</li>
+<li>Conic: \(\boxed{\text{hyperbola}}\)</li>
+<li>Asymptotes: \(\boxed{y+2=\pm \frac34(x-3)}\).</li>
+</ul>
+    </main>
+  </article>
+</body>
+</html>

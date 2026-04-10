@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 11.2 - Olympiad Solutions (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 11.2</h1>
+      <p><strong>Olympiad Solutions (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4666322_alg-2trig-h-chp-11-2-note-docx.pdf">4666322_alg-2trig-h-chp-11-2-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<p><strong>1. An ellipse has the equation $\frac{x^2}{169} + \frac{y^2}{144} = 1$. Let $F_1$ and $F_2$ be its foci. If $P$ is a point on the ellipse that does not lie on the $x$-axis, what is the perimeter of $\triangle PF_1F_2$?</strong></p>
+<p><strong>Solution:</strong> From the standard equation of the ellipse $\frac{x^2}{a^2} + \frac{y^2}{b^2} = 1$, we can identify $a^2 = 169$ and $b^2 = 144$, which gives $a = 13$ and $b = 12$.</p>
+<p>The distance from the center to either focus is $c$, where $c^2 = a^2 - b^2$. Substituting our values yields $c^2 = 169 - 144 = 25$, so $c = 5$. Thus, the distance between the two foci is $F_1F_2 = 2c = 10$.</p>
+<p>By the fundamental definition of an ellipse, the sum of the distances from any point $P$ on the ellipse to the foci is a constant equal to the major axis: $PF_1 + PF_2 = 2a = 26$</p>
+<p>The perimeter of $\triangle PF_1F_2$ is the sum of its three side lengths: $\text{Perimeter} = PF_1 + PF_2 + F_1F_2 = 26 + 10 = 36$</p>
+<p><strong>2. For a certain ellipse, the length of its minor axis, the distance between its foci, and the length of its major axis form an arithmetic progression in strictly increasing order. What is the eccentricity of this ellipse?</strong></p>
+<p><strong>Solution:</strong> Let the lengths of the minor axis, the focal distance, and the major axis be $2b$, $2c$, and $2a$, respectively. Because they form an arithmetic progression in that order, their halves $b$, $c$, and $a$ also form an arithmetic progression.</p>
+<p>Thus, the middle term is the average of the other two: $2c = a + b \implies b = 2c - a$</p>
+<p>In any ellipse, the parameters $a$, $b$, and $c$ are related by the Pythagorean identity $b^2 = a^2 - c^2$. Substituting our expression for $b$ into this identity gives: $(2c - a)^2 = a^2 - c^2$ $4c^2 - 4ac + a^2 = a^2 - c^2$ $5c^2 - 4ac = 0$</p>
+<p>Since the focal distance $c &gt; 0$, we can divide by $c$ to obtain $5c = 4a$. The eccentricity of the ellipse is defined as $e = \frac{c}{a}$. Therefore: $e = \frac{4}{5}$</p>
+<p><strong>3. A point $P$ lies on the ellipse $\frac{x^2}{25} + \frac{y^2}{9} = 1$. If the distance from $P$ to the origin is exactly $4$, what is the product of the distances from $P$ to the two foci of the ellipse?</strong></p>
+<p><strong>Solution:</strong> Let $F_1$ and $F_2$ be the foci of the ellipse, and let $O$ be the origin. From the ellipse's equation, $a^2 = 25$ and $b^2 = 9$, which means $c^2 = a^2 - b^2 = 16$. Thus, the distance from the center to each focus is $c = 4$.</p>
+<p>We are given that $PO = 4$. Consider $\triangle PF_1F_2$, where $PO$ is the median to the side $F_1F_2$. By Apollonius's Theorem: $PF_1^2 + PF_2^2 = 2(PO^2 + OF_1^2)$ $PF_1^2 + PF_2^2 = 2(4^2 + 4^2) = 64$</p>
+<p>By the definition of an ellipse, the sum of the focal distances is $PF_1 + PF_2 = 2a = 10$. Squaring this equation gives: $(PF_1 + PF_2)^2 = 100$ $PF_1^2 + PF_2^2 + 2PF_1PF_2 = 100$</p>
+<p>Substitute the sum of the squares we found using Apollonius's Theorem: $64 + 2PF_1PF_2 = 100$ $2PF_1PF_2 = 36 \implies PF_1PF_2 = 18$</p>
+<p>The product of the distances is $18$.</p>
+<p><strong>4. The ellipses $\frac{x^2}{20} + \frac{y^2}{5} = 1$ and $\frac{x^2}{5} + \frac{y^2}{20} = 1$ intersect at four distinct points. What is the area of the convex quadrilateral whose vertices are these four intersection points?</strong></p>
+<p><strong>Solution:</strong> Notice the symmetry: the equations are symmetric with respect to swapping $x$ and $y$. This implies that the intersection points must lie on the lines $y = x$ and $y = -x$.</p>
+<p>Substituting $y^2 = x^2$ into the first ellipse's equation yields: $\frac{x^2}{20} + \frac{x^2}{5} = 1$ $\frac{x^2}{20} + \frac{4x^2}{20} = 1$ $\frac{5x^2}{20} = 1 \implies x^2 = 4 \implies x = \pm 2$</p>
+<p>Since $y^2 = x^2$, we also have $y = \pm 2$. The four intersection points are $(2, 2)$, $(-2, 2)$, $(-2, -2)$, and $(2, -2)$.</p>
+<p>These points form a square centered at the origin with a side length of $4$. The area of this quadrilateral is simply: $4 \times 4 = 16$</p>
+<p><strong>5. For a certain ellipse centered at the origin, a circle centered at the origin passes through both of the ellipse's foci as well as both endpoints of its minor axis. Evaluate the eccentricity of the ellipse.</strong></p>
+<p><strong>Solution:</strong> Let the ellipse be oriented along the coordinate axes. Its foci are at a distance $c$ from the origin, and the endpoints of its minor axis are at a distance $b$ from the origin.</p>
+<p>Since a single circle centered at the origin passes through all four of these points, they must all be equidistant from the origin. Thus, the radius of the circle is $R = c = b$.</p>
+<p>Using the foundational relation for ellipses, $a^2 = b^2 + c^2$, and substituting $b = c$, we obtain: $a^2 = c^2 + c^2 = 2c^2$ $a = c\sqrt{2}$</p>
+<p>The eccentricity $e$ is the ratio $\frac{c}{a}$. Therefore: $e = \frac{c}{c\sqrt{2}} = \frac{1}{\sqrt{2}} = \frac{\sqrt{2}}{2}$</p>
+<p><strong>6. An ellipse centered at the origin with its axes parallel to the coordinate axes passes through the points $(6, 4)$ and $(8, 3)$. What is the eccentricity of this ellipse?</strong></p>
+<p><strong>Solution:</strong> Let the equation of the ellipse be $Ax^2 + By^2 = 1$. Substituting the two given points into the equation gives us a system of linear equations in $A$ and $B$: 1) $36A + 16B = 1$  <em>(from point $(6, 4)$)</em> 2) $64A + 9B = 1$   <em>(from point $(8, 3)$)</em></p>
+<p>Setting the two equations equal to each other: $36A + 16B = 64A + 9B$ $7B = 28A \implies B = 4A$</p>
+<p>Substitute $B = 4A$ back into the first equation: $36A + 16(4A) = 1$ $100A = 1 \implies A = \frac{1}{100}$ It follows that $B = \frac{4}{100} = \frac{1}{25}$.</p>
+<p>The equation of the ellipse is $\frac{x^2}{100} + \frac{y^2}{25} = 1$. Here, $a^2 = 100 \implies a = 10$, and $b^2 = 25$. The focal distance $c$ is found via $c^2 = a^2 - b^2 = 100 - 25 = 75$, so $c = \sqrt{75} = 5\sqrt{3}$.</p>
+<p>The eccentricity $e$ is: $e = \frac{c}{a} = \frac{5\sqrt{3}}{10} = \frac{\sqrt{3}}{2}$</p>
+    </main>
+  </article>
+</body>
+</html>

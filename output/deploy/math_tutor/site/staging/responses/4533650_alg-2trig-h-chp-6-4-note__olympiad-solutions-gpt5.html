@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 6.4 - Olympiad Solutions (GPT-5.4)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 6.4</h1>
+      <p><strong>Olympiad Solutions (GPT-5.4)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4533650_alg-2trig-h-chp-6-4-note.pdf">4533650_alg-2trig-h-chp-6-4-note.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<h3>1. Find all real numbers \(x\) in \([0,2\pi)\) such that</h3>
+<p>\[ \tan x+\cot x=2\sec 2x. \]</p>
+<p>We first note the equation is defined only when \(\sin x\neq 0\), \(\cos x\neq 0\), and \(\cos 2x\neq 0\).</p>
+<p>Now \[ \tan x+\cot x=\frac{\sin x}{\cos x}+\frac{\cos x}{\sin x} =\frac{\sin^2 x+\cos^2 x}{\sin x\cos x} =\frac{1}{\sin x\cos x}. \] Also, \[ \sin 2x=2\sin x\cos x, \] so \[ \tan x+\cot x=\frac{2}{\sin 2x}. \] Thus the equation becomes \[ \frac{2}{\sin 2x}=2\sec 2x=\frac{2}{\cos 2x}. \] Since both sides are defined, we may divide by \(2\): \[ \frac{1}{\sin 2x}=\frac{1}{\cos 2x}, \] hence \[ \sin 2x=\cos 2x. \] Therefore \[ \tan 2x=1, \] so \[ 2x=\frac{\pi}{4}+n\pi. \] Hence \[ x=\frac{\pi}{8}+\frac{n\pi}{2}. \]</p>
+<p>Now restrict to \([0,2\pi)\). Taking \(n=0,1,2,3\), we get \[ x=\frac{\pi}{8},\ \frac{5\pi}{8},\ \frac{9\pi}{8},\ \frac{13\pi}{8}. \]</p>
+<p>So the solutions are \[ \boxed{\frac{\pi}{8},\ \frac{5\pi}{8},\ \frac{9\pi}{8},\ \frac{13\pi}{8}}. \]</p>
+<hr>
+<h3>2. Let</h3>
+<p>\[ f(x)=\sec x+\csc x. \] Find the minimum value of \(f(x)\) over all real \(x\) for which it is defined.</p>
+<p>We seek the minimum of \[ f(x)=\frac{1}{\cos x}+\frac{1}{\sin x}, \] where \(\sin x\neq 0\) and \(\cos x\neq 0\).</p>
+<p>If \(\sin x\) and \(\cos x\) have opposite signs, then one term is positive and the other negative; near points where one denominator approaches \(0\), \(f(x)\) can become arbitrarily negative. For example, as \(x\to \pi^+\), \[ \sin x\to 0^{-},\qquad \cos x\to -1, \] so \[ \csc x\to -\infty,\qquad \sec x\to -1, \] hence \[ f(x)\to -\infty. \]</p>
+<p>Therefore \(f(x)\) is not bounded below on its domain, so it has no minimum value.</p>
+<p>Thus the answer is:</p>
+<p>\[ \boxed{\text{No minimum exists; }f(x)\text{ is unbounded below.}} \]</p>
+<hr>
+<h3>3. How many vertical asymptotes does the graph of</h3>
+<p>\[ y=\tan(2x)+\cot(3x) \] have on the interval \((0,\pi)\)?</p>
+<p>Vertical asymptotes occur where either \(\tan(2x)\) or \(\cot(3x)\) is undefined.</p>
+<h4>From \(\tan(2x)\):</h4>
+<p>\[ \cos(2x)=0 \quad\Longrightarrow\quad 2x=\frac{\pi}{2}+n\pi \] so \[ x=\frac{\pi}{4}+\frac{n\pi}{2}. \] In \((0,\pi)\), this gives \[ x=\frac{\pi}{4},\ \frac{3\pi}{4}. \]</p>
+<h4>From \(\cot(3x)\):</h4>
+<p>\[ \sin(3x)=0 \quad\Longrightarrow\quad 3x=n\pi \] so \[ x=\frac{n\pi}{3}. \] In \((0,\pi)\), this gives \[ x=\frac{\pi}{3},\ \frac{2\pi}{3}. \]</p>
+<p>These four points are distinct, so there are \[ \boxed{4} \] vertical asymptotes.</p>
+<hr>
+<h3>4. Determine all real \(x\) satisfying</h3>
+<p>\[ \sec x-\tan x=\csc x-\cot x. \]</p>
+<p>Assume all expressions are defined, so \(\sin x\neq 0\) and \(\cos x\neq 0\).</p>
+<p>Use the standard identities: \[ \sec x-\tan x=\frac{1-\sin x}{\cos x}, \qquad \csc x-\cot x=\frac{1-\cos x}{\sin x}. \] So the equation becomes \[ \frac{1-\sin x}{\cos x}=\frac{1-\cos x}{\sin x}. \] Cross-multiply: \[ \sin x(1-\sin x)=\cos x(1-\cos x). \] Thus \[ \sin x-\sin^2 x=\cos x-\cos^2 x. \] Rearrange: \[ \sin x-\cos x=\sin^2 x-\cos^2 x. \] Factor the right-hand side: \[ \sin x-\cos x=(\sin x-\cos x)(\sin x+\cos x). \] Hence \[ (\sin x-\cos x)\bigl(1-(\sin x+\cos x)\bigr)=0. \]</p>
+<p>So either</p>
+<h4>Case 1:</h4>
+<p>\[ \sin x=\cos x. \] Then \[ \tan x=1 \quad\Longrightarrow\quad x=\frac{\pi}{4}+n\pi. \]</p>
+<h4>Case 2:</h4>
+<p>\[ \sin x+\cos x=1. \] Square: \[ (\sin x+\cos x)^2=1 \] gives \[ 1+2\sin x\cos x=1, \] so \[ \sin x\cos x=0. \] But then \(\sin x=0\) or \(\cos x=0\), where the original equation is undefined. So this case yields no valid solutions.</p>
+<p>Therefore all solutions are \[ \boxed{x=\frac{\pi}{4}+n\pi \quad (n\in\mathbb Z).} \]</p>
+<hr>
+<h3>5. A function of the form</h3>
+<p>\[ y=a\tan\big(k(x-b)\big) \] has consecutive vertical asymptotes at \(x=\frac{\pi}{12}\) and \(x=\frac{5\pi}{12}\), and its graph passes through \(\left(\frac{\pi}{4},-3\right)\). Find \(a\), \(k\), and one possible value of \(b\).</p>
+<p>For \(y=a\tan(k(x-b))\), consecutive vertical asymptotes are separated by \[ \frac{\pi}{k}. \] The given asymptotes are at \[ \frac{\pi}{12},\qquad \frac{5\pi}{12}, \] whose distance is \[ \frac{5\pi}{12}-\frac{\pi}{12}=\frac{\pi}{3}. \] Hence \[ \frac{\pi}{k}=\frac{\pi}{3}\quad\Longrightarrow\quad k=3. \]</p>
+<p>The midpoint between consecutive asymptotes is \[ \frac{\frac{\pi}{12}+\frac{5\pi}{12}}{2}=\frac{\pi}{4}. \] At this midpoint, the tangent argument is \(0\), so the graph crosses the midline \(y=0\). But the given point is \(\left(\frac{\pi}{4},-3\right)\), not on the midline. So we should instead determine \(b\) from the asymptote formula directly.</p>
+<p>Vertical asymptotes occur when \[ k(x-b)=\frac{\pi}{2}+n\pi. \] With \(k=3\), this gives \[ 3(x-b)=\frac{\pi}{2}+n\pi. \] Take \(x=\frac{\pi}{12}\): \[ 3\left(\frac{\pi}{12}-b\right)=\frac{\pi}{2}+n\pi. \] A convenient choice is \(n=-1\), giving \[ 3\left(\frac{\pi}{12}-b\right)=-\frac{\pi}{2}. \] So \[ \frac{\pi}{4}-3b=-\frac{\pi}{2} \quad\Longrightarrow\quad 3b=\frac{3\pi}{4} \quad\Longrightarrow\quad b=\frac{\pi}{4}. \] This indeed gives asymptotes at \[ x=\frac{\pi}{4}+\frac{\pi/2+n\pi}{3} =\frac{\pi}{4}+\frac{\pi}{6}+\frac{n\pi}{3} =\frac{5\pi}{12}+\frac{n\pi}{3}, \] which includes both \(\frac{\pi}{12}\) and \(\frac{5\pi}{12}\).</p>
+<p>Now use the point \(\left(\frac{\pi}{4},-3\right)\): \[ y=a\tan\bigl(3(\tfrac{\pi}{4}-\tfrac{\pi}{4})\bigr)=a\tan 0=0, \] which cannot equal \(-3\).</p>
+<p>So there is an inconsistency in the stated data: any function \(a\tan(k(x-b))\) with those consecutive asymptotes must have its zero at the midpoint \(x=\frac{\pi}{4}\), and therefore cannot pass through \(\left(\frac{\pi}{4},-3\right)\).</p>
+<p>Hence:</p>
+<p>\[ \boxed{\text{No such function exists.}} \]</p>
+<p>(From the asymptotes alone one gets \(k=3\) and one possible \(b=\frac{\pi}{4}\), but then the point condition is impossible.)</p>
+<hr>
+<h3>6. Find the exact value of</h3>
+<p>\[ \sec\frac{\pi}{12}\,\csc\frac{5\pi}{12} +\sec\frac{5\pi}{12}\,\csc\frac{\pi}{12}. \]</p>
+<p>Write everything in terms of sine and cosine: \[ \sec\frac{\pi}{12}\,\csc\frac{5\pi}{12} =\frac{1}{\cos\frac{\pi}{12}\sin\frac{5\pi}{12}}, \] and \[ \sec\frac{5\pi}{12}\,\csc\frac{\pi}{12} =\frac{1}{\cos\frac{5\pi}{12}\sin\frac{\pi}{12}}. \]</p>
+<p>Now use \[ \sin\frac{5\pi}{12}=\cos\frac{\pi}{12}, \qquad \cos\frac{5\pi}{12}=\sin\frac{\pi}{12}, \] since \(\frac{5\pi}{12}=\frac{\pi}{2}-\frac{\pi}{12}\).</p>
+<p>Thus the expression becomes \[ \frac{1}{\cos^2\frac{\pi}{12}}+\frac{1}{\sin^2\frac{\pi}{12}} =\sec^2\frac{\pi}{12}+\csc^2\frac{\pi}{12}. \] Combine: \[ \frac{1}{\cos^2\theta}+\frac{1}{\sin^2\theta} =\frac{\sin^2\theta+\cos^2\theta}{\sin^2\theta\cos^2\theta} =\frac{1}{\sin^2\theta\cos^2\theta}, \] where \(\theta=\frac{\pi}{12}\).</p>
+<p>Since \[ \sin 2\theta=2\sin\theta\cos\theta, \] we get \[ \sin^2\theta\cos^2\theta=\frac{\sin^2 2\theta}{4}. \] Hence \[ \frac{1}{\sin^2\theta\cos^2\theta} =\frac{4}{\sin^2 2\theta}. \] Now \(2\theta=\frac{\pi}{6}\), so \[ \sin\frac{\pi}{6}=\frac12. \] Therefore \[ \frac{4}{\sin^2\frac{\pi}{6}}=\frac{4}{(1/2)^2}=16. \]</p>
+<p>So the exact value is \[ \boxed{16}. \]</p>
+    </main>
+  </article>
+</body>
+</html>

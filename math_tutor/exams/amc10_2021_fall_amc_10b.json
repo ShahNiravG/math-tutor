@@ -1,0 +1,828 @@
+{
+  "format": "explicit_curated_exam",
+  "exam": {
+    "format": "explicit_curated_exam",
+    "source_type": "explicit_curated_exam",
+    "id": "amc10-2021-fall-amc-10b",
+    "title": "2021 Fall AMC 10B",
+    "bank": "amc10",
+    "bank_title": "AMC 10",
+    "question_count": 25,
+    "questions": [
+      {
+        "id": "amc10-2021-fall-amc-10b-q01",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_1",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_1",
+        "curated_problem_number": 1,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_1",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_1",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 1",
+        "question_number": 1,
+        "text": "What is the value of $1234+2341+3412+4123?$",
+        "question_images": [],
+        "options": [
+          "(A) 10{,}000",
+          "(B) 10{,}010",
+          "(C) 10{,}110",
+          "(D) 11{,}000",
+          "(E) 11{,}110"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q02",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_2",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_2",
+        "curated_problem_number": 2,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_2",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_2",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/9/5/0/950ff8f5847f0f8acb13a489295e0c08395cb448.png",
+              "alt": "[asy] size(200); defaultpen(linewidth(0.4)+fontsize(12)); pen s = linewidth(0.8)+fontsize(8);  pair O,X,Y; O = origin; X = (6,0); Y = (0,5); fill((1,0)--(3,5)--(5,0)--(3,2)--cycle, palegray+opacity(0.2)); for (int i=1; i<7; ++i) { draw((i,0)--(i,5), gray+dashed); label(\"${\"+string(i)+\"}$\", (i,0), 2*S); if (i<6) { draw((0,i)--(6,i), gray+dashed); label(\"${\"+string(i)+\"}$\", (0,i), 2*W); } } label(\"$0$\", O, 2*SW); draw(O--X+(0.35,0), black+1.5, EndArrow(10)); draw(O--Y+(0,0.35), black+1.5, EndArrow(10)); draw((1,0)--(3,5)--(5,0)--(3,2)--(1,0), black+1.5); [/asy]",
+              "width": 335,
+              "height": 288
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 2",
+        "question_number": 2,
+        "text": "What is the area of the shaded figure shown below?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/9/5/0/950ff8f5847f0f8acb13a489295e0c08395cb448.png",
+            "alt": "[asy] size(200); defaultpen(linewidth(0.4)+fontsize(12)); pen s = linewidth(0.8)+fontsize(8);  pair O,X,Y; O = origin; X = (6,0); Y = (0,5); fill((1,0)--(3,5)--(5,0)--(3,2)--cycle, palegray+opacity(0.2)); for (int i=1; i<7; ++i) { draw((i,0)--(i,5), gray+dashed); label(\"${\"+string(i)+\"}$\", (i,0), 2*S); if (i<6) { draw((0,i)--(6,i), gray+dashed); label(\"${\"+string(i)+\"}$\", (0,i), 2*W); } } label(\"$0$\", O, 2*SW); draw(O--X+(0.35,0), black+1.5, EndArrow(10)); draw(O--Y+(0,0.35), black+1.5, EndArrow(10)); draw((1,0)--(3,5)--(5,0)--(3,2)--(1,0), black+1.5); [/asy]",
+            "width": 335,
+            "height": 288
+          }
+        ],
+        "options": [
+          "(A) \\: 4",
+          "(B) \\: 6",
+          "(C) \\: 8",
+          "(D) \\: 10",
+          "(E) \\: 12"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q03",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_3",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_3",
+        "curated_problem_number": 3,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_3",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_3",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 3",
+        "question_number": 3,
+        "text": "The expression $\\frac{2021}{2020} - \\frac{2020}{2021}$ is equal to the fraction $\\frac{p}{q}$ in which $p$ and $q$ are positive integers whose greatest common divisor is ${ }1$. What is $p?$",
+        "question_images": [],
+        "options": [
+          "(A) \\: 1",
+          "(B) \\: 9",
+          "(C) \\: 2020",
+          "(D) \\: 2021",
+          "(E) \\: 4041"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q04",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_4",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_4",
+        "curated_problem_number": 4,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_4",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_4",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 4",
+        "question_number": 4,
+        "text": "At noon on a certain day, Minneapolis is $N$ degrees warmer than St. Louis. At $4{:}00$ the temperature in Minneapolis has fallen by $5$ degrees while the temperature in St. Louis has risen by $3$ degrees, at which time the temperatures in the two cities differ by $2$ degrees. What is the product of all possible values of $N?$",
+        "question_images": [],
+        "options": [
+          "(A) \\: 10",
+          "(B) \\: 30",
+          "(C) \\: 60",
+          "(D) \\: 100",
+          "(E) \\: 120"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q05",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_5",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_5",
+        "curated_problem_number": 5,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_5",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_5",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 5",
+        "question_number": 5,
+        "text": "Let $n=8^{2022}$. Which of the following is equal to $\\frac{n}{4}?$",
+        "question_images": [],
+        "options": [
+          "(A) \\: 4^{1010}",
+          "(B) \\: 2^{2022}",
+          "(C) \\: 8^{2018}",
+          "(D) \\: 4^{3031}",
+          "(E) \\: 4^{3032}"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q06",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_6",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_6",
+        "curated_problem_number": 6,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_6",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_6",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 6",
+        "question_number": 6,
+        "text": "The least positive integer with exactly $2021$ distinct positive divisors can be written in the form $m \\cdot 6^k$, where $m$ and $k$ are integers and $6$ is not a divisor of $m$. What is $m+k?$",
+        "question_images": [],
+        "options": [
+          "(A) 47",
+          "(B) 58",
+          "(C) 59",
+          "(D) 88",
+          "(E) 90"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q07",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_7",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_7",
+        "curated_problem_number": 7,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_7",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_7",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 7",
+        "question_number": 7,
+        "text": "Call a fraction $\\frac{a}{b}$, not necessarily in the simplest form special, if $a$ and $b$ are positive integers whose sum is $15$. How many distinct integers can be written as the sum of two, not necessarily different, special fractions?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 9",
+          "(B) \\ 10",
+          "(C) \\ 11",
+          "(D) \\ 12",
+          "(E) \\ 13"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q08",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_8",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_8",
+        "curated_problem_number": 8,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_8",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_8",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 8",
+        "question_number": 8,
+        "text": "The greatest prime number that is a divisor of $16{,}384$ is $2$ because $16{,}384 = 2^{14}$. What is the sum of the digits of the greatest prime number that is a divisor of $16{,}383$?",
+        "question_images": [],
+        "options": [
+          "(A) \\: 3",
+          "(B) \\: 7",
+          "(C) \\: 10",
+          "(D) \\: 16",
+          "(E) \\: 22"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q09",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_9",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_9",
+        "curated_problem_number": 9,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_9",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_9",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 9",
+        "question_number": 9,
+        "text": "The knights in a certain kingdom come in two colors. $\\frac{2}{7}$ of them are red, and the rest are blue. Furthermore, $\\frac{1}{6}$ of the knights are magical, and the fraction of red knights who are magical is $2$ times the fraction of blue knights who are magical. What fraction of red knights are magical?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{2}{9}",
+          "(B) \\frac{3}{13}",
+          "(C) \\frac{7}{27}",
+          "(D) \\frac{2}{7}",
+          "(E) \\frac{1}{3}"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q10",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_10",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_10",
+        "curated_problem_number": 10,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_10",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_10",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 10",
+        "question_number": 10,
+        "text": "Forty slips of paper numbered $1$ to $40$ are placed in a hat. Alice and Bob each draw one number from the hat without replacement, keeping their numbers hidden from each other. Alice says, \"I can't tell who has the larger number.\" Then Bob says, \"I know who has the larger number.\" Alice says, \"You do? Is your number prime?\" Bob replies, \"Yes.\" Alice says, \"In that case, if I multiply your number by $100$ and add my number, the result is a perfect square. \" What is the sum of the two numbers drawn from the hat?",
+        "question_images": [],
+        "options": [
+          "(A) 27",
+          "(B) 37",
+          "(C) 47",
+          "(D) 57",
+          "(E) 67"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q11",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_11",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_11",
+        "curated_problem_number": 11,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_11",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_11",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 11",
+        "question_number": 11,
+        "text": "A regular hexagon of side length $1{ }$ is inscribed in a circle. Each minor arc of the circle determined by a side of the hexagon is reflected over that side. What is the area of the region bounded by these $6$ reflected arcs?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{5\\sqrt{3}}{2} - \\pi",
+          "(B) 3\\sqrt{3}-\\pi",
+          "(C) 4\\sqrt{3}-\\frac{3\\pi}{2}",
+          "(D) \\pi - \\frac{\\sqrt{3}}{2}",
+          "(E) \\frac{\\pi + \\sqrt{3}}{2}"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q12",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_12",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_12",
+        "curated_problem_number": 12,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_12",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_12",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 12",
+        "question_number": 12,
+        "text": "Which of the following conditions is sufficient to guarantee that integers $x$, $y$, and $z$ satisfy the equation\n\\[x(x-y)+y(y-z)+z(z-x) = 1?\\]\n\nand $y=z$\n\nand $y=z-1$\n\nand $y=x+1$\n\nand $y-1=x$",
+        "question_images": [],
+        "options": [
+          "(A) \\: x>y",
+          "(B) \\: x=y-1",
+          "(C) \\: x=z+1",
+          "(D) \\: x=z",
+          "(E) \\: x+y+z=1"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q13",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_13",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_13",
+        "curated_problem_number": 13,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_13",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_13",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/e/e/0/ee0b3c17b58c14762d6dcde965da0aa09a9cdd3a.png",
+              "alt": "[asy] //diagram by kante314 draw((0,0)--(8,0)--(4,8)--cycle, linewidth(1.5)); draw((2,0)--(2,4)--(6,4)--(6,0)--cycle, linewidth(1.5)); draw((3,4)--(3,6)--(5,6)--(5,4)--cycle, linewidth(1.5)); [/asy]",
+              "width": 252,
+              "height": 252
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 13",
+        "question_number": 13,
+        "text": "A square with side length $3$ is inscribed in an isosceles triangle with one side of the square along the base of the triangle. A square with side length $2$ has two vertices on the other square and the other two on sides of the triangle, as shown. What is the area of the triangle?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/e/e/0/ee0b3c17b58c14762d6dcde965da0aa09a9cdd3a.png",
+            "alt": "[asy] //diagram by kante314 draw((0,0)--(8,0)--(4,8)--cycle, linewidth(1.5)); draw((2,0)--(2,4)--(6,4)--(6,0)--cycle, linewidth(1.5)); draw((3,4)--(3,6)--(5,6)--(5,4)--cycle, linewidth(1.5)); [/asy]",
+            "width": 252,
+            "height": 252
+          }
+        ],
+        "options": [
+          "(A) 19\\frac14",
+          "(B) 20\\frac14",
+          "(C) 21 \\frac34",
+          "(D) 22\\frac12",
+          "(E) 23\\frac34"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q14",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_14",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_14",
+        "curated_problem_number": 14,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_14",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_14",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 14",
+        "question_number": 14,
+        "text": "Una rolls $6$ standard $6$-sided dice simultaneously and calculates the product of the $6{ }$ numbers obtained. What is the probability that the product is divisible by $4?$",
+        "question_images": [],
+        "options": [
+          "(A) \\: \\frac34",
+          "(B) \\: \\frac{57}{64}",
+          "(C) \\: \\frac{59}{64}",
+          "(D) \\: \\frac{187}{192}",
+          "(E) \\: \\frac{63}{64}"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q15",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_15",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_15",
+        "curated_problem_number": 15,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_15",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_15",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/9/3/0/9303b2a7f1e03de801c7915e1a61d7b755a6a43d.png",
+              "alt": "[asy] size(170); defaultpen(linewidth(0.6)+fontsize(10)); real r = 3.5; pair A = origin, B = (5,0), C = (5,5), D = (0,5), P = (0,r), Q = (5-r,0), R = intersectionpoint(B--P,C--Q); draw(A--B--C--D--A^^B--P^^C--Q^^rightanglemark(P,R,C,7)); dot(\"$A$\",A,S); dot(\"$B$\",B,S); dot(\"$C$\",C,N); dot(\"$D$\",D,N); dot(\"$Q$\",Q,S); dot(\"$P$\",P,W); dot(\"$R$\",R,1.3*S); label(\"$7$\",(P+R)/2,NE); label(\"$6$\",(R+B)/2,NE); [/asy]",
+              "width": 275,
+              "height": 285
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 15",
+        "question_number": 15,
+        "text": "In square $ABCD$, points $P$ and $Q$ lie on $\\overline{AD}$ and $\\overline{AB}$, respectively. Segments $\\overline{BP}$ and $\\overline{CQ}$ intersect at right angles at $R$, with $BR=6$ and $PR=7$. What is the area of the square?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/9/3/0/9303b2a7f1e03de801c7915e1a61d7b755a6a43d.png",
+            "alt": "[asy] size(170); defaultpen(linewidth(0.6)+fontsize(10)); real r = 3.5; pair A = origin, B = (5,0), C = (5,5), D = (0,5), P = (0,r), Q = (5-r,0), R = intersectionpoint(B--P,C--Q); draw(A--B--C--D--A^^B--P^^C--Q^^rightanglemark(P,R,C,7)); dot(\"$A$\",A,S); dot(\"$B$\",B,S); dot(\"$C$\",C,N); dot(\"$D$\",D,N); dot(\"$Q$\",Q,S); dot(\"$P$\",P,W); dot(\"$R$\",R,1.3*S); label(\"$7$\",(P+R)/2,NE); label(\"$6$\",(R+B)/2,NE); [/asy]",
+            "width": 275,
+            "height": 285
+          }
+        ],
+        "options": [
+          "(A) 85",
+          "(B) 93",
+          "(C) 100",
+          "(D) 117",
+          "(E) 125"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q16",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_16",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_16",
+        "curated_problem_number": 16,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_16",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_16",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 16",
+        "question_number": 16,
+        "text": "Five balls are arranged around a circle. Chris chooses two adjacent balls at random and interchanges them. Then Silva does the same, with her choice of adjacent balls to interchange being independent of Chris's. What is the expected number of balls that occupy their original positions after these two successive transpositions?",
+        "question_images": [],
+        "options": [
+          "(A) 1.6",
+          "(B) 1.8",
+          "(C) 2.0",
+          "(D) 2.2",
+          "(E) 2.4"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q17",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_17",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_17",
+        "curated_problem_number": 17,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_17",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_17",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 17",
+        "question_number": 17,
+        "text": "Distinct lines $\\ell$ and $m$ lie in the $xy$-plane. They intersect at the origin. Point $P(-1, 4)$ is reflected about line $\\ell$ to point $P'$, and then $P'$ is reflected about line $m$ to point $P''$. The equation of line $\\ell$ is $5x - y = 0$, and the coordinates of $P''$ are $(4,1)$. What is the equation of line $m?$",
+        "question_images": [],
+        "options": [
+          "(A) 5x+2y=0",
+          "(B) 3x+2y=0",
+          "(C) x-3y=0",
+          "(D) 2x-3y=0",
+          "(E) 5x-3y=0"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q18",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_18",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_18",
+        "curated_problem_number": 18,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_18",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_18",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 18",
+        "question_number": 18,
+        "text": "Three identical square sheets of paper each with side length $6{ }$ are stacked on top of each other. The middle sheet is rotated clockwise $30^\\circ$ about its center and the top sheet is rotated clockwise $60^\\circ$ about its center, resulting in the $24$-sided polygon shown in the figure below. The area of this polygon can be expressed in the form $a-b\\sqrt{c}$, where $a$, $b$, and $c$ are positive integers, and $c$ is not divisible by the square of any prime. What is $a+b+c?$",
+        "question_images": [],
+        "options": [
+          "(A) 75",
+          "(B) 93",
+          "(C) 96",
+          "(D) 129",
+          "(E) 147"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q19",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_19",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_19",
+        "curated_problem_number": 19,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_19",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_19",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 19",
+        "question_number": 19,
+        "text": "Let $N$ be the positive integer $7777\\ldots777$, a $313$-digit number where each digit is a $7$. Let $f(r)$ be the leading digit of the $r{ }$th root of $N$. What is\\[f(2) + f(3) + f(4) + f(5)+ f(6)?\\]",
+        "question_images": [],
+        "options": [
+          "(A) 8",
+          "(B) 9",
+          "(C) 11",
+          "(D) 22",
+          "(E) 29"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q20",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_20",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_20",
+        "curated_problem_number": 20,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_20",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_20",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 20",
+        "question_number": 20,
+        "text": "In a particular game, each of $4$ players rolls a standard $6{ }$-sided die. The winner is the player who rolls the highest number. If there is a tie for the highest roll, those involved in the tie will roll again and this process will continue until one player wins. Hugo is one of the players in this game. What is the probability that Hugo's first roll was a $5,$ given that he won the game?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{61}{216}",
+          "(B) \\frac{367}{1296}",
+          "(C) \\frac{41}{144}",
+          "(D) \\frac{185}{648}",
+          "(E) \\frac{11}{36}"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q21",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_21",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_21",
+        "curated_problem_number": 21,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_21",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_21",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 21",
+        "question_number": 21,
+        "text": "Regular polygons with $5,6,7,$ and $8$ sides are inscribed in the same circle. No two of the polygons share a vertex, and no three of their sides intersect at a common point. At how many points inside the circle do two of their sides intersect?",
+        "question_images": [],
+        "options": [
+          "(A) 52",
+          "(B) 56",
+          "(C) 60",
+          "(D) 64",
+          "(E) 68"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q22",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_22",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_22",
+        "curated_problem_number": 22,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_22",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_22",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 22",
+        "question_number": 22,
+        "text": "For each integer $n\\geq 2$, let $S_n$ be the sum of all products $jk$, where $j$ and $k$ are integers and $1\\leq j<k\\leq n$. What is the sum of the 10 least values of $n$ such that $S_n$ is divisible by $3$?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 196",
+          "(B) \\ 197",
+          "(C) \\ 198",
+          "(D) \\ 199",
+          "(E) \\ 200"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q23",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_23",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_23",
+        "curated_problem_number": 23,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_23",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_23",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 23",
+        "question_number": 23,
+        "text": "Each of the $5{ }$ sides and the $5{ }$ diagonals of a regular pentagon are randomly and independently colored red or blue with equal probability. What is the probability that there will be a triangle whose vertices are among the vertices of the pentagon such that all of its sides have the same color?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac23",
+          "(B) \\frac{105}{128}",
+          "(C) \\frac{125}{128}",
+          "(D) \\frac{253}{256}",
+          "(E) 1"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q24",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_24",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_24",
+        "curated_problem_number": 24,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_24",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_24",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 24",
+        "question_number": 24,
+        "text": "A cube is constructed from $4$ white unit cubes and $4$ blue unit cubes. How many different ways are there to construct the $2 \\times 2 \\times 2$ cube using these smaller cubes? (Two constructions are considered the same if one can be rotated to match the other.)",
+        "question_images": [],
+        "options": [
+          "(A) 7",
+          "(B) 8",
+          "(C) 9",
+          "(D) 10",
+          "(E) 11"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2021-fall-amc-10b-q25",
+        "source_stem": "amc10-2021-fall-amc-10b",
+        "curated_source": "2021 Fall AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_25",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_25",
+        "curated_problem_number": 25,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems#Problem_25",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems/Problem_25",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/7/3/d/73d3dad024e36cb7991fb09eac46f40b460c89a8.png",
+              "alt": "[asy] size(8cm); draw((0,0)--(10,0)); draw((0,0)--(0,10)); draw((10,0)--(10,10)); draw((0,10)--(10,10)); draw((1,6)--(0,9)); draw((0,9)--(3,10)); draw((3,10)--(4,7)); draw((4,7)--(1,6)); draw((0,3)--(1,6)); draw((1,6)--(10,3)); draw((10,3)--(9,0)); draw((9,0)--(0,3)); draw((6,13/3)--(10,22/3)); draw((10,22/3)--(8,10)); draw((8,10)--(4,7)); draw((4,7)--(6,13/3)); label(\"$3$\",(9/2,3/2),N); label(\"$3$\",(11/2,9/2),S); label(\"$1$\",(1/2,9/2),E); label(\"$1$\",(19/2,3/2),W); label(\"$1$\",(1/2,15/2),E); label(\"$1$\",(3/2,19/2),S); label(\"$1$\",(5/2,13/2),N); label(\"$1$\",(7/2,17/2),W); label(\"$R$\",(7,43/6),W); [/asy]",
+              "width": 378,
+              "height": 378
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2021 Fall AMC 10B / Problem 25",
+        "question_number": 25,
+        "text": "A rectangle with side lengths $1{ }$ and $3,$ a square with side length $1,$ and a rectangle $R$ are inscribed inside a larger square as shown. The sum of all possible values for the area of $R$ can be written in the form $\\tfrac mn$, where $m$ and $n$ are relatively prime positive integers. What is $m+n?$",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/7/3/d/73d3dad024e36cb7991fb09eac46f40b460c89a8.png",
+            "alt": "[asy] size(8cm); draw((0,0)--(10,0)); draw((0,0)--(0,10)); draw((10,0)--(10,10)); draw((0,10)--(10,10)); draw((1,6)--(0,9)); draw((0,9)--(3,10)); draw((3,10)--(4,7)); draw((4,7)--(1,6)); draw((0,3)--(1,6)); draw((1,6)--(10,3)); draw((10,3)--(9,0)); draw((9,0)--(0,3)); draw((6,13/3)--(10,22/3)); draw((10,22/3)--(8,10)); draw((8,10)--(4,7)); draw((4,7)--(6,13/3)); label(\"$3$\",(9/2,3/2),N); label(\"$3$\",(11/2,9/2),S); label(\"$1$\",(1/2,9/2),E); label(\"$1$\",(19/2,3/2),W); label(\"$1$\",(1/2,15/2),E); label(\"$1$\",(3/2,19/2),S); label(\"$1$\",(5/2,13/2),N); label(\"$1$\",(7/2,17/2),W); label(\"$R$\",(7,43/6),W); [/asy]",
+            "width": 378,
+            "height": 378
+          }
+        ],
+        "options": [
+          "(A) 14",
+          "(B) 23",
+          "(C) 46",
+          "(D) 59",
+          "(E) 67"
+        ],
+        "correct": "E"
+      }
+    ],
+    "curated_metadata": {
+      "year": 2021,
+      "contest": "Fall AMC 10B",
+      "administered_on": "2021-11-16",
+      "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B",
+      "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems",
+      "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Answer_Key"
+    }
+  }
+}

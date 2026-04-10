@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Challenge Exam</title>
+  <script src="experience.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>window.MathJax={tex:{inlineMath:[['\\(','\\)'],['$','$']],displayMath:[['\\[','\\]'],['$$','$$']]},options:{skipHtmlTags:['script','noscript','style','textarea','pre']}};</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root { --bg:#f5f1e8; --paper:#fffaf2; --ink:#1f2a33; --muted:#5b6a74;
+            --accent:#a14d2e; --accent-soft:#ead2c5; --line:#d8cfc2;
+            --answered:#166534; --answered-bg:#dcfce7;
+            --current:#1e40af; --current-bg:#dbeafe;
+            --correct:#166534; --correct-bg:#dcfce7;
+            --wrong:#dc2626;   --wrong-bg:#fee2e2; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:Georgia,"Times New Roman",serif; color:var(--ink);
+           background:radial-gradient(circle at top left,#f8dfc8 0,transparent 28%),
+                      linear-gradient(180deg,#f6efe3 0%,var(--bg) 100%);
+           min-height:100vh; }
+
+    /* ── Top bar ── */
+    .topbar { position:sticky; top:0; z-index:100; background:rgba(255,250,242,.95);
+              backdrop-filter:blur(8px); border-bottom:1px solid var(--line);
+              padding:12px 24px; display:flex; align-items:flex-start; gap:16px; }
+    .topbar-left { display:flex; flex-direction:column; gap:10px; flex:1; min-width:240px; }
+    .topbar-brand { display:flex; align-items:center; gap:12px; }
+    .brand-mark {
+      width:46px; height:46px; flex:0 0 46px; border-radius:14px; overflow:hidden;
+      box-shadow:0 8px 18px rgba(78,55,32,.12);
+    }
+    .brand-mark svg { display:block; width:100%; height:100%; }
+    .brand-eyebrow {
+      display:inline-block; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--muted); font-family:system-ui,sans-serif; font-weight:700; margin-bottom:2px;
+    }
+    .brand-title { margin:0; font-size:1.2rem; line-height:1.02; color:var(--ink); }
+    .topbar-title { font-weight:700; font-size:.88rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    .exam-subtitle { display:none; }
+    .timer { font-family:system-ui,monospace; font-size:1.1rem; font-weight:700;
+             color:var(--accent); min-width:56px; text-align:right; }
+
+    /* ── Progress dots ── */
+    .progress-bar { display:flex; justify-content:center; gap:8px; padding:16px 24px 8px;
+                    flex-wrap:wrap; }
+    .dot { width:32px; height:32px; border-radius:50%; border:2px solid var(--line);
+           background:var(--paper); display:flex; align-items:center; justify-content:center;
+           font-size:.78rem; font-weight:700; cursor:pointer; font-family:system-ui,sans-serif;
+           transition:all .15s; }
+    .dot:hover { border-color:var(--accent); }
+    .dot.current  { background:var(--current-bg); border-color:var(--current); color:var(--current); }
+    .dot.answered { background:var(--answered-bg); border-color:var(--answered); color:var(--answered); }
+
+    /* ── Main content ── */
+    .page { width:min(760px,calc(100vw - 32px)); margin:24px auto 80px; }
+    .return-link {
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:9px 14px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      color:var(--ink);
+      text-decoration:none;
+      font-family:system-ui,sans-serif;
+      font-size:.9rem;
+      font-weight:700;
+      align-self:flex-start;
+      margin-left:58px;
+    }
+    .return-link:hover { border-color:var(--accent); color:var(--accent); }
+    .q-card { background:var(--paper); border:1px solid var(--line); border-radius:20px;
+              padding:32px; box-shadow:0 10px 30px rgba(78,55,32,.08); }
+    .q-meta { display:flex; justify-content:space-between; align-items:center;
+              flex-wrap:wrap; gap:8px; margin-bottom:24px; }
+    .q-meta-left { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+    .q-counter { font-size:1rem; color:var(--muted); font-family:system-ui,sans-serif; }
+    .q-source { font-size:.85rem; font-family:system-ui,sans-serif;
+                background:var(--accent-soft); color:var(--accent); padding:4px 12px;
+                border-radius:999px; font-weight:600; }
+    .q-text { font-size:1.35rem; line-height:1.85; margin-bottom:28px; }
+    .q-text p { margin:.5em 0; }
+    .q-text strong { color:#213647; }
+
+    /* ── MCQ options ── */
+    .answer-label { font-size:.88rem; font-weight:700; color:var(--muted);
+                    text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;
+                    font-family:system-ui,sans-serif; }
+    .mcq-feedback { padding:10px 16px; border-radius:10px; font-weight:700; font-size:.95rem;
+                    font-family:system-ui,sans-serif; margin-bottom:12px; }
+    .mcq-feedback-correct { background:var(--correct-bg); color:var(--correct); }
+    .mcq-feedback-wrong   { background:var(--wrong-bg);   color:var(--wrong); }
+    .mcq-options { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+    .mcq-option { display:flex; align-items:flex-start; gap:14px; padding:14px 18px;
+                  border:2px solid var(--line); border-radius:12px; background:var(--paper);
+                  text-align:left; cursor:pointer; font:inherit; font-size:1.05rem;
+                  line-height:1.6; transition:all .15s; width:100%; }
+    .mcq-option:not(:disabled):hover { border-color:var(--accent); background:#fffaf0; }
+    .mcq-option:disabled { cursor:default; }
+    .opt-letter { font-weight:700; font-size:1rem; font-family:system-ui,sans-serif;
+                  min-width:26px; color:var(--muted); padding-top:2px; flex-shrink:0; }
+    .opt-text { flex:1; }
+    .opt-text p { margin:0; }
+    .mcq-option.opt-correct { border-color:var(--correct); background:var(--correct-bg); }
+    .mcq-option.opt-correct .opt-letter { color:var(--correct); }
+    .mcq-option.opt-wrong   { border-color:var(--wrong);   background:var(--wrong-bg); }
+    .mcq-option.opt-wrong   .opt-letter { color:var(--wrong); }
+    .mcq-option.opt-reveal  { border-color:var(--correct); background:var(--correct-bg); opacity:.85; }
+    .mcq-option.opt-reveal  .opt-letter { color:var(--correct); }
+
+    /* ── Navigation ── */
+    .nav { display:flex; justify-content:space-between; align-items:center;
+           margin-top:24px; flex-wrap:wrap; gap:10px; }
+    .nav-left, .nav-right { display:flex; gap:10px; }
+    .btn { appearance:none; border:1px solid var(--line); background:#fff; color:var(--ink);
+           font:inherit; font-weight:600; padding:10px 20px; border-radius:999px;
+           cursor:pointer; text-decoration:none; font-size:.95rem; transition:all .15s; }
+    .btn:hover { border-color:var(--accent); color:var(--accent); }
+    .btn-primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .btn-primary:hover { opacity:.85; color:#fff; }
+    .btn-submit { background:#166534; color:#fff; border-color:#166534; }
+    .btn-submit:hover { opacity:.85; color:#fff; }
+    .btn:disabled { opacity:.4; cursor:not-allowed; }
+
+    /* ── Overlay ── */
+    .overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex;
+               align-items:center; justify-content:center; z-index:200; }
+    .overlay-box { background:#fff; border-radius:16px; padding:32px; max-width:420px;
+                   width:calc(100% - 32px); text-align:center; }
+    .overlay-box h2 { margin:0 0 12px; font-size:1.4rem; }
+    .overlay-box p { color:var(--muted); margin:0 0 20px; }
+    .overlay-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+
+    .loading { text-align:center; padding:60px; color:var(--muted); font-size:1.1rem; }
+    .error-box { background:#fee2e2; color:#991b1b; border-radius:12px; padding:20px;
+                 margin:20px; text-align:center; }
+    @media (max-width: 720px) {
+      .topbar { padding:14px 16px; flex-direction:column; align-items:stretch; gap:12px; }
+      .topbar-left { min-width:0; }
+      .topbar-brand { align-items:flex-start; }
+      .brand-title { font-size:1.05rem; }
+      .timer { min-width:0; text-align:left; }
+      .progress-bar { padding:12px 12px 6px; gap:6px; }
+      .dot { width:28px; height:28px; font-size:.72rem; }
+      .page { width:min(760px,calc(100vw - 24px)); margin:18px auto 56px; }
+      .return-link { margin-left:0; }
+      .q-card { padding:22px 18px; border-radius:18px; }
+      .q-text { font-size:1.15rem; line-height:1.7; }
+      .mcq-option { padding:12px 14px; font-size:1rem; }
+      .nav, .nav-left, .nav-right { width:100%; }
+      .nav-left, .nav-right { flex-wrap:wrap; }
+      .nav-right { justify-content:flex-end; }
+      .nav-left .btn, .nav-right .btn { flex:1 1 180px; text-align:center; }
+      .overlay-box { padding:24px 18px; }
+      .overlay-actions .btn { flex:1 1 180px; }
+    }
+    @media (max-width: 520px) {
+      .topbar { padding:12px; }
+      .brand-mark { width:40px; height:40px; flex-basis:40px; border-radius:12px; }
+      .progress-bar { justify-content:flex-start; }
+      .page { width:min(760px,calc(100vw - 16px)); }
+      .q-card { padding:18px 14px; }
+      .q-text { font-size:1.02rem; }
+      .q-meta { margin-bottom:18px; }
+      .mcq-option { gap:10px; padding:11px 12px; }
+      .nav-left .btn, .nav-right .btn, .overlay-actions .btn { flex-basis:100%; }
+    }
+    html.experience-staging {
+      --stage-ink: #10233b;
+      --stage-muted: #516173;
+      --stage-blue-50: #dbeafe;
+      --stage-blue-700: #1e3a8a;
+      --stage-orange-500: #f97316;
+      --stage-success: #15803d;
+      --stage-success-bg: #dcfce7;
+      --stage-amber: #d97706;
+      --stage-amber-bg: #fef3c7;
+    }
+    html.experience-staging body {
+      font-family: "Inter", "Segoe UI", sans-serif;
+      color: var(--stage-ink);
+      background:
+        radial-gradient(circle at top left, rgba(249, 115, 22, 0.08), transparent 24%),
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.08), transparent 26%),
+        linear-gradient(180deg, #f8fafc 0%, #eef4fb 100%);
+    }
+    html.experience-staging .topbar,
+    html.experience-staging .q-card,
+    html.experience-staging .overlay-box {
+      border-radius: 24px;
+      border-color: rgba(148, 163, 184, 0.24);
+      box-shadow: 0 18px 42px rgba(15, 23, 42, 0.08);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+    }
+    html.experience-staging .topbar {
+      width: min(980px, calc(100vw - 24px));
+      margin: 14px auto 0;
+      padding: 24px 26px;
+      border: 1px solid rgba(148, 163, 184, 0.24);
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.98), rgba(247,250,255,0.96));
+    }
+    html.experience-staging .topbar-left {
+      gap: 12px;
+    }
+    html.experience-staging .topbar-brand {
+      gap: 14px;
+      align-items: flex-start;
+    }
+    html.experience-staging .brand-mark {
+      width: 56px;
+      height: 56px;
+      flex: 0 0 56px;
+      border-radius: 16px;
+    }
+    html.experience-staging .brand-title {
+      font-size: 1.55rem;
+      line-height: 1.02;
+      color: var(--stage-ink);
+      letter-spacing: -0.03em;
+    }
+    html.experience-staging .topbar-title {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 10px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--stage-blue-50);
+      color: var(--stage-blue-700);
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+    html.experience-staging .exam-subtitle {
+      display: block;
+      margin: 0;
+      max-width: 58ch;
+      color: var(--stage-muted);
+      line-height: 1.6;
+      font-size: 0.98rem;
+    }
+    html.experience-staging .topbar-title,
+    html.experience-staging .q-counter,
+    html.experience-staging .q-source,
+    html.experience-staging .answer-label {
+      color: var(--stage-muted);
+    }
+    html.experience-staging .return-link {
+      margin-left: 0;
+      border-color: rgba(148, 163, 184, 0.28);
+      background: #fff;
+      color: var(--stage-ink);
+      font-weight: 700;
+    }
+    html.experience-staging .timer {
+      color: var(--stage-orange-500);
+      font-weight: 800;
+      min-width: auto;
+      padding-top: 4px;
+    }
+    html.experience-staging .progress-bar {
+      width: min(980px, calc(100vw - 24px));
+      margin: 10px auto 0;
+      padding: 0 18px 10px;
+    }
+    html.experience-staging .page {
+      margin-top: 18px;
+    }
+    html.experience-staging .dot.current {
+      background: var(--stage-blue-50);
+      border-color: var(--stage-blue-700);
+      color: var(--stage-blue-700);
+    }
+    html.experience-staging .dot.answered {
+      background: var(--stage-success-bg);
+      border-color: var(--stage-success);
+      color: var(--stage-success);
+    }
+    html.experience-staging .btn-primary,
+    html.experience-staging .btn-submit {
+      background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 14px 28px rgba(249, 115, 22, 0.24);
+    }
+    html.experience-staging .mcq-feedback-wrong {
+      background: var(--stage-amber-bg);
+      color: var(--stage-amber);
+    }
+    html.experience-staging .mcq-option.opt-wrong {
+      border-color: var(--stage-amber);
+      background: var(--stage-amber-bg);
+    }
+    html.experience-staging .mcq-option.opt-wrong .opt-letter {
+      color: var(--stage-amber);
+    }
+  </style>
+</head>
+<body>
+
+<div id="topbar" class="topbar" style="display:none">
+  <div class="topbar-left">
+    <div class="topbar-brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="examBrandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fff5da"/>
+              <stop offset="55%" stop-color="#f3c98f"/>
+              <stop offset="100%" stop-color="#cf7c43"/>
+            </linearGradient>
+          </defs>
+          <rect width="72" height="72" rx="16" fill="url(#examBrandGlow)"/>
+          <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
+          <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
+          <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
+          <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
+          <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
+          <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
+        </svg>
+      </div>
+      <div>
+        <span class="brand-eyebrow">Math Delight</span>
+        <h1 class="brand-title">Algebra II Trig Tutor</h1>
+        <div class="topbar-title" id="exam-title"></div>
+      </div>
+    </div>
+    <p class="exam-subtitle">Challenge mode keeps the work focused, the feedback calm, and the next move obvious.</p>
+    <a id="return-link" class="return-link" href="index.html" style="display:none">&#8592; Return</a>
+  </div>
+  <span class="timer" id="timer">0:00</span>
+</div>
+<div id="progress-bar" class="progress-bar" style="display:none"></div>
+<div class="page">
+  <div id="root"><div class="loading">Loading exam&hellip;</div></div>
+</div>
+<div id="overlay" class="overlay" style="display:none">
+  <div class="overlay-box">
+    <h2>Submit Exam?</h2>
+    <p id="overlay-msg"></p>
+    <div class="overlay-actions">
+      <button class="btn" onclick="closeOverlay()">Go Back</button>
+      <button class="btn btn-submit" onclick="doSubmit()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── State ──
+const S = {
+  exam: null,
+  idx: 0,
+  answers: {},       // qId → letter ('A'/'B'/'C'/'D') or ''
+  timerSecs: 0,
+  timerInterval: null,
+  started: false,
+  submitting: false,
+};
+
+const LEGACY_SESSION_KEY = 'math_tutor_challenge_session';
+const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';
+
+function answeredCount(answers) {
+  return Object.keys(answers || {}).filter(function(k){ return (answers[k] || '').trim(); }).length;
+}
+
+function firstUnansweredIndex(start) {
+  var begin = Math.max(0, start || 0);
+  for (var i = begin; i < S.exam.questions.length; i++) {
+    if (!(S.answers[S.exam.questions[i].id] || '').trim()) return i;
+  }
+  return -1;
+}
+
+function bestResumeIndex(savedIdx) {
+  if (!S.exam || !S.exam.questions.length) return 0;
+  var idx = Math.max(0, Math.min(savedIdx || 0, S.exam.questions.length - 1));
+  var currentQ = S.exam.questions[idx];
+  if (currentQ && !(S.answers[currentQ.id] || '').trim()) return idx;
+  var firstSkipped = firstUnansweredIndex(0);
+  return firstSkipped >= 0 ? firstSkipped : idx;
+}
+
+function mergeServerAnswers(items) {
+  var merged = {};
+  (items || []).forEach(function(item){
+    if (item && item.question_id) merged[item.question_id] = item.answer || '';
+  });
+  return merged;
+}
+
+function sessionKeyForExam(examId) {
+  return SESSION_KEY_PREFIX + examId;
+}
+
+function readStoredSession(key) {
+  try {
+    var saved = JSON.parse(localStorage.getItem(key) || 'null');
+    return saved && saved.exam_id ? saved : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function loadLocalSession(examId) {
+  var perExamKey = sessionKeyForExam(examId);
+  var saved = readStoredSession(perExamKey);
+  if (saved) return saved;
+
+  var legacySaved = readStoredSession(LEGACY_SESSION_KEY);
+  if (legacySaved && legacySaved.exam_id === examId) {
+    localStorage.setItem(perExamKey, JSON.stringify(legacySaved));
+    localStorage.removeItem(LEGACY_SESSION_KEY);
+    return legacySaved;
+  }
+
+  return null;
+}
+
+function saveSession() {
+  if (!S.exam) return;
+  localStorage.setItem(sessionKeyForExam(S.exam.id), JSON.stringify({
+    exam_id: S.exam.id,
+    exam_title: S.exam.title,
+    idx: S.idx,
+    answers: S.answers,
+    timerSecs: S.timerSecs,
+    questionCount: S.exam.questions.length,
+    savedAt: new Date().toISOString(),
+  }));
+  saveProgressToServer();
+}
+
+function clearSession() {
+  if (!S.exam) return;
+  localStorage.removeItem(sessionKeyForExam(S.exam.id));
+  var legacySaved = readStoredSession(LEGACY_SESSION_KEY);
+  if (legacySaved && legacySaved.exam_id === S.exam.id) {
+    localStorage.removeItem(LEGACY_SESSION_KEY);
+  }
+}
+
+// ── Server-side progress save (throttled, fire-and-forget) ──
+var _lastServerSave = 0;
+function saveProgressToServer() {
+  var now = Date.now();
+  if (now - _lastServerSave < 25000) return; // at most once per 25s
+  _lastServerSave = now;
+  var answered = Object.keys(S.answers).filter(function(k){ return S.answers[k]; }).length;
+  fetch('save_progress.php', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      exam_id:        S.exam.id,
+      exam_title:     S.exam.title,
+      current_idx:    S.idx,
+      timer_secs:     S.timerSecs,
+      answered_count: answered,
+      answers: S.exam.questions.map(function(q){
+        return {
+          question_id:   q.id,
+          source_label:  q.source_label,
+          question_text: q.text,
+          options:       q.options || [],
+          correct:       q.correct || '',
+          answer:        S.answers[q.id] || '',
+        };
+      }),
+    }),
+  }).catch(function(){}); // ignore errors — server save is best-effort
+}
+
+async function loadServerProgress(examId) {
+  try {
+    var res = await fetch('get_progress.php?exam_id=' + encodeURIComponent(examId), {cache: 'no-store'});
+    if (!res.ok) return null;
+    var data = await res.json();
+    return data.progress || null;
+  } catch (e) {
+    return null;
+  }
+}
+
+// ── Markdown + math renderer ──
+function mdToHtml(text) {
+  var dm = [], im = [];
+  text = text.replace(/\\\[[\s\S]*?\\\]/g, function(m){ dm.push(m); return '\x00DM'+(dm.length-1)+'\x00'; });
+  text = text.replace(/\\\([\s\S]*?\\\)|\$[^$\n]+\$/g, function(m){ im.push(m); return '\x00IM'+(im.length-1)+'\x00'; });
+  text = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  text = text.replace(/\*\*([^*\n]+)\*\*/g,'<strong>$1</strong>');
+  text = text.replace(/\n\n+/g,'</p><p>').replace(/\n/g,'<br>');
+  dm.forEach(function(m,i){ text = text.replace('\x00DM'+i+'\x00', m); });
+  im.forEach(function(m,i){ text = text.replace('\x00IM'+i+'\x00', m); });
+  return '<p>'+text+'</p>';
+}
+
+function normalizeOptionMath(text) {
+  var raw = String(text || '').trim();
+  if (!raw) return raw;
+  if (/\\\(|\\\)|\\\[|\\\]|\$/.test(raw)) return raw;
+  if (/\\[A-Za-z]+/.test(raw) || /\^\{?[^}\s]+\}?/.test(raw)) return '\\(' + raw + '\\)';
+  return raw;
+}
+
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── Timer ──
+function startTimer() {
+  if (S.timerInterval) return;
+  S.started = true;
+  S.timerInterval = setInterval(function(){
+    S.timerSecs++;
+    var m = Math.floor(S.timerSecs/60), s = S.timerSecs%60;
+    document.getElementById('timer').textContent = m+':'+(s<10?'0':'')+s;
+    if (S.timerSecs % 30 === 0) saveSession();
+  }, 1000);
+}
+
+// ── Progress dots ──
+function renderDots() {
+  var bar = document.getElementById('progress-bar');
+  bar.innerHTML = '';
+  S.exam.questions.forEach(function(q, i){
+    var dot = document.createElement('div');
+    dot.className = 'dot';
+    if (i === S.idx) dot.classList.add('current');
+    else if (S.answers[q.id]) dot.classList.add('answered');
+    dot.textContent = i+1;
+    dot.title = 'Question '+(i+1);
+    dot.addEventListener('click', function(){ goTo(i); });
+    bar.appendChild(dot);
+  });
+}
+
+// ── Select MCQ option ──
+function selectOption(letter) {
+  startTimer();
+  var q = S.exam.questions[S.idx];
+  if (S.answers[q.id]) return; // already answered, locked
+  S.answers[q.id] = letter;
+  saveSession();
+  renderQuestion();
+}
+
+// ── Render current question ──
+function renderQuestion() {
+  var q = S.exam.questions[S.idx];
+  var total = S.exam.questions.length;
+  var answered = S.answers[q.id] || '';
+
+  // Feedback banner (shown after answering)
+  var feedbackHtml = '';
+  if (answered) {
+    var isCorrect = (answered === q.correct);
+    feedbackHtml = '<div class="mcq-feedback ' + (isCorrect ? 'mcq-feedback-correct' : 'mcq-feedback-wrong') + '">' +
+      (isCorrect
+        ? '&#10003; Correct!'
+        : '&#10007; Incorrect \u2014 correct answer: <strong>' + escHtml(q.correct) + '</strong>') +
+      '</div>';
+  }
+
+  // MCQ options
+  var optHtml = '<div class="answer-label">Your Answer</div>' + feedbackHtml +
+    '<div class="mcq-options" id="mcq-opts">';
+  (q.options || []).forEach(function(optStr) {
+    var m = optStr.match(/^\(([A-D])\)\s*([\s\S]*)/);
+    if (!m) return;
+    var letter = m[1], text = m[2].trim();
+    var cls = 'mcq-option', letterDisp = letter;
+    if (answered) {
+      if (letter === answered && letter === q.correct)      { cls += ' opt-correct'; letterDisp = '\u2713'; }
+      else if (letter === answered && letter !== q.correct) { cls += ' opt-wrong';   letterDisp = '\u2717'; }
+      else if (letter === q.correct)                        { cls += ' opt-reveal'; }
+    }
+    var disabled = answered ? ' disabled' : '';
+    var onclick  = answered ? '' : ' onclick="selectOption(\'' + letter + '\')"';
+    optHtml += '<button class="' + cls + '"' + disabled + onclick + '>' +
+      '<span class="opt-letter">' + escHtml(letterDisp) + '</span>' +
+      '<span class="opt-text" data-raw="' + escHtml(text) + '"></span>' +
+      '</button>';
+  });
+  optHtml += '</div>';
+
+  // Navigation
+  var isLast = (S.idx === total - 1);
+  var navHtml = '<div class="nav"><div class="nav-left">' +
+    '<button class="btn" onclick="goTo(' + (S.idx-1) + ')"' + (S.idx===0?' disabled':'') + '>&#8592; Prev</button>' +
+    '</div><div class="nav-right">';
+  if (!isLast) {
+    navHtml += '<button class="btn btn-primary" onclick="goNext()">Next &#8594;</button>';
+  } else {
+    navHtml += '<button class="btn btn-submit" onclick="confirmSubmit()">Submit Exam &#10003;</button>';
+  }
+  navHtml += '</div></div>';
+
+  var root = document.getElementById('root');
+  root.innerHTML = '<div class="q-card">' +
+    '<div class="q-meta"><div class="q-meta-left">' +
+    '<span class="q-counter">Question ' + (S.idx+1) + ' of ' + total + '</span>' +
+    '<span class="q-source">' + escHtml(q.source_label) + '</span>' +
+    '</div>' +
+    '</div>' +
+    '<div class="q-text" id="q-text-render"></div>' +
+    optHtml + navHtml + '</div>';
+
+  // Render question text
+  document.getElementById('q-text-render').innerHTML = mdToHtml(q.text);
+
+  // Render option texts (may contain LaTeX)
+  root.querySelectorAll('.opt-text[data-raw]').forEach(function(el){
+    el.innerHTML = mdToHtml(normalizeOptionMath(el.dataset.raw));
+    el.removeAttribute('data-raw');
+  });
+
+  // Typeset all math in one pass
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([root]);
+
+  renderDots();
+}
+
+// ── Navigation ──
+function goTo(i) {
+  S.idx = Math.max(0, Math.min(i, S.exam.questions.length - 1));
+  saveSession();
+  renderQuestion();
+}
+
+function goNext() {
+  var nextSkipped = firstUnansweredIndex(S.idx + 1);
+  if (nextSkipped >= 0) {
+    goTo(nextSkipped);
+    return;
+  }
+  var firstSkipped = firstUnansweredIndex(0);
+  if (firstSkipped >= 0) {
+    goTo(firstSkipped);
+    return;
+  }
+  if (S.idx < S.exam.questions.length - 1) {
+    goTo(S.idx + 1);
+    return;
+  }
+  confirmSubmit();
+}
+
+// ── Submit flow ──
+function confirmSubmit() {
+  var total = S.exam.questions.length;
+  var answered = S.exam.questions.filter(function(q){ return S.answers[q.id]; }).length;
+  var unanswered = total - answered;
+  var msg = answered === total
+    ? 'All ' + total + ' questions answered.'
+    : answered + ' of ' + total + ' answered. ' + unanswered + ' question(s) left blank.';
+  document.getElementById('overlay-msg').textContent = msg;
+  document.getElementById('overlay').style.display = 'flex';
+}
+function closeOverlay() {
+  document.getElementById('overlay').style.display = 'none';
+}
+async function doSubmit() {
+  if (S.submitting) return;
+  S.submitting = true;
+  closeOverlay();
+  if (S.timerInterval) clearInterval(S.timerInterval);
+
+  var payload = {
+    exam_id: S.exam.id,
+    exam_title: S.exam.title,
+    time_seconds: S.timerSecs,
+    answers: S.exam.questions.map(function(q){
+      return {
+        question_id: q.id,
+        source_label: q.source_label,
+        question_text: q.text,
+        options: q.options || [],
+        correct: q.correct || '',
+        answer: S.answers[q.id] || '',
+      };
+    }),
+  };
+
+  document.getElementById('root').innerHTML = '<div class="loading">Saving result&hellip;</div>';
+
+  try {
+    var res = await fetch('submit.php', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload),
+    });
+    var data = await res.json();
+    if (data.token) {
+      clearSession();
+      window.location.href = 'result.php?token=' + encodeURIComponent(data.token);
+    } else if (data.partial && data.partial_url) {
+      clearSession();
+      window.location.href = data.partial_url;
+    } else {
+      throw new Error(data.error || 'Unknown error');
+    }
+  } catch(e) {
+    S.submitting = false;
+    document.getElementById('root').innerHTML =
+      '<div class="error-box">Could not save result: ' + escHtml(e.message) +
+      '<br><br><button class="btn" onclick="location.reload()">Try Again</button></div>';
+  }
+}
+
+// ── Boot ──
+(async function() {
+  var params = new URLSearchParams(window.location.search);
+  var examId = params.get('id');
+  var returnHref = params.get('return') || '';
+  var returnLabel = params.get('return_label') || 'Return';
+  if (!examId) {
+    document.getElementById('root').innerHTML =
+      '<div class="error-box">No exam ID specified. <a href="index.html">Back to exams</a></div>';
+    return;
+  }
+
+  try {
+    var res = await fetch('exams/' + encodeURIComponent(examId) + '.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    S.exam = await res.json();
+  } catch(e) {
+    document.getElementById('root').innerHTML =
+      '<div class="error-box">Could not load exam "' + escHtml(examId) + '". <a href="index.html">Back to exams</a></div>';
+    return;
+  }
+
+  document.title = S.exam.title + ' \u2014 Challenge Exam';
+  document.getElementById('exam-title').textContent = S.exam.title;
+  document.getElementById('topbar').style.display = 'flex';
+  document.getElementById('progress-bar').style.display = 'flex';
+  if (returnHref) {
+    var back = document.getElementById('return-link');
+    back.href = returnHref;
+    back.textContent = '\u2190 ' + returnLabel;
+    back.style.display = 'inline-flex';
+  }
+
+  // Restore saved session if it matches this exam
+  var saved = loadLocalSession(S.exam.id);
+  if (saved) {
+    S.idx = saved.idx || 0;
+    S.answers = saved.answers || {};
+    S.timerSecs = saved.timerSecs || 0;
+  }
+
+  var serverProgress = await loadServerProgress(S.exam.id);
+  if (serverProgress) {
+    var serverAnswers = mergeServerAnswers(serverProgress.answers);
+    var localCount = answeredCount(S.answers);
+    var serverCount = answeredCount(serverAnswers);
+    if (serverCount > localCount) {
+      S.answers = serverAnswers;
+      S.timerSecs = serverProgress.timer_secs || S.timerSecs;
+      S.idx = serverProgress.current_idx || 0;
+    } else if (serverCount === localCount && serverProgress.current_idx > (S.idx || 0)) {
+      S.idx = serverProgress.current_idx;
+      if ((serverProgress.timer_secs || 0) > (S.timerSecs || 0)) S.timerSecs = serverProgress.timer_secs;
+    }
+  }
+
+  S.idx = bestResumeIndex(S.idx);
+  var rm = Math.floor(S.timerSecs/60), rs = S.timerSecs%60;
+  document.getElementById('timer').textContent = rm + ':' + (rs<10?'0':'') + rs;
+  saveSession();
+
+  renderQuestion();
+})();
+</script>
+</body>
+</html>

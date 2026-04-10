@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 7.2 - Study Guide (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+  </style>
+
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 7.2</h1>
+      <p><strong>Study Guide (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4582337_alg-2trig-h-chp-7-2-note-docx.pdf">4582337_alg-2trig-h-chp-7-2-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <p>Here is a complete breakdown and study guide based on the provided document.</p>
+<h4>1. Summary of the Document</h4>
+<p>This document is a guided notes worksheet for an Algebra 2 Trigonometry/Honors class covering the <strong>Addition and Subtraction Formulas</strong> (also known as sum and difference formulas) for sine, cosine, and tangent. It outlines how to use these formulas to find the exact values of non-standard angles, simplify expressions, and prove trigonometric identities. Additionally, it provides specific techniques for evaluating expressions that contain inverse trigonometric functions, and for combining linear combinations of sine and cosine ($A \sin x + B \cos x$) into a single phase-shifted sine function.</p>
+<hr>
+<h4>2. Core Definitions, Theorems, and Formulas</h4>
+<p><strong>Addition and Subtraction Formulas:</strong></p>
+<ul>
+<li><strong>Sine:</strong></li>
+<li>$\sin(s + t) = \sin s \cos t + \cos s \sin t$</li>
+<li>$\sin(s - t) = \sin s \cos t - \cos s \sin t$</li>
+<li><strong>Cosine:</strong></li>
+<li>$\cos(s + t) = \cos s \cos t - \sin s \sin t$</li>
+<li>$\cos(s - t) = \cos s \cos t + \sin s \sin t$</li>
+<li><strong>Tangent:</strong></li>
+<li>$\tan(s + t) = \frac{\tan s + \tan t}{1 - \tan s \tan t}$</li>
+<li>$\tan(s - t) = \frac{\tan s - \tan t}{1 + \tan s \tan t}$</li>
+</ul>
+<p><strong>Evaluating Inverse Trigonometric Expressions:</strong></p>
+<ul>
+<li>An expression involving an inverse trigonometric function, such as $\cos^{-1} x$, represents an <strong>angle</strong>.</li>
+</ul>
+<p><strong>Expressions of the Form $A \sin x + B \cos x$:</strong></p>
+<ul>
+<li>Any linear combination of sine and cosine can be rewritten as a single sine wave using the formula:</li>
+</ul>
+<p>$$A \sin x + B \cos x = k \sin(x + \phi)$$ where:</p>
+<ul>
+<li>$k = \sqrt{A^2 + B^2}$ (the amplitude)</li>
+<li>The angle $\phi$ is found using: $\cos \phi = \frac{A}{\sqrt{A^2 + B^2}}$ and $\sin \phi = \frac{B}{\sqrt{A^2 + B^2}}$</li>
+</ul>
+<hr>
+<h4>3. Worked Study Guide</h4>
+<p><strong>Concept 1: Finding Exact Values of Non-Standard Angles (Based on Example 1)</strong> You can evaluate angles that aren't on the standard unit circle by splitting them into the sum or difference of angles that <em>are</em> on the unit circle (like $30^\circ, 45^\circ, 60^\circ$).</p>
+<ul>
+<li><em>Step 1:</em> Identify two standard angles that add or subtract to the target angle. For example, to find $\cos(\frac{17\pi}{12})$, you can rewrite $\frac{17\pi}{12}$ as $\frac{8\pi}{12} + \frac{9\pi}{12}$, which simplifies to $\frac{2\pi}{3} + \frac{3\pi}{4}$.</li>
+<li><em>Step 2:</em> Apply the appropriate sum/difference formula. $\cos(\frac{2\pi}{3} + \frac{3\pi}{4}) = \cos(\frac{2\pi}{3})\cos(\frac{3\pi}{4}) - \sin(\frac{2\pi}{3})\sin(\frac{3\pi}{4})$.</li>
+<li><em>Step 3:</em> Substitute the known unit circle values and simplify.</li>
+</ul>
+<p><strong>Concept 2: Simplifying Expressions (Based on Example 2)</strong> If you are given a long expression that fits the right side of an addition/subtraction formula, you can collapse it back down to a single trig function.</p>
+<ul>
+<li><em>Step-by-step:</em> Looking at $\cos 23^\circ \cos 67^\circ - \sin 23^\circ \sin 67^\circ$, notice this matches the structure $\cos s \cos t - \sin s \sin t$, which is the formula for $\cos(s+t)$.</li>
+<li>Substitute $s = 23^\circ$ and $t = 67^\circ$ to get $\cos(23^\circ + 67^\circ) = \cos(90^\circ)$. Since $\cos(90^\circ) = 0$, the whole expression simplifies to exactly $0$.</li>
+</ul>
+<p><strong>Concept 3: Proving Identities (Based on Example 3)</strong> To prove an identity, start with the more complex side and use the sum/difference formulas to expand it, then simplify until it matches the other side.</p>
+<ul>
+<li><em>Example:</em> Prove $\cos(x - \frac{\pi}{2}) = \sin x$.</li>
+<li><em>Step 1:</em> Expand the left side using the cosine subtraction formula: $\cos x \cos(\frac{\pi}{2}) + \sin x \sin(\frac{\pi}{2})$.</li>
+<li><em>Step 2:</em> Substitute known values. We know $\cos(\frac{\pi}{2}) = 0$ and $\sin(\frac{\pi}{2}) = 1$.</li>
+<li><em>Step 3:</em> Simplify: $\cos x(0) + \sin x(1) = \sin x$. The identity is proven!</li>
+</ul>
+<p><strong>Concept 4: Working with Inverse Trig Functions (Based on Example 5)</strong> Remember the rule: an inverse trig function represents an <em>angle</em>.</p>
+<ul>
+<li><em>Example:</em> Evaluate $\sin(\cos^{-1}(\frac{1}{2}) + \tan^{-1}(1))$.</li>
+<li><em>Step 1:</em> Assign variables to the angles. Let $\alpha = \cos^{-1}(\frac{1}{2})$ and $\beta = \tan^{-1}(1)$.</li>
+<li><em>Step 2:</em> Use the unit circle to find these exact angles (if they are standard). Here, $\alpha = \frac{\pi}{3}$ and $\beta = \frac{\pi}{4}$. (If they weren't standard, you would draw right reference triangles to find the missing side lengths).</li>
+<li><em>Step 3:</em> You are now evaluating $\sin(\frac{\pi}{3} + \frac{\pi}{4})$. Use the sine addition formula: $\sin(\frac{\pi}{3})\cos(\frac{\pi}{4}) + \cos(\frac{\pi}{3})\sin(\frac{\pi}{4})$.</li>
+<li><em>Step 4:</em> Substitute and solve: $(\frac{\sqrt{3}}{2})(\frac{\sqrt{2}}{2}) + (\frac{1}{2})(\frac{\sqrt{2}}{2}) = \frac{\sqrt{6} + \sqrt{2}}{4}$.</li>
+</ul>
+<p><strong>Concept 5: Writing $A \sin x + B \cos x$ as a Single Sine Function (Based on Example 7)</strong></p>
+<ul>
+<li><em>Example:</em> Write $-\sqrt{3} \sin x + \cos x$ in terms of sine only.</li>
+<li><em>Step 1:</em> Identify $A = -\sqrt{3}$ and $B = 1$.</li>
+<li><em>Step 2:</em> Calculate $k = \sqrt{A^2 + B^2} = \sqrt{(-\sqrt{3})^2 + 1^2} = \sqrt{3 + 1} = \sqrt{4} = 2$.</li>
+<li><em>Step 3:</em> Find angle $\phi$. We know $\cos \phi = \frac{-\sqrt{3}}{2}$ and $\sin \phi = \frac{1}{2}$. This means $\phi$ is in Quadrant II, specifically $\phi = \frac{5\pi}{6}$.</li>
+<li><em>Step 4:</em> Write the final equation: $k \sin(x + \phi) \rightarrow 2\sin(x + \frac{5\pi}{6})$.</li>
+</ul>
+<hr>
+<h4>4. Practice Problems</h4>
+<p><strong>Problem 1:</strong> Use an addition or subtraction formula to find the exact value of $\sin(15^\circ)$. <em>(Hint: $15^\circ = 45^\circ - 30^\circ$)</em> <strong>Problem 2:</strong> Write the expression $\sin 40^\circ \cos 20^\circ + \cos 40^\circ \sin 20^\circ$ as a trigonometric function of one number, and find its exact value. <strong>Problem 3:</strong> Prove the identity: $\sin(x + \pi) = -\sin x$. <strong>Problem 4:</strong> Suppose $\sin \theta = \frac{3}{5}$ ($\theta$ is in Quadrant I) and $\cos \phi = \frac{5}{13}$ ($\phi$ is in Quadrant I). Evaluate $\sin(\theta + \phi)$. <em>(Hint: use the Pythagorean theorem to find the missing trig values first).</em> <strong>Problem 5:</strong> Write the expression $3 \sin x + 4 \cos x$ in terms of sine only. Leave the phase shift angle $\phi$ in the form of an inverse trigonometric function.</p>
+<p><strong>Answers to Practice Problems:</strong> 1.  <strong>$\frac{\sqrt{6} - \sqrt{2}}{4}$</strong> <em>Process:</em> $\sin(45^\circ - 30^\circ) = \sin 45^\circ \cos 30^\circ - \cos 45^\circ \sin 30^\circ = (\frac{\sqrt{2}}{2})(\frac{\sqrt{3}}{2}) - (\frac{\sqrt{2}}{2})(\frac{1}{2})$. 2.  <strong>$\sin(60^\circ) = \frac{\sqrt{3}}{2}$</strong> <em>Process:</em> Matches $\sin(s+t)$. $\sin(40^\circ+20^\circ) = \sin(60^\circ)$. 3.  <strong>Proof:</strong> Expand the left side: $\sin x \cos \pi + \cos x \sin \pi$. Substitute unit circle values for $\pi$: $\sin x (-1) + \cos x (0) = -\sin x$. This matches the right side. 4.  <strong>$\frac{63}{65}$</strong> <em>Process:</em> If $\sin \theta = \frac{3}{5}$, drawing a triangle shows $\cos \theta = \frac{4}{5}$. If $\cos \phi = \frac{5}{13}$, a triangle shows $\sin \phi = \frac{12}{13}$. $\sin(\theta + \phi) = \sin\theta\cos\phi + \cos\theta\sin\phi = (\frac{3}{5})(\frac{5}{13}) + (\frac{4}{5})(\frac{12}{13}) = \frac{15}{65} + \frac{48}{65} = \frac{63}{65}$. 5.  <strong>$5 \sin(x + \cos^{-1}(\frac{3}{5}))$</strong> or <strong>$5 \sin(x + \sin^{-1}(\frac{4}{5}))$</strong> <em>Process:</em> $A=3, B=4$. $k = \sqrt{3^2 + 4^2} = \sqrt{25} = 5$. We need an angle $\phi$ where $\cos \phi = \frac{3}{5}$ and $\sin \phi = \frac{4}{5}$. Therefore, $\phi = \cos^{-1}(\frac{3}{5})$.</p>
+<hr>
+<h4>5. Assumptions and Ambiguities Resolved</h4>
+<ul>
+<li><strong>OCR Errors Handled:</strong> The OCR (text recognition) output heavily scrambled the mathematical formatting, fractions, minus signs, and omitted $\pi$ symbols (e.g., parsing $\frac{17\pi}{12}$ as <code>17\pi 12</code>). I relied exclusively on the visual screenshots provided to ensure all formulas, variables, and examples were captured correctly.</li>
+<li><strong>Fill-in-the-Blank Context:</strong> In Section I, the text leaves a blank before &quot;angle&quot;. By reading the context cues of the original image, I inferred the completed sentence should read &quot;remember that an expression like $\cos^{-1} x$ represents an <strong>angle</strong>.&quot;</li>
+<li><strong>Example 2a Resolution:</strong> The expression in example 2a in the image contains a tiny typo/ambiguity in standard spacing ($\cos 23^\circ \cos 67^\circ - \sin 23^\circ \sin 67^\circ$). By correctly applying the $\cos(s+t)$ rule, I resolved that the problem is asking to show this equates to $\cos(90^\circ)$, which is simply $0$.</li>
+</ul>
+    </main>
+  </article>
+</body>
+</html>

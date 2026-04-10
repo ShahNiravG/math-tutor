@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.5 - Olympiad Solutions (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.5</h1>
+      <p><strong>Olympiad Solutions (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4465374_alg-2trig-h-chp-5-5-note-docx-1.pdf">4465374_alg-2trig-h-chp-5-5-note-docx-1.pdf</a></p>
+    </header>
+    <main>
+      <h4>Solutions</h4>
+<p>1. <strong>(Circumcircle Optimization)</strong> Triangle $ABC$ is inscribed in a circle of radius $10$. If side $a=10$ and side $b=10\sqrt{2}$, what is the maximum possible measure of $\angle C$ in degrees?</p>
+<p><strong>Solution:</strong> By the Extended Law of Sines, $a = 2R \sin A$ and $b = 2R \sin B$. Substituting the given values: $$10 = 20 \sin A \implies \sin A = \frac{1}{2}$$ $$10\sqrt{2} = 20 \sin B \implies \sin B = \frac{\sqrt{2}}{2}$$ The possible values for the angles are $A \in \{30^\circ, 150^\circ\}$ and $B \in \{45^\circ, 135^\circ\}$. Because the sum of angles in a triangle is $180^\circ$, we have $\angle C = 180^\circ - (A + B)$. To maximize $\angle C$, we must minimize the sum $A + B$. Choosing the smallest possible valid angles, we get $A = 30^\circ$ and $B = 45^\circ$, which yields a sum of $75^\circ$. Thus, the maximum possible measure of $\angle C$ is $180^\circ - 75^\circ = 105^\circ$.</p>
+<p>2. <strong>(Ambiguous Case Invariant)</strong> In $\triangle ABC$, $\angle A = 60^\circ$, side $a=7$, and side $b=8$. Because this is an ambiguous case, there are two distinct valid triangles that can be formed, leading to two possible lengths for side $c$. What is the sum of these two lengths?</p>
+<p><strong>Solution:</strong> Applying the Law of Cosines to side $a$: $$a^2 = b^2 + c^2 - 2bc \cos A$$ Substitute the known values into the equation: $$7^2 = 8^2 + c^2 - 2(8)(c)\left(\frac{1}{2}\right)$$ $$49 = 64 + c^2 - 8c$$ $$c^2 - 8c + 15 = 0$$ This is a quadratic equation in terms of $c$. The two valid side lengths are the roots of this equation (which are $c=3$ and $c=5$). By Vieta’s formulas, the sum of the roots of $c^2 - 8c + 15 = 0$ is the negation of the linear coefficient. Therefore, the sum of the two possible lengths for side $c$ is exactly $8$.</p>
+<p>3. <strong>(Algebraic Symmetry)</strong> In triangle $ABC$, side lengths $a$ and $b$ are unequal, yet they satisfy the trigonometric relation $a \cos A = b \cos B$. What is the measure of $\angle C$ in degrees?</p>
+<p><strong>Solution:</strong> Using the Extended Law of Sines, we substitute $a = 2R \sin A$ and $b = 2R \sin B$ into the given relation: $$2R \sin A \cos A = 2R \sin B \cos B$$ Using the double-angle identity for sine, this simplifies to: $$\sin(2A) = \sin(2B)$$ Because the sum of angles in a triangle is $180^\circ$, $0^\circ &lt; 2A, 2B &lt; 360^\circ$. For their sines to be equal, either $2A = 2B$ or $2A + 2B = 180^\circ$. We are given that $a \neq b$, which implies $A \neq B$. Therefore, we must have: $$2A + 2B = 180^\circ \implies A + B = 90^\circ$$ It directly follows that $\angle C = 180^\circ - (A + B) = 90^\circ$.</p>
+<p>4. <strong>(Cevian Ratios)</strong> In $\triangle ABC$, point $D$ lies on side $BC$ such that $\angle BAD = 30^\circ$ and $\angle CAD = 60^\circ$. If the length of segment $BD$ is exactly twice the length of $DC$, what is the exact value of the ratio $\frac{AB}{AC}$?</p>
+<p><strong>Solution:</strong> The ratio of the areas of $\triangle ABD$ and $\triangle ACD$ can be expressed in two ways: by their bases along $BC$ (since they share the same height from $A$) and by the sine formula for area. $$\frac{\text{Area}(\triangle ABD)}{\text{Area}(\triangle ACD)} = \frac{BD}{DC} = 2$$ Using the sine formula for area: $$\frac{\frac{1}{2} \cdot AB \cdot AD \cdot \sin(30^\circ)}{\frac{1}{2} \cdot AC \cdot AD \cdot \sin(60^\circ)} = 2$$ Simplifying the left side: $$\frac{AB \cdot \left(\frac{1}{2}\right)}{AC \cdot \left(\frac{\sqrt{3}}{2}\right)} = \frac{AB}{AC} \cdot \frac{1}{\sqrt{3}}$$ Equating this to 2, we get: $$\frac{AB}{AC} \cdot \frac{1}{\sqrt{3}} = 2 \implies \frac{AB}{AC} = 2\sqrt{3}$$</p>
+<p>5. <strong>(Elevation Insight)</strong> An observer looks at the top of a vertical tower from point $A$ on a flat plain, noting an angle of elevation of $15^\circ$. They walk $100$ meters in a straight line directly toward the base of the tower to point $B$, where the angle of elevation is now $30^\circ$. What is the height of the tower in meters?</p>
+<p><strong>Solution:</strong> Let the top of the tower be $T$ and the base of the tower be $F$. We evaluate $\triangle ABT$. By the Exterior Angle Theorem, the exterior angle at $B$ is equal to the sum of the two opposite interior angles: $$\angle TBF = \angle TAB + \angle ATB$$ $$30^\circ = 15^\circ + \angle ATB \implies \angle ATB = 15^\circ$$ Because $\angle TAB = \angle ATB = 15^\circ$, $\triangle ABT$ is an isosceles triangle, giving $BT = AB = 100$ meters. Now, evaluating the right triangle $\triangle TBF$, the height of the tower $TF$ is: $$TF = BT \sin(30^\circ) = 100 \cdot \frac{1}{2} = 50$$ The height of the tower is $50$ meters.</p>
+<p>6. <strong>(Integer Bounds &amp; Estimation)</strong> In $\triangle ABC$, side $b = 20$ and $\angle A = 45^\circ$. According to the Law of Sines ambiguous case, exactly two distinct valid triangles exist if side $a$ falls within a strictly bounded range. What is the sum of the smallest and largest possible integer values for $a$ that produce exactly two triangles?</p>
+<p><strong>Solution:</strong> For an acute angle $A$, the ambiguous case (producing exactly two distinct triangles) occurs when the length of side $a$ satisfies $h &lt; a &lt; b$, where $h$ is the altitude to side $c$. Calculate $h$: $$h = b \sin A = 20 \sin(45^\circ) = 20 \left(\frac{\sqrt{2}}{2}\right) = 10\sqrt{2}$$ We know $10\sqrt{2} = \sqrt{200}$. Since $14^2 = 196$ and $15^2 = 225$, we can estimate $10\sqrt{2} \approx 14.14$. The strict bounds for $a$ are therefore: $$14.14 &lt; a &lt; 20$$ The integer values for $a$ that fall within this range are $15, 16, 17, 18,$ and $19$. The smallest valid integer is $15$ and the largest is $19$. Their sum is $15 + 19 = 34$.</p>
+    </main>
+  </article>
+</body>
+</html>

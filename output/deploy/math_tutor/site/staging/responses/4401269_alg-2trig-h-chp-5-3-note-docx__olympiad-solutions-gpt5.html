@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.3 - Olympiad Solutions (GPT-5.4)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.3</h1>
+      <p><strong>Olympiad Solutions (GPT-5.4)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401269_alg-2trig-h-chp-5-3-note-docx.pdf">4401269_alg-2trig-h-chp-5-3-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<p>1. Find the exact value of \[ \sin 255^\circ+\cos 345^\circ+\tan 225^\circ. \]</p>
+<p>Use angle-sum identities and reference angles.</p>
+<p>\[ \sin 255^\circ=\sin(180^\circ+75^\circ)=-\sin 75^\circ, \] \[ \cos 345^\circ=\cos(360^\circ-15^\circ)=\cos 15^\circ, \] \[ \tan 225^\circ=\tan(180^\circ+45^\circ)=\tan 45^\circ=1. \]</p>
+<p>Now compute: \[ \sin 75^\circ=\sin(45^\circ+30^\circ)=\frac{\sqrt2}{2}\cdot\frac{\sqrt3}{2}+\frac{\sqrt2}{2}\cdot\frac12 =\frac{\sqrt6+\sqrt2}{4}, \] so \[ \sin 255^\circ=-\frac{\sqrt6+\sqrt2}{4}. \]</p>
+<p>Also, \[ \cos 15^\circ=\cos(45^\circ-30^\circ)=\frac{\sqrt2}{2}\cdot\frac{\sqrt3}{2}+\frac{\sqrt2}{2}\cdot\frac12 =\frac{\sqrt6+\sqrt2}{4}. \]</p>
+<p>Hence these two terms cancel: \[ \sin 255^\circ+\cos 345^\circ=0. \]</p>
+<p>Therefore, \[ \sin 255^\circ+\cos 345^\circ+\tan 225^\circ=0+1=1. \]</p>
+<p>\[ \boxed{1} \]</p>
+<hr>
+<p>2. An angle \(\theta\) satisfies \(\sin\theta+\cos\theta=\frac13\), and \(\theta\) lies in Quadrant II. Find the exact value of \(\tan\theta\).</p>
+<p>Let \[ s=\sin\theta,\qquad c=\cos\theta. \] We are given \[ s+c=\frac13. \]</p>
+<p>Square both sides: \[ (s+c)^2=s^2+2sc+c^2=\frac19. \] Since \(s^2+c^2=1\), \[ 1+2sc=\frac19 \quad\Rightarrow\quad 2sc=-\frac89 \quad\Rightarrow\quad sc=-\frac49. \]</p>
+<p>Now \(s\) and \(c\) are roots of \[ t^2-\frac13 t-\frac49=0. \] Multiply by \(9\): \[ 9t^2-3t-4=0. \] Thus \[ t=\frac{3\pm \sqrt{9+144}}{18} =\frac{3\pm 3\sqrt{17}}{18} =\frac{1\pm \sqrt{17}}{6}. \]</p>
+<p>In Quadrant II, \(\sin\theta&gt;0\) and \(\cos\theta&lt;0\). Hence \[ \sin\theta=\frac{1+\sqrt{17}}{6},\qquad \cos\theta=\frac{1-\sqrt{17}}{6}. \]</p>
+<p>Therefore \[ \tan\theta=\frac{\sin\theta}{\cos\theta} =\frac{1+\sqrt{17}}{1-\sqrt{17}}. \] Rationalizing, \[ \tan\theta=\frac{(1+\sqrt{17})^2}{1-17} =\frac{18+2\sqrt{17}}{-16} =-\frac{9+\sqrt{17}}{8}. \]</p>
+<p>\[ \boxed{-\frac{9+\sqrt{17}}{8}} \]</p>
+<hr>
+<p>3. Without using a calculator, determine the sign and exact value of \[ \sec\!\left(-\frac{7\pi}{6}\right)+\csc\!\left(\frac{11\pi}{6}\right). \]</p>
+<p>First simplify each term.</p>
+<p>Since cosine is even, \[ \cos\left(-\frac{7\pi}{6}\right)=\cos\left(\frac{7\pi}{6}\right). \] Now \[ \frac{7\pi}{6}=\pi+\frac{\pi}{6}, \] so \[ \cos\left(\frac{7\pi}{6}\right)=-\cos\frac{\pi}{6}=-\frac{\sqrt3}{2}. \] Thus \[ \sec\left(-\frac{7\pi}{6}\right)=\frac{1}{-\sqrt3/2}=-\frac{2}{\sqrt3}=-\frac{2\sqrt3}{3}. \]</p>
+<p>Next, \[ \frac{11\pi}{6}=2\pi-\frac{\pi}{6}, \] so \[ \sin\left(\frac{11\pi}{6}\right)=-\sin\frac{\pi}{6}=-\frac12. \] Hence \[ \csc\left(\frac{11\pi}{6}\right)=\frac{1}{-1/2}=-2. \]</p>
+<p>Therefore \[ \sec\!\left(-\frac{7\pi}{6}\right)+\csc\!\left(\frac{11\pi}{6}\right) =-\frac{2\sqrt3}{3}-2. \]</p>
+<p>This is clearly negative.</p>
+<p>\[ \boxed{-2-\frac{2\sqrt3}{3}} \] and the sign is \(\boxed{\text{negative}}\).</p>
+<hr>
+<p>4. A point \(P(x,y)\) lies on the terminal side of an angle \(\theta\) in Quadrant III, and \[ x+y=-7,\qquad \frac{x}{y}=\cot\theta=\frac34. \] Find the exact values of \(\sin\theta,\cos\theta,\tan\theta\).</p>
+<p>We are given \[ \frac{x}{y}=\frac34. \] So \(x: y = 3:4\). Since the point is in Quadrant III, both \(x\) and \(y\) are negative. Write \[ x=-3k,\qquad y=-4k \] for some positive \(k\).</p>
+<p>Using \(x+y=-7\), \[ -3k-4k=-7 \Rightarrow -7k=-7 \Rightarrow k=1. \] Hence \[ x=-3,\qquad y=-4. \]</p>
+<p>Now \[ r=\sqrt{x^2+y^2}=\sqrt{9+16}=5. \]</p>
+<p>Therefore \[ \sin\theta=\frac{y}{r}=-\frac45,\qquad \cos\theta=\frac{x}{r}=-\frac35,\qquad \tan\theta=\frac{y}{x}=\frac{-4}{-3}=\frac43. \]</p>
+<p>\[ \boxed{\sin\theta=-\frac45,\quad \cos\theta=-\frac35,\quad \tan\theta=\frac43} \]</p>
+<hr>
+<p>5. Two sides of a triangle have lengths \(13\) and \(20\), and the included angle is \(150^\circ\). Find the area of the triangle.</p>
+<p>Use the formula \[ \text{Area}=\frac12 ab\sin C. \] Here \(a=13\), \(b=20\), and \(C=150^\circ\). Thus \[ \text{Area}=\frac12(13)(20)\sin 150^\circ. \] Since \[ \sin 150^\circ=\sin 30^\circ=\frac12, \] we get \[ \text{Area}=130\cdot\frac12=65. \]</p>
+<p>\[ \boxed{65} \]</p>
+<hr>
+<p>6. An observer is \(5280\) ft from the launch pad of a rocket. At one moment the angle of elevation is \(45^\circ\); one minute later it is \(60^\circ\). Assuming the rocket rises straight up at constant speed during that minute, how many feet does it rise?</p>
+<p>Let the horizontal distance from observer to launch pad be \[ d=5280\text{ ft}. \] If the rocket’s height is \(h\), then \[ \tan\theta=\frac{h}{d}. \]</p>
+<p>At the first moment, \(\theta=45^\circ\): \[ h_1=5280\tan45^\circ=5280. \]</p>
+<p>One minute later, \(\theta=60^\circ\): \[ h_2=5280\tan60^\circ=5280\sqrt3. \]</p>
+<p>So the rise during that minute is \[ h_2-h_1=5280(\sqrt3-1). \]</p>
+<p>\[ \boxed{5280(\sqrt3-1)\text{ ft}} \]</p>
+    </main>
+  </article>
+</body>
+</html>

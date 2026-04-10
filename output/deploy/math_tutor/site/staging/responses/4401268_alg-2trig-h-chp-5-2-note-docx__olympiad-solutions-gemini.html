@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.2 - Olympiad Solutions (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.2</h1>
+      <p><strong>Olympiad Solutions (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401268_alg-2trig-h-chp-5-2-note-docx.pdf">4401268_alg-2trig-h-chp-5-2-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<p><strong>1. An observer looking at the top of a radio tower measures an angle of elevation of $15^\circ$. After walking exactly $100$ meters directly toward the tower on level ground, the angle of elevation increases to $30^\circ$. Mentally compute the exact height of the tower in meters.</strong></p>
+<p>Let $A$ be the initial position, $B$ be the second position, $T$ be the top of the tower, and $F$ be the base of the tower.</p>
+<p>In $\triangle ABT$, the exterior angle at $B$ is the angle of elevation $\angle TBF = 30^\circ$. By the Exterior Angle Theorem, this exterior angle is equal to the sum of the two opposite interior angles, so $\angle TBF = \angle BAT + \angle BTA$. Substituting the known angles gives $30^\circ = 15^\circ + \angle BTA$, which means $\angle BTA = 15^\circ$.</p>
+<p>Because $\angle BAT = \angle BTA = 15^\circ$, $\triangle ABT$ is an isosceles triangle with sides $BT = AB = 100$ meters.</p>
+<p>Now look at the right triangle $\triangle TBF$ formed by the tower. The height of the tower $TF$ is the side opposite the $30^\circ$ angle. Using the sine ratio: $TF = BT \sin 30^\circ = 100 \left(\frac{1}{2}\right) = 50$.</p>
+<p>The exact height of the tower is <strong>$50$ meters</strong>.</p>
+<p>***</p>
+<p><strong>2. Without using a calculator, determine the exact numerical value of the expression: $(\sin 15^\circ + \cos 15^\circ)^2$</strong></p>
+<p>Expand the binomial square to get: $\sin^2 15^\circ + \cos^2 15^\circ + 2\sin 15^\circ \cos 15^\circ$</p>
+<p>Apply two fundamental trigonometric identities: the Pythagorean identity ($\sin^2 \theta + \cos^2 \theta = 1$) and the double-angle identity for sine ($2\sin \theta \cos \theta = \sin 2\theta$). This elegantly simplifies the expression to: $1 + \sin(30^\circ)$</p>
+<p>Since $\sin 30^\circ = \frac{1}{2}$, the exact value is: $1 + \frac{1}{2} = \mathbf{\frac{3}{2}}$</p>
+<p>***</p>
+<p><strong>3. Given that $\sec \theta + \tan \theta = 5$ for an acute angle $\theta$, mentally evaluate the exact value of $\sec \theta - \tan \theta$.</strong></p>
+<p>Recall the Pythagorean identity relating secant and tangent: $\sec^2 \theta - \tan^2 \theta = 1$</p>
+<p>By factoring this as a difference of squares, we establish a direct relationship between the sum and difference of the two functions: $(\sec \theta - \tan \theta)(\sec \theta + \tan \theta) = 1$</p>
+<p>Substitute the given value $\sec \theta + \tan \theta = 5$ into the equation: $(\sec \theta - \tan \theta) \cdot 5 = 1$</p>
+<p>Dividing by 5, we immediately find: $\sec \theta - \tan \theta = \mathbf{\frac{1}{5}}$</p>
+<p>***</p>
+<p><strong>4. Exploit the symmetries of the right triangle to evaluate the following sum entirely in your head: $\cos^2 10^\circ + \cos^2 20^\circ + \cos^2 30^\circ + \cos^2 40^\circ + \cos^2 50^\circ + \cos^2 60^\circ + \cos^2 70^\circ + \cos^2 80^\circ$</strong></p>
+<p>By the complementary angle identity (which reflects the symmetry of the two acute angles in a right triangle), $\cos(90^\circ - \theta) = \sin \theta$. Therefore, $\cos^2(90^\circ - \theta) = \sin^2 \theta$.</p>
+<p>We can pair the terms from the outside inward, matching each angle with its complement: $(\cos^2 10^\circ + \cos^2 80^\circ) + (\cos^2 20^\circ + \cos^2 70^\circ) + (\cos^2 30^\circ + \cos^2 60^\circ) + (\cos^2 40^\circ + \cos^2 50^\circ)$</p>
+<p>Applying the complementary identity transforms each pair into the Pythagorean identity $\cos^2 \theta + \sin^2 \theta = 1$. For example, the first pair becomes $\cos^2 10^\circ + \sin^2 10^\circ = 1$.</p>
+<p>Since there are exactly $4$ pairs and each pair evaluates to $1$, the sum is simply: $1 + 1 + 1 + 1 = \mathbf{4}$</p>
+<p>***</p>
+<p><strong>5. Using the definitions of the trigonometric ratios, find the exact value of the following 89-term product: $\tan 1^\circ \cdot \tan 2^\circ \cdot \tan 3^\circ \cdots \tan 88^\circ \cdot \tan 89^\circ$</strong></p>
+<p>Recall the complementary angle identity for tangent: $\tan(90^\circ - \theta) = \cot \theta$. Furthermore, by definition, tangent and cotangent are reciprocals, so $\tan \theta \cdot \cot \theta = 1$.</p>
+<p>We exploit this by pairing terms equidistant from the ends of the sequence: $\tan 1^\circ \cdot \tan 89^\circ = \tan 1^\circ \cdot \cot 1^\circ = 1$ $\tan 2^\circ \cdot \tan 88^\circ = \tan 2^\circ \cdot \cot 2^\circ = 1$ ...and so on.</p>
+<p>There are $89$ terms in the product. Pairing them leaves exactly one unmatched term in the exact center: $\tan 45^\circ$.</p>
+<p>The entire product simplifies to $44$ pairs multiplying to $1$, times the middle term. Since $\tan 45^\circ = 1$, the product is: $1^{44} \cdot 1 = \mathbf{1}$</p>
+<p>***</p>
+<p><strong>6. In a right triangle with acute angles $\alpha$ and $\beta$, it is known that $\log_2(\sin \alpha) + \log_2(\cos \alpha) = -2$. Mentally determine the degree measures of both $\alpha$ and $\beta$.</strong></p>
+<p>Using the sum-to-product property of logarithms, combine the left side: $\log_2(\sin \alpha \cos \alpha) = -2$</p>
+<p>Converting this logarithmic equation to exponential form yields: $\sin \alpha \cos \alpha = 2^{-2} = \frac{1}{4}$</p>
+<p>Multiply both sides by 2 to construct the double-angle identity for sine ($2\sin \alpha \cos \alpha = \sin 2\alpha$): $\sin(2\alpha) = \frac{1}{2}$</p>
+<p>Because $\alpha$ is an acute angle in a right triangle, $0^\circ &lt; 2\alpha &lt; 180^\circ$. The angles in this domain with a sine of $\frac{1}{2}$ are $30^\circ$ and $150^\circ$. Thus: $2\alpha = 30^\circ \implies \alpha = 15^\circ$ $2\alpha = 150^\circ \implies \alpha = 75^\circ$</p>
+<p>Because $\alpha$ and $\beta$ are the two acute angles of a right triangle, they must be complementary ($\alpha + \beta = 90^\circ$). If $\alpha = 15^\circ$, then $\beta = 75^\circ$, and vice versa.</p>
+<p>The degree measures of the two angles are exactly <strong>$15^\circ$ and $75^\circ$</strong>.</p>
+    </main>
+  </article>
+</body>
+</html>

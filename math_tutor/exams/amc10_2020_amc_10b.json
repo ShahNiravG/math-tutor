@@ -1,0 +1,807 @@
+{
+  "format": "explicit_curated_exam",
+  "exam": {
+    "format": "explicit_curated_exam",
+    "source_type": "explicit_curated_exam",
+    "id": "amc10-2020-amc-10b",
+    "title": "2020 AMC 10B",
+    "bank": "amc10",
+    "bank_title": "AMC 10",
+    "question_count": 25,
+    "questions": [
+      {
+        "id": "amc10-2020-amc-10b-q01",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_1",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_1",
+        "curated_problem_number": 1,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_1",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_1",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 1",
+        "question_number": 1,
+        "text": "What is the value of \\[1 - (-2) - 3 - (-4) - 5 - (-6)?\\]",
+        "question_images": [],
+        "options": [
+          "(A) \\ -20",
+          "(B) \\ -3",
+          "(C) \\ 3",
+          "(D) \\ 5",
+          "(E) \\ 21"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q02",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_2",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_2",
+        "curated_problem_number": 2,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_2",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_2",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 2",
+        "question_number": 2,
+        "text": "Carl has $5$ cubes each having side length $1$, and Kate has $5$ cubes each having side length $2$. What is the total volume of these $10$ cubes?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 24",
+          "(B) \\ 25",
+          "(C) \\ 28",
+          "(D) \\ 40",
+          "(E) \\ 45"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q03",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_3",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_3",
+        "curated_problem_number": 3,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_3",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_3",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 3",
+        "question_number": 3,
+        "text": "The ratio of $w$ to $x$ is $4:3$, the ratio of $y$ to $z$ is $3:2$, and the ratio of $z$ to $x$ is $1:6$. What is the ratio of $w$ to $y?$",
+        "question_images": [],
+        "options": [
+          "(A) \\ 4:3",
+          "(B) \\ 3:2",
+          "(C) \\ 8:3",
+          "(D) \\ 4:1",
+          "(E) \\ 16:3"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q04",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_4",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_4",
+        "curated_problem_number": 4,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_4",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_4",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 4",
+        "question_number": 4,
+        "text": "The acute angles of a right triangle are $a^{\\circ}$ and $b^{\\circ}$, where $a>b$ and both $a$ and $b$ are prime numbers. What is the least possible value of $b$?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 2",
+          "(B) \\ 3",
+          "(C) \\ 5",
+          "(D) \\ 7",
+          "(E) \\ 11"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q05",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_5",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_5",
+        "curated_problem_number": 5,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_5",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_5",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 5",
+        "question_number": 5,
+        "text": "How many distinguishable arrangements are there of $1$ brown tile, $1$ purple tile, $2$ green tiles, and $3$ yellow tiles in a row from left to right? (Tiles of the same color are indistinguishable.)",
+        "question_images": [],
+        "options": [
+          "(A) \\ 210",
+          "(B) \\ 420",
+          "(C) \\ 630",
+          "(D) \\ 840",
+          "(E) \\ 1050"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q06",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_6",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_6",
+        "curated_problem_number": 6,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_6",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_6",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 6",
+        "question_number": 6,
+        "text": "Driving along a highway, Megan noticed that her odometer showed $15951$ (miles). This number is a palindrome-it reads the same forward and backward. Then $2$ hours later, the odometer displayed the next higher palindrome. What was her average speed, in miles per hour, during this $2$-hour period?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 50",
+          "(B) \\ 55",
+          "(C) \\ 60",
+          "(D) \\ 65",
+          "(E) \\ 70"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q07",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_7",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_7",
+        "curated_problem_number": 7,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_7",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_7",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 7",
+        "question_number": 7,
+        "text": "How many positive even multiples of $3$ less than $2020$ are perfect squares?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 7",
+          "(B) \\ 8",
+          "(C) \\ 9",
+          "(D) \\ 10",
+          "(E) \\ 12"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q08",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_8",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_8",
+        "curated_problem_number": 8,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_8",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_8",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 8",
+        "question_number": 8,
+        "text": "Points $P$ and $Q$ lie in a plane with $PQ=8$. How many locations for point $R$ in this plane are there such that the triangle with vertices $P$, $Q$, and $R$ is a right triangle with area $12$ square units?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 2",
+          "(B) \\ 4",
+          "(C) \\ 6",
+          "(D) \\ 8",
+          "(E) \\ 12"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q09",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_9",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_9",
+        "curated_problem_number": 9,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_9",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_9",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 9",
+        "question_number": 9,
+        "text": "How many ordered pairs of integers $(x,y)$ satisfy the equation \\[x^{2020} + y^2 = 2y?\\]",
+        "question_images": [],
+        "options": [
+          "(A) \\ 1",
+          "(B) \\ 2",
+          "(C) \\ 3",
+          "(D) \\ 4",
+          "(E) \\ \\text{infinitely many}"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q10",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_10",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_10",
+        "curated_problem_number": 10,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_10",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_10",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/0/f/d/0fd309aa42ba1222ee60252a6c9cb5860f74c4c4.png",
+              "alt": "[asy] draw(Arc((0,0), 4, 0, 270)); draw((0,-4)--(0,0)--(4,0)); label(\"$4$\", (2,0), S); [/asy]",
+              "width": 252,
+              "height": 252
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 10",
+        "question_number": 10,
+        "text": "A three-quarter sector of a circle of radius $4$ inches together with its interior can be rolled up to form the lateral surface area of a right circular cone by taping together along the two radii shown. What is the volume of the cone in cubic inches?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/0/f/d/0fd309aa42ba1222ee60252a6c9cb5860f74c4c4.png",
+            "alt": "[asy] draw(Arc((0,0), 4, 0, 270)); draw((0,-4)--(0,0)--(4,0)); label(\"$4$\", (2,0), S); [/asy]",
+            "width": 252,
+            "height": 252
+          }
+        ],
+        "options": [
+          "(A) \\ 3\\pi \\sqrt5",
+          "(B) \\ 4\\pi \\sqrt3",
+          "(C) \\ 3 \\pi \\sqrt7",
+          "(D) \\ 6\\pi \\sqrt3",
+          "(E) \\ 6\\pi \\sqrt7"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q11",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_11",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_11",
+        "curated_problem_number": 11,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_11",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_11",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 11",
+        "question_number": 11,
+        "text": "Ms. Carr asks her students to read any $5$ of the $10$ books on a reading list. Harold randomly selects $5$ books from this list, and Betty does the same. What is the probability that there are exactly $2$ books that they both select?",
+        "question_images": [],
+        "options": [
+          "(A) \\ \\frac{1}{8}",
+          "(B) \\ \\frac{5}{36}",
+          "(C) \\ \\frac{14}{45}",
+          "(D) \\ \\frac{25}{63}",
+          "(E) \\ \\frac{1}{2}"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q12",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_12",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_12",
+        "curated_problem_number": 12,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_12",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_12",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 12",
+        "question_number": 12,
+        "text": "The decimal representation of \\[\\frac{1}{20^{20}}\\]\nconsists of a string of zeros after the decimal point, followed by a $9$ and then several more digits. How many zeros are in that initial string of zeros after the decimal point?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 23",
+          "(B) \\ 24",
+          "(C) \\ 25",
+          "(D) \\ 26",
+          "(E) \\ 27"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q13",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_13",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_13",
+        "curated_problem_number": 13,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_13",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_13",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 13",
+        "question_number": 13,
+        "text": "Andy the Ant lives on a coordinate plane and is currently at $(-20, 20)$ facing east (that is, in the positive $x$-direction). Andy moves $1$ unit and then turns $90^{\\circ}$ left. From there, Andy moves $2$ units (north) and then turns $90^{\\circ}$ left. He then moves $3$ units (west) and again turns $90^{\\circ}$ left. Andy continues his progress, increasing his distance each time by $1$ unit and always turning left. What is the location of the point which Andy makes the $2020$th left turn?",
+        "question_images": [],
+        "options": [
+          "(E) \\ (-1022, -994)"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q14",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_14",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_14",
+        "curated_problem_number": 14,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_14",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_14",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/c/c/4/cc4a8eea36390b30289f00cdba179c25b9ee3543.png",
+              "alt": "[asy] size(140); fill((1,0)--(3,0)--(4,sqrt(3))--(3,2sqrt(3))--(1,2sqrt(3))--(0,sqrt(3))--cycle,gray(0.4)); fill(arc((2,0),1,180,0)--(2,0)--cycle,white); fill(arc((3.5,sqrt(3)/2),1,60,240)--(3.5,sqrt(3)/2)--cycle,white); fill(arc((3.5,3sqrt(3)/2),1,120,300)--(3.5,3sqrt(3)/2)--cycle,white); fill(arc((2,2sqrt(3)),1,180,360)--(2,2sqrt(3))--cycle,white); fill(arc((0.5,3sqrt(3)/2),1,240,420)--(0.5,3sqrt(3)/2)--cycle,white); fill(arc((0.5,sqrt(3)/2),1,300,480)--(0.5,sqrt(3)/2)--cycle,white); draw((1,0)--(3,0)--(4,sqrt(3))--(3,2sqrt(3))--(1,2sqrt(3))--(0,sqrt(3))--(1,0)); draw(arc((2,0),1,180,0)--(2,0)--cycle); draw(arc((3.5,sqrt(3)/2),1,60,240)--(3.5,sqrt(3)/2)--cycle); draw(arc((3.5,3sqrt(3)/2),1,120,300)--(3.5,3sqrt(3)/2)--cycle); draw(arc((2,2sqrt(3)),1,180,360)--(2,2sqrt(3))--cycle); draw(arc((0.5,3sqrt(3)/2),1,240,420)--(0.5,3sqrt(3)/2)--cycle); draw(arc((0.5,sqrt(3)/2),1,300,480)--(0.5,sqrt(3)/2)--cycle); label(\"$2$\",(3.5,3sqrt(3)/2),NE); [/asy]",
+              "width": 235,
+              "height": 205
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 14",
+        "question_number": 14,
+        "text": "As shown in the figure below, six semicircles lie in the interior of a regular hexagon with side length 2 so that the diameters of the semicircles coincide with the sides of the hexagon. What is the area of the shaded region \u2014 inside the hexagon but outside all of the semicircles?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/c/c/4/cc4a8eea36390b30289f00cdba179c25b9ee3543.png",
+            "alt": "[asy] size(140); fill((1,0)--(3,0)--(4,sqrt(3))--(3,2sqrt(3))--(1,2sqrt(3))--(0,sqrt(3))--cycle,gray(0.4)); fill(arc((2,0),1,180,0)--(2,0)--cycle,white); fill(arc((3.5,sqrt(3)/2),1,60,240)--(3.5,sqrt(3)/2)--cycle,white); fill(arc((3.5,3sqrt(3)/2),1,120,300)--(3.5,3sqrt(3)/2)--cycle,white); fill(arc((2,2sqrt(3)),1,180,360)--(2,2sqrt(3))--cycle,white); fill(arc((0.5,3sqrt(3)/2),1,240,420)--(0.5,3sqrt(3)/2)--cycle,white); fill(arc((0.5,sqrt(3)/2),1,300,480)--(0.5,sqrt(3)/2)--cycle,white); draw((1,0)--(3,0)--(4,sqrt(3))--(3,2sqrt(3))--(1,2sqrt(3))--(0,sqrt(3))--(1,0)); draw(arc((2,0),1,180,0)--(2,0)--cycle); draw(arc((3.5,sqrt(3)/2),1,60,240)--(3.5,sqrt(3)/2)--cycle); draw(arc((3.5,3sqrt(3)/2),1,120,300)--(3.5,3sqrt(3)/2)--cycle); draw(arc((2,2sqrt(3)),1,180,360)--(2,2sqrt(3))--cycle); draw(arc((0.5,3sqrt(3)/2),1,240,420)--(0.5,3sqrt(3)/2)--cycle); draw(arc((0.5,sqrt(3)/2),1,300,480)--(0.5,sqrt(3)/2)--cycle); label(\"$2$\",(3.5,3sqrt(3)/2),NE); [/asy]",
+            "width": 235,
+            "height": 205
+          }
+        ],
+        "options": [
+          "(A) 6\\sqrt{3}-3\\pi",
+          "(B) \\frac{9\\sqrt{3}}{2} - 2\\pi\\",
+          "(C) \\frac{3\\sqrt{3}}{2} - \\frac{\\pi}{3}",
+          "(D) 3\\sqrt{3} - \\pi",
+          "(E) \\frac{9\\sqrt{3}}{2} - \\pi"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q15",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_15",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_15",
+        "curated_problem_number": 15,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_15",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_15",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 15",
+        "question_number": 15,
+        "text": "Steve wrote the digits $1$, $2$, $3$, $4$, and $5$ in order repeatedly from left to right, forming a list of $10,000$ digits, beginning $123451234512\\ldots.$ He then erased every third digit from his list (that is, the $3$rd, $6$th, $9$th, $\\ldots$ digits from the left), then erased every fourth digit from the resulting list (that is, the $4$th, $8$th, $12$th, $\\ldots$ digits from the left in what remained), and then erased every fifth digit from what remained at that point. What is the sum of the three digits that were then in the positions $2019, 2020, 2021$?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 7",
+          "(B) \\ 9",
+          "(C) \\ 10",
+          "(D) \\ 11",
+          "(E) \\ 12"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q16",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_16",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_16",
+        "curated_problem_number": 16,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_16",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_16",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 16",
+        "question_number": 16,
+        "text": "Bela and Jenn play the following game on the closed interval $[0, n]$ of the real number line, where $n$ is a fixed integer greater than $4$. They take turns playing, with Bela going first. At his first turn, Bela chooses any real number in the interval $[0, n]$. Thereafter, the player whose turn it is chooses a real number that is more than one unit away from all numbers previously chosen by either player. A player unable to choose such a number loses. Using optimal strategy, which player will win the game?",
+        "question_images": [],
+        "options": [
+          "(D) \\text{ Jenn will win if and only if }n \\text{ is odd.}",
+          "(E) \\text { Jenn will win if and only if } n>8."
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q17",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_17",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_17",
+        "curated_problem_number": 17,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_17",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_17",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 17",
+        "question_number": 17,
+        "text": "There are $10$ people standing equally spaced around a circle. Each person knows exactly $3$ of the other $9$ people: the $2$ people standing next to him or her, as well as the person directly across the circle. How many ways are there for the $10$ people to split up into $5$ pairs so that the members of each pair know each other?",
+        "question_images": [],
+        "options": [
+          "(A) \\ 11",
+          "(B) \\ 12",
+          "(C) \\ 13",
+          "(D) \\ 14",
+          "(E) \\ 15"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q18",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_18",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_18",
+        "curated_problem_number": 18,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_18",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_18",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 18",
+        "question_number": 18,
+        "text": "An urn contains one red ball and one blue ball. A box of extra red and blue balls lies nearby. George performs the following operation four times: he draws a ball from the urn at random and then takes a ball of the same color from the box and returns those two matching balls to the urn. After the four iterations the urn contains six balls. What is the probability that the urn contains three balls of each color?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac16",
+          "(B) \\frac15",
+          "(C) \\frac14",
+          "(D) \\frac13",
+          "(E) \\frac12"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q19",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_19",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_19",
+        "curated_problem_number": 19,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_19",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_19",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 19",
+        "question_number": 19,
+        "text": "In a certain card game, a player is dealt a hand of $10$ cards from a deck of $52$ distinct cards. The number of distinct (unordered) hands that can be dealt to the player can be written as $158A00A4AA0$. What is the digit $A$?",
+        "question_images": [],
+        "options": [
+          "(A) 2",
+          "(B) 3",
+          "(C) 4",
+          "(D) 6",
+          "(E) 7"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q20",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_20",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_20",
+        "curated_problem_number": 20,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_20",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_20",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 20",
+        "question_number": 20,
+        "text": "Let $B$ be a right rectangular prism (box) with edges lengths $1,$ $3,$ and $4$, together with its interior. For real $r\\geq0$, let $S(r)$ be the set of points in $3$-dimensional space that lie within a distance $r$ of some point in $B$. The volume of $S(r)$ can be expressed as $ar^{3} + br^{2} + cr +d$, where $a,$ $b,$ $c,$ and $d$ are positive real numbers. What is $\\frac{bc}{ad}?$",
+        "question_images": [],
+        "options": [
+          "(A) 6",
+          "(B) 19",
+          "(C) 24",
+          "(D) 26",
+          "(E) 38"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q21",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_21",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_21",
+        "curated_problem_number": 21,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_21",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_21",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/4/8/9/4892da26cb6334b359f58d4007f89460883779ab.png",
+              "alt": "[asy] real x=2sqrt(2); real y=2sqrt(16-8sqrt(2))-4+2sqrt(2); real z=2sqrt(8-4sqrt(2)); pair A, B, C, D, E, F, G, H, I, J; A = (0,0); B = (4,0); C = (4,4); D = (0,4); E = (x,0); F = (4,y); G = (y,4); H = (0,x); I = F + z * dir(225); J = G + z * dir(225);  draw(A--B--C--D--A); draw(H--E); draw(J--G^^F--I); draw(rightanglemark(G, J, I), linewidth(.5)); draw(rightanglemark(F, I, E), linewidth(.5));  dot(\"$A$\", A, S); dot(\"$B$\", B, S); dot(\"$C$\", C, dir(90)); dot(\"$D$\", D, dir(90)); dot(\"$E$\", E, S); dot(\"$F$\", F, dir(0)); dot(\"$G$\", G, N); dot(\"$H$\", H, W); dot(\"$I$\", I, SW); dot(\"$J$\", J, SW);  [/asy]",
+              "width": 252,
+              "height": 245
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 21",
+        "question_number": 21,
+        "text": "In square $ABCD$, points $E$ and $H$ lie on $\\overline{AB}$ and $\\overline{DA}$, respectively, so that $AE=AH.$ Points $F$ and $G$ lie on $\\overline{BC}$ and $\\overline{CD}$, respectively, and points $I$ and $J$ lie on $\\overline{EH}$ so that $\\overline{FI} \\perp \\overline{EH}$ and $\\overline{GJ} \\perp \\overline{EH}$. See the figure below. Triangle $AEH$, quadrilateral $BFIE$, quadrilateral $DHJG$, and pentagon $FCGJI$ each has area $1.$ What is $FI^2$?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/4/8/9/4892da26cb6334b359f58d4007f89460883779ab.png",
+            "alt": "[asy] real x=2sqrt(2); real y=2sqrt(16-8sqrt(2))-4+2sqrt(2); real z=2sqrt(8-4sqrt(2)); pair A, B, C, D, E, F, G, H, I, J; A = (0,0); B = (4,0); C = (4,4); D = (0,4); E = (x,0); F = (4,y); G = (y,4); H = (0,x); I = F + z * dir(225); J = G + z * dir(225);  draw(A--B--C--D--A); draw(H--E); draw(J--G^^F--I); draw(rightanglemark(G, J, I), linewidth(.5)); draw(rightanglemark(F, I, E), linewidth(.5));  dot(\"$A$\", A, S); dot(\"$B$\", B, S); dot(\"$C$\", C, dir(90)); dot(\"$D$\", D, dir(90)); dot(\"$E$\", E, S); dot(\"$F$\", F, dir(0)); dot(\"$G$\", G, N); dot(\"$H$\", H, W); dot(\"$I$\", I, SW); dot(\"$J$\", J, SW);  [/asy]",
+            "width": 252,
+            "height": 245
+          }
+        ],
+        "options": [
+          "(A) \\frac{7}{3}",
+          "(B) 8-4\\sqrt2",
+          "(C) 1+\\sqrt2",
+          "(D) \\frac{7}{4}\\sqrt2",
+          "(E) 2\\sqrt2"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q22",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_22",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_22",
+        "curated_problem_number": 22,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_22",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_22",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 22",
+        "question_number": 22,
+        "text": "What is the remainder when $2^{202} +202$ is divided by $2^{101}+2^{51}+1$?",
+        "question_images": [],
+        "options": [
+          "(A) 100",
+          "(B) 101",
+          "(C) 200",
+          "(D) 201",
+          "(E) 202"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q23",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_23",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_23",
+        "curated_problem_number": 23,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_23",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_23",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 23",
+        "question_number": 23,
+        "text": "Square $ABCD$ in the coordinate plane has vertices at the points $A(1,1), B(-1,1), C(-1,-1),$ and $D(1,-1).$ Consider the following four transformations:\n\n$\\quad\\bullet\\qquad$ $L,$ a rotation of $90^{\\circ}$ counterclockwise around the origin;\n\n$\\quad\\bullet\\qquad$ $R,$ a rotation of $90^{\\circ}$ clockwise around the origin;\n\n$\\quad\\bullet\\qquad$ $H,$ a reflection across the $x$-axis; and\n\n$\\quad\\bullet\\qquad$ $V,$ a reflection across the $y$-axis.\n\nEach of these transformations maps the squares onto itself, but the positions of the labeled vertices will change. For example, applying $R$ and then $V$ would send the vertex $A$ at $(1,1)$ to $(-1,-1)$ and would send the vertex $B$ at $(-1,1)$ to itself. How many sequences of $20$ transformations chosen from $\\{L, R, H, V\\}$ will send all of the labeled vertices back to their original positions? (For example, $R, R, V, H$ is one sequence of $4$ transformations that will send the vertices back to their original positions.)",
+        "question_images": [],
+        "options": [
+          "(A) \\ 2^{37}",
+          "(B) \\ 3\\cdot 2^{36}",
+          "(C) \\ 2^{38}",
+          "(D) \\ 3\\cdot 2^{37}",
+          "(E) \\ 2^{39}"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q24",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_24",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_24",
+        "curated_problem_number": 24,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_24",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_24",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 24",
+        "question_number": 24,
+        "text": "How many positive integers $n$ satisfy\\[\\dfrac{n+1000}{70} = \\lfloor \\sqrt{n} \\rfloor?\\](Recall that $\\lfloor x\\rfloor$ is the greatest integer not exceeding $x$.)",
+        "question_images": [],
+        "options": [
+          "(A) 2",
+          "(B) 4",
+          "(C) 6",
+          "(D) 30",
+          "(E) 32"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2020-amc-10b-q25",
+        "source_stem": "amc10-2020-amc-10b",
+        "curated_source": "2020 AMC 10B",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_25",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_25",
+        "curated_problem_number": 25,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems#Problem_25",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems/Problem_25",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2020 AMC 10B / Problem 25",
+        "question_number": 25,
+        "text": "Let $D(n)$ denote the number of ways of writing the positive integer $n$ as a product\\[n = f_1\\cdot f_2\\cdots f_k,\\]\n\nwhere $k\\ge1$, the $f_i$ are integers strictly greater than $1$, and the order in which the factors are listed matters (that is, two representations that differ only in the order of the factors are counted as distinct). For example, the number $6$ can be written as $6$, $2\\cdot 3$, and $3\\cdot2$, so $D(6) = 3$. What is $D(96)$?",
+        "question_images": [],
+        "options": [
+          "(A) 112",
+          "(B) 128",
+          "(C) 144",
+          "(D) 172",
+          "(E) 184"
+        ],
+        "correct": "A"
+      }
+    ],
+    "curated_metadata": {
+      "year": 2020,
+      "contest": "AMC 10B",
+      "administered_on": "2020-02-05",
+      "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B",
+      "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Problems",
+      "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10B_Answer_Key"
+    }
+  }
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 5.6 - Olympiad Solutions (Gemini)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 5.6</h1>
+      <p><strong>Olympiad Solutions (Gemini)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4401272_alg-2trig-h-chp-5-6-note-docx.pdf">4401272_alg-2trig-h-chp-5-6-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <p>Solutions</p>
+<p><strong>1. In $\triangle ABC$, the measure of $\angle C$ is $60^\circ$. The side lengths $a$ and $b$ differ by exactly 3, and side $c$ has a length of 7. Determine the lengths of sides $a$ and $b$.</strong></p>
+<p>By the Law of Cosines, we have: $c^2 = a^2 + b^2 - 2ab \cos C$</p>
+<p>Substitute the given values $c = 7$ and $\angle C = 60^\circ$ (so $\cos 60^\circ = \frac{1}{2}$): $49 = a^2 + b^2 - ab$</p>
+<p>We can cleverly rewrite the right side in terms of the difference of the sides: $49 = (a - b)^2 + ab$</p>
+<p>We are given that $|a - b| = 3$, so $(a - b)^2 = 9$. Substituting this into the equation yields: $49 = 9 + ab \implies ab = 40$</p>
+<p>We now seek two positive numbers whose absolute difference is 3 and whose product is 40. These numbers are the roots of the quadratic equation $t^2 - 3t - 40 = 0$, which factors as $(t - 8)(t + 5) = 0$. Discarding the negative root, we find the lengths of the two sides to be exactly $8$ and $5$.</p>
+<p>***</p>
+<p><strong>2. A triangle has side lengths $13x$, $14x$, and $15x$ for some positive real number $x$. If its area is numerically equal to its semiperimeter, determine the exact value of $x$.</strong></p>
+<p>For a reference triangle with side lengths $13$, $14$, and $15$, the semiperimeter is: $s = \frac{13 + 14 + 15}{2} = 21$</p>
+<p>By Heron's formula, the area of this reference triangle is: $A = \sqrt{s(s-a)(s-b)(s-c)} = \sqrt{21(8)(7)(6)} = \sqrt{7056} = 84$</p>
+<p>When the sides are scaled by a factor of $x$, the semiperimeter scales linearly and the area scales quadratically. Thus, the new semiperimeter is $21x$ and the new area is $84x^2$.</p>
+<p>Setting the area equal to the semiperimeter gives: $84x^2 = 21x$</p>
+<p>Since $x$ is strictly positive, we divide by $21x$ to obtain: $4x = 1 \implies x = \frac{1}{4}$</p>
+<p>***</p>
+<p><strong>3. In quadrilateral $ABCD$, the side lengths are $AB = 7$, $BC = 24$, $CD = 20$, and $DA = 15$. Given that $\angle ABC$ is exactly $90^\circ$, determine the measure of $\angle ADC$ without writing down any calculations.</strong></p>
+<p>Observe the right triangle $\triangle ABC$ formed by the diagonal $AC$. The legs are $AB = 7$ and $BC = 24$. Recognizing the well-known 7-24-25 Pythagorean triple, the hypotenuse $AC$ must be $25$.</p>
+<p>Now consider $\triangle ADC$, bounded by sides $DA = 15$, $CD = 20$, and the newly found diagonal $AC = 25$. These side lengths fall perfectly into the ratio $15:20:25$, which simplifies to $3:4:5$. Because this is a Pythagorean triple, $\triangle ADC$ is a right triangle.</p>
+<p>The longest side is $AC = 25$, meaning the angle directly opposite it must be the right angle. Therefore, the measure of $\angle ADC$ is $90^\circ$.</p>
+<p>***</p>
+<p><strong>4. A ship leaves port and sails 40 miles at a bearing of $020^\circ$ (measured clockwise from due North). It then turns and sails another 40 miles at a bearing of $140^\circ$. What is the ship's exact straight-line distance from the port?</strong></p>
+<p>Let the port be point $P$, the turning point be $T$, and the final destination be $F$. The ship travels along segments $PT$ and $TF$, each of length $40$.</p>
+<p>The ship changes its direction from a bearing of $020^\circ$ to $140^\circ$. The change in bearing establishes the exterior angle of the ship's turn at $T$, which is $140^\circ - 20^\circ = 120^\circ$. Consequently, the interior angle of the triangle at $T$ is the supplement: $180^\circ - 120^\circ = 60^\circ$.</p>
+<p>We now have $\triangle PTF$ with two equal sides ($PT = TF = 40$) and an included angle of $60^\circ$. An isosceles triangle with a $60^\circ$ vertex angle is, by necessity, an equilateral triangle. Therefore, the third side $PF$ is equal to the other two, making the ship's straight-line distance from the port exactly $40$ miles.</p>
+<p>***</p>
+<p><strong>5. The side lengths $a$, $b$, and $c$ of a triangle satisfy the algebraic relation $2(a^2b^2 + b^2c^2 + c^2a^2) - (a^4 + b^4 + c^4) = 576$. Mentally determine the area of the triangle.</strong></p>
+<p>The algebraic expression given on the left side of the equation is precisely the radicand in the expanded form of Heron's formula. Specifically, the area $A$ of a triangle can be expressed as: $A = \frac{1}{4} \sqrt{2(a^2b^2 + b^2c^2 + c^2a^2) - (a^4 + b^4 + c^4)}$</p>
+<p>Squaring both sides and multiplying by 16 provides the identity: $16A^2 = 2(a^2b^2 + b^2c^2 + c^2a^2) - (a^4 + b^4 + c^4)$</p>
+<p>Given that the right side evaluates to $576$, we have: $16A^2 = 576$</p>
+<p>Dividing by 16 mentally gives $A^2 = 36$. Since the area is positive, the area of the triangle is $6$.</p>
+<p>***</p>
+<p><strong>6. The side lengths of an oblique triangle are given by the expressions $2x+1$, $x^2-1$, and $x^2+x+1$ for some integer $x &gt; 1$. Determine the degree measure of the largest angle in this triangle.</strong></p>
+<p>Let $a = 2x+1$, $b = x^2-1$, and $c = x^2+x+1$. To identify the longest side, notice that: $c - a = x^2 - x = x(x - 1) &gt; 0$ (since $x &gt; 1$) $c - b = x + 2 &gt; 0$ Thus, $c$ is strictly the longest side, and the largest angle $C$ is opposite side $c$.</p>
+<p>We apply the Law of Cosines to find $\angle C$: $\cos C = \frac{a^2 + b^2 - c^2}{2ab}$</p>
+<p>Instead of a brute-force expansion, we can elegantly calculate the numerator using the difference of squares: $b^2 - c^2 = (b - c)(b + c) = (-x - 2)(2x^2 + x) = -x(x + 2)(2x + 1)$</p>
+<p>Now, add $a^2 = (2x + 1)^2$ to this result: $a^2 + b^2 - c^2 = (2x + 1)^2 - x(x + 2)(2x + 1)$ Factor out $(2x + 1)$: $a^2 + b^2 - c^2 = (2x + 1)[(2x + 1) - (x^2 + 2x)] = (2x + 1)(1 - x^2)$</p>
+<p>Notice that $a = 2x+1$ and $-b = 1-x^2$. Thus, the numerator perfectly simplifies to $-ab$.</p>
+<p>Substitute this back into the Law of Cosines: $\cos C = \frac{-ab}{2ab} = -\frac{1}{2}$</p>
+<p>The angle with a cosine of $-\frac{1}{2}$ in a triangle is exactly $120^\circ$.</p>
+    </main>
+  </article>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chapter Challenge Widget</title>
+  <style>
+    :root {
+      --bg: #f5f1e8;
+      --paper: #fffaf2;
+      --ink: #1f2a33;
+      --muted: #5b6a74;
+      --accent: #a14d2e;
+      --teal: #134f59;
+      --line: #d8cfc2;
+      --soft: #ead2c5;
+      --done: #166534;
+      --done-bg: #dcfce7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background: transparent;
+    }
+    .wrap {
+      display: grid;
+      gap: 14px;
+    }
+    .widget-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 10px 26px rgba(78,55,32,.08);
+      padding: 16px 18px;
+    }
+    p { margin: 0; }
+    .intro { color: var(--muted); line-height: 1.45; margin-bottom: 12px; font-size: .95rem; }
+    .exam-grid { display: grid; gap: 10px; }
+    .exam-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fffdf9;
+      display: grid;
+      gap: 8px;
+    }
+    .exam-card.done {
+      border-color: #86efac;
+      background: #f0fdf4;
+    }
+    .row { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .exam-title { font-size: .98rem; font-weight: 700; }
+    .meta { display: flex; flex-wrap: wrap; gap: 8px; font-family: system-ui, sans-serif; }
+    .tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: .8rem;
+      font-weight: 700;
+    }
+    .tag-mm { background: #dbeafe; color: #1e40af; }
+    .tag-op { background: #dcfce7; color: #166534; }
+    .tag-model { background: var(--soft); color: var(--accent); }
+    .tag-done { background: var(--done-bg); color: var(--done); }
+    .tag-resume { background: #fef9c3; color: #854d0e; }
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-family: system-ui, sans-serif;
+      font-weight: 700;
+      font-size: .88rem;
+      border: 1px solid var(--line);
+      background: white;
+      color: var(--ink);
+    }
+    .btn-primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .small { color: var(--muted); font-family: system-ui, sans-serif; font-size: .8rem; }
+    .loading, .error { padding: 18px; text-align: center; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div id="root" class="wrap">
+    <div class="widget-card loading">Loading chapter challenges&hellip;</div>
+  </div>
+<script>
+const LEGACY_SESSION_KEY = 'math_tutor_challenge_session';
+const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';
+
+function sendHeight() {
+  const h = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({type: 'math-tutor-challenge-widget-height', height: h}, '*');
+  }
+}
+
+function sessionKeyForExam(examId) {
+  return SESSION_KEY_PREFIX + examId;
+}
+
+function readStoredSession(key) {
+  try {
+    const saved = JSON.parse(localStorage.getItem(key) || 'null');
+    return saved && saved.exam_id ? saved : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function getLocalSession(examId) {
+  const perExamSaved = readStoredSession(sessionKeyForExam(examId));
+  if (perExamSaved && perExamSaved.exam_id === examId) return perExamSaved;
+
+  const legacySaved = readStoredSession(LEGACY_SESSION_KEY);
+  return legacySaved && legacySaved.exam_id === examId ? legacySaved : null;
+}
+
+function openTopLevel(href) {
+  try {
+    if (window.top && window.top !== window) {
+      window.top.location.href = href;
+      return false;
+    }
+  } catch (e) {
+    // Fall back to same-window navigation if top is inaccessible.
+  }
+  window.location.href = href;
+  return false;
+}
+
+async function fetchProgress(examId) {
+  try {
+    const res = await fetch('get_progress.php?exam_id=' + encodeURIComponent(examId), {cache: 'no-store'});
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data.progress || null;
+  } catch (e) {
+    return null;
+  }
+}
+
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const chapter = params.get('chapter') || '5.1';
+  const chapterSlug = chapter.replace('.', '');
+  const returnHref = params.get('return') || '../doc-4401267.html';
+  const returnLabel = params.get('return_label') || 'Back to Chapter';
+  const root = document.getElementById('root');
+
+  let data;
+  let completedIds = [];
+  try {
+    const [res, completedRes] = await Promise.all([
+      fetch('chapter-exams/chp' + encodeURIComponent(chapterSlug) + '.json', {cache: 'no-store'}),
+      fetch('completed.php', {cache: 'no-store'}).catch(function () { return null; }),
+    ]);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    data = await res.json();
+    if (completedRes && completedRes.ok) {
+      const completedData = await completedRes.json();
+      completedIds = completedData.completed || [];
+    }
+  } catch (e) {
+    root.innerHTML = '<div class="widget-card error">Could not load chapter challenges.</div>';
+    sendHeight();
+    return;
+  }
+
+  const exams = data.exams || [];
+  const completedSet = new Set(completedIds);
+  if (!exams.length) {
+    root.innerHTML = '<div class="widget-card error">No chapter challenges are available yet.</div>';
+    sendHeight();
+    return;
+  }
+
+  const progressByExam = {};
+  await Promise.all(exams.map(async function (exam) {
+    progressByExam[exam.id] = await fetchProgress(exam.id);
+  }));
+
+  root.innerHTML = `
+    <div class="widget-card">
+      <p class="intro">Choose a mental math or olympiad challenge and continue in the full challenge page.</p>
+      <div class="exam-grid">
+        ${exams.map(function (exam) {
+          const progress = progressByExam[exam.id];
+          const local = getLocalSession(exam.id);
+          const answered = progress ? progress.answered_count : (local ? Object.values(local.answers || {}).filter(Boolean).length : 0);
+          const hasProgress = !!(progress || local);
+          const isDone = completedSet.has(exam.id);
+          const actionLabel = isDone ? 'View Reports' : (hasProgress ? 'Resume Challenge' : 'Start Challenge');
+          const actionHref = isDone
+            ? 'reports.php'
+            : ('exam.html?id=' + encodeURIComponent(exam.id) +
+               '&return=' + encodeURIComponent(returnHref) +
+               '&return_label=' + encodeURIComponent(returnLabel));
+          const displayTitle = exam.challenge_type === 'mm' ? 'Mental Math Challenge' : 'Olympiad Challenge';
+          const secondary = hasProgress && !isDone
+            ? '<span class="tag tag-resume">' + answered + '/' + exam.question_count + ' answered</span>'
+            : (isDone ? '<span class="tag tag-done">All answered</span>' : '');
+          const typeClass = exam.challenge_type === 'mm' ? 'tag-mm' : 'tag-op';
+          const typeLabel = exam.challenge_type === 'mm' ? 'Mental Math' : 'Olympiad';
+          return `
+            <div class="exam-card${isDone ? ' done' : ''}">
+              <div class="row">
+                <div class="exam-title">${displayTitle}</div>
+                ${secondary}
+              </div>
+              <div class="meta">
+                <span class="tag ${typeClass}">${typeLabel}</span>
+                <span class="tag tag-model">${exam.models.join(' + ')}</span>
+                <span class="tag tag-model">${exam.question_count} questions</span>
+              </div>
+              <div class="row">
+                <div class="small">Resume opens at your next skipped question.</div>
+                <a class="btn btn-primary" href="${actionHref}" onclick="return openTopLevel('${actionHref.replace(/'/g, "\\'")}')">${actionLabel} &rarr;</a>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+  sendHeight();
+})();
+
+window.addEventListener('load', sendHeight);
+window.addEventListener('resize', sendHeight);
+</script>
+</body>
+</html>

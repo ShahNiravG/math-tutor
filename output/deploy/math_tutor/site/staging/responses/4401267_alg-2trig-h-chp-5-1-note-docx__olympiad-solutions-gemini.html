@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>4401267 alg-2trig-h-chp-5-1-note-docx  olympiad-solutions-gemini - </title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>4401267 alg-2trig-h-chp-5-1-note-docx  olympiad-solutions-gemini</h1>
+      <p><strong></strong></p>
+      <p>Saved tutoring response with MathJax rendering.</p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<p><strong>1. Find the smallest positive degree measure that is coterminal with an angle of exactly $1,000,000^\circ$.</strong></p>
+<p>Two angles are coterminal if they differ by an integer multiple of $360^\circ$. We seek the remainder when $1,000,000$ is divided by $360$. We can simplify the division by factoring out $40$: $$ \frac{1,000,000}{360} = \frac{100,000}{36} = \frac{25,000}{9} $$ Dividing $25,000$ by $9$ yields a quotient of $2777$ with a remainder of $7$, meaning: $$ 25,000 = 2777 \times 9 + 7 $$ Multiplying this entire equation back by $40$ restores our original scale: $$ 1,000,000 = 2777 \times 360 + 280 $$ Thus, $1,000,000^\circ$ represents $2777$ full revolutions plus an additional $280^\circ$. The smallest positive coterminal angle is exactly <strong>$280^\circ$</strong>.</p>
+<p>***</p>
+<p><strong>2. A wire of fixed length $L$ is bent to form the complete boundary (two radii and an arc) of a circular sector. What central angle (in radians) maximizes the enclosed area of this sector?</strong></p>
+<p>Let the sector have radius $r$ and central angle $\theta$. The perimeter (the length of the wire) is the sum of the two radii and the arc length, so $L = 2r + r\theta$. The area of the sector is given by $A = \frac{1}{2}r^2\theta$.</p>
+<p>We can rewrite the area to group the terms of our perimeter constraint: $$ A = \frac{1}{2} r (r\theta) $$ By the AM-GM (Arithmetic Mean-Geometric Mean) inequality, the product of two positive variables with a fixed sum is maximized when the two variables are equal. Here, the sum of $2r$ and $r\theta$ is fixed to $L$. To maximize their product $(2r)(r\theta) \propto A$, we must set the two components equal to each other: $$ 2r = r\theta $$ Dividing both sides by $r$ (since $r &gt; 0$) yields <strong>$2$ radians</strong>.</p>
+<p>***</p>
+<p><strong>3. Circle $A$ has a radius of $1$ unit and Circle $B$ has a radius of $2024$ units. If Circle $A$ rolls without slipping around the stationary, outer circumference of Circle $B$, how many full $360^\circ$ revolutions will Circle $A$ have completed about its <em>own</em> center by the time it returns to its exact starting position?</strong></p>
+<p>This is an application of the classic coin-rotation paradox. The circumference of Circle $B$ is $2\pi(2024)$ and the circumference of Circle $A$ is $2\pi(1)$. As Circle $A$ rolls along the perimeter of Circle $B$, it covers a distance equal to Circle $B$'s circumference, which corresponds to exactly $2024$ rotations relative to the contact point.</p>
+<p>However, because Circle $A$ is traveling along a circular path (orbiting Circle $B$), its center traces out a larger circle of radius $2024 + 1 = 2025$. The absolute angle of rotation of Circle $A$ about its own center is given by the distance its center travels divided by its own radius: $$ \text{Revolutions} = \frac{2\pi(2024 + 1)}{2\pi(1)} = 2025 $$ Therefore, Circle $A$ completes <strong>$2025$</strong> full revolutions.</p>
+<p>***</p>
+<p><strong>4. A single central angle $\theta$ is drawn within a pair of concentric circles, dividing the shape into a smaller inner circular sector and a surrounding outer annular region. If these two regions have the exact same area <em>and</em> the exact same perimeter, what is the value of $\theta$ in radians?</strong></p>
+<p>Let the radius of the inner circle be $r$ and the outer circle be $R$. The angle $\theta$ defines an inner sector and an outer annular sector. The inner sector has area $\frac{1}{2}r^2\theta$ and perimeter $2r + r\theta$. The outer annular sector has area $\frac{1}{2}R^2\theta - \frac{1}{2}r^2\theta$ and its perimeter consists of two straight edge segments (each $R-r$) plus the two circular arcs ($R\theta$ and $r\theta$).</p>
+<p>First, equating the areas: $$ \frac{1}{2}r^2\theta = \frac{1}{2}(R^2 - r^2)\theta $$ Assuming $\theta &gt; 0$, we divide by $\frac{1}{2}\theta$ to get $r^2 = R^2 - r^2$, which simplifies to $R^2 = 2r^2$, or $R = r\sqrt{2}$.</p>
+<p>Second, equating the perimeters: $$ 2r + r\theta = 2(R - r) + R\theta + r\theta $$ Subtracting $r\theta$ from both sides and simplifying yields: $$ 4r = R(2 + \theta) $$ Substitute $R = r\sqrt{2}$ into the perimeter equation: $$ 4r = r\sqrt{2}(2 + \theta) $$ Divide by $r\sqrt{2}$: $$ \frac{4}{\sqrt{2}} = 2 + \theta \implies 2\sqrt{2} = 2 + \theta $$ Thus, $\theta = \mathbf{2\sqrt{2} - 2}$ radians.</p>
+<p>***</p>
+<p><strong>5. Assuming the Earth is a perfect sphere of radius $R$, a city on the equator travels through space at a linear speed $v$ purely due to the Earth's rotation. A second city, located perfectly due north of the first, travels at a linear speed of exactly $v/2$. What is the shortest distance along the Earth's surface between the two cities?</strong></p>
+<p>The linear speed of a point on the Earth's surface due to rotation is directly proportional to its perpendicular distance to the axis of rotation. For a city on the equator, this distance is simply the Earth's radius, $R$. For a city at latitude $\phi$, the distance to the axis is $R\cos\phi$.</p>
+<p>Because the second city travels at half the speed of the equatorial city, we have: $$ v_{\text{north}} = v \cos\phi \implies \frac{v}{2} = v \cos\phi \implies \cos\phi = \frac{1}{2} $$ This tells us the second city is located at a latitude of $\phi = 60^\circ$, or $\frac{\pi}{3}$ radians.</p>
+<p>The shortest path along the surface of a sphere between two points on the same longitude (one being due north of the other) is simply the arc of the meridian connecting them. The length of this arc is the radius multiplied by the central angle in radians: $$ \text{Distance} = R\phi = \mathbf{\frac{\pi R}{3}} $$</p>
+<p>***</p>
+<p><strong>6. At 12:00, the minute and hour hands of a continuously moving clock perfectly overlap. Over the exact span of the next 12 hours, how many times will the angle between the two hands measure exactly $1$ radian?</strong></p>
+<p>Instead of looking at the absolute positions of the hands, consider their <em>relative</em> motion. In exactly 12 hours, the minute hand completes 12 full revolutions while the hour hand completes exactly 1 full revolution. Therefore, the minute hand laps the hour hand exactly $12 - 1 = 11$ times.</p>
+<p>This means that over the 12-hour period, the relative angle between the two hands perfectly cycles from $0$ to $2\pi$ exactly 11 times. During <em>each</em> of these 11 relative revolutions, the angle between the hands grows continuously from $0$ to $\pi$ (moving apart) and then shrinks continuously from $\pi$ back to $0$ (coming together).</p>
+<p>Because $1$ radian is strictly between $0$ and $\pi$, the angle will measure exactly $1$ radian exactly twice per lap: once as the hands separate and once as they approach each other. Since there are 11 laps, this happens $11 \times 2 = \mathbf{22}$ times.</p>
+    </main>
+  </article>
+</body>
+</html>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Algebra II with Trigonometry Chapter 6.2 - Olympiad Solutions (GPT-5.4)</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <style>
+    :root {
+      --bg: #f6f1e8;
+      --paper: #fffdf8;
+      --ink: #1d2833;
+      --muted: #667784;
+      --line: #dfd5c8;
+      --accent: #0f6a73;
+      --code: #f1ebe2;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, #f4d7c4 0, transparent 24%),
+        linear-gradient(180deg, #f8f3eb 0%, var(--bg) 100%);
+    }
+    .page {
+      width: min(920px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      box-shadow: 0 16px 36px rgba(48, 36, 23, 0.08);
+      overflow: hidden;
+    }
+    header {
+      padding: 24px 28px 18px;
+      border-bottom: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffaf3 0%, #fbf6ee 100%);
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.08;
+    }
+    header p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+    main {
+      padding: 24px 28px 32px;
+    }
+    a { color: var(--accent); }
+    h2, h3, h4 {
+      color: #213647;
+      margin-top: 1.25em;
+      margin-bottom: 0.45em;
+    }
+    p, li {
+      line-height: 1.7;
+    }
+    ul {
+      padding-left: 24px;
+    }
+    hr {
+      border: 0;
+      border-top: 1px solid var(--line);
+      margin: 22px 0;
+    }
+    code {
+      background: var(--code);
+      padding: 0.1em 0.35em;
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+    /* ── Question copy buttons ── */
+    .q-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .copy-q-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.7);
+      color: var(--muted);
+      border-radius: 6px;
+      cursor: pointer;
+      padding: 2px 7px;
+      font-size: .85rem;
+      white-space: nowrap;
+      transition: all .15s;
+      flex-shrink: 0;
+      margin-left: 10px;
+    }
+    .copy-q-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .copy-q-btn.copied { border-color: #166534; color: #166534; background: #dcfce7; }
+    @media print { .copy-q-btn { display: none; } }
+  </style>
+  <script>
+  function rawTextOf(node) {
+    if (node.nodeType === Node.TEXT_NODE) return node.textContent;
+    if (node.dataset && node.dataset.mjxTexstring) return node.dataset.mjxTexstring;
+    var mjx = node.querySelector && node.querySelector('[data-mjx-texstring]');
+    if (mjx) {
+      var tex = mjx.getAttribute('data-mjx-texstring');
+      return node.classList && node.classList.contains('MJX-TEX') ? tex
+           : (node.getAttribute('display') === 'true' ? '\\[' + tex + '\\]' : '$' + tex + '$');
+    }
+    var out = '';
+    node.childNodes.forEach(function(c) { out += rawTextOf(c); });
+    return out;
+  }
+  function copyRawBlock(btn, blockEl) {
+    var text = rawTextOf(blockEl).trim();
+    function flash() {
+      var orig = btn.innerHTML;
+      btn.innerHTML = '\u2713';
+      btn.classList.add('copied');
+      setTimeout(function() { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallbackCopy(text); flash(); });
+    } else { fallbackCopy(text); flash(); }
+  }
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text; ta.style.cssText = 'position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    function isNumbered(text) {
+      return /^[0-9]+[.)][ \t]/.test(text.trim()) || /^[0-9]+[.)]$/.test(text.trim());
+    }
+    function attachCopyButtons() {
+      var main = document.querySelector('main');
+      if (!main) return;
+      var children = Array.from(main.children);
+      children.forEach(function(el) {
+        if (el.tagName !== 'H4' || !isNumbered(el.textContent)) return;
+        var block = document.createElement('div');
+        var sib = el.nextElementSibling;
+        while (sib && sib.tagName !== 'HR' && !/^H[234]$/.test(sib.tagName)) {
+          block.appendChild(sib.cloneNode(true));
+          sib = sib.nextElementSibling;
+        }
+        var headingClone = el.cloneNode(true);
+        block.insertBefore(headingClone, block.firstChild);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, block); });
+        var wrapper = document.createElement('div');
+        wrapper.className = 'q-heading';
+        while (el.firstChild) wrapper.appendChild(el.firstChild);
+        wrapper.appendChild(btn);
+        el.appendChild(wrapper);
+      });
+      children.forEach(function(el) {
+        if (el.tagName !== 'P' || !isNumbered(el.textContent)) return;
+        var pClone = el.cloneNode(true);
+        var btn = document.createElement('button');
+        btn.className = 'copy-q-btn';
+        btn.innerHTML = '\u{1F4CB}';
+        btn.addEventListener('click', function() { copyRawBlock(btn, pClone); });
+        el.appendChild(btn);
+      });
+    }
+    if (window.MathJax && MathJax.startup) {
+      MathJax.startup.promise.then(attachCopyButtons);
+    } else {
+      attachCopyButtons();
+    }
+  });
+  </script>
+</head>
+<body>
+  <article class="page">
+    <header>
+      <h1>Algebra II with Trigonometry Chapter 6.2</h1>
+      <p><strong>Olympiad Solutions (GPT-5.4)</strong></p>
+      <p>Saved tutoring response with MathJax rendering. Original PDF file: <a href="../downloads/4506907_alg-2trig-h-chp-6-2-note-docx.pdf">4506907_alg-2trig-h-chp-6-2-note-docx.pdf</a></p>
+    </header>
+    <main>
+      <h2>Solutions</h2>
+<p>1. Evaluate exactly: \[ \sin\frac{13\pi}{12}+\cos\frac{13\pi}{12}. \]</p>
+<p>Note that \[ \frac{13\pi}{12}=\pi+\frac{\pi}{12}. \] Hence \[ \sin\left(\pi+\frac{\pi}{12}\right)=-\sin\frac{\pi}{12}, \qquad \cos\left(\pi+\frac{\pi}{12}\right)=-\cos\frac{\pi}{12}. \] Therefore \[ \sin\frac{13\pi}{12}+\cos\frac{13\pi}{12} =-\left(\sin\frac{\pi}{12}+\cos\frac{\pi}{12}\right). \]</p>
+<p>Now use \[ (\sin x+\cos x)^2=\sin^2x+\cos^2x+2\sin x\cos x=1+\sin 2x. \] With \(x=\frac{\pi}{12}\), \[ (\sin\tfrac{\pi}{12}+\cos\tfrac{\pi}{12})^2 =1+\sin\frac{\pi}{6} =1+\frac12 =\frac32. \] Since \(\sin\frac{\pi}{12}+\cos\frac{\pi}{12}&gt;0\), \[ \sin\frac{\pi}{12}+\cos\frac{\pi}{12}=\sqrt{\frac32}=\frac{\sqrt6}{2}. \] Thus \[ \sin\frac{13\pi}{12}+\cos\frac{13\pi}{12} =-\frac{\sqrt6}{2}. \]</p>
+<p>\[ \boxed{-\frac{\sqrt6}{2}} \]</p>
+<p>2. A real number \(t\) satisfies \[ \sin t+\cos t=\frac13. \] Knowing \(t\) is in Quadrant II, find the exact value of \(\tan t\).</p>
+<p>Let \[ s=\sin t,\qquad c=\cos t. \] We are given \[ s+c=\frac13. \] Squaring, \[ s^2+2sc+c^2=\frac19. \] Since \(s^2+c^2=1\), \[ 1+2sc=\frac19 \quad\Rightarrow\quad 2sc=-\frac89 \quad\Rightarrow\quad sc=-\frac49. \]</p>
+<p>Now \(s\) and \(c\) are the roots of \[ u^2-(s+c)u+sc=0, \] so \[ u^2-\frac13u-\frac49=0. \] Multiply by \(9\): \[ 9u^2-3u-4=0. \] Thus \[ u=\frac{3\pm\sqrt{9+144}}{18} =\frac{3\pm3\sqrt{17}}{18} =\frac{1\pm\sqrt{17}}{6}. \]</p>
+<p>In Quadrant II, \(\sin t&gt;0\) and \(\cos t&lt;0\). Therefore \[ \sin t=\frac{1+\sqrt{17}}{6},\qquad \cos t=\frac{1-\sqrt{17}}{6}. \] Hence \[ \tan t=\frac{\sin t}{\cos t} =\frac{1+\sqrt{17}}{1-\sqrt{17}}. \] Rationalizing, \[ \tan t =\frac{(1+\sqrt{17})^2}{1-17} =\frac{18+2\sqrt{17}}{-16} =-\frac{9+\sqrt{17}}{8}. \]</p>
+<p>\[ \boxed{-\frac{9+\sqrt{17}}{8}} \]</p>
+<p>3. Without a calculator, determine the exact value of \[ \sec\frac{7\pi}{12}-\csc\frac{7\pi}{12}. \]</p>
+<p>Write \[ \frac{7\pi}{12}=\frac{\pi}{3}+\frac{\pi}{4}. \] Then \[ \cos\frac{7\pi}{12} =\cos\left(\frac{\pi}{3}+\frac{\pi}{4}\right) =\cos\frac{\pi}{3}\cos\frac{\pi}{4}-\sin\frac{\pi}{3}\sin\frac{\pi}{4} =\frac{\sqrt2}{4}-\frac{\sqrt6}{4} =\frac{\sqrt2-\sqrt6}{4}, \] and \[ \sin\frac{7\pi}{12} =\sin\left(\frac{\pi}{3}+\frac{\pi}{4}\right) =\sin\frac{\pi}{3}\cos\frac{\pi}{4}+\cos\frac{\pi}{3}\sin\frac{\pi}{4} =\frac{\sqrt6}{4}+\frac{\sqrt2}{4} =\frac{\sqrt6+\sqrt2}{4}. \]</p>
+<p>Therefore \[ \sec\frac{7\pi}{12} =\frac{4}{\sqrt2-\sqrt6}, \qquad \csc\frac{7\pi}{12} =\frac{4}{\sqrt6+\sqrt2}. \] So \[ \sec\frac{7\pi}{12}-\csc\frac{7\pi}{12} =\frac{4}{\sqrt2-\sqrt6}-\frac{4}{\sqrt6+\sqrt2}. \]</p>
+<p>Rationalize each term: \[ \frac{4}{\sqrt2-\sqrt6} =\frac{4(\sqrt2+\sqrt6)}{2-6} =-(\sqrt2+\sqrt6), \] \[ \frac{4}{\sqrt6+\sqrt2} =\frac{4(\sqrt6-\sqrt2)}{6-2} =\sqrt6-\sqrt2. \] Hence \[ \sec\frac{7\pi}{12}-\csc\frac{7\pi}{12} =-(\sqrt2+\sqrt6)-(\sqrt6-\sqrt2) =-2\sqrt6. \]</p>
+<p>\[ \boxed{-2\sqrt6} \]</p>
+<p>4. If \[ \cos t=-\frac{5}{13} \quad\text{and}\quad \sin 2t&lt;0, \] find the exact value of \[ \tan t+\cot t. \]</p>
+<p>Since \[ \sin 2t=2\sin t\cos t&lt;0 \] and \(\cos t=-\frac{5}{13}&lt;0\), it follows that \(\sin t&gt;0\). Thus \(t\) is in Quadrant II.</p>
+<p>Using \(\sin^2 t+\cos^2 t=1\), \[ \sin t=\sqrt{1-\left(-\frac{5}{13}\right)^2} =\sqrt{1-\frac{25}{169}} =\sqrt{\frac{144}{169}} =\frac{12}{13}. \]</p>
+<p>Now \[ \tan t+\cot t =\frac{\sin t}{\cos t}+\frac{\cos t}{\sin t} =\frac{\sin^2 t+\cos^2 t}{\sin t\cos t} =\frac{1}{\sin t\cos t}. \] Hence \[ \tan t+\cot t =\frac{1}{\left(\frac{12}{13}\right)\left(-\frac{5}{13}\right)} =\frac{1}{-\frac{60}{169}} =-\frac{169}{60}. \]</p>
+<p>\[ \boxed{-\frac{169}{60}} \]</p>
+<p>5. Let \[ y(t)=3\cos(\pi t)+4\sin(\pi t). \] Find the largest possible value of \(y(t)\), and one value of \(t\in[0,2)\) at which it occurs.</p>
+<p>Use the standard amplitude form: \[ a\cos x+b\sin x\le \sqrt{a^2+b^2}. \] Here \(a=3\), \(b=4\), so \[ y(t)\le \sqrt{3^2+4^2}=5. \] Thus the largest possible value is \[ \boxed{5}. \]</p>
+<p>To find when equality occurs, write \[ 3\cos(\pi t)+4\sin(\pi t)=5\cos(\pi t-\phi), \] where \[ \cos\phi=\frac35,\qquad \sin\phi=\frac45. \] Then the maximum \(5\) occurs when \[ \cos(\pi t-\phi)=1, \] i.e. \[ \pi t-\phi=2\pi k. \] Taking \(k=0\), \[ t=\frac{\phi}{\pi}. \] Since \(\phi=\arctan\frac43\), one suitable value is \[ \boxed{t=\frac{1}{\pi}\arctan\frac43}. \]</p>
+<p>6. Find the exact value of \[ \left(\sin\frac{\pi}{12}\right)\left(\cos\frac{5\pi}{12}\right)+\left(\cos\frac{\pi}{12}\right)\left(\sin\frac{5\pi}{12}\right)-\tan\frac{3\pi}{4}. \]</p>
+<p>Use the sine addition formula: \[ \sin A\cos B+\cos A\sin B=\sin(A+B). \] With \[ A=\frac{\pi}{12},\qquad B=\frac{5\pi}{12}, \] we get \[ \left(\sin\frac{\pi}{12}\right)\left(\cos\frac{5\pi}{12}\right)+\left(\cos\frac{\pi}{12}\right)\left(\sin\frac{5\pi}{12}\right) =\sin\left(\frac{\pi}{12}+\frac{5\pi}{12}\right) =\sin\frac{\pi}{2} =1. \]</p>
+<p>Also, \[ \tan\frac{3\pi}{4}=-1. \] Therefore the whole expression equals \[ 1-(-1)=2. \]</p>
+<p>\[ \boxed{2} \]</p>
+    </main>
+  </article>
+</body>
+</html>

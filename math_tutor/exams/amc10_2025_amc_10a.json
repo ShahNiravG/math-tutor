@@ -1,0 +1,842 @@
+{
+  "format": "explicit_curated_exam",
+  "exam": {
+    "format": "explicit_curated_exam",
+    "source_type": "explicit_curated_exam",
+    "id": "amc10-2025-amc-10a",
+    "title": "2025 AMC 10A",
+    "bank": "amc10",
+    "bank_title": "AMC 10",
+    "question_count": 25,
+    "questions": [
+      {
+        "id": "amc10-2025-amc-10a-q01",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_1",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_1",
+        "curated_problem_number": 1,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_1",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_1",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 1",
+        "question_number": 1,
+        "text": "Andy and Betsy both live in Mathville. Andy leaves Mathville on his bicycle at $1:30$, traveling due north at a steady $8$ miles per hour. Betsy leaves on her bicycle from the same point at $2:30$, traveling due east at a steady $12$ miles per hour. At what time will they be exactly the same distance from their common starting point?",
+        "question_images": [],
+        "options": [
+          "(A) 3:30",
+          "(B) 3:45",
+          "(C) 4:00",
+          "(D) 4:15",
+          "(E) 4:30"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q02",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_2",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_2",
+        "curated_problem_number": 2,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_2",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_2",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 2",
+        "question_number": 2,
+        "text": "A box contains $10$ pounds of a nut mix that is $50$ percent peanuts, $20$ percent cashews, and $30$ percent almonds. A second nut mix containing $20$ percent peanuts, $40$ percent cashews, and $40$ percent almonds is added to the box resulting in a new nut mix that is $40$ percent peanuts. How many pounds of cashews are now in the box?",
+        "question_images": [],
+        "options": [
+          "(A) 3.5",
+          "(B) 4",
+          "(C) 4.5",
+          "(D) 5",
+          "(E) 6"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q03",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_3",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_3",
+        "curated_problem_number": 3,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_3",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_3",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 3",
+        "question_number": 3,
+        "text": "How many isosceles triangles are there with positive area whose side lengths are all positive integers and whose longest side has length $2025$?",
+        "question_images": [],
+        "options": [
+          "(A) 2025",
+          "(B) 2026",
+          "(C) 3012",
+          "(D) 3037",
+          "(E) 4050"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q04",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_4",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_4",
+        "curated_problem_number": 4,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_4",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_4",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 4",
+        "question_number": 4,
+        "text": "A team of students is going to compete against a team of teachers in a trivia contest. The total number of students and teachers is $15$. Ash, a cousin of one of the students, wants to join the contest. If Ash plays with the students, the average age on that team will increase from $12$ to $14$. If Ash plays with the teachers, the average age on that team will decrease from $55$ to $52$. How old is Ash?",
+        "question_images": [],
+        "options": [
+          "(A) 28",
+          "(B) 29",
+          "(C) 30",
+          "(D) 32",
+          "(E) 33"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q05",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_5",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_5",
+        "curated_problem_number": 5,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_5",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_5",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 5",
+        "question_number": 5,
+        "text": "Consider the sequence of positive integers\n\n\\[1,2,1,2,3,2,1,2,3,4,3,2,1,2,3,4,5,4,3,2,1,2,3,4,5,6,5,4,3,2,1,2,\\dots\\]\n\nWhat is the 2025th term in this sequence?",
+        "question_images": [],
+        "options": [
+          "(A) 5",
+          "(B) 15",
+          "(C) 16",
+          "(D) 44",
+          "(E) 45"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q06",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_6",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_6",
+        "curated_problem_number": 6,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_6",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_6",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 6",
+        "question_number": 6,
+        "text": "In an equilateral triangle each interior angle is trisected by a pair of rays. The intersection of the interiors of the middle 20\u00b0-angle at each vertex is the interior of a convex hexagon. What is the degree measure of the smallest angle of this hexagon?",
+        "question_images": [],
+        "options": [
+          "(A) 80",
+          "(B) 90",
+          "(C) 100",
+          "(D) 110",
+          "(E) 120"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q07",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_7",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_7",
+        "curated_problem_number": 7,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_7",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_7",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 7",
+        "question_number": 7,
+        "text": "Suppose $a$ and $b$ are real numbers. When the polynomial $x^3+x^2+ax+b$ is divided by $x-1$, the remainder is $4$. When the polynomial is divided by $x-2$, the remainder is $6$. What is $b-a$?",
+        "question_images": [],
+        "options": [
+          "(A) 14",
+          "(B) 15",
+          "(C) 16",
+          "(D) 17",
+          "(E) 18"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q08",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_8",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_8",
+        "curated_problem_number": 8,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_8",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_8",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 8",
+        "question_number": 8,
+        "text": "Agnes writes the following four statements on a blank piece of paper.\n\n$\\bullet$ At least one of these statements is true.\n\n$\\bullet$ At least two of these statements are true.\n\n$\\bullet$ At least two of these statements are false.\n\n$\\bullet$ At least one of these statements is false.\n\nEach statement is either true or false. How many false statements did Agnes write on the paper?",
+        "question_images": [],
+        "options": [
+          "(A) 0",
+          "(B) 1",
+          "(C) 2",
+          "(D) 3",
+          "(E) 4"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q09",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_9",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_9",
+        "curated_problem_number": 9,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_9",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_9",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 9",
+        "question_number": 9,
+        "text": "Let $f(x) = 100x^3 - 300x^2 + 200x$. For how many real numbers $a$ does the graph of $y = f(x - a)$ pass through the point $(1, 25)$?",
+        "question_images": [],
+        "options": [
+          "(A) 1",
+          "(B) 2",
+          "(C) 3",
+          "(D) 4",
+          "(E) \\text{more than }4"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q10",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_10",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_10",
+        "curated_problem_number": 10,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_10",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_10",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/a/8/6/a8603f4e82eb135c8a3f43b801782d41df376690.png",
+              "alt": "[asy] import graph; unitsize(14mm);  defaultpen(linewidth(.8pt)+fontsize(10pt));  dotfactor=4;  pair A = (-3,0); pair B = (3,0); fill(Arc((0,0),3,0,180)--cycle,palered);  fill(Arc((-1.125,0),0.75,0,180)--cycle,white);  draw(Arc((0,0),3,0,180),black);  draw(Arc((-1.125,0),0.75,0,180),black);  draw((-3,0) -- (-1.875,0),black);  draw((-0.375,0) -- (3,0),black);  draw((-2.895, 0.75) -- (2.895,0.75), black);  dot((-3,0)); dot((3,0)); dot((-2.925, 0.75));  dot((2.925, 0.75));  label(\"$16$\",midpoint((-2.925, 0.75)--(2.925, 0.75)),N);  label(\"$A$\",A,S);  label(\"$B$\",B,S);  label(\"$C$\",(-2.925, 0.75),W);  label(\"$D$\",(2.925, 0.75),E); [/asy]",
+              "width": 432,
+              "height": 218
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 10",
+        "question_number": 10,
+        "text": "A semicircle has diameter $\\overline{AB}$ and chord $\\overline{CD}$ of length $16$ parallel to $\\overline{AB}$. A smaller semicircle\nwith diameter on $\\overline{AB}$ and tangent to $\\overline{CD}$ is cut from the larger semicircle, as shown below.\n\nWhat is the area of the resulting figure, shown shaded?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/a/8/6/a8603f4e82eb135c8a3f43b801782d41df376690.png",
+            "alt": "[asy] import graph; unitsize(14mm);  defaultpen(linewidth(.8pt)+fontsize(10pt));  dotfactor=4;  pair A = (-3,0); pair B = (3,0); fill(Arc((0,0),3,0,180)--cycle,palered);  fill(Arc((-1.125,0),0.75,0,180)--cycle,white);  draw(Arc((0,0),3,0,180),black);  draw(Arc((-1.125,0),0.75,0,180),black);  draw((-3,0) -- (-1.875,0),black);  draw((-0.375,0) -- (3,0),black);  draw((-2.895, 0.75) -- (2.895,0.75), black);  dot((-3,0)); dot((3,0)); dot((-2.925, 0.75));  dot((2.925, 0.75));  label(\"$16$\",midpoint((-2.925, 0.75)--(2.925, 0.75)),N);  label(\"$A$\",A,S);  label(\"$B$\",B,S);  label(\"$C$\",(-2.925, 0.75),W);  label(\"$D$\",(2.925, 0.75),E); [/asy]",
+            "width": 432,
+            "height": 218
+          }
+        ],
+        "options": [
+          "(A) 16\\pi",
+          "(B) 24\\pi",
+          "(C) 32\\pi",
+          "(D) 48\\pi",
+          "(E) 64\\pi"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q11",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_11",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_11",
+        "curated_problem_number": 11,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_11",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_11",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 11",
+        "question_number": 11,
+        "text": "The sequence $1,x,y,z$ is arithmetic. The sequence $1,p,q,z$ is geometric. Both sequences are strictly increasing and contain only integers, and $z$ is as small as possible. What is the value of $x+y+z+p+q$?",
+        "question_images": [],
+        "options": [
+          "(A) 66",
+          "(B) 91",
+          "(C) 103",
+          "(D) 132",
+          "(E) 149"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q12",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_12",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_12",
+        "curated_problem_number": 12,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_12",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_12",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 12",
+        "question_number": 12,
+        "text": "Carlos uses a $4$-digit passcode to unlock his computer. In his passcode, exactly one digit is even, exactly one (possibly different) digit is prime, and no digit is $0$. How many $4$-digit passcodes satisfy these conditions?",
+        "question_images": [],
+        "options": [
+          "(A) 176",
+          "(B) 192",
+          "(C) 432",
+          "(D) 464",
+          "(E) 608"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q13",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_13",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_13",
+        "curated_problem_number": 13,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_13",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_13",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/b/f/b/bfb4b9333d50ced705978973d9ba16a54b7a8aa3.png",
+              "alt": "[asy] unitsize(1cm);  int n = 25;               real s = 6;               real ratio = 0.767;       real a = s;                for (int i = 0; i < n; ++i) {   real b = a * ratio;                         // Draw current square   draw(box((-a/2,-a/2),(a/2,a/2)));      if (i % 2 == 1) { fill(box((-a/2,-a/2),(a/2,a/2)), gray(1)); } else  {     fill(box((-a/2,-a/2),(a/2,a/2)), lightred);      }      a = b;    }  draw(box((-a/2,-a/2),(a/2,a/2))); [/asy]",
+              "width": 285,
+              "height": 285
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 13",
+        "question_number": 13,
+        "text": "In the figure below, the outside square contains infinitely many squares, each of them with the same center and sides parallel to the outside square. The ratio of the side length of a square to the side length of the next inner square is $k$, where $0 < k < 1.$ The spaces between squares are alternately shaded as shown in the figure (which is not necessarily drawn to scale).\n\nThe area of the shaded portion of the figure is $64\\%$ of the area of the original square. What is $k$?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/b/f/b/bfb4b9333d50ced705978973d9ba16a54b7a8aa3.png",
+            "alt": "[asy] unitsize(1cm);  int n = 25;               real s = 6;               real ratio = 0.767;       real a = s;                for (int i = 0; i < n; ++i) {   real b = a * ratio;                         // Draw current square   draw(box((-a/2,-a/2),(a/2,a/2)));      if (i % 2 == 1) { fill(box((-a/2,-a/2),(a/2,a/2)), gray(1)); } else  {     fill(box((-a/2,-a/2),(a/2,a/2)), lightred);      }      a = b;    }  draw(box((-a/2,-a/2),(a/2,a/2))); [/asy]",
+            "width": 285,
+            "height": 285
+          }
+        ],
+        "options": [
+          "(A) \\frac{3}{5}",
+          "(B) \\frac{16}{25}",
+          "(C) \\frac{2}{3}",
+          "(D) \\frac{3}{4}",
+          "(E) \\frac{4}{5}"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q14",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_14",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_14",
+        "curated_problem_number": 14,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_14",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_14",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 14",
+        "question_number": 14,
+        "text": "Six chairs are arranged around a round table. Two students and two teachers randomly select four of the chairs to sit in. What is the probability that the two students will sit in two adjacent chairs and the two teachers will also sit in two adjacent chairs?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{1}{6}",
+          "(B) \\frac{1}{5}",
+          "(C) \\frac{2}{9}",
+          "(D) \\frac{3}{13}",
+          "(E) \\frac{1}{4}"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q15",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_15",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_15",
+        "curated_problem_number": 15,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_15",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_15",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/b/e/a/bea2f60b31948e67857bef201e82a1d159cbb6af.png",
+              "alt": "[asy] unitsize(1cm); pair A, B, C, D, E, F; A = (5, 5); B = (5.6, 4.2); C = (5, 3.75); D = (5, 0); E = (0, 0); F = (-0.6, 0.8); fill(A--B--C--cycle, palered); dot(A); dot(B); dot(C); dot(D); dot(E); dot(F); label(\"$A$\", A, N); label(\"$B$\", B, (1,0)); label(\"$C$\", C, SE); label(\"$D$\", D, (1,0)); label(\"$E$\", E, S); label(\"$F$\", F, W); draw(A--D--E); draw(A--B--E--F--A); draw(rightanglemark(C, D, E)); [/asy]",
+              "width": 342,
+              "height": 282
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 15",
+        "question_number": 15,
+        "text": "In the figure below, $ABEF$ is a rectangle, $\\overline{AD}\\perp\\overline{DE}$, $AF=7$, $AB=1$, and $AD=5$.\nWhat is the area of $\\triangle ABC$?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/b/e/a/bea2f60b31948e67857bef201e82a1d159cbb6af.png",
+            "alt": "[asy] unitsize(1cm); pair A, B, C, D, E, F; A = (5, 5); B = (5.6, 4.2); C = (5, 3.75); D = (5, 0); E = (0, 0); F = (-0.6, 0.8); fill(A--B--C--cycle, palered); dot(A); dot(B); dot(C); dot(D); dot(E); dot(F); label(\"$A$\", A, N); label(\"$B$\", B, (1,0)); label(\"$C$\", C, SE); label(\"$D$\", D, (1,0)); label(\"$E$\", E, S); label(\"$F$\", F, W); draw(A--D--E); draw(A--B--E--F--A); draw(rightanglemark(C, D, E)); [/asy]",
+            "width": 342,
+            "height": 282
+          }
+        ],
+        "options": [
+          "(A) \\frac{3}{8}",
+          "(B) \\frac{4}{9}",
+          "(C) \\frac{1}{8}\\sqrt{13}",
+          "(D) \\frac{7}{15}",
+          "(E) \\frac{1}{8}\\sqrt{15}"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q16",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_16",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_16",
+        "curated_problem_number": 16,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_16",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_16",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 16",
+        "question_number": 16,
+        "text": "There are three jars. Each of three coins is placed in one of the three jars, chosen at random and independently of the placements of the other coins. What is the expected number of coins in a jar with the most coins?",
+        "question_images": [],
+        "options": [
+          "(A) \\frac{4}{3}",
+          "(B) \\frac{13}{9}",
+          "(C) \\frac{5}{3}",
+          "(D) \\frac{17}{9}",
+          "(E) 2"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q17",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_17",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_17",
+        "curated_problem_number": 17,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_17",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_17",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 17",
+        "question_number": 17,
+        "text": "Let $N$ be the unique positive integer such that dividing $273436$ by $N$ leaves a remainder of $16$ and dividing $272760$ by $N$ leaves a remainder of $15$. What is the tens digit of $N$?",
+        "question_images": [],
+        "options": [
+          "(A) 0",
+          "(B) 1",
+          "(C) 2",
+          "(D) 3",
+          "(E) 4"
+        ],
+        "correct": "E"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q18",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_18",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_18",
+        "curated_problem_number": 18,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_18",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_18",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 18",
+        "question_number": 18,
+        "text": "The $\\textit{harmonic\\ mean}$ of a collection of numbers is the reciprocal of the arithmetic mean of the reciprocals of the numbers in the collection. For example, the harmonic mean of 4, 4, and 5 is\n\n\\[\\frac{1}{\\frac{1}{3}(\\frac{1}{4}+\\frac{1}{4}+\\frac{1}{5})}=\\frac{30}{7}\\]\n\nWhat is the harmonic mean of all the real roots of the 4050th degree polynomial\n\n\\[\\prod_{k=1}^{2025} (kx^2-4x-3) = (x^2-4x-3)(2x^2-4x-3)(3x^2-4x-3)\\dots (2025x^2-4x-3) ?\\]",
+        "question_images": [],
+        "options": [
+          "(A) -\\frac{5}{3}",
+          "(B) -\\frac{3}{2}",
+          "(C) -\\frac{6}{5}",
+          "(D) -\\frac{5}{6}",
+          "(E) -\\frac{2}{3}"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q19",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_19",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_19",
+        "curated_problem_number": 19,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_19",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_19",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/5/c/8/5c88654196dd8e138453f0fabae8a82f39b91b48.png",
+              "alt": "$\\begin{tabular}{ccccccccc} &&-1&&3&&1&&\\\\ &-1&&2&&4&&1&\\\\ -1&&1&&6&&5&&1\\\\ \\end{tabular}$",
+              "width": 272,
+              "height": 62
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 19",
+        "question_number": 19,
+        "text": "An array of numbers is constructed beginning with the numbers\n$-1\\qquad3\\qquad1$in the top row. Each adjacent pair of numbers is summed to produce a number in the next row. Each row begins and ends with\n$-1$ and $1$, respectively.\n\nIf the process continues, one of the rows will sum to $12,288$. In that row, what is the third number from the left?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/5/c/8/5c88654196dd8e138453f0fabae8a82f39b91b48.png",
+            "alt": "$\\begin{tabular}{ccccccccc} &&-1&&3&&1&&\\\\ &-1&&2&&4&&1&\\\\ -1&&1&&6&&5&&1\\\\ \\end{tabular}$",
+            "width": 272,
+            "height": 62
+          }
+        ],
+        "options": [
+          "(A) -29",
+          "(B) -21",
+          "(C) -14",
+          "(D) -8",
+          "(E) -3"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q20",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_20",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_20",
+        "curated_problem_number": 20,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_20",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_20",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 20",
+        "question_number": 20,
+        "text": "A silo (right circular cylinder) with diameter 20 meters stands in a field. MacDonald is located 20 meters west and 15 meters south of the center of the silo. McGregor is located 20 meters east and $g > 0$ meters south of the center of the silo. The line of sight between MacDonald and McGregor is tangent to the silo. The value of $g$ can be written as $\\frac{a\\sqrt{b}-c}{d}$, where $a,b,c,$ and $d$ are positive integers, $b$ is not divisible by the square of any prime, and $d$ is relatively prime to the greatest common divisor of $a$ and $c$. What is the value of $a+b+c+d$?",
+        "question_images": [],
+        "options": [
+          "(A) 119",
+          "(B) 120",
+          "(C) 121",
+          "(D) 122",
+          "(E) 123 \\qquad"
+        ],
+        "correct": "A"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q21",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_21",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_21",
+        "curated_problem_number": 21,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_21",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_21",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 21",
+        "question_number": 21,
+        "text": "A set of numbers is called $sum$-$free$ if whenever $x$ and $y$ are (not necessarily distinct) elements of the set, $x+y$ is not an element of the set. For example, $\\{1,4,6\\}$ and the empty set are sum-free, but $\\{1,4,5\\}$ is not. What is the greatest possible number of elements in a sum-free subset of $\\{1,2,3,...,20\\}$?",
+        "question_images": [],
+        "options": [
+          "(A) 8",
+          "(B) 9",
+          "(C) 10",
+          "(D) 11",
+          "(E) 12"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q22",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_22",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_22",
+        "curated_problem_number": 22,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_22",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_22",
+          "question_images": [
+            {
+              "url": "https://latex.artofproblemsolving.com/e/6/f/e6fb1358856780f10baa79630943a957cf4cf50b.png",
+              "alt": "[asy] import olympiad; size(260);  real r0 = 6/23.0; real r1 = 1.0; real r2 = 2.0; real r3 = 3.0;  real d1 = r0 + r1; real d2 = r0 + r2; real d3 = r0 + r3;  real t1 = 0; real t2 = 1.9857887796653; real t3 = -2.0480149718113;  pair O  = (0,0); pair C1 = d1*dir(degrees(t1)); pair C2 = d2*dir(degrees(t2)); pair C3 = d3*dir(degrees(t3));  draw(circle(O, r0), black+0.9); draw(circle(C1, r1), black+0.9); draw(circle(C2, r2), black+0.9); draw(circle(C3, r3), black+0.9); currentpicture.fit(); [/asy]",
+              "width": 295,
+              "height": 435
+            }
+          ]
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 22",
+        "question_number": 22,
+        "text": "A circle of radius $r$ is surrounded by three circles, whose radii are 1, 2, and 3, all externally tangent to the inner circle and externally tangent to each other, as shown in the diagram below.\n\nWhat is $r$?",
+        "question_images": [
+          {
+            "url": "https://latex.artofproblemsolving.com/e/6/f/e6fb1358856780f10baa79630943a957cf4cf50b.png",
+            "alt": "[asy] import olympiad; size(260);  real r0 = 6/23.0; real r1 = 1.0; real r2 = 2.0; real r3 = 3.0;  real d1 = r0 + r1; real d2 = r0 + r2; real d3 = r0 + r3;  real t1 = 0; real t2 = 1.9857887796653; real t3 = -2.0480149718113;  pair O  = (0,0); pair C1 = d1*dir(degrees(t1)); pair C2 = d2*dir(degrees(t2)); pair C3 = d3*dir(degrees(t3));  draw(circle(O, r0), black+0.9); draw(circle(C1, r1), black+0.9); draw(circle(C2, r2), black+0.9); draw(circle(C3, r3), black+0.9); currentpicture.fit(); [/asy]",
+            "width": 295,
+            "height": 435
+          }
+        ],
+        "options": [
+          "(A) \\frac{1}{4}",
+          "(B) \\frac{6}{23}",
+          "(C) \\frac{3}{11}",
+          "(D) \\frac{5}{17}",
+          "(E) \\frac{3}{10}"
+        ],
+        "correct": "B"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q23",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_23",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_23",
+        "curated_problem_number": 23,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_23",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_23",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 23",
+        "question_number": 23,
+        "text": "Triangle $\\triangle ABC$ has side lengths $AB = 80$, $BC = 45$, and $AC = 75$. The bisector of $\\angle B$ and the altitude to side $\\overline{AB}$ intersect at point $P.$ What is $BP$?",
+        "question_images": [],
+        "options": [
+          "(A) 18",
+          "(B) 19",
+          "(C) 20",
+          "(D) 21",
+          "(E) 22"
+        ],
+        "correct": "D"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q24",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_24",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_24",
+        "curated_problem_number": 24,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_24",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_24",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 24",
+        "question_number": 24,
+        "text": "Call a positive integer $\\textit{fair}$ if no digit is used more than once, it has no 0s, and no digit is adjacent to two greater digits. For example, $196$, $23$, and $12463$ are fair, but $1546$, $320$, and $34321$ are not fair. How many fair positive integers are there?",
+        "question_images": [],
+        "options": [
+          "(A) 511",
+          "(B) 2584",
+          "(C) 9841",
+          "(D) 17711",
+          "(E) 19682"
+        ],
+        "correct": "C"
+      },
+      {
+        "id": "amc10-2025-amc-10a-q25",
+        "source_stem": "amc10-2025-amc-10a",
+        "curated_source": "2025 AMC 10A",
+        "curated_concept": "",
+        "curated_problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_25",
+        "curated_source_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_25",
+        "curated_problem_number": 25,
+        "curated_metadata": {
+          "problem_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems#Problem_25",
+          "solution_link": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems/Problem_25",
+          "question_images": []
+        },
+        "chapter": "",
+        "type": "amc10",
+        "model": "official",
+        "model_label": "Official AMC",
+        "source_label": "2025 AMC 10A / Problem 25",
+        "question_number": 25,
+        "text": "A point $P$ is chosen at random inside square $ABCD$. The probability that $\\overline{AP}$ is neither the shortest nor the longest side of $\\triangle APB$ can be written as $\\frac{a + b \\pi - c \\sqrt{d}}{e}$, where $a, b, c, d,$ and $e$ are positive integers, $\\text{gcd}(a, b, c, e) = 1$, and $d$ is not divisible by the square of a prime. What is $a+b+c+d+e$?",
+        "question_images": [],
+        "options": [
+          "(A) 25",
+          "(B) 26",
+          "(C) 27",
+          "(D) 28",
+          "(E) 29 \\qquad"
+        ],
+        "correct": "A"
+      }
+    ],
+    "curated_metadata": {
+      "year": 2025,
+      "contest": "AMC 10A",
+      "administered_on": "2025-11-05",
+      "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A",
+      "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Problems",
+      "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10A_Answer_Key"
+    }
+  }
+}
