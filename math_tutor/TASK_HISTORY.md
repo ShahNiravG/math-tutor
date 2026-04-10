@@ -1033,3 +1033,42 @@ Throughout this refactor pass we deliberately preserved the expensive saved arti
 - the CLI is now a relatively thin orchestration entry point instead of a giant catch-all file
 - `site_builder.py` is much smaller and now composes dedicated page, record, theme, navigation, and challenge modules
 - remaining larger cleanup targets are `challenge_builder.py` and `mcq_generator.py`
+
+## Crash-Safety Hardening Pass
+
+A targeted risk audit of the codebase identified three concrete production risks unrelated to module size, and all three were fixed in a single bundled pass.
+
+### Risk 1: state files could be truncated on interruption
+
+`save_fetch_state`, `save_generated_output_state`, per-prompt metadata sidecars, challenge catalogs, AMC curated exams, and the artifact-name migration all wrote JSON via `path.write_text(json.dumps(...))`. A Ctrl-C, crash, disk-full, or OOM between the truncate and flush left the file empty or partial. On the next run, loading would either throw on `json.loads` or silently return an empty state — and because the pipeline's skip logic is state-driven, an empty state would cause every prompt on every chapter to be regenerated against the model APIs. Days of AI-generation progress could be erased by one badly timed interrupt.
+
+Fix: introduced `math_tutor/atomic_io.py` with `atomic_write_text` and `atomic_write_json`. The helpers write to a sibling `.tmp` file in the destination's own directory, `fsync` the contents, then `os.replace` the temp into the destination. Same-directory tempfile guarantees same-filesystem rename, which is atomic on POSIX and Windows. Any exception cleans up the temp file and leaves the destination untouched. Every JSON-state call site in the project was migrated to use the helper: `state_store.py`, `prompt_output_store.py`, `challenge_outputs.write_json`, `backfill_response_html.py`, `amc10_scraper.py`, and `artifact_name_migration.py`.
+
+### Risk 2: interrupted PDF downloads corrupted the destination file
+
+`canvas_course.download_pdf` streamed bytes directly into the final destination path. A dropped connection or HTTP error mid-stream left a truncated PDF on disk. Even though `fetch_state.json` was only updated after the download completed (so the state layer correctly reported "not fetched"), the partial file on disk could confuse downstream code that checked `destination.exists()`, and re-running the fetch would overwrite whatever had been there before.
+
+Fix: `download_pdf` now streams to a sibling `.<name>.part` file and only `os.replace`s it into the destination after the stream has drained successfully. On any exception (network error, HTTP error, disk-full, anything) the partial file is unlinked and any previously existing destination file is preserved untouched.
+
+### Risk 3: `validate_youtube_url` was silently swallowing programming errors
+
+The oEmbed validation path in `video_recommendations.py` wrapped the HTTP call and JSON parsing in `except Exception: return None`. This was correct for network errors and bad JSON, but it also caught `AttributeError`, `KeyError`, and `TypeError` from typos or regressions in our own caller code and made them look like "this URL failed to validate" rather than surfacing the actual bug.
+
+Fix: narrowed to `except (httpx.HTTPError, json.JSONDecodeError, ValueError)`. Programming errors now propagate.
+
+### Testing
+
+Added 16 tests using strict red/green TDD:
+
+- 9 tests for `atomic_io` covering happy path, overwrite, `os.replace` failure preservation, no residual temp files, parent directory creation, same-directory tempfile invariant, and JSON-specific variants
+- 3 tests for `download_pdf` covering happy path, mid-stream failure leaves no final file, mid-stream failure preserves existing file
+- 4 tests for `validate_youtube_url` pinning the narrow-exception contract: `ConnectError`, `HTTPStatusError`, and `JSONDecodeError` must return `None`; `AttributeError` must propagate
+
+One existing test (`test_write_json_writes_when_content_changed`) was updated because it asserted on `Path.write_text` as an implementation detail. The replacement test asserts on observable file contents instead.
+
+### Result
+
+- validation baseline: `195` tests passing (up from `179`)
+- `math_tutor/docs/ARCHITECTURE.md` gained a new `atomic_io.py` module entry, a `Crash Safety` section under Hardening Strategy, and updated contract notes on `canvas_course.py`, `state_store.py`, and `video_recommendations.py`
+- no model API calls, no Canvas fetches, no deploy-tree rewrites were required to land the change
+- shipped as commit `b1662d3`

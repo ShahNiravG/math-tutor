@@ -86,7 +86,7 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 
 - [math_tutor/cli.py](/home/nshah/projects/math-tutor/math_tutor/cli.py)
 - [math_tutor/site_builder.py](/home/nshah/projects/math-tutor/math_tutor/site_builder.py)
-- [math_tutor/mcq_generator.py](/home/nshah/projects/math-tutor/math_tutor/mcq_generator.py)
+- [math_tutor/atomic_io.py](/home/nshah/projects/math-tutor/math_tutor/atomic_io.py)
 - [math_tutor/README.md](/home/nshah/projects/math-tutor/math_tutor/README.md)
 - [math_tutor/TASK_HISTORY.md](/home/nshah/projects/math-tutor/math_tutor/TASK_HISTORY.md)
 
@@ -187,7 +187,8 @@ Architecture and validation references:
 - Deploy base path is `/site/`; all build commands use `--base-path /site/`
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 - CLI fetch logs now summarize already-fetched vs pending files before processing
-- Local validation baseline is `78` passing tests via `math_tutor/scripts/validate_project.py`
+- All JSON state writers route through `math_tutor/atomic_io.py` and PDF downloads stream via a `.part` rename — mid-operation crashes no longer corrupt state files or leave truncated PDFs on disk (see [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md) "Crash Safety")
+- Local validation baseline is `195` passing tests via `math_tutor/scripts/validate_project.py`
 - The current refactor checkpoint did not rerun model APIs and did not rebuild the deploy tree in place unless explicitly requested
 
 ## Known Risks
@@ -196,4 +197,5 @@ Architecture and validation references:
 - The Modules page structure could change
 - OpenAI and Gemini runs require valid API keys with available quota
 - Challenge exam app requires MySQL DB credentials in `.env`
-- `challenge_builder.py` and `mcq_generator.py` are still larger mixed-responsibility modules than the rest of the cleaned codebase
+- `challenge_builder.py` remains a larger orchestration module than the rest of the cleaned codebase, though its long function is procedural deploy wiring rather than mixed responsibility (lower priority than previously stated)
+- `mcq_generator.py` was flagged in earlier handoffs but has since been split into `mcq_clients`, `mcq_workflow`, `mcq_artifacts`, and `mcq_prompts` — the remaining file is ~80 lines and no longer a refactor target

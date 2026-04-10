@@ -236,9 +236,19 @@ Examples:
 
 Current validation baseline:
 
-- `78` unit tests pass through [scripts/validate_project.py](/home/nshah/projects/math-tutor/math_tutor/scripts/validate_project.py)
+- `195` unit tests pass through [scripts/validate_project.py](/home/nshah/projects/math-tutor/math_tutor/scripts/validate_project.py)
 - core modules compile successfully with `py_compile`
 - validation does not call model APIs, fetch from Canvas, or rewrite the current deploy tree
+
+## Crash Safety
+
+The generation pipeline is long-running and operator-interruptible, so expensive saved state must survive crashes, Ctrl-C, disk-full, and OOM cleanly.
+
+- **JSON state writes**: every writer routes through [atomic_io.py](/home/nshah/projects/math-tutor/math_tutor/atomic_io.py). The helper writes to a sibling tempfile in the destination's own directory, `fsync`s it, then `os.replace`s it into place. A failure at any point leaves the previous file contents untouched and removes the tempfile. Covers `fetch_state.json`, `generated_output_state.json`, per-prompt metadata sidecars, challenge catalogs, AMC curated exams, and the artifact-name migration.
+- **PDF downloads**: [canvas_course.download_pdf](/home/nshah/projects/math-tutor/math_tutor/canvas_course.py) streams to a sibling `.<name>.part` file and renames it into the destination only on full success. A dropped connection or HTTP error never leaves a truncated PDF on disk and never clobbers a previously fetched good file.
+- **Narrow exception handlers**: helpers like `validate_youtube_url` catch only the specific failure modes they expect (`httpx.HTTPError`, `json.JSONDecodeError`, `ValueError`). Programming errors propagate so bugs stay visible.
+
+See [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md) "Crash Safety" for the full contract and rules for adding new persistent writers.
 
 ## Notes
 

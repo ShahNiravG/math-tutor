@@ -44,6 +44,8 @@ Key contract:
 - Outputs: discovered `CanvasFile` records and downloaded PDFs
 - Side effects: Canvas network access and filesystem writes
 
+Download atomicity: `download_pdf` streams to a sibling `.<name>.part` file and renames it into the final destination only on full success. A dropped connection, HTTP error, or disk-full mid-stream removes the partial file and leaves any previously existing destination file untouched, so operators never observe a truncated PDF on disk.
+
 ### `canvas_files.py`
 
 Pure Canvas file metadata, matching, and fetch-summary helpers.
@@ -333,6 +335,8 @@ Key contract:
 - Outputs: validated video recommendation structures and rendered markdown blocks
 - Side effects: optional oEmbed validation HTTP requests only
 
+Exception contract: `validate_youtube_url` returns `None` only for expected transient failures — `httpx.HTTPError`, `json.JSONDecodeError`, and `ValueError`. Programming errors such as `AttributeError` or `KeyError` propagate so bugs stay visible instead of being silently swallowed as "bad URLs."
+
 ### `generated_metadata.py`
 
 Provider-neutral metadata helpers for generated tutoring artifacts.
@@ -411,9 +415,27 @@ Key contract:
 
 - Inputs: `fetch_state.json`, `generated_output_state.json`
 - Outputs: normalized in-memory state objects
-- Side effects: filesystem reads/writes only
+- Side effects: filesystem reads and crash-safe filesystem writes via `atomic_io`
 
-Note: `generated_output_state.json` is the only supported filename for generated-output state.
+Note: `generated_output_state.json` is the only supported filename for generated-output state. All state writes go through `atomic_io.atomic_write_json`, so a crash or interruption mid-write cannot truncate the file or lose previously persisted progress.
+
+### `atomic_io.py`
+
+Crash-safe file-writing helpers shared by every JSON state writer in the project.
+
+Key contract:
+
+- Inputs: destination path, text or JSON payload, optional indent
+- Outputs: destination file contains either the previous committed bytes or the full new bytes — never a partial or truncated intermediate
+- Side effects: writes a sibling temp file in the destination's directory, fsyncs it, then `os.replace`s it into place; removes the temp file on any failure
+
+Guarantees:
+
+- The temp file is always created in the **same directory** as the destination, so the final rename is a same-filesystem operation and therefore atomic on POSIX and Windows.
+- On any exception (encoding error, serialization error, disk-full, `os.replace` failure) the destination file is left untouched and no temp file remains.
+- Parent directories of the destination are created on demand.
+
+Used by: `state_store.save_fetch_state`, `state_store.save_generated_output_state`, `prompt_output_store.persist_prompt_output`, `challenge_outputs.write_json`, `backfill_response_html`, `amc10_scraper`, `artifact_name_migration`.
 
 ### `site_models.py`
 
@@ -479,6 +501,16 @@ Key contract:
 - challenge exam JSON catalogs are derivable from saved markdown and MCQ files
 - deploy site output is derivable from saved artifacts plus source code
 
+## Crash Safety
+
+The generation pipeline is long-running and operator-interruptible (hours of model calls across many prompts and chapters). To protect expensive saved state from truncation or loss on crash, Ctrl-C, disk-full, or OOM:
+
+- **All JSON state writes go through `atomic_io.atomic_write_json`.** Never call `path.write_text(json.dumps(...))` on a state file, metadata sidecar, or catalog. The helper writes to a sibling temp file, fsyncs, and `os.replace`s into place.
+- **All long-stream network downloads go through a `.part` file rename.** `canvas_course.download_pdf` is the canonical pattern. A failed stream never leaves a partial PDF at the destination path and never clobbers a previously fetched good file.
+- **Narrow exception handlers, not bare `except Exception`.** Catch only the specific failure modes you expect (`httpx.HTTPError`, `json.JSONDecodeError`, `ValueError`). Swallowing everything hides bugs behind "silent failure" paths that appear to work.
+
+When adding new state files, catalogs, or metadata sidecars, route them through `atomic_io` from the start. When adding new streaming downloads, mirror the `.part` rename pattern from `download_pdf`.
+
 ## Hardening Strategy
 
 The project should evolve by:
@@ -487,3 +519,4 @@ The project should evolve by:
 2. locking behavior with unit tests
 3. documenting module contracts before large refactors
 4. avoiding changes that rewrite expensive saved artifacts unless explicitly intended
+5. routing new persistent writes through `atomic_io` and new streaming downloads through the `.part` rename pattern (see Crash Safety)
