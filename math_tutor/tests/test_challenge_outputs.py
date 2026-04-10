@@ -158,18 +158,16 @@ class ChallengeOutputsTests(unittest.TestCase):
             path = Path(temp_dir) / "test.json"
             payload = {"key": "value", "count": 42}
             write_json(path, payload)
-            with patch.object(Path, "write_text") as mock_write:
+            with patch("math_tutor.challenge_outputs.atomic_write_text") as mock_write:
                 write_json(path, payload)
                 mock_write.assert_not_called()
 
     def test_write_json_writes_when_content_changed(self) -> None:
-        from unittest.mock import patch
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "test.json"
             write_json(path, {"key": "old"})
-            with patch.object(Path, "write_text") as mock_write:
-                write_json(path, {"key": "new"})
-                mock_write.assert_called_once()
+            write_json(path, {"key": "new"})
+            self.assertEqual(json.loads(path.read_text(encoding="utf-8")), {"key": "new"})
 
     def test_copy_static_challenge_assets_skips_unchanged_files(self) -> None:
         import math_tutor.challenge_outputs as co

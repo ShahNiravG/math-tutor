@@ -3,10 +3,12 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import Iterator
 from unittest.mock import Mock, patch
 
 from math_tutor.canvas_course import (
     CanvasFile,
+    download_pdf,
     ensure_pdf_fetched,
     extract_assignment_entries_from_api_items,
     extract_file_id,
@@ -101,6 +103,71 @@ class CanvasCourseTests(unittest.TestCase):
             )
 
             self.assertFalse(alternate_destination.exists())
+
+    def test_download_pdf_writes_full_content_on_success(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            destination = Path(temp_dir) / "out.pdf"
+
+            client = Mock()
+            stream_ctx = Mock()
+            response = Mock()
+            response.raise_for_status = Mock()
+            response.iter_bytes = Mock(return_value=iter([b"chunk1-", b"chunk2"]))
+            stream_ctx.__enter__ = Mock(return_value=response)
+            stream_ctx.__exit__ = Mock(return_value=False)
+            client.stream = Mock(return_value=stream_ctx)
+
+            download_pdf(client, "https://example.com/file.pdf", destination)
+
+            self.assertTrue(destination.exists())
+            self.assertEqual(destination.read_bytes(), b"chunk1-chunk2")
+            residual = [p.name for p in destination.parent.iterdir() if p.name != "out.pdf"]
+            self.assertEqual(residual, [])
+
+    def test_download_pdf_interrupted_mid_stream_leaves_no_final_file(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            destination = Path(temp_dir) / "out.pdf"
+
+            def failing_chunks() -> Iterator[bytes]:
+                yield b"partial-"
+                raise ConnectionError("network dropped")
+
+            client = Mock()
+            stream_ctx = Mock()
+            response = Mock()
+            response.raise_for_status = Mock()
+            response.iter_bytes = Mock(return_value=failing_chunks())
+            stream_ctx.__enter__ = Mock(return_value=response)
+            stream_ctx.__exit__ = Mock(return_value=False)
+            client.stream = Mock(return_value=stream_ctx)
+
+            with self.assertRaises(ConnectionError):
+                download_pdf(client, "https://example.com/file.pdf", destination)
+
+            self.assertFalse(destination.exists())
+            residual = list(destination.parent.iterdir())
+            self.assertEqual(residual, [])
+
+    def test_download_pdf_interrupted_mid_stream_preserves_existing_file(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            destination = Path(temp_dir) / "out.pdf"
+            destination.write_bytes(b"previous-good-pdf")
+
+            client = Mock()
+            stream_ctx = Mock()
+            response = Mock()
+            response.raise_for_status = Mock()
+            response.iter_bytes = Mock(side_effect=ConnectionError("network dropped"))
+            stream_ctx.__enter__ = Mock(return_value=response)
+            stream_ctx.__exit__ = Mock(return_value=False)
+            client.stream = Mock(return_value=stream_ctx)
+
+            with self.assertRaises(ConnectionError):
+                download_pdf(client, "https://example.com/file.pdf", destination)
+
+            self.assertEqual(destination.read_bytes(), b"previous-good-pdf")
+            residual = [p.name for p in destination.parent.iterdir() if p.name != "out.pdf"]
+            self.assertEqual(residual, [])
 
     def test_list_canvas_pdfs_from_ui_prefers_modules_without_files_probe(self) -> None:
         modules_result = [

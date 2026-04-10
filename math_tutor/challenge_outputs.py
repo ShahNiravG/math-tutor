@@ -8,6 +8,7 @@ import shutil
 from pathlib import Path
 from typing import Any
 
+from math_tutor.atomic_io import atomic_write_text
 from math_tutor.chaptering import chapter_slug, chapter_sort_key
 from math_tutor.challenge_catalog import CLASSIC_BANK_ID, CLASSIC_BANK_TITLE
 
@@ -16,7 +17,7 @@ def write_json(path: Path, payload: dict[str, Any], *, indent: int | None = None
     new_content = json.dumps(payload, indent=indent)
     if path.exists() and path.read_text(encoding="utf-8") == new_content:
         return
-    path.write_text(new_content, encoding="utf-8")
+    atomic_write_text(path, new_content)
 
 
 def write_canonical_challenge_catalogs(

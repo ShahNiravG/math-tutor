@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
+from math_tutor.atomic_io import atomic_write_json
 from math_tutor.artifact_paths import build_prompt_paths
 from math_tutor.generated_metadata import normalize_metadata_payload, provider_name_for_model
 from math_tutor.prompt_catalog import PROMPTS_BY_SLUG
@@ -132,7 +133,7 @@ def migrate_output_dir(output_dir: Path) -> int:
                 payload["response_path"] = str(new_response_path)
                 payload["response_html_path"] = str(new_response_html_path)
                 payload["response_pdf_path"] = str(new_response_pdf_path) if payload.get("response_pdf_path") else ""
-                new_metadata_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+                atomic_write_json(new_metadata_path, payload, indent=2)
 
             if changed:
                 migrated += 1

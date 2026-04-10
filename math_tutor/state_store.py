@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from math_tutor.atomic_io import atomic_write_json
 from math_tutor.generated_metadata import normalize_metadata_payload
 from math_tutor.prompt_catalog import STUDY_GUIDE_PROMPT, prompt_title_from_slug
 
@@ -36,7 +37,7 @@ def load_fetch_state(path: Path) -> FetchState:
 
 def save_fetch_state(fetch_state: FetchState) -> None:
     payload = {"fetched": fetch_state.fetched}
-    fetch_state.path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    atomic_write_json(fetch_state.path, payload, indent=2)
 
 
 def canonical_generated_output_state_path(output_dir: Path) -> Path:
@@ -54,7 +55,7 @@ def load_generated_output_state(path: Path) -> GeneratedOutputState:
 
 def save_generated_output_state(generated_output_state: GeneratedOutputState) -> None:
     payload = {"processed": generated_output_state.processed}
-    generated_output_state.path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+    atomic_write_json(generated_output_state.path, payload, indent=2)
 
 
 def normalize_generated_output_state(processed: dict[str, dict[str, Any]]) -> dict[str, dict[str, dict[str, str]]]:

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import unittest
 from unittest.mock import patch
 
@@ -7,7 +8,46 @@ from math_tutor.video_recommendations import (
     normalize_youtube_url,
     parse_gemini_video_recommendations,
     render_inspiring_videos_markdown,
+    validate_youtube_url,
 )
+
+
+class ValidateYoutubeUrlTests(unittest.TestCase):
+    """Contract: returns ``None`` for network/HTTP/parse failures only.
+
+    Programming errors (``AttributeError``, ``KeyError``, etc.) must not be
+    swallowed — they indicate bugs we want to see, not transient failures.
+    """
+
+    def test_returns_none_on_http_error(self) -> None:
+        import httpx
+        with patch("math_tutor.video_recommendations.httpx.get") as mock_get:
+            mock_get.side_effect = httpx.ConnectError("refused")
+            self.assertIsNone(validate_youtube_url("https://youtu.be/abc123_DEF"))
+
+    def test_returns_none_on_http_status_error(self) -> None:
+        import httpx
+        with patch("math_tutor.video_recommendations.httpx.get") as mock_get:
+            response = mock_get.return_value
+            response.raise_for_status.side_effect = httpx.HTTPStatusError(
+                "404", request=None, response=None  # type: ignore[arg-type]
+            )
+            self.assertIsNone(validate_youtube_url("https://youtu.be/abc123_DEF"))
+
+    def test_returns_none_on_invalid_json(self) -> None:
+        with patch("math_tutor.video_recommendations.httpx.get") as mock_get:
+            response = mock_get.return_value
+            response.raise_for_status = lambda: None
+            response.json.side_effect = json.JSONDecodeError("bad", "", 0)
+            self.assertIsNone(validate_youtube_url("https://youtu.be/abc123_DEF"))
+
+    def test_does_not_swallow_programming_errors(self) -> None:
+        with patch("math_tutor.video_recommendations.httpx.get") as mock_get:
+            response = mock_get.return_value
+            response.raise_for_status = lambda: None
+            response.json.side_effect = AttributeError("typo in code")
+            with self.assertRaises(AttributeError):
+                validate_youtube_url("https://youtu.be/abc123_DEF")
 
 
 class VideoRecommendationsTests(unittest.TestCase):

@@ -46,6 +46,23 @@ def normalize_youtube_url(url: str) -> str | None:
 
 
 def validate_youtube_url(url: str) -> tuple[str, dict[str, Any]] | None:
+    """Verify a YouTube URL via the public oEmbed endpoint.
+
+    Returns the normalized URL and oEmbed payload on success, or ``None`` for
+    transient/expected failures — bad input URL, network error, non-2xx HTTP
+    response, or malformed JSON. Programming errors (``AttributeError``,
+    ``KeyError``, ``TypeError`` in caller-controlled code) are **not**
+    swallowed; they propagate so bugs remain visible.
+
+    Args:
+        url: Candidate YouTube URL (watch, shorts, or youtu.be form).
+
+    Returns:
+        ``(normalized_url, oembed_payload)`` on success, else ``None``.
+
+    Raises:
+        Exception: Any non-network, non-parse exception is re-raised.
+    """
     normalized = normalize_youtube_url(url)
     if not normalized:
         return None
@@ -55,7 +72,7 @@ def validate_youtube_url(url: str) -> tuple[str, dict[str, Any]] | None:
         response = httpx.get(oembed_url, timeout=15.0, follow_redirects=True)
         response.raise_for_status()
         payload = response.json()
-    except Exception:
+    except (httpx.HTTPError, json.JSONDecodeError, ValueError):
         return None
 
     if not isinstance(payload, dict):

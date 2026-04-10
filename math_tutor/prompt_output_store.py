@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
-import json
 import os
 import time
 from pathlib import Path
 
+from math_tutor.atomic_io import atomic_write_json
 from math_tutor.canvas_course import CanvasFile
 from math_tutor.generated_metadata import build_generated_metadata, provider_name_for_model
 from math_tutor.prompt_catalog import PromptSpec
@@ -62,7 +62,7 @@ def persist_prompt_output(
         model_name=effective_model,
         response_id=result.response_id,
     )
-    metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+    atomic_write_json(metadata_path, metadata, indent=2)
 
     file_state = generated_output_state.processed.setdefault(str(canvas_file.file_id), {})
     file_state[prompt_spec.slug] = {

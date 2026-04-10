@@ -13,6 +13,8 @@ from typing import Any
 from urllib.parse import urljoin
 from urllib.request import Request, urlopen
 
+from math_tutor.atomic_io import atomic_write_json
+
 
 AMC10_BANK_ID = "amc10"
 AMC10_BANK_TITLE = "AMC 10"
@@ -403,9 +405,10 @@ def scrape_all_amc_10_exams(
         url = f"{AOPS_WIKI_BASE}{title}"
         _print(f"  scraping: {title} → {output_path.name}")
         exam = scrape_amc10_exam(url)
-        output_path.write_text(
-            json.dumps({"format": "explicit_curated_exam", "exam": exam}, indent=2),
-            encoding="utf-8",
+        atomic_write_json(
+            output_path,
+            {"format": "explicit_curated_exam", "exam": exam},
+            indent=2,
         )
         written.append(output_path)
     return written
@@ -427,7 +430,7 @@ def main() -> None:
     if args.command == "scrape":
         exam = scrape_amc10_exam(args.url)
         output_path = Path(args.output)
-        output_path.write_text(json.dumps({"format": "explicit_curated_exam", "exam": exam}, indent=2), encoding="utf-8")
+        atomic_write_json(output_path, {"format": "explicit_curated_exam", "exam": exam}, indent=2)
     elif args.command == "scrape-all":
         paths = scrape_all_amc_10_exams(Path(args.output_dir))
         print(f"Done: {len(paths)} exam(s) written to {args.output_dir}")

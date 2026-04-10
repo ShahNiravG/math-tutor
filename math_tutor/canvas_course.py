@@ -13,6 +13,7 @@ behavior and operator-visible logging.
 
 from __future__ import annotations
 
+import os
 import re
 import time
 from concurrent.futures import ThreadPoolExecutor
@@ -429,8 +430,36 @@ def ensure_pdf_fetched(
 
 
 def download_pdf(client: httpx.Client, url: str, destination: Path) -> None:
-    with client.stream("GET", url) as response:
-        response.raise_for_status()
-        with destination.open("wb") as handle:
-            for chunk in response.iter_bytes():
-                handle.write(chunk)
+    """Stream a PDF from ``url`` into ``destination`` atomically.
+
+    The download writes to a sibling ``.part`` file first and only renames it
+    into ``destination`` on successful completion. If the stream fails
+    partway (network drop, HTTP error, disk full), the partial file is
+    removed and any pre-existing file at ``destination`` is preserved.
+
+    Args:
+        client: Authenticated ``httpx.Client`` used for streaming.
+        url: PDF URL to fetch.
+        destination: Final on-disk path for the fetched PDF.
+
+    Raises:
+        httpx.HTTPError: Propagated from ``raise_for_status``.
+        OSError: Propagated from underlying file I/O.
+        Exception: Any exception raised mid-stream is re-raised after the
+            partial file is cleaned up.
+    """
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    part_path = destination.with_name(f".{destination.name}.part")
+    try:
+        with client.stream("GET", url) as response:
+            response.raise_for_status()
+            with part_path.open("wb") as handle:
+                for chunk in response.iter_bytes():
+                    handle.write(chunk)
+        os.replace(part_path, destination)
+    except BaseException:
+        try:
+            part_path.unlink()
+        except FileNotFoundError:
+            pass
+        raise

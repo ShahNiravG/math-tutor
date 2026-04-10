@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from pathlib import Path
+from math_tutor.atomic_io import atomic_write_json
 from math_tutor.generated_metadata import normalize_metadata_payload
 from math_tutor.prompt_catalog import PROMPTS_BY_SLUG, STUDY_GUIDE_PROMPT
 from math_tutor.response_artifacts import build_response_html, build_response_pdf
@@ -63,7 +64,7 @@ def main() -> None:
         metadata["prompt_title"] = metadata.get("prompt_title") or prompt_spec.title
         metadata["response_html_path"] = str(html_path)
         metadata["response_pdf_path"] = str(pdf_response_path) if prompt_spec.generate_response_pdf else ""
-        metadata_path.write_text(json.dumps(metadata, indent=2), encoding="utf-8")
+        atomic_write_json(metadata_path, metadata, indent=2)
 
         file_id = str(metadata["canvas_file_id"])
         file_state = generated_output_state.processed.setdefault(file_id, {})
