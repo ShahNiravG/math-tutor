@@ -228,7 +228,7 @@ def _normalize_explicit_curated_exam_record(exam: dict[str, Any]) -> dict[str, A
 
 def _canonical_curated_bank_title(bank_id: str, *, fallback_title: str) -> str:
     if bank_id == "amc":
-        return "AMC & AIME"
+        return "AIME"
     return fallback_title
 
 

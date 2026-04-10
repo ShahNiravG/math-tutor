@@ -629,6 +629,7 @@ function examBankId(exam) {
 function examBankTitle(exam) {
   var bankId = examBankId(exam);
   if (bankId === 'classic') return 'AI-Generated';
+  if (bankId === 'amc') return 'AIME';
   return (exam && (exam.bank_title || exam.bank_label)) || 'AI-Generated';
 }
 

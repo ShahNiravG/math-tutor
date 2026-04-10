@@ -460,7 +460,7 @@ def _normalize_explicit_curated_exam(exam: dict, *, source_path: Path) -> dict:
 def _curated_bank_identity(path: Path) -> tuple[str, str]:
     stem = path.stem
     if stem.lower().startswith(("amc", "aime", "aimi")):
-        return ("amc", "AMC & AIME")
+        return ("amc", "AIME")
     return (stem.lower(), _humanize_bank_title(stem))
 
 

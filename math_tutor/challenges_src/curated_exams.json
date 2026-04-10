@@ -3,9 +3,9 @@
   "exams": [
     {
       "id": "amc-01",
-      "title": "AMC & AIME Exam 1",
+      "title": "AIME Exam 1",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q001",
@@ -116,9 +116,9 @@
     },
     {
       "id": "amc-02",
-      "title": "AMC & AIME Exam 2",
+      "title": "AIME Exam 2",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q006",
@@ -229,9 +229,9 @@
     },
     {
       "id": "amc-03",
-      "title": "AMC & AIME Exam 3",
+      "title": "AIME Exam 3",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q011",
@@ -342,9 +342,9 @@
     },
     {
       "id": "amc-04",
-      "title": "AMC & AIME Exam 4",
+      "title": "AIME Exam 4",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q016",
@@ -455,9 +455,9 @@
     },
     {
       "id": "amc-05",
-      "title": "AMC & AIME Exam 5",
+      "title": "AIME Exam 5",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q021",
@@ -568,9 +568,9 @@
     },
     {
       "id": "amc-06",
-      "title": "AMC & AIME Exam 6",
+      "title": "AIME Exam 6",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q026",
@@ -681,9 +681,9 @@
     },
     {
       "id": "amc-07",
-      "title": "AMC & AIME Exam 7",
+      "title": "AIME Exam 7",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q031",
@@ -703,7 +703,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1983 AIME, Problem 3 / Circles and Parametric Equations / Q31",
+          "source_label": "AIME / 1983 AIME, Problem 3 / Circles and Parametric Equations / Q31",
           "question_number": 31,
           "text": "What is the largest value of $3x+4y$ if $x$ and $y$ are real numbers such that $x^2+y^2=14x+6y+6$?",
           "options": [
@@ -734,7 +734,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1988 AIME, Problem 4 / Fundamental Trigonometric Identities / Q32",
+          "source_label": "AIME / 1988 AIME, Problem 4 / Fundamental Trigonometric Identities / Q32",
           "question_number": 32,
           "text": "Suppose that $|x_i| < 1$ for $i=1, 2, \\dots, n$. Suppose further that $|x_1| + |x_2| + \\dots + |x_n| = 19 + |x_1 + x_2 + \\dots + x_n|$. What is the smallest possible value of $n$?",
           "options": [
@@ -765,7 +765,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1989 AIME, Problem 3 / Right Triangle Trigonometry / Q33",
+          "source_label": "AIME / 1989 AIME, Problem 3 / Right Triangle Trigonometry / Q33",
           "question_number": 33,
           "text": "Point $P$ is inside triangle $ABC$. Line segments $PD$, $PE$, and $PF$ are drawn perpendicular to sides $BC$, $CA$, and $AB$, respectively. Given that $AB=c=13$, $BC=a=14$, $CA=b=15$, and $PD=PE=PF$, find the common length of these segments.",
           "options": [
@@ -796,7 +796,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1994 AIME, Problem 3 / Trigonometric Functions of Angles / Q34",
+          "source_label": "AIME / 1994 AIME, Problem 3 / Trigonometric Functions of Angles / Q34",
           "question_number": 34,
           "text": "The function $f(x)$ satisfies $f(x)+f(x-1)=x^2$ for all $x$. Given that $f(19)=94$, find $f(94)$.",
           "options": [
@@ -827,7 +827,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1995 AIME, Problem 7 / Addition and Subtraction Formulas / Q35",
+          "source_label": "AIME / 1995 AIME, Problem 7 / Addition and Subtraction Formulas / Q35",
           "question_number": 35,
           "text": "Given that $(1+\\sin t)(1+\\cos t)=5/4$ and $(1-\\sin t)(1-\\cos t) = \\frac{m}{n}-\\sqrt{k}$, where $m, n, k$ are positive integers and $m,n$ are relatively prime, find $m+n+k$.",
           "options": [
@@ -844,9 +844,9 @@
     },
     {
       "id": "amc-08",
-      "title": "AMC & AIME Exam 8",
+      "title": "AIME Exam 8",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q036",
@@ -866,7 +866,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1996 AIME, Problem 5 / Law of Sines and Cosines / Q36",
+          "source_label": "AIME / 1996 AIME, Problem 5 / Law of Sines and Cosines / Q36",
           "question_number": 36,
           "text": "Suppose that the roots of $x^3 + 3x^2 + 4x - 11 = 0$ are $a$, $b$, and $c$, and that the roots of $x^3 + rx^2 + sx + t = 0$ are $a+b$, $b+c$, and $c+a$. Find $t$.",
           "options": [
@@ -897,7 +897,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1997 AIME, Problem 4 / Circles and Radians / Q37",
+          "source_label": "AIME / 1997 AIME, Problem 4 / Circles and Radians / Q37",
           "question_number": 37,
           "text": "Circles of radii $5, 5, 8$, and $m/n$ are mutually externally tangent, where $m$ and $n$ are relatively prime positive integers. Find $m+n$.",
           "options": [
@@ -928,7 +928,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1998 AIME, Problem 2 / Fundamental Trigonometric Identities / Q38",
+          "source_label": "AIME / 1998 AIME, Problem 2 / Fundamental Trigonometric Identities / Q38",
           "question_number": 38,
           "text": "Find the number of solutions to the equation $\\cos^2(x) + \\cos^2(2x) + \\cos^2(3x) = 1$ in the interval $[0, \\pi]$.",
           "options": [
@@ -959,7 +959,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 1999 AIME, Problem 6 / Solving Trigonometric Equations / Q39",
+          "source_label": "AIME / 1999 AIME, Problem 6 / Solving Trigonometric Equations / Q39",
           "question_number": 39,
           "text": "Find the sum of all values of $x$ in $[0, 2\\pi]$ such that $\\sin x + \\sin 2x + \\sin 3x = 0$.",
           "options": [
@@ -990,7 +990,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2000 AIME I, Problem 4 / Shifted Conics / Q40",
+          "source_label": "AIME / 2000 AIME I, Problem 4 / Shifted Conics / Q40",
           "question_number": 40,
           "text": "In the $xy$-plane, what is the length of the shortest path from $(0,0)$ to $(12,16)$ that does not go inside the circle $(x-6)^2+(y-8)^2=25$?",
           "options": [
@@ -1007,9 +1007,9 @@
     },
     {
       "id": "amc-09",
-      "title": "AMC & AIME Exam 9",
+      "title": "AIME Exam 9",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q041",
@@ -1029,7 +1029,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2001 AIME I, Problem 3 / Double-Angle Formulas / Q41",
+          "source_label": "AIME / 2001 AIME I, Problem 3 / Double-Angle Formulas / Q41",
           "question_number": 41,
           "text": "Find the sum of the roots, in degrees, of the equation $\\tan^2 x - 3 \\tan x + 1 = 0$ in the interval $0^\\circ < x < 360^\\circ$.",
           "options": [
@@ -1060,7 +1060,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2002 AIME I, Problem 12 / Trigonometric Functions on the Unit Circle / Q42",
+          "source_label": "AIME / 2002 AIME I, Problem 12 / Trigonometric Functions on the Unit Circle / Q42",
           "question_number": 42,
           "text": "Let $f(x) = \\sin x + \\cos x + \\tan x + \\cot x + \\sec x + \\csc x$. If $f(x) = 2$ and $x$ is not a multiple of $\\pi/2$, find the absolute value of $\\sin(2x)$.",
           "options": [
@@ -1091,7 +1091,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2003 AIME I, Problem 8 / Ellipses / Q43",
+          "source_label": "AIME / 2003 AIME I, Problem 8 / Ellipses / Q43",
           "question_number": 43,
           "text": "The ellipse $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$ has its center at the origin and passes through $(3,4)$. Its foci are at $(\\pm c, 0)$. If $c^2=16$, what is the area of the ellipse?",
           "options": [
@@ -1122,7 +1122,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2004 AIME I, Problem 9 / Law of Cosines / Q44",
+          "source_label": "AIME / 2004 AIME I, Problem 9 / Law of Cosines / Q44",
           "question_number": 44,
           "text": "In triangle $ABC$, $\\cos A = -0.6$, and the lengths of the medians from $B$ and $C$ to the opposite sides are $12$ and $15$, respectively. Find the square of the length of $BC$.",
           "options": [
@@ -1153,7 +1153,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2005 AIME I, Problem 7 / Circles and Parabolas / Q45",
+          "source_label": "AIME / 2005 AIME I, Problem 7 / Circles and Parabolas / Q45",
           "question_number": 45,
           "text": "Find the number of positive integers $x$ such that there exists a positive integer $y$ for which $\\log_2 x + \\log_2 y = \\log_2(x+y+25)$.",
           "options": [
@@ -1170,9 +1170,9 @@
     },
     {
       "id": "amc-10",
-      "title": "AMC & AIME Exam 10",
+      "title": "AIME Exam 10",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q046",
@@ -1192,7 +1192,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2006 AIME I, Problem 4 / Half-Angle Formulas / Q46",
+          "source_label": "AIME / 2006 AIME I, Problem 4 / Half-Angle Formulas / Q46",
           "question_number": 46,
           "text": "Let $x$ be an angle such that $\\sin x + \\cos x = 1/5$. What is the value of $\\tan(x/2)$ if $0 < x < \\pi$?",
           "options": [
@@ -1223,7 +1223,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2007 AIME I, Problem 6 / Hyperbolas / Q47",
+          "source_label": "AIME / 2007 AIME I, Problem 6 / Hyperbolas / Q47",
           "question_number": 47,
           "text": "The hyperbola $xy = 1$ intersects the circle $x^2 + y^2 = 4$ in four points. Find the area of the quadrilateral formed by these four points.",
           "options": [
@@ -1254,7 +1254,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2008 AIME I, Problem 5 / Trigonometric Properties / Q48",
+          "source_label": "AIME / 2008 AIME I, Problem 5 / Trigonometric Properties / Q48",
           "question_number": 48,
           "text": "Let $P(x)$ be a polynomial such that $P(\\sin \\theta) = \\cos 2\\theta$ for all $\\theta$. What is the value of $P(1/3)$?",
           "options": [
@@ -1285,7 +1285,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2009 AIME I, Problem 8 / Law of Sines / Q49",
+          "source_label": "AIME / 2009 AIME I, Problem 8 / Law of Sines / Q49",
           "question_number": 49,
           "text": "In triangle $ABC$, the lengths of the sides are $a=7, b=8, c=9$. Let $H$ be the orthocenter. Find the length of the segment $AH$.",
           "options": [
@@ -1316,7 +1316,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2010 AIME I, Problem 7 / Inverse Trigonometric Functions / Q50",
+          "source_label": "AIME / 2010 AIME I, Problem 7 / Inverse Trigonometric Functions / Q50",
           "question_number": 50,
           "text": "Evaluate $\\sum_{n=1}^{10} \\arctan \\left( \\frac{1}{n^2+n+1} \\right)$ as $\\arctan(a/b)$ where $a,b$ are coprime. Find $a+b$.",
           "options": [
@@ -1333,9 +1333,9 @@
     },
     {
       "id": "amc-11",
-      "title": "AMC & AIME Exam 11",
+      "title": "AIME Exam 11",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q051",
@@ -1355,7 +1355,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2011 AIME I, Problem 6 / Solving Trigonometric Equations / Q51",
+          "source_label": "AIME / 2011 AIME I, Problem 6 / Solving Trigonometric Equations / Q51",
           "question_number": 51,
           "text": "Find the number of values of $x$ in the interval $(0, 2\\pi)$ that satisfy $\\cos(x) + \\cos(2x) + \\cos(3x) = 0$.",
           "options": [
@@ -1386,7 +1386,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2012 AIME I, Problem 3 / Circles and Sectors / Q52",
+          "source_label": "AIME / 2012 AIME I, Problem 3 / Circles and Sectors / Q52",
           "question_number": 52,
           "text": "Two circles of radii $10$ and $14$ intersect. The length of the common chord is $16$. What is the sum of the areas of the two distinct regions bounded by the arcs of the circles?",
           "options": [
@@ -1417,7 +1417,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2013 AIME I, Problem 9 / Trigonometric Addition Formulas / Q53",
+          "source_label": "AIME / 2013 AIME I, Problem 9 / Trigonometric Addition Formulas / Q53",
           "question_number": 53,
           "text": "If $\\tan \\alpha + \\tan \\beta = 2$ and $\\cos \\alpha \\cos \\beta = 1/3$, what is $\\cos(\\alpha-\\beta)$?",
           "options": [
@@ -1448,7 +1448,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2014 AIME I, Problem 2 / Law of Sines and Right Triangles / Q54",
+          "source_label": "AIME / 2014 AIME I, Problem 2 / Law of Sines and Right Triangles / Q54",
           "question_number": 54,
           "text": "In right triangle $ABC$ with right angle at $C$, the median $CM$ has length $5$, and the altitude $CH$ has length $4$. What is the area of the triangle?",
           "options": [
@@ -1479,7 +1479,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2015 AIME I, Problem 5 / Shifted Conics / Q55",
+          "source_label": "AIME / 2015 AIME I, Problem 5 / Shifted Conics / Q55",
           "question_number": 55,
           "text": "An ellipse is defined by the equation $9x^2 + 16y^2 - 36x + 96y + 36 = 0$. What is the distance between the foci of the ellipse?",
           "options": [
@@ -1496,9 +1496,9 @@
     },
     {
       "id": "amc-12",
-      "title": "AMC & AIME Exam 12",
+      "title": "AIME Exam 12",
       "bank": "amc",
-      "bank_title": "AMC & AIME",
+      "bank_title": "AIME",
       "questions": [
         {
           "id": "amc-q056",
@@ -1518,7 +1518,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2016 AIME I, Problem 6 / Graphs of Sine and Cosine / Q56",
+          "source_label": "AIME / 2016 AIME I, Problem 6 / Graphs of Sine and Cosine / Q56",
           "question_number": 56,
           "text": "How many solutions are there to the equation $\\sin(x) = x/10$?",
           "options": [
@@ -1549,7 +1549,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2017 AIME I, Problem 3 / Double-Angle Formulas / Q57",
+          "source_label": "AIME / 2017 AIME I, Problem 3 / Double-Angle Formulas / Q57",
           "question_number": 57,
           "text": "If $\\sin x + \\cos x = 1/3$, what is the value of $\\sin^3 x + \\cos^3 x$?",
           "options": [
@@ -1580,7 +1580,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2018 AIME I, Problem 7 / Right Triangle Trigonometry / Q58",
+          "source_label": "AIME / 2018 AIME I, Problem 7 / Right Triangle Trigonometry / Q58",
           "question_number": 58,
           "text": "In a right triangle $ABC$ with $\\angle C = 90^\\circ$, $\\tan A = 3/4$. If the inradius of the triangle is $2$, what is the perimeter of the triangle?",
           "options": [
@@ -1611,7 +1611,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2019 AIME I, Problem 4 / Law of Cosines / Q59",
+          "source_label": "AIME / 2019 AIME I, Problem 4 / Law of Cosines / Q59",
           "question_number": 59,
           "text": "In $\\triangle ABC$, $AB=13, BC=14, CA=15$. Let $D$ be a point on $BC$ such that $BD=5$. What is the length of $AD$?",
           "options": [
@@ -1642,7 +1642,7 @@
           "type": "amc",
           "model": "gem",
           "model_label": "Gemini 3.1 Pro",
-          "source_label": "AMC & AIME / 2020 AIME I, Problem 6 / Circles and Tangents / Q60",
+          "source_label": "AIME / 2020 AIME I, Problem 6 / Circles and Tangents / Q60",
           "question_number": 60,
           "text": "A circle is tangent to the lines $y=x$ and $y=-x$ and passes through the point $(4, 0)$. What is the sum of the possible radii of this circle?",
           "options": [
