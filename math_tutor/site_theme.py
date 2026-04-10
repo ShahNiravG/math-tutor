@@ -915,6 +915,12 @@ STAGING_SITE_PAGE_OVERRIDES = """
       font-size: 1.45rem;
       letter-spacing: -0.03em;
     }
+    body.experience-staging .continue-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
     body.experience-staging .task-kicker,
     body.experience-staging .chapter-kicker {
       display: inline-flex;
@@ -1194,7 +1200,8 @@ KATEX_AUTORENDER_SCRIPT = """
 STAGING_SITE_SCRIPT = """
     (function () {
       const LAST_RECORD_KEY = "math_tutor_last_record";
-      const SESSION_KEY = "math_tutor_challenge_session";
+      const LEGACY_SESSION_KEY = "math_tutor_challenge_session";
+      const SESSION_KEY_PREFIX = "math_tutor_challenge_session:";
       const body = document.body;
       const recordHref = body.dataset.recordHref;
       const recordTitle = body.dataset.recordTitle;
@@ -1215,12 +1222,65 @@ STAGING_SITE_SCRIPT = """
         }
       };
 
-      if (recordHref && recordTitle) {
+      function readStoredSession(key) {
+        try {
+          const saved = JSON.parse(storage.get(key) || "null");
+          if (!saved || !saved.exam_id) return null;
+          return saved;
+        } catch (error) {
+          return null;
+        }
+      }
+
+      function sessionSavedAtMs(saved) {
+        const value = Date.parse(saved && saved.savedAt ? saved.savedAt : "");
+        return Number.isNaN(value) ? 0 : value;
+      }
+
+      function getMostRecentChallengeSession() {
+        const byExam = {};
+        try {
+          for (let i = 0; i < localStorage.length; i += 1) {
+            const key = localStorage.key(i);
+            if (!key || key.indexOf(SESSION_KEY_PREFIX) !== 0) continue;
+            const saved = readStoredSession(key);
+            if (!saved) continue;
+            const existing = byExam[saved.exam_id];
+            if (!existing || sessionSavedAtMs(saved) >= sessionSavedAtMs(existing)) {
+              byExam[saved.exam_id] = saved;
+            }
+          }
+        } catch (error) {
+          // Ignore blocked storage and fall back to the legacy key below.
+        }
+
+        const legacySaved = readStoredSession(LEGACY_SESSION_KEY);
+        if (legacySaved) {
+          const current = byExam[legacySaved.exam_id];
+          if (!current || sessionSavedAtMs(legacySaved) > sessionSavedAtMs(current)) {
+            byExam[legacySaved.exam_id] = legacySaved;
+          }
+        }
+
+        return Object.values(byExam).sort(function(a, b) {
+          return sessionSavedAtMs(b) - sessionSavedAtMs(a);
+        })[0] || null;
+      }
+
+      function persistLastRecord() {
+        if (!recordHref || !recordTitle) return;
+        const resumeHref = recordHref + (window.location.hash || "");
         storage.set(LAST_RECORD_KEY, JSON.stringify({
           href: recordHref,
+          resumeHref: resumeHref,
           title: recordTitle,
           savedAt: new Date().toISOString()
         }));
+      }
+
+      if (recordHref && recordTitle) {
+        persistLastRecord();
+        window.addEventListener("hashchange", persistLastRecord);
       }
 
       function hydrateContinueCard() {
@@ -1229,6 +1289,7 @@ STAGING_SITE_SCRIPT = """
         const title = card.querySelector("[data-continue-title]");
         const link = card.querySelector("[data-continue-link]");
         const copy = card.querySelector("[data-continue-copy]");
+        const challengeLink = card.querySelector("[data-challenge-link]");
 
         let heading = title ? title.textContent : "Your next chapter";
         let href = link ? link.getAttribute("href") : "";
@@ -1236,22 +1297,33 @@ STAGING_SITE_SCRIPT = """
         let actionLabel = "Continue Learning";
 
         try {
-          const savedChallenge = JSON.parse(storage.get(SESSION_KEY) || "null");
+          const savedRecord = JSON.parse(storage.get(LAST_RECORD_KEY) || "null");
+          if (savedRecord && (savedRecord.resumeHref || savedRecord.href)) {
+            heading = savedRecord.title || heading;
+            href = savedRecord.resumeHref || savedRecord.href;
+            text = "Return to " + savedRecord.title + " and keep going where you left off.";
+            actionLabel = "Resume Chapter";
+          }
+
+          const savedChallenge = getMostRecentChallengeSession();
           if (savedChallenge && savedChallenge.exam_id) {
-            heading = savedChallenge.exam_title || "Challenge Exam";
-            href = "challenges/exam.html?id=" + encodeURIComponent(savedChallenge.exam_id);
-            text = "Resume the last challenge exam that was in progress on this device.";
-            actionLabel = "Resume Challenge";
-          } else {
-            const savedRecord = JSON.parse(storage.get(LAST_RECORD_KEY) || "null");
-            if (savedRecord && savedRecord.href) {
-              heading = savedRecord.title || heading;
-              href = savedRecord.href + "#practice";
-              text = "Return to " + savedRecord.title + " and keep going from practice.";
+            if (challengeLink) {
+              challengeLink.hidden = false;
+              challengeLink.setAttribute(
+                "href",
+                "challenges/exam.html?id=" + encodeURIComponent(savedChallenge.exam_id)
+              );
+              challengeLink.textContent = "Resume Challenge";
             }
+            if (savedRecord && (savedRecord.resumeHref || savedRecord.href)) {
+              text += " You can also jump back into your unfinished challenge.";
+            }
+          } else if (challengeLink) {
+            challengeLink.hidden = true;
           }
         } catch (error) {
           text = "Continue with the recommended chapter path.";
+          if (challengeLink) challengeLink.hidden = true;
         }
 
         if (title && heading) title.textContent = heading;

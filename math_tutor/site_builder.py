@@ -134,9 +134,9 @@ def build_site(
         experience_variant=experience_variant,
     )
     index_path = resolved_site_dir / "index.html"
-    index_path.write_text(html_text, encoding="utf-8")
-    library_path = resolved_site_dir / "library.html"
-    library_path.write_text(
+    _write_html_if_changed(index_path, html_text)
+    _write_html_if_changed(
+        resolved_site_dir / "library.html",
         render_library_page(
             records=records,
             output_dir=output_dir,
@@ -146,31 +146,28 @@ def build_site(
             site_page_href=site_page_href,
             experience_variant=experience_variant,
         ),
-        encoding="utf-8",
     )
-    live_tutor_path = resolved_site_dir / "live-tutor.html"
-    live_tutor_path.write_text(
+    _write_html_if_changed(
+        resolved_site_dir / "live-tutor.html",
         render_live_tutor_page(
             records=records,
             base_path=resolved_base_path,
             site_page_href=site_page_href,
             experience_variant=experience_variant,
         ),
-        encoding="utf-8",
     )
-    privacy_policy_path = resolved_site_dir / "privacy-policy.html"
-    privacy_policy_path.write_text(
+    _write_html_if_changed(
+        resolved_site_dir / "privacy-policy.html",
         render_privacy_policy_page(
             records=records,
             base_path=resolved_base_path,
             site_page_href=site_page_href,
             experience_variant=experience_variant,
         ),
-        encoding="utf-8",
     )
     for record in records:
-        record_path = resolved_site_dir / record_page_filename(record)
-        record_path.write_text(
+        _write_html_if_changed(
+            resolved_site_dir / record_page_filename(record),
             render_record_page(
                 record=record,
                 records=records,
@@ -183,9 +180,14 @@ def build_site(
                 site_page_href=site_page_href,
                 experience_variant=experience_variant,
             ),
-            encoding="utf-8",
         )
     return index_path
+
+
+def _write_html_if_changed(path: Path, content: str) -> None:
+    if path.exists() and path.read_text(encoding="utf-8") == content:
+        return
+    path.write_text(content, encoding="utf-8")
 
 
 def site_page_href(filename: str, base_path: str) -> str:

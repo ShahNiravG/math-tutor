@@ -13,7 +13,10 @@ from math_tutor.challenge_catalog import CLASSIC_BANK_ID, CLASSIC_BANK_TITLE
 
 
 def write_json(path: Path, payload: dict[str, Any], *, indent: int | None = None) -> None:
-    path.write_text(json.dumps(payload, indent=indent), encoding="utf-8")
+    new_content = json.dumps(payload, indent=indent)
+    if path.exists() and path.read_text(encoding="utf-8") == new_content:
+        return
+    path.write_text(new_content, encoding="utf-8")
 
 
 def write_canonical_challenge_catalogs(
@@ -40,26 +43,47 @@ def write_canonical_challenge_catalogs(
     }
 
 
+def _sync_dir(source: Path, dest: Path) -> None:
+    """Recursively sync source into dest, skipping unchanged files."""
+    dest.mkdir(exist_ok=True)
+    source_names = {p.name for p in source.iterdir()}
+    for child in list(dest.iterdir()):
+        if child.name not in source_names:
+            if child.is_dir():
+                shutil.rmtree(child)
+            else:
+                child.unlink()
+    for src_child in source.iterdir():
+        dst_child = dest / src_child.name
+        if src_child.is_dir():
+            _sync_dir(src_child, dst_child)
+        else:
+            new_bytes = src_child.read_bytes()
+            if dst_child.exists() and dst_child.read_bytes() == new_bytes:
+                continue
+            dst_child.write_bytes(new_bytes)
+
+
 def copy_static_challenge_assets(*, source_dir: Path, challenges_dir: Path) -> None:
     for source_path in source_dir.glob("*"):
         if source_path.name in ("exams.json", "chapter_exams.json", "curated_exams.json"):
             continue
         destination = challenges_dir / source_path.name
         if source_path.is_dir():
-            if destination.exists():
-                shutil.rmtree(destination)
-            shutil.copytree(source_path, destination)
+            _sync_dir(source_path, destination)
         else:
-            shutil.copy2(source_path, destination)
+            new_bytes = source_path.read_bytes()
+            if destination.exists() and destination.read_bytes() == new_bytes:
+                continue
+            destination.write_bytes(new_bytes)
 
 
-def materialize_exam_outputs(*, challenges_dir: Path, bundle: dict[str, Any], full_bundle_size: int) -> dict[str, int]:
+def materialize_exam_outputs(*, challenges_dir: Path, bundle: dict[str, Any], full_bundle_size: int) -> dict[str, Any]:
     generated_at = bundle.get("generated_at")
     index_entries: list[dict[str, Any]] = []
     exams_subdir = challenges_dir / "exams"
     exams_subdir.mkdir(exist_ok=True)
-    for existing_json in exams_subdir.glob("*.json"):
-        existing_json.unlink()
+    written_ids: list[str] = []
     total_individual_bytes = 0
     for exam in bundle.get("exams", []):
         mm_count = sum(1 for question in exam["questions"] if question["type"] == "mm")
@@ -84,6 +108,7 @@ def materialize_exam_outputs(*, challenges_dir: Path, bundle: dict[str, Any], fu
         )
         individual_path = exams_subdir / f"{exam['id']}.json"
         write_json(individual_path, {"generated_at": generated_at, **exam})
+        written_ids.append(exam["id"])
         total_individual_bytes += individual_path.stat().st_size
 
     index_json_path = challenges_dir / "exams-index.json"
@@ -94,16 +119,18 @@ def materialize_exam_outputs(*, challenges_dir: Path, bundle: dict[str, Any], fu
         "index_size_kb": index_json_path.stat().st_size // 1024,
         "full_bundle_size_kb": full_bundle_size // 1024,
         "avg_individual_size_bytes": average_individual_size,
+        "written_exam_ids": written_ids,
     }
 
 
-def materialize_chapter_exam_outputs(*, challenges_dir: Path, bundle: dict[str, Any]) -> dict[str, int]:
+def materialize_chapter_exam_outputs(*, challenges_dir: Path, bundle: dict[str, Any]) -> dict[str, Any]:
     chapter_index_entries: list[dict[str, Any]] = []
     exams_subdir = challenges_dir / "exams"
     exams_subdir.mkdir(exist_ok=True)
     chapter_subdir = challenges_dir / "chapter-exams"
     chapter_subdir.mkdir(exist_ok=True)
     generated_at = bundle.get("generated_at")
+    written_exam_ids: list[str] = []
 
     for exam in bundle.get("exams", []):
         mm_count = sum(1 for question in exam["questions"] if question["type"] == "mm")
@@ -122,6 +149,7 @@ def materialize_chapter_exam_outputs(*, challenges_dir: Path, bundle: dict[str, 
             }
         )
         write_json(exams_subdir / f"{exam['id']}.json", {"generated_at": generated_at, **exam})
+        written_exam_ids.append(exam["id"])
 
     write_json(
         chapter_subdir / "index.json",
@@ -139,7 +167,7 @@ def materialize_chapter_exam_outputs(*, challenges_dir: Path, bundle: dict[str, 
             },
             indent=2,
         )
-    return {"chapter_exam_count": len(chapter_index_entries)}
+    return {"chapter_exam_count": len(chapter_index_entries), "written_exam_ids": written_exam_ids}
 
 
 def _chapter_numeric_sort_key(chapter: str) -> float:

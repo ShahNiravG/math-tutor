@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -34,6 +35,27 @@ class SiteBuilderTests(unittest.TestCase):
         self.assertIn('class="guided-card summary-card"', html)
         self.assertIn('class="card-summary"', html)
         self.assertIn("This chapter introduces radians.", html)
+
+
+    def test_write_html_if_changed_skips_write_if_content_unchanged(self) -> None:
+        from unittest.mock import patch
+        from math_tutor.site_builder import _write_html_if_changed
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "test.html"
+            _write_html_if_changed(path, "<html>content</html>")
+            with patch.object(Path, "write_text") as mock_write:
+                _write_html_if_changed(path, "<html>content</html>")
+                mock_write.assert_not_called()
+
+    def test_write_html_if_changed_writes_when_content_changed(self) -> None:
+        from unittest.mock import patch
+        from math_tutor.site_builder import _write_html_if_changed
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "test.html"
+            _write_html_if_changed(path, "<html>old</html>")
+            with patch.object(Path, "write_text") as mock_write:
+                _write_html_if_changed(path, "<html>new</html>")
+                mock_write.assert_called_once()
 
 
 if __name__ == "__main__":

@@ -372,6 +372,12 @@ def build_challenges(
     )
     print(f"  Wrote chapter challenge index ({chapter_output_stats['chapter_exam_count']} exams)")
 
+    # Remove exam files no longer in either bundle (both share the exams/ subdir)
+    all_written_ids = set(exam_output_stats["written_exam_ids"]) | set(chapter_output_stats["written_exam_ids"])
+    for stale in (challenges_dir / "exams").glob("*.json"):
+        if stale.stem not in all_written_ids:
+            stale.unlink()
+
     # Always regenerate config.php from current env vars
     config_path = challenges_dir / "config.php"
     generate_config_php(config_path, experience_variant=experience_variant)

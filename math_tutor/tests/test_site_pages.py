@@ -33,8 +33,14 @@ class SitePagesTests(unittest.TestCase):
         )
 
         self.assertIn("data-continue-card", html)
+        self.assertIn("data-challenge-link", html)
         self.assertIn("Start Practice", html)
         self.assertIn("experience-staging", html)
+        self.assertIn('const LAST_RECORD_KEY = "math_tutor_last_record";', html)
+        self.assertIn('const LEGACY_SESSION_KEY = "math_tutor_challenge_session";', html)
+        self.assertIn('const SESSION_KEY_PREFIX = "math_tutor_challenge_session:";', html)
+        self.assertIn("getMostRecentChallengeSession()", html)
+        self.assertIn("Resume Chapter", html)
 
 
 if __name__ == "__main__":

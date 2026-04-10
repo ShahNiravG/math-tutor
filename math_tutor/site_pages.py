@@ -89,7 +89,10 @@ def build_index_html(
             <span class="task-kicker">Continue</span>
             <h3 data-continue-title>{html.escape(featured_title)}</h3>
             <p class="continue-copy" data-continue-copy>Ready to pick up where you left off.</p>
-            <a class="hero-action primary" data-continue-link href="{html.escape(featured_practice_href)}">Continue Learning</a>
+            <div class="continue-actions">
+              <a class="hero-action primary" data-continue-link href="{html.escape(featured_practice_href)}">Continue Learning</a>
+              <a class="hero-action" data-challenge-link href="{html.escape(challenges_href)}" hidden>Resume Challenge</a>
+            </div>
           </aside>
         </section>
         <section class="content-card section-card section-surface">
