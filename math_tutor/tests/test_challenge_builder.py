@@ -124,8 +124,8 @@ class ChallengeBuilderTests(unittest.TestCase):
         classic_bundle = {
             "generated_at": "2026-04-03T00:38:25.088604+00:00",
             "exams": [
-                {"id": "exam-01", "title": "Challenge Exam 1", "bank": "classic", "bank_title": "Classic", "questions": []},
-                {"id": "exam-02", "title": "Challenge Exam 2", "bank": "classic", "bank_title": "Classic", "questions": []},
+                {"id": "exam-01", "title": "Challenge Exam 1", "bank": "classic", "bank_title": "AI-Generated", "questions": []},
+                {"id": "exam-02", "title": "Challenge Exam 2", "bank": "classic", "bank_title": "AI-Generated", "questions": []},
             ],
         }
         curated_exams = [
@@ -479,7 +479,7 @@ class AppendOnlyClassicExamTests(unittest.TestCase):
             {
                 "id": "exam-01",
                 "bank": "classic",
-                "bank_title": "Classic",
+                "bank_title": "AI-Generated",
                 "title": "Challenge Exam 1",
                 "questions": [_make_question(f"chp51-mm-gpt54-q{i}", "5.1", "mm") for i in range(1, 8)],
             }

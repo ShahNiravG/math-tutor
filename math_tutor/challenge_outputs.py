@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 
 from math_tutor.chaptering import chapter_slug, chapter_sort_key
+from math_tutor.challenge_catalog import CLASSIC_BANK_ID, CLASSIC_BANK_TITLE
 
 
 def write_json(path: Path, payload: dict[str, Any], *, indent: int | None = None) -> None:
@@ -71,10 +72,10 @@ def materialize_exam_outputs(*, challenges_dir: Path, bundle: dict[str, Any], fu
             {
                 "id": exam["id"],
                 "title": exam["title"],
-                "bank": exam.get("bank", "classic"),
-                "bank_id": exam.get("bank", "classic"),
-                "bank_title": exam.get("bank_title", "Classic"),
-                "bank_label": exam.get("bank_title", "Classic"),
+                "bank": exam.get("bank", CLASSIC_BANK_ID),
+                "bank_id": exam.get("bank", CLASSIC_BANK_ID),
+                "bank_title": exam.get("bank_title", CLASSIC_BANK_TITLE),
+                "bank_label": exam.get("bank_title", CLASSIC_BANK_TITLE),
                 "question_count": len(exam["questions"]),
                 "mm": mm_count,
                 "op": op_count,

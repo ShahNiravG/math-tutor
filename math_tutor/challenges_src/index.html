@@ -627,7 +627,9 @@ function examBankId(exam) {
 }
 
 function examBankTitle(exam) {
-  return (exam && (exam.bank_title || exam.bank_label)) || 'Classic';
+  var bankId = examBankId(exam);
+  if (bankId === 'classic') return 'AI-Generated';
+  return (exam && (exam.bank_title || exam.bank_label)) || 'AI-Generated';
 }
 
 function buildBankEntries(allExams) {
@@ -771,7 +773,7 @@ function renderResumeCards(completedSet, examIndexById) {
     if (!data.generated_at) return;
     const d = new Date(data.generated_at);
     const label = d.toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' });
-    const bankTitle = (bankEntries.find(function(entry) { return entry.id === selectedBank; }) || {}).title || 'Classic';
+    const bankTitle = (bankEntries.find(function(entry) { return entry.id === selectedBank; }) || {}).title || 'AI-Generated';
     const bankExamCount = allExams.filter(function(exam) { return examBankId(exam) === selectedBank; }).length;
     document.getElementById('bundle-info').textContent =
       `${bankTitle} bank · ${bankExamCount} exams · Bundle generated ${label}`;
@@ -810,7 +812,7 @@ function renderResumeCards(completedSet, examIndexById) {
     const chapterText = chapters.length > 5
       ? chapters.slice(0, 4).join(', ') + ` +${chapters.length - 4} more`
       : chapters.join(', ');
-    const bankTitle = exam.bank_title || 'Classic';
+    const bankTitle = examBankTitle(exam);
     const countTags = [];
     if (mm > 0) countTags.push(`<span class="tag tag-mm">${mm} Mental Math</span>`);
     if (op > 0) countTags.push(`<span class="tag tag-op">${op} Olympiad</span>`);

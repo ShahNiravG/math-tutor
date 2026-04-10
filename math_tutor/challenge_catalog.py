@@ -15,6 +15,9 @@ MAX_EXAM_SIZE = 10
 MAX_OP_PER_EXAM = 3
 TARGET_MM_PER_EXAM = MAX_EXAM_SIZE - MAX_OP_PER_EXAM  # 7
 CURATED_BANK_EXAM_SIZE = 5
+# The internal "classic" slug refers to the AI-generated challenge bank shown in the UI.
+CLASSIC_BANK_ID = "classic"
+CLASSIC_BANK_TITLE = "AI-Generated"
 SOURCE_SUFFIXES = [
     ("__mental-math-gpt5.md", "mm", "gpt54", "GPT-5.4", "__mental-math-gpt5-mcq.md"),
     ("__mental-math-gemini.md", "mm", "gem", "Gemini 3.1 Pro", "__mental-math-gemini-mcq.md"),
@@ -184,8 +187,9 @@ def ensure_classic_bank_metadata(exams: list[dict]) -> list[dict]:
     normalized: list[dict] = []
     for exam in exams:
         normalized_exam = dict(exam)
-        normalized_exam.setdefault("bank", "classic")
-        normalized_exam.setdefault("bank_title", "Classic")
+        normalized_exam.setdefault("bank", CLASSIC_BANK_ID)
+        if normalized_exam.get("bank") == CLASSIC_BANK_ID:
+            normalized_exam["bank_title"] = CLASSIC_BANK_TITLE
         normalized.append(normalized_exam)
     return normalized
 
@@ -252,8 +256,8 @@ def append_classic_exams(new_questions: list[dict], *, last_exam_number: int) ->
             {
                 "id": f"exam-{exam_number:02d}",
                 "title": f"Challenge Exam {exam_number}",
-                "bank": "classic",
-                "bank_title": "Classic",
+                "bank": CLASSIC_BANK_ID,
+                "bank_title": CLASSIC_BANK_TITLE,
                 "questions": exam_questions,
             }
         )
@@ -293,8 +297,8 @@ def build_exam_sets(questions: list[dict]) -> list[dict]:
             {
                 "id": f"exam-{exam_number:02d}",
                 "title": f"Challenge Exam {exam_number}",
-                "bank": "classic",
-                "bank_title": "Classic",
+                "bank": CLASSIC_BANK_ID,
+                "bank_title": CLASSIC_BANK_TITLE,
                 "questions": exam_questions,
             }
         )

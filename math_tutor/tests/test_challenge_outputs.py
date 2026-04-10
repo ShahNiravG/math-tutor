@@ -22,7 +22,7 @@ class ChallengeOutputsTests(unittest.TestCase):
                         "id": "exam-01",
                         "title": "Challenge Exam 1",
                         "bank": "classic",
-                        "bank_title": "Classic",
+                        "bank_title": "AI-Generated",
                         "questions": [
                             {"id": "q1", "chapter": "5.1", "type": "mm"},
                             {"id": "q2", "chapter": "5.2", "type": "op"},
@@ -44,8 +44,8 @@ class ChallengeOutputsTests(unittest.TestCase):
             self.assertEqual(index_payload["exams"][0]["chapters"], ["5.1", "5.2"])
             self.assertEqual(index_payload["exams"][0]["bank"], "classic")
             self.assertEqual(index_payload["exams"][0]["bank_id"], "classic")
-            self.assertEqual(index_payload["exams"][0]["bank_title"], "Classic")
-            self.assertEqual(index_payload["exams"][0]["bank_label"], "Classic")
+            self.assertEqual(index_payload["exams"][0]["bank_title"], "AI-Generated")
+            self.assertEqual(index_payload["exams"][0]["bank_label"], "AI-Generated")
             self.assertEqual(index_payload["exams"][0]["question_count"], 2)
             self.assertEqual(exam_payload["id"], "exam-01")
             self.assertEqual(exam_payload["generated_at"], bundle["generated_at"])
