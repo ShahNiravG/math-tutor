@@ -72,7 +72,7 @@ def build_index_html(
         <section class="landing-hero landing-hero-staging">
           <div class="landing-hero-copy">
             <span class="eyebrow">Today&apos;s Best Path</span>
-            <h1 class="hero-title">Build confidence, one concept at a time.</h1>
+            <h1 class="hero-title">Learn the language of the universe, one equation at a time.</h1>
             <p class="page-intro">Review the chapter idea, practice with short questions, then test yourself. The site keeps each step visible so students never have to guess where to go next.</p>
             <div class="hero-action-grid">
               <a class="hero-action primary" href="{html.escape(featured_practice_href)}">Start Practice</a>

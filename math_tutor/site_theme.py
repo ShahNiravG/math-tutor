@@ -815,7 +815,7 @@ STAGING_SITE_PAGE_OVERRIDES = """
       margin: 0 0 16px;
       font-size: clamp(2.5rem, 6vw, 4.7rem);
       line-height: 0.94;
-      max-width: 10ch;
+      max-width: 20ch;
     }
     body.experience-staging .page-intro,
     body.experience-staging .task-copy,
