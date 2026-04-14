@@ -37,6 +37,7 @@ class PromptTemplate:
     slug_suffix: str = ""
     generate_models: tuple[str, ...] | None = None
     model: str | None = None
+    use_google_search: bool = False
     assignment_only: bool = False
     required_filename_substrings: tuple[str, ...] = ()
     explicit_only: bool = False
@@ -136,31 +137,37 @@ Feedback: [Brief explanation of errors found]
         title="Inspiring Videos",
         text="""I have a 14-year-old student studying the math topics in the attached PDF.
 
-For the topics in the PDF, recommend exactly 2 highly engaging and visually intuitive YouTube videos from reputable math creators that inspire curiosity rather than focus on procedural problem solving.
+Recommend exactly 2 highly engaging and visually intuitive YouTube videos from reputable math creators that would inspire curiosity about these topics.
 
 Requirements:
-1. Prefer videos that build deep conceptual understanding, such as geometric or visual intuition.
+1. Prefer videos that build deep conceptual understanding rather than procedural drill.
 2. Keep the recommendations appropriate for a motivated beginner.
 3. Avoid overly technical, competition-focused, or Olympiad-level content.
-4. Use grounded web search to find the exact public YouTube video page.
-5. Provide a direct, working YouTube watch URL for each recommendation.
-6. Do not invent or guess URLs. Only include a URL if you found that exact video page.
-7. Prefer standard watch links like https://www.youtube.com/watch?v=... over channel or search pages.
-8. For each recommendation, briefly explain why it is inspiring and why it matches the topics in the PDF.
-9. If the PDF spans several distinct topics, choose the 2 videos that best cover the most central ideas.
+4. For each recommendation, provide a Google search query the student can click to find the video.
+5. Do not invent direct YouTube links. Use a Google search query instead.
+6. Briefly explain why the video is inspiring and why it matches the PDF topics.
+7. If the PDF spans multiple subtopics, choose the 2 videos that best cover the most central ideas.
 
 Format the response exactly as:
-- Title: ...
-- Creator: ...
-- URL: https://www.youtube.com/watch?v=...
-- Why it inspires: ...
-- Topics matched: ...
 
-Output only the two recommendations.
+### 1. [Video title]
+**Creator:** [Channel name]
+**Google Search Query:**  
+`[exact search query for the video on YouTube]`
+**Why it inspires:** [brief explanation]
+**Topics matched:** [comma-separated topics]
+
+### 2. [Video title]
+**Creator:** [Channel name]
+**Google Search Query:**  
+`[exact search query for the video on YouTube]`
+**Why it inspires:** [brief explanation]
+**Topics matched:** [comma-separated topics]
 """,
         include_source_pdf_link=False,
         generate_response_pdf=False,
-        generate_models=("", "gemini"),
+        model="gpt-5.4",
+        generate_models=("",),
     ),
     PromptTemplate(
         slug="mental-math",
@@ -315,7 +322,7 @@ def build_prompt_spec(template: PromptTemplate, model_config: ModelConfig) -> Pr
         generate_response_pdf=template.generate_response_pdf,
         model=template.model if template.model else (model_config.model if model_config.slug else None),
         generate=generate,
-        use_google_search=(template.slug == "inspiring-videos" and model_config.slug == "gemini"),
+        use_google_search=template.use_google_search,
         assignment_only=template.assignment_only,
         required_filename_substrings=template.required_filename_substrings,
         explicit_only=template.explicit_only,

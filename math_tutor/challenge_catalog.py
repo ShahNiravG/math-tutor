@@ -26,6 +26,23 @@ SOURCE_SUFFIXES = [
 ]
 
 
+def _candidate_mcq_paths(*, responses_dir: Path, base: str, mcq_suffix: str) -> list[Path]:
+    candidates = [responses_dir / f"{base}{mcq_suffix}"]
+    stem = Path(mcq_suffix).stem
+    extension = Path(mcq_suffix).suffix
+    if stem.endswith("-mcq"):
+        candidates.append(responses_dir / f"{base}{stem}-{_model_suffix_for_mcq(stem)}{extension}")
+    return candidates
+
+
+def _model_suffix_for_mcq(stem: str) -> str:
+    if stem.endswith("gpt5-mcq"):
+        return "gpt5"
+    if stem.endswith("gemini-mcq"):
+        return "gemini"
+    return ""
+
+
 def _extract_numbered_questions(text: str) -> list[str]:
     matches = list(re.finditer(r"(?m)^(\d+)\.\s+", text))
     questions: list[str] = []
@@ -94,8 +111,11 @@ def load_all_questions(output_dir: Path) -> list[dict]:
         for path in sorted(responses_dir.glob(f"*{suffix}")):
             chapter = parse_response_stem_chapter(path.stem)
             base = path.stem[: path.stem.rfind("__")]
-            mcq_path = responses_dir / f"{base}{mcq_suffix}"
-            mcq_data = _parse_mcq_file(mcq_path) if mcq_path.exists() else {}
+            mcq_data: dict[int, dict] = {}
+            for mcq_path in _candidate_mcq_paths(responses_dir=responses_dir, base=base, mcq_suffix=mcq_suffix):
+                if mcq_path.exists():
+                    mcq_data = _parse_mcq_file(mcq_path)
+                    break
             for question_number, question_text in enumerate(_extract_from_file(path), 1):
                 question_id = f"chp{chapter.replace(' & ', '-').replace('.', '')}-{question_type}-{model}-q{question_number}"
                 question: dict = {

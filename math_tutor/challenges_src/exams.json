@@ -10792,6 +10792,1158 @@
           "correct": "A"
         }
       ]
+    },
+    {
+      "id": "exam-77",
+      "title": "Challenge Exam 77",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp81-mm-gem-q10",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q10",
+          "question_number": 10,
+          "text": "**Understanding the Pole**\nWithout calculating, what are the rectangular coordinates for the polar point (0, 13\u03c0)?",
+          "options": [
+            "(A) (0, 13)",
+            "(B) (13, 0)",
+            "(C) (0, 0)",
+            "(D) (-13, 0)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp81-mm-gpt54-q6",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "**Rectangular to Polar**  \nConvert \\((0,-3)\\) to polar coordinates with \\(r>0\\) and \\(0\\le \\theta<2\\pi\\).",
+          "options": [
+            "(A) \\(\\left(3,\\tfrac{\\pi}{2}\\right)\\)",
+            "(B) \\(\\left(3,\\tfrac{3\\pi}{2}\\right)\\)",
+            "(C) \\(\\left(-3,\\tfrac{\\pi}{2}\\right)\\)",
+            "(D) \\(\\left(3,\\pi\\right)\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-mm-gem-q5",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "**Converting Rectangular Equations (Circles)**\nConvert the rectangular equation x\u00b2 + y\u00b2 = 49 into its simplest polar equation form.",
+          "options": [
+            "(A) r = 49",
+            "(B) r\u00b2 = 7",
+            "(C) r = 7",
+            "(D) r = 24.5"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp81-mm-gpt54-q5",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "**Origin Idea**  \nWhat rectangular point is represented by \\((0,5\\pi)\\)?",
+          "options": [
+            "(A) \\((5\\pi,0)\\)",
+            "(B) \\((0,5\\pi)\\)",
+            "(C) \\((0,0)\\)",
+            "(D) undefined"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp81-mm-gpt54-q10",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q10",
+          "question_number": 10,
+          "text": "**Polar to Rectangular Equation**  \nConvert the polar equation \\(r=4\\sin\\theta\\) to rectangular form.",
+          "options": [
+            "(A) \\(x^2+y^2=4y\\)",
+            "(B) \\(x^2+y^2=4x\\)",
+            "(C) \\(x^2+y^2=16y\\)",
+            "(D) \\(x^2+y^2=y\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp81-mm-gem-q4",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "**Equivalent Coordinates (Positive Angle)**\nThe polar point (7, -\u03c0/2) uses a negative angle. What is the equivalent polar coordinate that keeps the same radius but uses a positive angle between 0 and 2\u03c0?",
+          "options": [
+            "(A) (-7, \u03c0/2)",
+            "(B) (7, 3\u03c0/2)",
+            "(C) (7, \u03c0/2)",
+            "(D) (7, 5\u03c0/2)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-mm-gem-q6",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "**Converting Polar Equations (Horizontal Line)**\nConvert the polar equation r sin \u03b8 = -6 into a rectangular equation.",
+          "options": [
+            "(A) x = -6",
+            "(B) y = -6",
+            "(C) y = 6",
+            "(D) x = 6"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-op-gem-q5",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Olympiad Problems / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "A closed loop is given by the polar equation $r^2 - 16r \\cos\\left(\\theta - \\frac{\\pi}{3}\\right) + 28 = 0$. Find the area of the region it encloses.",
+          "options": [
+            "(A) $36\\pi$",
+            "(B) $28\\pi$",
+            "(C) $64\\pi$",
+            "(D) $100\\pi$"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp81-op-gpt54-q2",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Olympiad Problems / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "Without graphing, determine the rectangular curve represented by\n\\[\nr=\\frac{6}{\\sin\\theta-\\cos\\theta}.\n\\]",
+          "options": [
+            "(A) \\(x+y=6\\)",
+            "(B) \\(y-x=6\\)",
+            "(C) \\(x-y=6\\)",
+            "(D) \\(x+y=-6\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-op-gem-q4",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Olympiad Problems / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "Find the area of the triangle formed by the $x$-axis, the $y$-axis, and the line given by the polar equation $r = \\frac{60}{5 \\cos \\theta - 12 \\sin \\theta}$.",
+          "options": [
+            "(A) $15$",
+            "(B) $30$",
+            "(C) $60$",
+            "(D) $120$"
+          ],
+          "correct": "B"
+        }
+      ]
+    },
+    {
+      "id": "exam-78",
+      "title": "Challenge Exam 78",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp81-mm-gem-q9",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q9",
+          "question_number": 9,
+          "text": "**Converting Polar Equations (Constant Radius)**\nWhat is the rectangular equation for the polar equation r = 10?",
+          "options": [
+            "(A) x\u00b2 + y\u00b2 = 10",
+            "(B) x\u00b2 + y\u00b2 = 100",
+            "(C) x + y = 10",
+            "(D) x\u00b2 + y\u00b2 = 20"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-mm-gpt54-q7",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q7",
+          "question_number": 7,
+          "text": "**Quadrant Thinking**  \nConvert \\((-3,3)\\) to polar coordinates with \\(r>0\\) and \\(0\\le \\theta<2\\pi\\).",
+          "options": [
+            "(A) \\(\\left(3,\\tfrac{3\\pi}{4}\\right)\\)",
+            "(B) \\(\\left(3\\sqrt2,\\tfrac{\\pi}{4}\\right)\\)",
+            "(C) \\(\\left(3\\sqrt2,\\tfrac{3\\pi}{4}\\right)\\)",
+            "(D) \\(\\left(18,\\tfrac{3\\pi}{4}\\right)\\)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp81-mm-gem-q3",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "**Equivalent Coordinates (Negative Radius)**\nGive an equivalent polar coordinate for (3, \u03c0/2) that uses a negative radius (r = -3) and a positive angle between 0 and 2\u03c0.",
+          "options": [
+            "(A) (-3, \u03c0/2)",
+            "(B) (-3, -\u03c0/2)",
+            "(C) (-3, 5\u03c0/2)",
+            "(D) (-3, 3\u03c0/2)"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp81-mm-gem-q8",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q8",
+          "question_number": 8,
+          "text": "**Converting Rectangular Equations (Linear)**\nConvert the rectangular equation y = x into a polar equation of the form \u03b8 = c, where c is a positive angle less than \u03c0.",
+          "options": [
+            "(A) \u03b8 = \u03c0/4",
+            "(B) \u03b8 = 1",
+            "(C) \u03b8 = \u03c0/2",
+            "(D) \u03b8 = 3\u03c0/4"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp81-mm-gem-q1",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "**Polar to Rectangular (Axis Point)**\nWhat are the rectangular coordinates (x, y) for the polar point (4, \u03c0)?",
+          "options": [
+            "(A) (4, 0)",
+            "(B) (0, -4)",
+            "(C) (-4, 0)",
+            "(D) (0, 4)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp81-mm-gpt54-q2",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "**Negative Radius Check**  \nWithout graphing, which point is the same as \\((-2,\\tfrac{\\pi}{3})\\): \\((2,\\tfrac{4\\pi}{3})\\), \\((2,\\tfrac{\\pi}{3})\\), or \\((2,\\tfrac{2\\pi}{3})\\)?",
+          "options": [
+            "(A) \\(\\left(2,\\tfrac{2\\pi}{3}\\right)\\)",
+            "(B) \\(\\left(2,\\tfrac{\\pi}{3}\\right)\\)",
+            "(C) \\(\\left(2,\\tfrac{4\\pi}{3}\\right)\\)",
+            "(D) none of these"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp81-mm-gem-q2",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "**Rectangular to Polar (Axis Point)**\nWhat are the polar coordinates (r, \u03b8) for the rectangular point (0, 5), assuming r > 0 and 0 \u2264 \u03b8 < 2\u03c0?",
+          "options": [
+            "(A) (5, \u03c0/2)",
+            "(B) (5, 0)",
+            "(C) (5, \u03c0)",
+            "(D) (5, 3\u03c0/2)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp81-op-gpt54-q4",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Olympiad Problems / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "Convert the polar equation\n\\[\nr^2=\\sin 2\\theta\n\\]\nto rectangular form, and identify the type of curve.",
+          "options": [
+            "(A) \\(x^2+y^2=2xy\\), a pair of lines",
+            "(B) \\((x^2+y^2)^2=2xy\\), a lemniscate",
+            "(C) \\(x^2-y^2=2xy\\), a hyperbola",
+            "(D) \\((x^2+y^2)^2=xy\\), a lemniscate"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-op-gem-q6",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Olympiad Problems / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "A sequence of points in the plane is given by their polar coordinates $P_n = \\left( (-1)^n, \\frac{n\\pi}{45} \\right)$ for all integers $n$. Find the total number of distinct points in this sequence.",
+          "options": [
+            "(A) $90$",
+            "(B) $180$",
+            "(C) $360$",
+            "(D) $45$"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp81-op-gem-q1",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Olympiad Problems / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "The polar curve $r = a \\cos \\theta + b \\sin \\theta$ encloses a region of area $100\\pi$. What is the maximum possible value of $a+b$?",
+          "options": [
+            "(A) $10\\sqrt{2}$",
+            "(B) $20$",
+            "(C) $20\\sqrt{2}$",
+            "(D) $40$"
+          ],
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "id": "exam-79",
+      "title": "Challenge Exam 79",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp81-mm-gpt54-q3",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "**Polar to Rectangular**  \nConvert \\((4,\\tfrac{\\pi}{2})\\) to rectangular coordinates.",
+          "options": [
+            "(A) \\((0,4)\\)",
+            "(B) \\((4,0)\\)",
+            "(C) \\((0,-4)\\)",
+            "(D) \\((2,2)\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp81-mm-gem-q7",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q7",
+          "question_number": 7,
+          "text": "**Converting Polar Equations (Vertical Line)**\nConvert the polar equation r cos \u03b8 = 8 into a rectangular equation.",
+          "options": [
+            "(A) y = 8",
+            "(B) y = -8",
+            "(C) x = -8",
+            "(D) x = 8"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp81-mm-gpt54-q8",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q8",
+          "question_number": 8,
+          "text": "**Quick Equation Conversion**  \nConvert the rectangular equation \\(x=y\\) to a polar equation.",
+          "options": [
+            "(A) \\(\\tan\\theta=1\\)",
+            "(B) \\(r=\\theta\\)",
+            "(C) \\(\\sin\\theta=\\cos\\theta\\)",
+            "(D) \\(\\theta=\\tfrac{\\pi}{4}\\)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp81-mm-gpt54-q9",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q9",
+          "question_number": 9,
+          "text": "**Circle in Polar Form**  \nConvert \\(x^2+y^2=16\\) to polar form.",
+          "options": [
+            "(A) \\(r=4\\)",
+            "(B) \\(r^2=16\\)",
+            "(C) \\(r=16\\)",
+            "(D) \\(r^2=8\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-mm-gpt54-q1",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "**Same Point, New Coordinates**  \nGive one other polar coordinate pair with \\(r>0\\) and one with \\(r<0\\) that represent the same point as \\((3,\\tfrac{\\pi}{6})\\).",
+          "options": [
+            "(A) \\(\\left(3,\\tfrac{7\\pi}{6}\\right)\\) and \\(\\left(-3,\\tfrac{7\\pi}{6}\\right)\\)",
+            "(B) \\(\\left(3,\\tfrac{13\\pi}{6}\\right)\\) and \\(\\left(-3,\\tfrac{7\\pi}{6}\\right)\\)",
+            "(C) \\(\\left(3,\\tfrac{5\\pi}{6}\\right)\\) and \\(\\left(-3,\\tfrac{\\pi}{6}\\right)\\)",
+            "(D) \\(\\left(3,\\tfrac{13\\pi}{6}\\right)\\) and \\(\\left(-3,\\tfrac{13\\pi}{6}\\right)\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-mm-gpt54-q4",
+          "chapter": "8.1",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Mental Math / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "**Polar to Rectangular with a Special Angle**  \nConvert \\((2,\\tfrac{\\pi}{4})\\) to rectangular coordinates.",
+          "options": [
+            "(A) \\((\\sqrt2,\\sqrt2)\\)",
+            "(B) \\((1,\\sqrt3)\\)",
+            "(C) \\((2,2)\\)",
+            "(D) \\((\\sqrt2,-\\sqrt2)\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp81-op-gem-q3",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Olympiad Problems / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "Find the maximum distance from the origin to any point on the curve defined by the rectangular equation $(x^2 + y^2)^3 = 144x^2 y^2$.",
+          "options": [
+            "(A) $12$",
+            "(B) $36$",
+            "(C) $12\\sqrt{2}$",
+            "(D) $6$"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp81-op-gpt54-q6",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Olympiad Problems / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "How many distinct points in the plane satisfy both\n\\[\nr=2\\csc\\theta\n\\qquad\\text{and}\\qquad\nr=4\\sin\\theta?\n\\]",
+          "options": [
+            "(A) \\(1\\)",
+            "(B) \\(0\\)",
+            "(C) \\(3\\)",
+            "(D) \\(2\\)"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp81-op-gem-q2",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.1 / Olympiad Problems / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "Find the total number of distinct points in the Cartesian plane where the polar curves $r = \\cos(2\\theta)$ and $r = \\sin(2\\theta)$ intersect.",
+          "options": [
+            "(A) $9$",
+            "(B) $8$",
+            "(C) $4$",
+            "(D) $5$"
+          ],
+          "correct": "A"
+        }
+      ]
+    },
+    {
+      "id": "exam-80",
+      "title": "Challenge Exam 80",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp81-op-gpt54-q3",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Olympiad Problems / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "Find all angles \\(0\\le \\theta<2\\pi\\) for which the point on\n\\[\nr=4\\sin\\theta\n\\]\nalso lies on\n\\[\nr=4\\cos\\theta.\n\\]",
+          "options": [
+            "(A) \\(0,\\frac{\\pi}{4}\\)",
+            "(B) \\(\\frac{\\pi}{4},\\frac{5\\pi}{4}\\)",
+            "(C) \\(\\frac{\\pi}{4}\\)",
+            "(D) \\(\\frac{3\\pi}{4},\\frac{7\\pi}{4}\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp81-op-gpt54-q5",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Olympiad Problems / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "A point \\(P\\) satisfies \\(r=2-\\cos\\theta\\). Find the minimum possible value of \\(x^2+y^2+x\\).",
+          "options": [
+            "(A) \\(-\\frac14\\)",
+            "(B) \\(0\\)",
+            "(C) \\(-1\\)",
+            "(D) \\(\\frac34\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp81-op-gpt54-q1",
+          "chapter": "8.1",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.1 / Olympiad Problems / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "A point \\(P\\) has one polar representation \\((3,\\tfrac{5\\pi}{12})\\). Find the unique representation \\((r,\\theta)\\) of the same point satisfying \\(-3<\\theta<0\\) and \\(r<0\\).",
+          "options": [
+            "(A) \\((-3,-\\tfrac{7\\pi}{12})\\)",
+            "(B) \\((-3,-\\tfrac{19\\pi}{12})\\)",
+            "(C) \\((3,-\\tfrac{7\\pi}{12})\\)",
+            "(D) \\((-3,-\\tfrac{5\\pi}{12})\\)"
+          ],
+          "correct": "A"
+        }
+      ]
+    },
+    {
+      "id": "exam-81",
+      "title": "Challenge Exam 81",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp82-mm-gem-q10",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q10",
+          "question_number": 10,
+          "text": "**10. Radius of a Shifted Circle**\nThe equation $r = 8\\sin\\theta$ takes the form $r = 2a\\sin\\theta$. What is the radius of this circle?",
+          "options": [
+            "(A) 16",
+            "(B) 8",
+            "(C) 2",
+            "(D) 4"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp82-mm-gpt54-q6",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "**Even-vs-Odd Rose**: How many petals does the graph of \\(r=7\\sin(2\\theta)\\) have?",
+          "options": [
+            "(A) 2",
+            "(B) 4",
+            "(C) 7",
+            "(D) 8"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp82-mm-gem-q5",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "**5. Symmetry About the Polar Axis**\nIf a polar equation remains unchanged when you replace $\\theta$ with $-\\theta$, what is its graph symmetric about?",
+          "options": [
+            "(A) The pole (origin)",
+            "(B) The polar axis (x-axis)",
+            "(C) The line $\\theta = \\pi/2$ (y-axis)",
+            "(D) The line $\\theta = \\pi/4$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp82-mm-gpt54-q5",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "**Rose Petals**: How many petals does the graph of \\(r=2\\cos(3\\theta)\\) have?",
+          "options": [
+            "(A) 6",
+            "(B) 2",
+            "(C) 3",
+            "(D) 5"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp82-mm-gpt54-q10",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q10",
+          "question_number": 10,
+          "text": "**Rectangular Meaning**: What rectangular equation corresponds to the polar equation \\(\\theta=-\\frac{\\pi}{2}\\)?",
+          "options": [
+            "(A) \\(x=0\\)",
+            "(B) \\(y=0\\)",
+            "(C) \\(x=y\\)",
+            "(D) \\(x<0\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp82-mm-gem-q4",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "**4. Polar Zeroes**\nIn polar coordinates, if an angle $\\theta$ makes $r = 0$, what specific point does the curve cross?",
+          "options": [
+            "(A) The x-intercept",
+            "(B) The polar axis",
+            "(C) The pole (origin)",
+            "(D) The unit circle"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp82-mm-gem-q6",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "**6. Symmetry About the Pole**\nWhat type of symmetry is confirmed if replacing $r$ with $-r$ leaves the polar equation unchanged?",
+          "options": [
+            "(A) Symmetry about the pole (origin)",
+            "(B) Symmetry about the polar axis",
+            "(C) Symmetry about the line $\\theta = \\pi/2$",
+            "(D) Asymmetry"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp82-op-gem-q5",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Olympiad Problems / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "The spiral $r = 7^{\\theta/\\pi}$ (for $\\theta \\ge 0$) intersects an arbitrary straight line passing through the pole at an infinite sequence of outward-spiraling points. Find the exact ratio of the distance of the second intersection point from the pole to the distance of the first intersection point.",
+          "options": [
+            "(A) $7^{1/\\pi}$",
+            "(B) $7^\\pi$",
+            "(C) $7$",
+            "(D) $49$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp82-op-gpt54-q2",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Olympiad Problems / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "The curve \\(r=3(1-\\cos\\theta)\\) is a cardioid. Find, mentally, all angles \\(\\theta\\in[0,2\\pi)\\) for which the point on the curve is exactly \\(3\\sqrt2\\) units from the pole.",
+          "options": [
+            "(A) \\(\\theta=\\frac{\\pi}{4},\\frac{7\\pi}{4}\\)",
+            "(B) \\(\\theta=\\frac{\\pi}{2},\\frac{3\\pi}{2}\\)",
+            "(C) \\(\\theta=\\frac{\\pi}{4},\\frac{3\\pi}{4}\\)",
+            "(D) \\(\\theta=\\frac{3\\pi}{4},\\frac{5\\pi}{4}\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp82-op-gem-q4",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Olympiad Problems / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "A straight line in the plane is defined by the polar equation $r = \\frac{39}{5\\cos\\theta + 12\\sin\\theta}$. What is the shortest distance from the pole to this line?",
+          "options": [
+            "(A) $3$",
+            "(B) $\\frac{39}{17}$",
+            "(C) $\\frac{39}{5}$",
+            "(D) $9$"
+          ],
+          "correct": "A"
+        }
+      ]
+    },
+    {
+      "id": "exam-82",
+      "title": "Challenge Exam 82",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp82-mm-gem-q9",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q9",
+          "question_number": 9,
+          "text": "**9. Identifying Straight Lines**\nWhat basic geometric shape is formed by the polar equation $\\theta = \\frac{\\pi}{3}$?",
+          "options": [
+            "(A) Circle",
+            "(B) Straight line",
+            "(C) Spiral",
+            "(D) Parabola"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp82-mm-gpt54-q7",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q7",
+          "question_number": 7,
+          "text": "**Symmetry Test 1**: If replacing \\(\\theta\\) with \\(-\\theta\\) leaves a polar equation unchanged, what line is the graph symmetric about?",
+          "options": [
+            "(A) The polar axis",
+            "(B) The line \\(\\theta=\\frac{\\pi}{2}\\)",
+            "(C) The pole",
+            "(D) The line \\(y=x\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp82-mm-gem-q3",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "**3. Rose Curve Petals (Even)**\nHow many leaves (or petals) does the graph of the rose curve $r = 3\\cos(4\\theta)$ have?",
+          "options": [
+            "(A) 8",
+            "(B) 4",
+            "(C) 3",
+            "(D) 12"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp82-mm-gem-q8",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q8",
+          "question_number": 8,
+          "text": "**8. Lima\u00e7on Inner Loops**\nWill the lima\u00e7on defined by the equation $r = 2 + 6\\sin\\theta$ have an inner loop?",
+          "options": [
+            "(A) No, because $2 < 6$",
+            "(B) Yes, because $2 > 0$",
+            "(C) Yes, because $2 < 6$",
+            "(D) No, because it uses the sine function"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp82-mm-gem-q1",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "**1. Constant Radius**\nWhat geometric shape is represented by the simple polar equation $r = 7$?",
+          "options": [
+            "(A) Point",
+            "(B) Straight line",
+            "(C) Spiral",
+            "(D) Circle"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp82-mm-gpt54-q2",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "**Centered Circle**: Without graphing, describe the circle given by \\(r=8\\sin\\theta\\) by stating its center and radius.",
+          "options": [
+            "(A) Center \\((0,4)\\), radius \\(4\\)",
+            "(B) Center \\((4,0)\\), radius \\(4\\)",
+            "(C) Center \\((0,8)\\), radius \\(8\\)",
+            "(D) Center \\((0,4)\\), radius \\(8\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp82-mm-gem-q2",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "**2. Rose Curve Petals (Odd)**\nHow many leaves (or petals) does the graph of the rose curve $r = 5\\sin(3\\theta)$ have?",
+          "options": [
+            "(A) 6",
+            "(B) 3",
+            "(C) 5",
+            "(D) 15"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp82-op-gpt54-q4",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Olympiad Problems / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "The rose \\(r=6\\cos(2\\theta)\\) has four petals. Determine the total number of distinct lines of symmetry of its graph.",
+          "options": [
+            "(A) \\(2\\)",
+            "(B) \\(6\\)",
+            "(C) \\(8\\)",
+            "(D) \\(4\\)"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp82-op-gem-q6",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Olympiad Problems / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "Two mutually perpendicular straight lines are drawn through the pole, intersecting the lima\u00e7on $r = 9 + 5\\cos\\theta$ at four distinct points. Calculate the sum of the distances from the pole to these four points.",
+          "options": [
+            "(A) $18$",
+            "(B) $40$",
+            "(C) $56$",
+            "(D) $36$"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp82-op-gem-q1",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Olympiad Problems / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "Find the total number of distinct points in the Cartesian plane where the rose curve $r = \\cos(1012\\theta)$ intersects the circle $r = \\frac{1}{2}$.",
+          "options": [
+            "(A) 1012",
+            "(B) 2024",
+            "(C) 4048",
+            "(D) 8096"
+          ],
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "id": "exam-83",
+      "title": "Challenge Exam 83",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp82-mm-gpt54-q3",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "**Cardioid Check**: What type of curve is \\(r=4(1-\\cos\\theta)\\)?",
+          "options": [
+            "(A) Circle",
+            "(B) Rose curve",
+            "(C) Cardioid",
+            "(D) Lima\u00e7on with inner loop"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp82-mm-gem-q7",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q7",
+          "question_number": 7,
+          "text": "**7. Recognizing Cardioids**\nBased on its coefficients, what specific heart-shaped curve is represented by the equation $r = 4 + 4\\cos\\theta$?",
+          "options": [
+            "(A) Dimpled lima\u00e7on",
+            "(B) Convex lima\u00e7on",
+            "(C) Lima\u00e7on with an inner loop",
+            "(D) Cardioid"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp82-mm-gpt54-q8",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q8",
+          "question_number": 8,
+          "text": "**Symmetry Test 2**: If replacing \\(\\theta\\) with \\(\\pi-\\theta\\) leaves a polar equation unchanged, what line is the graph symmetric about?",
+          "options": [
+            "(A) The polar axis",
+            "(B) The line \\(y=-x\\)",
+            "(C) The line \\(\\theta=\\frac{\\pi}{2}\\)",
+            "(D) The pole"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp82-mm-gpt54-q9",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q9",
+          "question_number": 9,
+          "text": "**Pole Crossing**: For \\(r=2-2\\cos\\theta\\), at what angle does the curve cross the pole?",
+          "options": [
+            "(A) \\(0\\)",
+            "(B) \\(\\pi\\)",
+            "(C) \\(\\frac{\\pi}{2}\\)",
+            "(D) \\(2\\pi\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp82-mm-gpt54-q1",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "**Quick Shape ID**: What kind of graph is \\(r=3\\)?",
+          "options": [
+            "(A) Circle centered at the pole",
+            "(B) Horizontal line",
+            "(C) Vertical line",
+            "(D) Spiral"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp82-mm-gpt54-q4",
+          "chapter": "8.2",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "**Lima\u00e7on Type**: Is \\(r=5+2\\sin\\theta\\) a cardioid, a lima\u00e7on without inner loop, or a lima\u00e7on with inner loop?",
+          "options": [
+            "(A) Cardioid",
+            "(B) Lima\u00e7on with inner loop",
+            "(C) Circle",
+            "(D) Lima\u00e7on without inner loop"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp82-op-gem-q3",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Olympiad Problems / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "Determine the sum of all angles $\\theta \\in [0, 2\\pi)$ at which the polar curve $r = 1 + \\cos(100\\theta)$ crosses the pole.",
+          "options": [
+            "(A) $50\\pi$",
+            "(B) $99\\pi$",
+            "(C) $200\\pi$",
+            "(D) $100\\pi$"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp82-op-gpt54-q6",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Olympiad Problems / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "Consider the curve \\(r=2+4\\cos\\theta\\). Without graphing point-by-point, determine how many times the curve passes through the pole, and find those angles.",
+          "options": [
+            "(A) \\(1\\) time, at \\(\\theta=\\pi\\)",
+            "(B) \\(2\\) times, at \\(\\theta=\\frac{2\\pi}{3},\\frac{4\\pi}{3}\\)",
+            "(C) \\(2\\) times, at \\(\\theta=\\frac{\\pi}{3},\\frac{5\\pi}{3}\\)",
+            "(D) \\(4\\) times, at \\(\\theta=\\frac{\\pi}{3},\\frac{2\\pi}{3},\\frac{4\\pi}{3},\\frac{5\\pi}{3}\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp82-op-gem-q2",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.2 / Olympiad Problems / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "What is the exact area of the smallest circle centered at the pole that completely encloses the lemniscate given by the polar equation $r^2 = 15\\sin(2\\theta) + 8\\cos(2\\theta)$?",
+          "options": [
+            "(A) $23\\pi$",
+            "(B) $17\\pi$",
+            "(C) $17$",
+            "(D) $289\\pi$"
+          ],
+          "correct": "B"
+        }
+      ]
+    },
+    {
+      "id": "exam-84",
+      "title": "Challenge Exam 84",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp82-op-gpt54-q3",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Olympiad Problems / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "Two polar curves are given by \\(r=2\\cos\\theta\\) and \\(r=2\\sin\\theta\\). Find the acute angle at which they intersect away from the pole.",
+          "options": [
+            "(A) \\(\\frac{\\pi}{6}\\)",
+            "(B) \\(\\frac{\\pi}{4}\\)",
+            "(C) \\(\\frac{\\pi}{3}\\)",
+            "(D) \\(\\frac{\\pi}{2}\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp82-op-gpt54-q5",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Olympiad Problems / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "A point moves on the curve \\(r=\\dfrac{6}{1+2\\cos\\theta}\\). Find the least possible value of \\(r\\), and the angle(s) where it occurs.",
+          "options": [
+            "(A) \\(6\\) at \\(\\theta=0\\)",
+            "(B) \\(2\\) at \\(\\theta=\\pi\\)",
+            "(C) \\(2\\) at \\(\\theta=0\\)",
+            "(D) \\(3\\) at \\(\\theta=\\frac{\\pi}{2},\\frac{3\\pi}{2}\\)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp82-op-gpt54-q1",
+          "chapter": "8.2",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.2 / Olympiad Problems / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "A polar curve is given by \\(r=4\\cos\\theta+4\\sin\\theta\\). Without converting fully to rectangular form, determine its center and radius.",
+          "options": [
+            "(A) center \\((2,2)\\), radius \\(2\\sqrt2\\)",
+            "(B) center \\((4,4)\\), radius \\(4\\sqrt2\\)",
+            "(C) center \\((2,2)\\), radius \\(4\\)",
+            "(D) center \\((\\sqrt2,\\sqrt2)\\), radius \\(4\\)"
+          ],
+          "correct": "A"
+        }
+      ]
     }
   ]
 }

@@ -6,10 +6,32 @@ import unittest
 from pathlib import Path
 
 from math_tutor.challenge_builder import build_deploy_exam_bundle, sync_curated_exam_bundle
-from math_tutor.challenge_catalog import build_chapter_exam_sets, load_curated_exam_banks
+from math_tutor.challenge_catalog import build_chapter_exam_sets, load_all_questions, load_curated_exam_banks
 
 
 class ChallengeBuilderTests(unittest.TestCase):
+    def test_load_all_questions_accepts_model_suffixed_mcq_filenames(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_dir = Path(temp_dir)
+            responses_dir = output_dir / "responses"
+            responses_dir.mkdir()
+
+            source_path = responses_dir / "4697228_alg-2trig-h-chp-8-1-note-docx__mental-math-gpt5.md"
+            source_path.write_text("1. First question\n2. Second question\n", encoding="utf-8")
+
+            mcq_path = responses_dir / "4697228_alg-2trig-h-chp-8-1-note-docx__mental-math-gpt5-mcq-gpt5.md"
+            mcq_path.write_text(
+                "1.\n(A) 1\n(B) 2\n(C) 3\n(D) 4\nAnswer: B\n\n2.\n(A) 5\n(B) 6\n(C) 7\n(D) 8\nAnswer: D\n",
+                encoding="utf-8",
+            )
+
+            questions = load_all_questions(output_dir)
+
+            self.assertEqual(len(questions), 2)
+            self.assertEqual(questions[0]["chapter"], "8.1")
+            self.assertEqual(questions[0]["correct"], "B")
+            self.assertEqual(questions[1]["correct"], "D")
+
     def test_build_chapter_exam_sets_groups_all_available_chapters(self) -> None:
         questions = [
             {

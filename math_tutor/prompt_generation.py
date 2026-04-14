@@ -86,9 +86,7 @@ def generate_gemini_tutor_response(
     config = None
     if prompt_spec.use_google_search:
         config = genai_types.GenerateContentConfig(
-            tools=[genai_types.Tool(googleSearch=genai_types.GoogleSearch())],
-            response_mime_type="application/json",
-            response_schema=list,
+            tools=[genai_types.Tool(google_search=genai_types.GoogleSearch())],
         )
     response = client.models.generate_content(
         model=model,

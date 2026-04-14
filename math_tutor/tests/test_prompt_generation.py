@@ -33,25 +33,26 @@ class PromptGenerationTests(unittest.TestCase):
         self.assertEqual(kwargs["model"], "gpt-5.4")
         self.assertNotIn("default_model", kwargs)
 
-    def test_generate_prompt_response_routes_gemini_video_prompt_through_renderer(self) -> None:
-        gemini_client = object()
+    def test_generate_prompt_response_routes_default_video_prompt_through_openai(self) -> None:
+        openai_result = SimpleNamespace(output_text="videos", id="resp_2")
         with TemporaryDirectory() as temp_dir:
             pdf_path = Path(temp_dir) / "note.pdf"
             pdf_path.write_bytes(b"pdf")
-            with patch("math_tutor.prompt_generation.generate_gemini_tutor_response") as generate_gemini:
-                generate_gemini.return_value = SimpleNamespace(output_text="videos", response_id=None)
+            with patch("math_tutor.prompt_generation.generate_tutor_response") as generate_openai:
+                generate_openai.return_value = openai_result
 
                 result = generate_prompt_response(
-                    client=None,
-                    gemini_client=gemini_client,
+                    client=object(),
+                    gemini_client=None,
                     pdf_path=pdf_path,
                     default_model="gpt-5.4",
-                    prompt_spec=PROMPTS_BY_SLUG["inspiring-videos-gemini"],
+                    prompt_spec=PROMPTS_BY_SLUG["inspiring-videos"],
                     source_output=None,
                 )
 
         self.assertEqual(result.output_text, "videos")
-        generate_gemini.assert_called_once()
+        self.assertEqual(result.response_id, "resp_2")
+        generate_openai.assert_called_once()
 
 
 if __name__ == "__main__":

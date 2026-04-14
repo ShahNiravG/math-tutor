@@ -45,6 +45,24 @@ class PromptCatalogTests(unittest.TestCase):
         self.assertEqual(prompt.required_filename_substrings, ("work",))
         self.assertTrue(prompt.explicit_only)
 
+    def test_inspiring_videos_default_prompt_uses_gpt_5_4_without_grounding(self) -> None:
+        prompt = PROMPTS_BY_SLUG["inspiring-videos"]
+        self.assertEqual(prompt.model, "gpt-5.4")
+        self.assertFalse(prompt.use_google_search)
+
+    def test_other_gemini_prompts_remain_on_gemini_3_1_pro_without_grounding(self) -> None:
+        for slug in (
+            "mental-math-gemini",
+            "mental-math-gemini-mcq",
+            "olympiad-problems-gemini",
+            "olympiad-solutions-gemini",
+            "olympiad-problems-gemini-mcq",
+            "auto-grading-assignment",
+        ):
+            prompt = PROMPTS_BY_SLUG[slug]
+            self.assertEqual(prompt.model, "gemini-3.1-pro-preview", slug)
+            self.assertFalse(prompt.use_google_search, slug)
+
 
 if __name__ == "__main__":
     unittest.main()

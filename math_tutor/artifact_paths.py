@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 from math_tutor.prompt_catalog import DEFAULT_MODEL, PromptSpec
 
 EXPLICIT_MODEL_SUFFIXES = ("gpt4", "gpt5", "gemini")
+EMBEDDED_MODEL_MCq_SLUG = re.compile(r".*-(gpt4|gpt5|gemini)-mcq$")
 
 
 def model_name_to_artifact_suffix(model_name: str) -> str:
@@ -22,6 +24,8 @@ def model_name_to_artifact_suffix(model_name: str) -> str:
 
 def artifact_slug_for_prompt(*, prompt_spec: PromptSpec, model_name: str | None = None) -> str:
     if prompt_spec.slug.endswith(tuple(f"-{suffix}" for suffix in EXPLICIT_MODEL_SUFFIXES)):
+        return prompt_spec.slug
+    if EMBEDDED_MODEL_MCq_SLUG.fullmatch(prompt_spec.slug):
         return prompt_spec.slug
     effective_model = model_name or prompt_spec.model or DEFAULT_MODEL
     model_suffix = model_name_to_artifact_suffix(effective_model)
