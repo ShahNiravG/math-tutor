@@ -31,13 +31,14 @@
         "text": "What is the value of \\[3+\\frac{1}{3+\\frac{1}{3+\\frac13}}?\\]",
         "question_images": [],
         "options": [
-          "(A) \\ \\frac{31}{10}",
-          "(B) \\ \\frac{49}{15}",
-          "(C) \\ \\frac{33}{10}",
-          "(D) \\ \\frac{109}{33}",
-          "(E) \\ \\frac{15}{4}"
+          "(A) \\frac{31}{10}",
+          "(B) \\frac{49}{15}",
+          "(C) \\frac{33}{10}",
+          "(D) \\frac{109}{33}",
+          "(E) \\frac{15}{4}"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q02",
@@ -67,7 +68,8 @@
           "(D) 11",
           "(E) 13"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q03",
@@ -97,7 +99,8 @@
           "(D) 4",
           "(E) 5"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q04",
@@ -127,7 +130,8 @@
           "(D) \\frac{100}{xlm}",
           "(E) \\frac{100lm}{x}"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q05",
@@ -157,7 +161,8 @@
           "(D) 1 - \\frac{\\sqrt{2}}{4}",
           "(E) \\frac{2}{3}"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q06",
@@ -187,7 +192,8 @@
           "(D) a+1",
           "(E) 3"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q07",
@@ -217,7 +223,8 @@
           "(D) 9",
           "(E) 12"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q08",
@@ -247,7 +254,8 @@
           "(D) 36",
           "(E) 40"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q09",
@@ -291,7 +299,8 @@
           "(D) 540",
           "(E) 720"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q10",
@@ -335,7 +344,8 @@
           "(D) 12\\sqrt{2}",
           "(E) 18"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q11",
@@ -365,7 +375,8 @@
           "(D) 8",
           "(E) 9"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q12",
@@ -395,7 +406,8 @@
           "(D) 27",
           "(E) 31"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q13",
@@ -425,7 +437,8 @@
           "(D) 11",
           "(E) 12"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q14",
@@ -455,7 +468,8 @@
           "(D) 132",
           "(E) 144"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q15",
@@ -485,7 +499,8 @@
           "(D) 1565",
           "(E) 1997"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q16",
@@ -515,7 +530,8 @@
           "(D) 30",
           "(E) 48"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q17",
@@ -545,7 +561,8 @@
           "(D) 13",
           "(E) 14"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q18",
@@ -575,7 +592,8 @@
           "(D) 720",
           "(E) 721"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q19",
@@ -605,7 +623,8 @@
           "(D) 7",
           "(E) 9"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q20",
@@ -635,7 +654,8 @@
           "(D) 202",
           "(E) 206"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q21",
@@ -679,7 +699,8 @@
           "(D) 8",
           "(E) 9"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q22",
@@ -723,7 +744,8 @@
           "(D) 8178",
           "(E) 8191"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q23",
@@ -753,7 +775,8 @@
           "(D) \\frac{2}{3}",
           "(E) \\frac{3}{4}"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q24",
@@ -783,7 +806,8 @@
           "(D) 1199",
           "(E) 1296"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2022_amc_10a.json"
       },
       {
         "id": "amc10-2022-amc-10a-q25",
@@ -827,7 +851,8 @@
           "(D) 339",
           "(E) 340"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2022_amc_10a.json"
       }
     ],
     "curated_metadata": {
@@ -837,6 +862,8 @@
       "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A",
       "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Problems",
       "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2022_AMC_10A_Answer_Key"
-    }
+    },
+    "source_stem": "amc10-2022-amc-10a",
+    "source_file": "amc10_2022_amc_10a.json"
   }
 }

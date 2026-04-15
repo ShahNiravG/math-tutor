@@ -107,6 +107,15 @@ class ChallengeTemplateTests(unittest.TestCase):
         self.assertIn('onclick="copyRawText(this)"', template)
         self.assertNotIn('onclick="copyRawText(this,<?= json_encode($copy_text) ?>)"', template)
 
+    def test_result_templates_repair_saved_amc_mcq_payloads(self) -> None:
+        result_template = (ROOT / "challenges_src" / "result.php").read_text(encoding="utf-8")
+        partial_template = (ROOT / "challenges_src" / "partial_result.php").read_text(encoding="utf-8")
+
+        for template in (result_template, partial_template):
+            self.assertIn("function challenge_repair_saved_mcq_payload", template)
+            self.assertIn("function challenge_extract_embedded_mcq_choices", template)
+            self.assertIn("[$qtext, $options] = challenge_repair_saved_mcq_payload($qtext, $options);", template)
+
 
 if __name__ == "__main__":
     unittest.main()

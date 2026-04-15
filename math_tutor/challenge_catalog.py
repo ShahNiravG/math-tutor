@@ -7,6 +7,7 @@ import random
 import re
 from pathlib import Path
 
+from math_tutor.amc10_scraper import _normalize_option_text
 from math_tutor.chaptering import chapter_slug, chapter_sort_key, parse_response_stem_chapter
 
 
@@ -458,7 +459,7 @@ def _normalize_explicit_curated_exam(exam: dict, *, source_path: Path) -> dict:
 
     normalized_questions: list[dict] = []
     for index, question in enumerate(normalized_exam.get("questions", []), 1):
-        normalized_question = dict(question)
+        normalized_question = _repair_explicit_curated_question(dict(question))
         normalized_question.setdefault("id", f"{normalized_exam['id']}-q{index:02d}")
         normalized_question.setdefault("source_stem", normalized_exam["source_stem"])
         normalized_question.setdefault("source_file", source_path.name)
@@ -475,6 +476,50 @@ def _normalize_explicit_curated_exam(exam: dict, *, source_path: Path) -> dict:
     normalized_exam["questions"] = normalized_questions
     normalized_exam["question_count"] = len(normalized_questions)
     return normalized_exam
+
+
+def _repair_explicit_curated_question(question: dict) -> dict:
+    options = question.get("options")
+    if isinstance(options, list):
+        cleaned_options = []
+        for option in options:
+            option_text = str(option).strip()
+            match = re.match(r"^\(([A-E])\)\s*(.*)$", option_text)
+            if match:
+                cleaned_options.append(f"({match.group(1)}) {_normalize_option_text(match.group(2))}".rstrip())
+            elif option_text:
+                cleaned_options.append(_normalize_option_text(option_text))
+        question["options"] = cleaned_options
+
+        if _options_are_effectively_empty(cleaned_options):
+            repaired_text, repaired_options = _extract_embedded_choice_lines(str(question.get("text", "")))
+            if repaired_options:
+                question["text"] = repaired_text
+                question["options"] = repaired_options
+    return question
+
+
+def _options_are_effectively_empty(options: list[str]) -> bool:
+    if not options:
+        return True
+    return all(re.fullmatch(r"\([A-E]\)\s*", option) for option in options)
+
+
+def _extract_embedded_choice_lines(text: str) -> tuple[str, list[str]]:
+    parts = [part.strip() for part in re.split(r"\n\s*\n", text) if part.strip()]
+    if len(parts) < 6:
+        return text, []
+
+    candidate_choices = parts[-5:]
+    if any(len(choice) < 2 for choice in candidate_choices):
+        return text, []
+
+    prompt_text = "\n\n".join(parts[:-5]).strip()
+    if not prompt_text:
+        return text, []
+
+    options = [f"({chr(65 + index)}) {choice}" for index, choice in enumerate(candidate_choices)]
+    return prompt_text, options
 
 
 def _curated_bank_identity(path: Path) -> tuple[str, str]:

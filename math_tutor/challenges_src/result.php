@@ -2,6 +2,72 @@
 require_once __DIR__ . '/config.php';
 require_once __DIR__ . '/timezone.php';
 
+function challenge_normalize_saved_option_text(string $option): string
+{
+    $normalized = trim($option);
+    $normalized = preg_replace('/^\\\\\s*/', '', $normalized) ?? $normalized;
+    $normalized = preg_replace('/\s*\\\\$/', '', $normalized) ?? $normalized;
+    $normalized = str_replace('{-}', '-', $normalized);
+    return trim($normalized);
+}
+
+function challenge_extract_embedded_mcq_choices(string $question_text): array
+{
+    $trimmed = trim($question_text);
+    if ($trimmed === '') {
+        return [$question_text, []];
+    }
+
+    $parts = preg_split('/\n\s*\n/', $trimmed) ?: [];
+    if (count($parts) < 6) {
+        return [$question_text, []];
+    }
+
+    $candidate_options = array_slice($parts, -5);
+    $normalized_options = [];
+    foreach ($candidate_options as $index => $option) {
+        $expected_letter = chr(ord('A') + $index);
+        $normalized_option = challenge_normalize_saved_option_text($option);
+        if (!preg_match('/^\(' . preg_quote($expected_letter, '/') . '\)\s+.+$/s', $normalized_option)) {
+            return [$question_text, []];
+        }
+        $normalized_options[] = $normalized_option;
+    }
+
+    $question_parts = array_slice($parts, 0, -5);
+    return [implode("\n\n", $question_parts), $normalized_options];
+}
+
+function challenge_repair_saved_mcq_payload(string $question_text, array $options): array
+{
+    $normalized_options = array_map(
+        static fn($option): string => challenge_normalize_saved_option_text((string)$option),
+        $options
+    );
+
+    $meaningful_options = array_values(array_filter(
+        $normalized_options,
+        static fn(string $option): bool => $option !== ''
+    ));
+
+    $has_effective_options = count($meaningful_options) > 0 && array_reduce(
+        $meaningful_options,
+        static fn(bool $carry, string $option): bool => $carry && (bool)preg_match('/^\([A-E]\)\s+\S+/s', $option),
+        true
+    );
+
+    if ($has_effective_options) {
+        return [$question_text, $normalized_options];
+    }
+
+    [$repaired_question_text, $embedded_options] = challenge_extract_embedded_mcq_choices($question_text);
+    if (!empty($embedded_options)) {
+        return [$repaired_question_text, $embedded_options];
+    }
+
+    return [$question_text, $normalized_options];
+}
+
 $token = $_GET['token'] ?? '';
 if (!preg_match('/^[a-f0-9]{12}$/', $token)) {
     http_response_code(404);
@@ -386,6 +452,7 @@ foreach ($answers as $item) {
     $qtext   = $item['question_text'] ?? '';
     $question_images = $item['question_images'] ?? [];
     $options = $item['options'] ?? [];   // present in MCQ submissions
+    [$qtext, $options] = challenge_repair_saved_mcq_payload($qtext, $options);
     $correct = $item['correct'] ?? '';
     $ans     = $item['answer'] ?? '';
     $curated_source_link_raw = trim((string)($item['curated_source_link'] ?? ''));

@@ -37,7 +37,8 @@
           "(D) 8",
           "(E) 12"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q02",
@@ -67,7 +68,8 @@
           "(D) 2000",
           "(E) 2050"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q03",
@@ -97,7 +99,8 @@
           "(D) 14{,}238",
           "(E) 15{,}426"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q04",
@@ -127,7 +130,8 @@
           "(D) 3195",
           "(E) 3242"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q05",
@@ -157,7 +161,8 @@
           "(D) \\frac{14(k-12)}{k^2}",
           "(E) \\frac{14(k-12)}{8k}"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q06",
@@ -187,7 +192,8 @@
           "(D) \\frac{24}{13}",
           "(E) 2"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q07",
@@ -208,12 +214,17 @@
         "model_label": "Official AMC",
         "source_label": "2021 AMC 10A / Problem 7",
         "question_number": 7,
-        "text": "Tom has a collection of $13$ snakes, $4$ of which are purple and $5$ of which are happy. He observes that\n\nWhich of these conclusions can be drawn about Tom's snakes?\n\nPurple snakes can add.\n\nPurple snakes are happy.\n\nSnakes that can add are purple.\n\nHappy snakes are not purple.\n\nHappy snakes can't subtract.",
+        "text": "Tom has a collection of $13$ snakes, $4$ of which are purple and $5$ of which are happy. He observes that\n\nWhich of these conclusions can be drawn about Tom's snakes?",
         "question_images": [],
         "options": [
-          "(E) "
+          "(A) Purple snakes can add.",
+          "(B) Purple snakes are happy.",
+          "(C) Snakes that can add are purple.",
+          "(D) Happy snakes are not purple.",
+          "(E) Happy snakes can't subtract."
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q08",
@@ -243,7 +254,8 @@
           "(D) 60",
           "(E) 75"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q09",
@@ -273,7 +285,8 @@
           "(D) 1",
           "(E) 2"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q10",
@@ -303,7 +316,8 @@
           "(D) 3^{128} + 2^{128}",
           "(E) 5^{127}"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q11",
@@ -333,7 +347,8 @@
           "(D) 7",
           "(E) 8"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q12",
@@ -377,7 +392,8 @@
           "(D) 40:13",
           "(E) 4:1"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q13",
@@ -407,7 +423,8 @@
           "(D) 3\\sqrt{3}",
           "(E) 6"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q14",
@@ -431,13 +448,14 @@
         "text": "All the roots of the polynomial $z^6-10z^5+Az^4+Bz^3+Cz^2+Dz+16$ are positive integers, possibly repeated. What is the value of $B$?",
         "question_images": [],
         "options": [
-          "(A) {-}88",
-          "(B) {-}80",
-          "(C) {-}64",
-          "(D) {-}41",
-          "(E) {-}40"
+          "(A) -88",
+          "(B) -80",
+          "(C) -64",
+          "(D) -41",
+          "(E) -40"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q15",
@@ -467,7 +485,8 @@
           "(D) 180",
           "(E) 360"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q16",
@@ -497,7 +516,8 @@
           "(D) 150.5",
           "(E) 167"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q17",
@@ -527,7 +547,8 @@
           "(D) 194",
           "(E) 215"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q18",
@@ -557,7 +578,8 @@
           "(D) \\frac{7}{6}",
           "(E) \\frac{25}{11}"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q19",
@@ -587,7 +609,8 @@
           "(D) 45",
           "(E) 54"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q20",
@@ -617,7 +640,8 @@
           "(D) 32",
           "(E) 44"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q21",
@@ -647,7 +671,8 @@
           "(D) 58",
           "(E) 63"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q22",
@@ -677,7 +702,8 @@
           "(D) 17",
           "(E) 20"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q23",
@@ -707,7 +733,8 @@
           "(D) \\frac{25}{32}",
           "(E) \\frac{13}{16}"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q24",
@@ -737,7 +764,8 @@
           "(D) \\frac{8a^2}{a^2+1}",
           "(E) \\frac{8a}{a^2+1}"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_amc_10a.json"
       },
       {
         "id": "amc10-2021-amc-10a-q25",
@@ -767,7 +795,8 @@
           "(D) 30",
           "(E) 36"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_amc_10a.json"
       }
     ],
     "curated_metadata": {
@@ -777,6 +806,8 @@
       "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_AMC_10A",
       "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_AMC_10A_Problems",
       "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_AMC_10A_Answer_Key"
-    }
+    },
+    "source_stem": "amc10-2021-amc-10a",
+    "source_file": "amc10_2021_amc_10a.json"
   }
 }

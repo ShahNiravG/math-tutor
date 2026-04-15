@@ -31,13 +31,14 @@
         "text": "What value of $x$ satisfies\n\\[x- \\frac{3}{4} = \\frac{5}{12} - \\frac{1}{3}?\\]",
         "question_images": [],
         "options": [
-          "(A) \\ {-}\\frac{2}{3}",
-          "(B) \\ \\frac{7}{36}",
-          "(C) \\ \\frac{7}{12}",
-          "(D) \\ \\frac{2}{3}",
-          "(E) \\ \\frac{5}{6}"
+          "(A) -\\frac{2}{3}",
+          "(B) \\frac{7}{36}",
+          "(C) \\frac{7}{12}",
+          "(D) \\frac{2}{3}",
+          "(E) \\frac{5}{6}"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q02",
@@ -67,7 +68,8 @@
           "(D) 45",
           "(E) 60"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q03",
@@ -91,13 +93,14 @@
         "text": "Assuming $a\\neq3$, $b\\neq4$, and $c\\neq5$, what is the value in simplest form of the following expression?\n\\[\\frac{a-3}{5-c} \\cdot \\frac{b-4}{3-a} \\cdot \\frac{c-5}{4-b}\\]",
         "question_images": [],
         "options": [
-          "(A) {-}1",
+          "(A) -1",
           "(B) 1",
           "(C) \\frac{abc}{60}",
           "(D) \\frac{1}{abc} - \\frac{1}{60}",
           "(E) \\frac{1}{60} - \\frac{1}{abc}"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q04",
@@ -127,7 +130,8 @@
           "(D) 25",
           "(E) 26"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q05",
@@ -157,7 +161,8 @@
           "(D) 21",
           "(E) 25"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q06",
@@ -187,7 +192,8 @@
           "(D) 200",
           "(E) 500"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q07",
@@ -217,7 +223,8 @@
           "(D) 25",
           "(E) 50"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q08",
@@ -247,7 +254,8 @@
           "(D) 10,100",
           "(E) 10,200"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q09",
@@ -277,7 +285,8 @@
           "(D) 36",
           "(E) 77"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q10",
@@ -301,13 +310,14 @@
         "text": "Seven cubes, whose volumes are $1$, $8$, $27$, $64$, $125$, $216$, and $343$ cubic units, are stacked vertically to form a tower in which the volumes of the cubes decrease from bottom to top. Except for the bottom cube, the bottom face of each cube lies completely on top of the cube below it. What is the total surface area of the tower (including the bottom) in square units?",
         "question_images": [],
         "options": [
-          "(A) \\ 644",
-          "(B) \\ 658",
-          "(C) \\ 664",
-          "(D) \\ 720",
-          "(E) \\ 749"
+          "(A) 644",
+          "(B) 658",
+          "(C) 664",
+          "(D) 720",
+          "(E) 749"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q11",
@@ -331,13 +341,14 @@
         "text": "What is the median of the following list of $4040$ numbers$?$\n\\[1, 2, 3, \\ldots, 2020, 1^2, 2^2, 3^2, \\ldots, 2020^2\\]",
         "question_images": [],
         "options": [
-          "(A) \\ 1974.5",
-          "(B) \\ 1975.5",
-          "(C) \\ 1976.5",
-          "(D) \\ 1977.5",
-          "(E) \\ 1978.5"
+          "(A) 1974.5",
+          "(B) 1975.5",
+          "(C) 1976.5",
+          "(D) 1977.5",
+          "(E) 1978.5"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q12",
@@ -381,7 +392,8 @@
           "(D) 144",
           "(E) 192"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q13",
@@ -405,13 +417,14 @@
         "text": "A frog sitting at the point $(1, 2)$ begins a sequence of jumps, where each jump is parallel to one of the coordinate axes and has length $1$, and the direction of each jump (up, down, right, or left) is chosen independently at random. The sequence ends when the frog reaches a side of the square with vertices $(0,0), (0,4), (4,4),$ and $(4,0)$. What is the probability that the sequence of jumps ends on a vertical side of the square?",
         "question_images": [],
         "options": [
-          "(A) \\ \\frac12",
-          "(B) \\ \\frac 58",
-          "(C) \\ \\frac 23",
-          "(D) \\ \\frac34",
-          "(E) \\ \\frac 78"
+          "(A) \\frac12",
+          "(B) \\frac 58",
+          "(C) \\frac 23",
+          "(D) \\frac34",
+          "(E) \\frac 78"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q14",
@@ -435,13 +448,14 @@
         "text": "Real numbers $x$ and $y$ satisfy $x + y = 4$ and $x \\cdot y = -2$. What is the value of\\[x + \\frac{x^3}{y^2} + \\frac{y^3}{x^2} + y?\\]",
         "question_images": [],
         "options": [
-          "(A) \\ 360",
-          "(B) \\ 400",
-          "(C) \\ 420",
-          "(D) \\ 440",
-          "(E) \\ 480"
+          "(A) 360",
+          "(B) 400",
+          "(C) 420",
+          "(D) 440",
+          "(E) 480"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q15",
@@ -465,13 +479,14 @@
         "text": "A positive integer divisor of $12!$ is chosen at random. The probability that the divisor chosen is a perfect square can be expressed as $\\frac{m}{n}$, where $m$ and $n$ are relatively prime positive integers. What is $m+n$?",
         "question_images": [],
         "options": [
-          "(A) \\ 3",
-          "(B) \\ 5",
-          "(C) \\ 12",
-          "(D) \\ 18",
-          "(E) \\ 23"
+          "(A) 3",
+          "(B) 5",
+          "(C) 12",
+          "(D) 18",
+          "(E) 23"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q16",
@@ -501,7 +516,8 @@
           "(D) 0.6",
           "(E) 0.7"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q17",
@@ -531,7 +547,8 @@
           "(D) 5050",
           "(E) 5100"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q18",
@@ -561,7 +578,8 @@
           "(D) 128",
           "(E) 192"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q19",
@@ -605,7 +623,8 @@
           "(D) 640",
           "(E) 810"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q20",
@@ -635,7 +654,8 @@
           "(D) 360",
           "(E) 370"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q21",
@@ -656,7 +676,7 @@
         "model_label": "Official AMC",
         "source_label": "2020 AMC 10A / Problem 21",
         "question_number": 21,
-        "text": "There exists a unique strictly increasing sequence of nonnegative integers $a_1 < a_2 < \u2026 < a_k$ such that\\[\\frac{2^{289}+1}{2^{17}+1} = 2^{a_1} + 2^{a_2} + \u2026 + 2^{a_k}.\\]What is $k?$",
+        "text": "There exists a unique strictly increasing sequence of nonnegative integers $a_1 < a_2 < … < a_k$ such that\\[\\frac{2^{289}+1}{2^{17}+1} = 2^{a_1} + 2^{a_2} + … + 2^{a_k}.\\]What is $k?$",
         "question_images": [],
         "options": [
           "(A) 117",
@@ -665,7 +685,8 @@
           "(D) 273",
           "(E) 306"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q22",
@@ -695,7 +716,8 @@
           "(D) 25",
           "(E) 26"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q23",
@@ -725,7 +747,8 @@
           "(D) 20",
           "(E) 25"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q24",
@@ -755,7 +778,8 @@
           "(D) 21",
           "(E) 24"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2020_amc_10a.json"
       },
       {
         "id": "amc10-2020-amc-10a-q25",
@@ -785,7 +809,8 @@
           "(D) \\frac{17}{72}",
           "(E) \\frac{1}{4}"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2020_amc_10a.json"
       }
     ],
     "curated_metadata": {
@@ -795,6 +820,8 @@
       "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10A",
       "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10A_Problems",
       "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2020_AMC_10A_Answer_Key"
-    }
+    },
+    "source_stem": "amc10-2020-amc-10a",
+    "source_file": "amc10_2020_amc_10a.json"
   }
 }

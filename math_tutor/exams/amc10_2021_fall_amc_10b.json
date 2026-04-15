@@ -37,7 +37,8 @@
           "(D) 11{,}000",
           "(E) 11{,}110"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q02",
@@ -81,7 +82,8 @@
           "(D) \\: 10",
           "(E) \\: 12"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q03",
@@ -111,7 +113,8 @@
           "(D) \\: 2021",
           "(E) \\: 4041"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q04",
@@ -141,7 +144,8 @@
           "(D) \\: 100",
           "(E) \\: 120"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q05",
@@ -171,7 +175,8 @@
           "(D) \\: 4^{3031}",
           "(E) \\: 4^{3032}"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q06",
@@ -201,7 +206,8 @@
           "(D) 88",
           "(E) 90"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q07",
@@ -225,13 +231,14 @@
         "text": "Call a fraction $\\frac{a}{b}$, not necessarily in the simplest form special, if $a$ and $b$ are positive integers whose sum is $15$. How many distinct integers can be written as the sum of two, not necessarily different, special fractions?",
         "question_images": [],
         "options": [
-          "(A) \\ 9",
-          "(B) \\ 10",
-          "(C) \\ 11",
-          "(D) \\ 12",
-          "(E) \\ 13"
+          "(A) 9",
+          "(B) 10",
+          "(C) 11",
+          "(D) 12",
+          "(E) 13"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q08",
@@ -261,7 +268,8 @@
           "(D) \\: 16",
           "(E) \\: 22"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q09",
@@ -291,7 +299,8 @@
           "(D) \\frac{2}{7}",
           "(E) \\frac{1}{3}"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q10",
@@ -321,7 +330,8 @@
           "(D) 57",
           "(E) 67"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q11",
@@ -351,7 +361,8 @@
           "(D) \\pi - \\frac{\\sqrt{3}}{2}",
           "(E) \\frac{\\pi + \\sqrt{3}}{2}"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q12",
@@ -381,7 +392,8 @@
           "(D) \\: x=z",
           "(E) \\: x+y+z=1"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q13",
@@ -425,7 +437,8 @@
           "(D) 22\\frac12",
           "(E) 23\\frac34"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q14",
@@ -455,7 +468,8 @@
           "(D) \\: \\frac{187}{192}",
           "(E) \\: \\frac{63}{64}"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q15",
@@ -499,7 +513,8 @@
           "(D) 117",
           "(E) 125"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q16",
@@ -529,7 +544,8 @@
           "(D) 2.2",
           "(E) 2.4"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q17",
@@ -559,7 +575,8 @@
           "(D) 2x-3y=0",
           "(E) 5x-3y=0"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q18",
@@ -589,7 +606,8 @@
           "(D) 129",
           "(E) 147"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q19",
@@ -619,7 +637,8 @@
           "(D) 22",
           "(E) 29"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q20",
@@ -649,7 +668,8 @@
           "(D) \\frac{185}{648}",
           "(E) \\frac{11}{36}"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q21",
@@ -679,7 +699,8 @@
           "(D) 64",
           "(E) 68"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q22",
@@ -703,13 +724,14 @@
         "text": "For each integer $n\\geq 2$, let $S_n$ be the sum of all products $jk$, where $j$ and $k$ are integers and $1\\leq j<k\\leq n$. What is the sum of the 10 least values of $n$ such that $S_n$ is divisible by $3$?",
         "question_images": [],
         "options": [
-          "(A) \\ 196",
-          "(B) \\ 197",
-          "(C) \\ 198",
-          "(D) \\ 199",
-          "(E) \\ 200"
+          "(A) 196",
+          "(B) 197",
+          "(C) 198",
+          "(D) 199",
+          "(E) 200"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q23",
@@ -739,7 +761,8 @@
           "(D) \\frac{253}{256}",
           "(E) 1"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q24",
@@ -769,7 +792,8 @@
           "(D) 10",
           "(E) 11"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       },
       {
         "id": "amc10-2021-fall-amc-10b-q25",
@@ -813,7 +837,8 @@
           "(D) 59",
           "(E) 67"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10b.json"
       }
     ],
     "curated_metadata": {
@@ -823,6 +848,8 @@
       "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B",
       "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Problems",
       "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10B_Answer_Key"
-    }
+    },
+    "source_stem": "amc10-2021-fall-amc-10b",
+    "source_file": "amc10_2021_fall_amc_10b.json"
   }
 }

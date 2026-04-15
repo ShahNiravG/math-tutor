@@ -37,7 +37,8 @@
           "(D) 64",
           "(E) 91"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q02",
@@ -67,7 +68,8 @@
           "(D) 19",
           "(E) 20"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q03",
@@ -97,7 +99,8 @@
           "(D) 6",
           "(E) 7"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q04",
@@ -121,13 +124,14 @@
         "text": "Mr. Lopez has a choice of two routes to get to work. Route A is $6$ miles long, and his average speed along this route is $30$ miles per hour. Route B is $5$ miles long, and his average speed along this route is $40$ miles per hour, except for a $\\frac{1}{2}$-mile stretch in a school zone where his average speed is $20$ miles per hour. By how many minutes is Route B quicker than Route A?",
         "question_images": [],
         "options": [
-          "(A) \\ 2 \\frac{3}{4}",
-          "(B) \\ 3 \\frac{3}{4}",
-          "(C) \\ 4 \\frac{1}{2}",
-          "(D) \\ 5 \\frac{1}{2}",
-          "(E) \\ 6 \\frac{3}{4}"
+          "(A) 2 \\frac{3}{4}",
+          "(B) 3 \\frac{3}{4}",
+          "(C) 4 \\frac{1}{2}",
+          "(D) 5 \\frac{1}{2}",
+          "(E) 6 \\frac{3}{4}"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q05",
@@ -151,13 +155,14 @@
         "text": "The six-digit number $\\underline{2}\\,\\underline{0}\\,\\underline{2}\\,\\underline{1}\\,\\underline{0}\\,\\underline{A}$ is prime for only one digit $A.$ What is $A?$",
         "question_images": [],
         "options": [
-          "(A) \\ 1",
-          "(B) \\ 3",
-          "(C) \\ 5",
-          "(D) \\ 7",
-          "(E) \\ 9"
+          "(A) 1",
+          "(B) 3",
+          "(C) 5",
+          "(D) 7",
+          "(E) 9"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q06",
@@ -187,7 +192,8 @@
           "(D) 11",
           "(E) 15"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q07",
@@ -231,7 +237,8 @@
           "(D) 170",
           "(E) 174"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q08",
@@ -261,7 +268,8 @@
           "(D) 3",
           "(E) 4"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q09",
@@ -291,7 +299,8 @@
           "(D) \\dfrac9{16}",
           "(E) \\dfrac58"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q10",
@@ -315,13 +324,14 @@
         "text": "A school has $100$ students and $5$ teachers. In the first period, each student is taking one class, and each teacher is teaching one class. The enrollments in the classes are $50, 20, 20, 5,$ and $5$. Let $t$ be the average value obtained if a teacher is picked at random and the number of students in their class is noted. Let $s$ be the average value obtained if a student was picked at random and the number of students in their class, including the student, is noted. What is $t-s$?",
         "question_images": [],
         "options": [
-          "(A) \\ {-}18.5",
-          "(B) \\ {-}13.5",
-          "(C) \\ 0",
-          "(D) \\ 13.5",
-          "(E) \\ 18.5"
+          "(A) -18.5",
+          "(B) -13.5",
+          "(C) 0",
+          "(D) 13.5",
+          "(E) 18.5"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q11",
@@ -351,7 +361,8 @@
           "(D) 105",
           "(E) 126"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q12",
@@ -381,7 +392,8 @@
           "(D) 3",
           "(E) 4"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q13",
@@ -411,7 +423,8 @@
           "(D) \\frac{5}{16}",
           "(E) \\frac{1}{2}"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q14",
@@ -441,7 +454,8 @@
           "(D) 5",
           "(E) 7"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q15",
@@ -471,7 +485,8 @@
           "(D) 27\\pi",
           "(E) 28\\pi"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q16",
@@ -501,7 +516,8 @@
           "(D) \\text{ the point }\\left(\\dfrac12, 0\\right)",
           "(E) \\text{the point }(1,0)"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q17",
@@ -531,7 +547,8 @@
           "(D) 17",
           "(E) 12\\sqrt{3}"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q18",
@@ -569,13 +586,14 @@
           }
         ],
         "options": [
-          "(A) \\ 12",
-          "(B) \\ 64",
-          "(C) \\ 84",
-          "(D) \\ 90",
-          "(E) \\ 144"
+          "(A) 12",
+          "(B) 64",
+          "(C) 84",
+          "(D) 90",
+          "(E) 144"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q19",
@@ -605,7 +623,8 @@
           "(D) 13",
           "(E) 14"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q20",
@@ -635,7 +654,8 @@
           "(D) 12",
           "(E) 16 \\qquad"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q21",
@@ -659,13 +679,14 @@
         "text": "Each of the $20$ balls is tossed independently and at random into one of the $5$ bins. Let $p$ be the probability that some bin ends up with $3$ balls, another with $5$ balls, and the other three with $4$ balls each. Let $q$ be the probability that every bin ends up with $4$ balls. What is $\\frac{p}{q}$?",
         "question_images": [],
         "options": [
-          "(A) \\ 1",
-          "(B) \\ 4",
-          "(C) \\ 8",
-          "(D) \\ 12",
-          "(E) \\ 16"
+          "(A) 1",
+          "(B) 4",
+          "(C) 8",
+          "(D) 12",
+          "(E) 16"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q22",
@@ -689,13 +710,14 @@
         "text": "Inside a right circular cone with base radius $5$ and height $12$ are three congruent spheres with radius $r$. Each sphere is tangent to the other two spheres and also tangent to the base and side of the cone. What is $r$?",
         "question_images": [],
         "options": [
-          "(A) \\ \\frac{3}{2}",
-          "(B) \\ \\frac{90-40\\sqrt{3}}{11}",
-          "(C) \\ 2",
-          "(D) \\ \\frac{144-25\\sqrt{3}}{44}",
-          "(E) \\ \\frac{5}{2}"
+          "(A) \\frac{3}{2}",
+          "(B) \\frac{90-40\\sqrt{3}}{11}",
+          "(C) 2",
+          "(D) \\frac{144-25\\sqrt{3}}{44}",
+          "(E) \\frac{5}{2}"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q23",
@@ -725,7 +747,8 @@
           "(D) 10",
           "(E) 11"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q24",
@@ -755,7 +778,8 @@
           "(D) 16",
           "(E) 20"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       },
       {
         "id": "amc10-2021-fall-amc-10a-q25",
@@ -785,7 +809,8 @@
           "(D) 1",
           "(E) \\frac{9}{8}"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2021_fall_amc_10a.json"
       }
     ],
     "curated_metadata": {
@@ -795,6 +820,8 @@
       "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10A",
       "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10A_Problems",
       "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2021_Fall_AMC_10A_Answer_Key"
-    }
+    },
+    "source_stem": "amc10-2021-fall-amc-10a",
+    "source_file": "amc10_2021_fall_amc_10a.json"
   }
 }

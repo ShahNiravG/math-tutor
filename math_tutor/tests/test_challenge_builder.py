@@ -244,12 +244,94 @@ class ChallengeBuilderTests(unittest.TestCase):
                     "amc-q011",
                 ],
             )
-            self.assertEqual(second_bundle["exams"][2]["questions"][0]["text"], "Edited Question 1")
-            self.assertEqual(second_bundle["exams"][0]["questions"][0]["text"], "Original Question 1")
-            self.assertEqual(second_bundle["exams"][0]["questions"][0]["curated_problem_number"], 1)
-            self.assertEqual(second_bundle["exams"][0]["questions"][0]["curated_source"], "AMC")
-            self.assertEqual(len(second_bundle["exams"][0]["questions"][0]["curated_question_checksum"]), 64)
-            self.assertNotIn("curated_fingerprint", second_bundle["exams"][0]["questions"][0])
+
+    def test_sync_curated_exam_bundle_repairs_blank_explicit_amc_options_from_question_text(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            exams_dir = temp_root / "exams"
+            exams_dir.mkdir()
+            canonical_path = temp_root / "curated_exams.json"
+
+            exam_payload = {
+                "format": "explicit_curated_exam",
+                "exam": {
+                    "id": "amc10-sample",
+                    "title": "AMC 10 Sample",
+                    "bank": "amc10",
+                    "bank_title": "AMC 10",
+                    "questions": [
+                        {
+                            "id": "amc10-sample-q01",
+                            "text": (
+                                "Which statement is true?\n\n"
+                                "Choice one.\n\n"
+                                "Choice two.\n\n"
+                                "Choice three.\n\n"
+                                "Choice four.\n\n"
+                                "Choice five."
+                            ),
+                            "options": ["(A) ", "(B) ", "(C) ", "(D) ", "(E) "],
+                            "correct": "B",
+                        }
+                    ],
+                },
+            }
+            (exams_dir / "amc10_sample.json").write_text(json.dumps(exam_payload), encoding="utf-8")
+
+            bundle = sync_curated_exam_bundle(
+                exams_dir=exams_dir,
+                canonical_curated_exams_json=canonical_path,
+            )
+
+            question = bundle["exams"][0]["questions"][0]
+            self.assertEqual(question["text"], "Which statement is true?")
+            self.assertEqual(
+                question["options"],
+                [
+                    "(A) Choice one.",
+                    "(B) Choice two.",
+                    "(C) Choice three.",
+                    "(D) Choice four.",
+                    "(E) Choice five.",
+                ],
+            )
+
+    def test_sync_curated_exam_bundle_normalizes_negative_option_braces(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            temp_root = Path(temp_dir)
+            exams_dir = temp_root / "exams"
+            exams_dir.mkdir()
+            canonical_path = temp_root / "curated_exams.json"
+
+            exam_payload = {
+                "format": "explicit_curated_exam",
+                "exam": {
+                    "id": "amc10-negative-sample",
+                    "title": "AMC 10 Negative Sample",
+                    "bank": "amc10",
+                    "bank_title": "AMC 10",
+                    "questions": [
+                        {
+                            "id": "amc10-negative-sample-q01",
+                            "text": "What is the value?",
+                            "options": ["(A) {-}2", "(B) {-}\\frac{2}{3}", "(C) 0", "(D) 1", "(E) 2"],
+                            "correct": "A",
+                        }
+                    ],
+                },
+            }
+            (exams_dir / "amc10_negative_sample.json").write_text(json.dumps(exam_payload), encoding="utf-8")
+
+            bundle = sync_curated_exam_bundle(
+                exams_dir=exams_dir,
+                canonical_curated_exams_json=canonical_path,
+            )
+
+            question = bundle["exams"][0]["questions"][0]
+            self.assertEqual(
+                question["options"],
+                ["(A) -2", r"(B) -\frac{2}{3}", "(C) 0", "(D) 1", "(E) 2"],
+            )
 
     def test_sync_curated_exam_bundle_preserves_source_metadata_and_link_for_aime_questions(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:

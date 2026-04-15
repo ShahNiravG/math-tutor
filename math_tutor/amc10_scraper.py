@@ -256,8 +256,18 @@ def _parse_option_alt(option_alt: str) -> list[str]:
         letter = match.group(1)
         text = re.sub(r"\s+", " ", match.group(2).replace("~", " ")).strip()
         text = re.sub(r"\s+([,.;:?])", r"\1", text)
+        text = _normalize_option_text(text)
         options.append(f"({letter}) {text}")
     return options
+
+
+def _normalize_option_text(text: str) -> str:
+    normalized = text.strip()
+    normalized = re.sub(r"^\\\s+", "", normalized)
+    normalized = re.sub(r"\\\s+$", "", normalized)
+    normalized = re.sub(r"\\+$", "", normalized)
+    normalized = normalized.replace("{-}", "-")
+    return normalized.strip()
 
 
 class _ParagraphParser(HTMLParser):

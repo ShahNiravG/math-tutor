@@ -37,7 +37,8 @@
           "(D) 19",
           "(E) 20"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q02",
@@ -67,7 +68,8 @@
           "(D) 9115",
           "(E) 9160"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q03",
@@ -111,7 +113,8 @@
           "(D) 16",
           "(E) 17"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q04",
@@ -141,7 +144,8 @@
           "(D) 11",
           "(E) 14"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q05",
@@ -171,7 +175,8 @@
           "(D) 50",
           "(E) 60"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q06",
@@ -201,7 +206,8 @@
           "(D) 21",
           "(E) 22"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q07",
@@ -231,7 +237,8 @@
           "(D) 3\\frac57",
           "(E) 3\\frac67"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q08",
@@ -261,7 +268,8 @@
           "(D) 14",
           "(E) 15"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q09",
@@ -285,13 +293,14 @@
         "text": "How many ordered triples of integers $(x, y, z)$ satisfy the following system of inequalities?\n\n\\begin{align*} -x-y-z&\\le -2\\\\ -x+y+z&\\le 2\\\\ x-y+z&\\le 2\\\\ x+y-z&\\le 2 \\end{align*}",
         "question_images": [],
         "options": [
-          "(A) \\ 4",
-          "(B) \\ 8",
-          "(C) \\ 11",
-          "(D) \\ 15",
-          "(E) \\ 17 \\qquad"
+          "(A) 4",
+          "(B) 8",
+          "(C) 11",
+          "(D) 15",
+          "(E) 17 \\qquad"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q10",
@@ -321,7 +330,8 @@
           "(D) 5",
           "(E) 6"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q11",
@@ -351,7 +361,8 @@
           "(D) \\frac{3}{8}",
           "(E) \\frac{1}{2}"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q12",
@@ -389,13 +400,14 @@
           }
         ],
         "options": [
-          "(A) \\ T=H=R",
-          "(B) \\ H<R=T",
-          "(C) \\ H=R<T",
-          "(D) \\ H<R<T",
-          "(E) \\ H<T<R \\qquad"
+          "(A) T=H=R",
+          "(B) H<R=T",
+          "(C) H=R<T",
+          "(D) H<R<T",
+          "(E) H<T<R \\qquad"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q13",
@@ -425,7 +437,8 @@
           "(D) \\frac{5}{11}",
           "(E) \\frac{4\\sqrt3}{15}"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q14",
@@ -455,7 +468,8 @@
           "(D) \\frac13",
           "(E) \\frac38"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q15",
@@ -485,7 +499,8 @@
           "(D) 107",
           "(E) 129"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q16",
@@ -529,7 +544,8 @@
           "(D) 24",
           "(E) 28"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q17",
@@ -559,7 +575,8 @@
           "(D) 2016",
           "(E) 2025"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q18",
@@ -589,7 +606,8 @@
           "(D) 5",
           "(E) 8"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q19",
@@ -633,7 +651,8 @@
           "(D) 95",
           "(E) 105"
         ],
-        "correct": "D"
+        "correct": "D",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q20",
@@ -677,7 +696,8 @@
           "(D) 9",
           "(E) 11"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q21",
@@ -707,7 +727,8 @@
           "(D) 18",
           "(E) 27"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q22",
@@ -737,7 +758,8 @@
           "(D) \\frac{4}{11}",
           "(E) \\frac{3}{7}"
         ],
-        "correct": "A"
+        "correct": "A",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q23",
@@ -767,7 +789,8 @@
           "(D) 12",
           "(E) 19"
         ],
-        "correct": "C"
+        "correct": "C",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q24",
@@ -797,7 +820,8 @@
           "(D) \\frac{1}{98}",
           "(E) \\frac{1}{97}"
         ],
-        "correct": "E"
+        "correct": "E",
+        "source_file": "amc10_2025_amc_10b.json"
       },
       {
         "id": "amc10-2025-amc-10b-q25",
@@ -841,7 +865,8 @@
           "(D) D",
           "(E) \\text{The path continues forever.}"
         ],
-        "correct": "B"
+        "correct": "B",
+        "source_file": "amc10_2025_amc_10b.json"
       }
     ],
     "curated_metadata": {
@@ -851,6 +876,8 @@
       "source_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B",
       "problems_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Problems",
       "answer_key_page": "https://artofproblemsolving.com/wiki/index.php?title=2025_AMC_10B_Answer_Key"
-    }
+    },
+    "source_stem": "amc10-2025-amc-10b",
+    "source_file": "amc10_2025_amc_10b.json"
   }
 }

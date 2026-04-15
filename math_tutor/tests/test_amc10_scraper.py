@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 from math_tutor.challenge_builder import sync_curated_exam_bundle
-from math_tutor.amc10_scraper import _ParagraphParser, scrape_amc10_exam_from_html
+from math_tutor.amc10_scraper import _ParagraphParser, _parse_option_alt, scrape_amc10_exam_from_html
 
 
 MAIN_PAGE_HTML = """
@@ -55,6 +55,20 @@ ANSWER_KEY_HTML = """
 
 
 class Amc10ScraperTests(unittest.TestCase):
+    def test_parse_option_alt_normalizes_latex_spacing_artifacts(self) -> None:
+        options = _parse_option_alt(
+            r"$\textbf{(A) } \ {-}\frac{2}{3}\qquad\textbf{(B) } \ 24\qquad\textbf{(C) } \frac{9\sqrt{3}}{2} - 2\pi\ $"
+        )
+
+        self.assertEqual(
+            options,
+            [
+                r"(A) -\frac{2}{3}",
+                r"(B) 24",
+                r"(C) \frac{9\sqrt{3}}{2} - 2\pi",
+            ],
+        )
+
     def test_scrape_amc10_exam_from_html_builds_explicit_exam_with_metadata_images_and_links(self) -> None:
         exam = scrape_amc10_exam_from_html(
             main_page_html=MAIN_PAGE_HTML,
