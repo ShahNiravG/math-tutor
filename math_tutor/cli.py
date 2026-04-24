@@ -171,23 +171,18 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--dry-run",
         action="store_true",
-        help="With --print-prompt or --print-all, list what would be printed without sending to the printer.",
+        help=(
+            "Plan-only run with no destructive work: with --print-prompt/--print-all "
+            "lists what would be printed; otherwise reports per-file fetch and per-prompt "
+            "generate/skip verdicts without calling Canvas, OpenAI, or Gemini."
+        ),
     )
     return parser.parse_args()
-
-
-def validate_args(args: argparse.Namespace) -> None:
-    if args.dry_run and not (args.print_all or args.print_prompt_slugs):
-        raise SystemExit(
-            "error: --dry-run only applies with --print-prompt or --print-all. "
-            "Refusing to run; remove --dry-run or add a print flag."
-        )
 
 
 def main() -> None:
     load_dotenv_if_present()
     args = parse_args()
-    validate_args(args)
     try:
         output_dir = Path(args.output_dir).resolve()
         if handle_print_command(

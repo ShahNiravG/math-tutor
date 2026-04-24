@@ -12,23 +12,15 @@ def _parse(argv: list[str]) -> object:
         return cli.parse_args()
 
 
-class DryRunGuardTests(unittest.TestCase):
-    def test_dry_run_without_print_flags_raises(self) -> None:
+class DryRunFlagTests(unittest.TestCase):
+    def test_dry_run_alone_parses_without_error(self) -> None:
         args = _parse(["--dry-run"])
-        with self.assertRaises(SystemExit):
-            cli.validate_args(args)
+        self.assertTrue(args.dry_run)
 
-    def test_dry_run_with_print_prompt_is_allowed(self) -> None:
+    def test_dry_run_with_print_prompt_parses(self) -> None:
         args = _parse(["--dry-run", "--print-prompt", "study-guide"])
-        cli.validate_args(args)
-
-    def test_dry_run_with_print_all_is_allowed(self) -> None:
-        args = _parse(["--dry-run", "--print-all"])
-        cli.validate_args(args)
-
-    def test_no_dry_run_is_allowed(self) -> None:
-        args = _parse([])
-        cli.validate_args(args)
+        self.assertTrue(args.dry_run)
+        self.assertEqual(args.print_prompt_slugs, ["study-guide"])
 
 
 if __name__ == "__main__":

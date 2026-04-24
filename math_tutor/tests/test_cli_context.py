@@ -31,6 +31,7 @@ class CliContextTests(unittest.TestCase):
                 site_dir=None,
                 site_base_path="/site/",
                 build_site_guided_learning=False,
+                dry_run=False,
             )
 
             with patch("math_tutor.cli_context.initialize_gemini_client", return_value="gemini-client") as initialize_gemini_client:

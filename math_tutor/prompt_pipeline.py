@@ -12,7 +12,7 @@ from math_tutor.canvas_course import CanvasFile, ensure_pdf_fetched
 from math_tutor.prompt_generation import PromptResponseResult, generate_prompt_response
 from math_tutor.prompt_catalog import PROMPTS_BY_SLUG, PromptSpec
 from math_tutor.prompt_output_store import persist_prompt_output
-from math_tutor.prompt_saved_outputs import should_skip_generation
+from math_tutor.prompt_saved_outputs import evaluate_generation_decision, should_skip_generation
 from math_tutor.response_artifacts import slugify
 from math_tutor.state_store import (
     FetchState,
@@ -51,9 +51,11 @@ def process_file(
     default_model: str,
     prompts: tuple[PromptSpec, ...],
     forced_prompt_slugs: set[str],
+    requested_prompt_slugs: set[str] | frozenset[str] = frozenset(),
     force: bool,
     fetch_only: bool,
     force_generation: bool,
+    dry_run: bool = False,
     index: int,
     total: int,
 ) -> None:
@@ -68,15 +70,21 @@ def process_file(
     )
     prompt_outputs_cache: dict[str, str] = {}
 
-    ensure_pdf_fetched(
-        client=canvas_client,
-        canvas_file=canvas_file,
-        destination=pdf_path,
-        fetch_state=fetch_state,
-        force=force,
-        index=index,
-        total=total,
-    )
+    if dry_run:
+        if pdf_path.exists():
+            print(f"[{index}/{total}] DRY RUN: {canvas_file.display_name} already fetched.", flush=True)
+        else:
+            print(f"[{index}/{total}] DRY RUN: would fetch {canvas_file.display_name}.", flush=True)
+    else:
+        ensure_pdf_fetched(
+            client=canvas_client,
+            canvas_file=canvas_file,
+            destination=pdf_path,
+            fetch_state=fetch_state,
+            force=force,
+            index=index,
+            total=total,
+        )
 
     if fetch_only:
         print(f"[{index}/{total}] Fetch-only mode; skipping generation for {canvas_file.display_name}.", flush=True)
@@ -98,6 +106,8 @@ def process_file(
             prompt_outputs_cache=prompt_outputs_cache,
             force=force,
             force_generation=force_generation or prompt_spec.slug in forced_prompt_slugs,
+            requested_prompt_slugs=requested_prompt_slugs,
+            dry_run=dry_run,
             index=index,
             total=total,
         )
@@ -119,6 +129,8 @@ def run_prompt(
     prompt_outputs_cache: dict[str, str],
     force: bool,
     force_generation: bool,
+    requested_prompt_slugs: set[str] | frozenset[str] = frozenset(),
+    dry_run: bool = False,
     index: int,
     total: int,
 ) -> str:
@@ -140,6 +152,32 @@ def run_prompt(
         model_name=prompt_spec.model or default_model,
     )
 
+    if dry_run:
+        if force or force_generation:
+            reason = None
+        else:
+            reason = evaluate_generation_decision(
+                prompt_spec=prompt_spec,
+                response_path=response_path,
+                response_html_path=response_html_path,
+                response_pdf_path=response_pdf_path,
+                requested_prompt_slugs=requested_prompt_slugs,
+            )
+        if reason:
+            print(
+                f"[{index}/{total}] DRY RUN: would skip {prompt_spec.title} for "
+                f"{canvas_file.display_name}; {reason}.",
+                flush=True,
+            )
+        else:
+            effective = prompt_spec.model or default_model
+            print(
+                f"[{index}/{total}] DRY RUN: would generate {prompt_spec.title} for "
+                f"{canvas_file.display_name} via {effective}.",
+                flush=True,
+            )
+        return ""
+
     if should_skip_generation(
         canvas_file=canvas_file,
         prompt_spec=prompt_spec,
@@ -151,6 +189,7 @@ def run_prompt(
         force_generation=force_generation,
         index=index,
         total=total,
+        requested_prompt_slugs=requested_prompt_slugs,
     ):
         if response_path.exists():
             cached_output = response_path.read_text(encoding="utf-8")

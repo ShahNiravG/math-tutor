@@ -47,9 +47,11 @@ class CliWorkflowTests(unittest.TestCase):
             default_model="gpt-5.4",
             prompts=(PROMPTS_BY_SLUG["study-guide"],),
             forced_prompt_slugs=set(),
+            requested_prompt_slugs=set(),
             force=False,
             fetch_only=False,
             force_generation=False,
+            dry_run=False,
         )
 
         processed_ids = process_file_batch(

@@ -30,6 +30,7 @@ def build_command_context(
     )
     selected_prompts = resolve_selected_prompts(args.prompt_slugs)
     forced_prompt_slugs = resolve_prompt_slug_set(args.force_prompt_slugs)
+    requested_prompt_slugs = resolve_prompt_slug_set(args.prompt_slugs)
     normalized_chapter_filters = normalize_cli_chapter_filters(args.chapter_filters)
 
     ensure_output_layout(output_layout)
@@ -51,10 +52,12 @@ def build_command_context(
         default_model=args.default_model,
         selected_prompts=selected_prompts,
         forced_prompt_slugs=forced_prompt_slugs,
+        requested_prompt_slugs=requested_prompt_slugs,
         normalized_chapter_filters=normalized_chapter_filters,
         force=args.force,
         force_generation=args.force_generation,
         fetch_only=args.fetch_only,
+        dry_run=args.dry_run,
         fetch_assignments=args.fetch_assignments,
         list_files=args.list_files,
         headful=args.headful,

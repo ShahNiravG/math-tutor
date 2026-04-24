@@ -44,10 +44,12 @@ class CliCommandContext:
     default_model: str
     selected_prompts: tuple[PromptSpec, ...]
     forced_prompt_slugs: set[str]
+    requested_prompt_slugs: set[str]
     normalized_chapter_filters: list[str]
     force: bool
     force_generation: bool
     fetch_only: bool
+    dry_run: bool
     fetch_assignments: bool
     list_files: bool
     headful: bool
@@ -140,9 +142,11 @@ def process_saved_files(
                         default_model=command_context.default_model,
                         prompts=command_context.selected_prompts,
                         forced_prompt_slugs=command_context.forced_prompt_slugs,
+                        requested_prompt_slugs=command_context.requested_prompt_slugs,
                         force=command_context.force,
                         fetch_only=command_context.fetch_only,
                         force_generation=command_context.force_generation,
+                        dry_run=command_context.dry_run,
                     ),
                 )
             finally:
@@ -163,9 +167,11 @@ def process_saved_files(
             default_model=command_context.default_model,
             prompts=command_context.selected_prompts,
             forced_prompt_slugs=command_context.forced_prompt_slugs,
+            requested_prompt_slugs=command_context.requested_prompt_slugs,
             force=command_context.force,
             fetch_only=command_context.fetch_only,
             force_generation=command_context.force_generation,
+            dry_run=command_context.dry_run,
         ),
     )
 
@@ -366,9 +372,11 @@ def run_assignment_fetch_workflow(
             default_model=command_context.default_model,
             prompts=command_context.selected_prompts,
             forced_prompt_slugs=command_context.forced_prompt_slugs,
+            requested_prompt_slugs=command_context.requested_prompt_slugs,
             force=command_context.force,
             fetch_only=True,
             force_generation=False,
+            dry_run=command_context.dry_run,
         ),
     )
 
@@ -419,9 +427,11 @@ def run_class_note_workflow(
             default_model=command_context.default_model,
             prompts=command_context.selected_prompts,
             forced_prompt_slugs=command_context.forced_prompt_slugs,
+            requested_prompt_slugs=command_context.requested_prompt_slugs,
             force=command_context.force,
             fetch_only=command_context.fetch_only,
             force_generation=command_context.force_generation,
+            dry_run=command_context.dry_run,
         ),
     )
 
@@ -454,9 +464,11 @@ def run_class_note_workflow(
                     default_model=command_context.default_model,
                     prompts=command_context.selected_prompts,
                     forced_prompt_slugs=command_context.forced_prompt_slugs,
+                    requested_prompt_slugs=command_context.requested_prompt_slugs,
                     force=command_context.force,
                     fetch_only=True,
                     force_generation=False,
+                    dry_run=command_context.dry_run,
                 ),
             )
         )

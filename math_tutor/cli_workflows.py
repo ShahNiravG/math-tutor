@@ -28,9 +28,11 @@ class FileBatchContext:
     default_model: str
     prompts: tuple[PromptSpec, ...]
     forced_prompt_slugs: set[str]
+    requested_prompt_slugs: set[str]
     force: bool
     fetch_only: bool
     force_generation: bool
+    dry_run: bool
 
 
 def process_file_batch(
@@ -55,9 +57,11 @@ def process_file_batch(
             default_model=batch_context.default_model,
             prompts=batch_context.prompts,
             forced_prompt_slugs=batch_context.forced_prompt_slugs,
+            requested_prompt_slugs=batch_context.requested_prompt_slugs,
             force=batch_context.force,
             fetch_only=batch_context.fetch_only,
             force_generation=batch_context.force_generation,
+            dry_run=batch_context.dry_run,
             index=index,
             total=len(files),
         )

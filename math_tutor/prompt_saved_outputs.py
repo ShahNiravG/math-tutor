@@ -68,6 +68,53 @@ def print_saved_prompt_pdfs(
         print(f"Printed {target.chapter_label} - {target.prompt_title}: {target.pdf_path}")
 
 
+PROMPT_FAMILY_PREFIXES: tuple[str, ...] = ("study-guide", "inspiring-videos")
+
+
+def _family_prefix_for_slug(slug: str) -> str | None:
+    for prefix in PROMPT_FAMILY_PREFIXES:
+        if slug == prefix or slug.startswith(f"{prefix}-"):
+            return prefix
+    return None
+
+
+def _family_sibling_exists(*, response_path: Path, family_prefix: str) -> bool:
+    responses_dir = response_path.parent
+    stem = response_path.stem.rsplit("__", 1)[0]
+    for sibling in responses_dir.glob(f"{stem}__{family_prefix}*.md"):
+        if sibling.exists():
+            return True
+    return False
+
+
+def evaluate_generation_decision(
+    *,
+    prompt_spec: PromptSpec,
+    response_path: Path,
+    response_html_path: Path,
+    response_pdf_path: Path,
+    requested_prompt_slugs: set[str] | frozenset[str] = frozenset(),
+) -> str | None:
+    has_all_artifacts = response_path.exists() and response_html_path.exists()
+    if prompt_spec.generate_response_pdf:
+        has_all_artifacts = has_all_artifacts and response_pdf_path.exists()
+    if has_all_artifacts:
+        return "output files already exist"
+
+    family_prefix = _family_prefix_for_slug(prompt_spec.slug)
+    if (
+        family_prefix
+        and prompt_spec.slug not in requested_prompt_slugs
+        and _family_sibling_exists(response_path=response_path, family_prefix=family_prefix)
+    ):
+        return (
+            f"another {family_prefix} variant already exists "
+            f"(pass --prompt {prompt_spec.slug} to force generation)"
+        )
+
+    return None
+
+
 def should_skip_generation(
     *,
     canvas_file: CanvasFile,
@@ -80,19 +127,24 @@ def should_skip_generation(
     force_generation: bool,
     index: int,
     total: int,
+    requested_prompt_slugs: set[str] | frozenset[str] = frozenset(),
 ) -> bool:
     del generated_output_state
 
     if force or force_generation:
         return False
 
-    has_all_artifacts = response_path.exists() and response_html_path.exists()
-    if prompt_spec.generate_response_pdf:
-        has_all_artifacts = has_all_artifacts and response_pdf_path.exists()
+    reason = evaluate_generation_decision(
+        prompt_spec=prompt_spec,
+        response_path=response_path,
+        response_html_path=response_html_path,
+        response_pdf_path=response_pdf_path,
+        requested_prompt_slugs=requested_prompt_slugs,
+    )
+    if reason is None:
+        return False
 
-    if has_all_artifacts:
-        print(
-            f"[{index}/{total}] Skipping {canvas_file.display_name} ({prompt_spec.title}); output files already exist."
-        )
-        return True
-    return False
+    print(
+        f"[{index}/{total}] Skipping {canvas_file.display_name} ({prompt_spec.title}); {reason}."
+    )
+    return True
