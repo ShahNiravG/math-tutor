@@ -10,6 +10,7 @@ from math_tutor.state_store import FetchState
 
 
 TARGET_NAME_SUBSTRINGS = ("note.docx", "note.pdf")
+TARGET_NOTE_PDF_PATTERN = re.compile(r"\bnote(?:\s*\([^)]*\))?(?:\.docx)?\.pdf$", re.IGNORECASE)
 ASSIGNMENT_NAME_PATTERN = re.compile(r"^\d+\.\d+", re.IGNORECASE)
 
 
@@ -49,7 +50,9 @@ def is_pdf_by_name(display_name: str) -> bool:
 
 def matches_target_pdf(display_name: str) -> bool:
     lowered_name = display_name.lower()
-    return any(substring in lowered_name for substring in TARGET_NAME_SUBSTRINGS)
+    return any(substring in lowered_name for substring in TARGET_NAME_SUBSTRINGS) or bool(
+        TARGET_NOTE_PDF_PATTERN.search(display_name)
+    )
 
 
 def matches_assignment_pdf(display_name: str) -> bool:

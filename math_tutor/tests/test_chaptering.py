@@ -19,6 +19,14 @@ class ChapteringTests(unittest.TestCase):
             parse_display_name_chapter("Alg 2 Trig H Chp 5.1 Note.docx"),
             "5.1",
         )
+        self.assertEqual(
+            parse_display_name_chapter("alg 2trigh chp 8.3 note (25-26).pdf"),
+            "8.3",
+        )
+        self.assertEqual(
+            parse_display_name_chapter("alg 2trig_h chp 8.4 note (25-26).docx.pdf"),
+            "8.4",
+        )
 
     def test_parse_display_name_chapter_multi(self) -> None:
         self.assertEqual(

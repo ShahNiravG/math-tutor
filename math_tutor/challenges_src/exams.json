@@ -11944,6 +11944,1158 @@
           "correct": "A"
         }
       ]
+    },
+    {
+      "id": "exam-85",
+      "title": "Challenge Exam 85",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp83-mm-gem-q10",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q10",
+          "question_number": 10,
+          "text": "**10. Complex Conjugates**\nIf a complex number is $z = -5 + 6i$, what is its complex conjugate, $\\bar{z}$?",
+          "options": [
+            "(A) $5 - 6i$",
+            "(B) $-5 - 6i$",
+            "(C) $5 + 6i$",
+            "(D) $-6 - 5i$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-mm-gem-q5",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "**Circular Motion Starting Position**\nUsing the parametric equations $x = 3 \\cos t$ and $y = 3 \\sin t$, what are the exact $(x, y)$ coordinates of the object at time $t = 0$?",
+          "options": [
+            "(A) $(0, 3)$",
+            "(B) $(3, 0)$",
+            "(C) $(0, 0)$",
+            "(D) $(3, 3)$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp83-mm-gpt54-q6",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "**Multiply in Polar Form**: If \\(z_1\\) has modulus 2 and argument \\( \\frac{\\pi}{6} \\), and \\(z_2\\) has modulus 3 and argument \\( \\frac{\\pi}{3} \\), what are the modulus and argument of \\(z_1z_2\\)?",
+          "options": [
+            "(A) 6, \u03c0/2",
+            "(B) 5, \u03c0/2",
+            "(C) 6, \u03c0/6",
+            "(D) 1, \u03c0/2"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp84-mm-gpt54-q9",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q9",
+          "question_number": 9,
+          "text": "**Speeding Around a Circle**  \nFor \\(x=4\\cos(3t),\\ y=4\\sin(3t)\\), how long does one full revolution take?",
+          "options": [
+            "(A) 3\u03c0",
+            "(B) 2\u03c0",
+            "(C) 2\u03c0/3",
+            "(D) \u03c0/3"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-mm-gem-q5",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "**5. De Moivre\u2019s Theorem**\nIf $z = 2(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4})$, what are the modulus and argument of $z^3$?",
+          "options": [
+            "(A) Modulus 6, Argument $\\frac{3\\pi}{4}$",
+            "(B) Modulus 8, Argument $\\frac{3\\pi}{4}$",
+            "(C) Modulus 8, Argument $\\frac{\\pi}{12}$",
+            "(D) Modulus 6, Argument $\\frac{\\pi}{12}$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-mm-gpt54-q4",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "**Eliminate the Parameter: Powers**  \nIf \\(x=t^2\\) and \\(y=t^4+1\\), what rectangular equation do you get?",
+          "options": [
+            "(A) y = x^2",
+            "(B) y = x + 1",
+            "(C) y = x^4 + 1",
+            "(D) y = x^2 + 1"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp83-mm-gpt54-q5",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "**Negative Real Axis**: Write the complex number \\( -3 \\) in polar form by giving its modulus and a principal argument.",
+          "options": [
+            "(A) 3, 0",
+            "(B) -3, \u03c0",
+            "(C) 3, \u03c0",
+            "(D) 3, \u03c0/2"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-op-gem-q5",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Olympiad Problems / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "Let $z$ be a complex number such that $|z| = 1$ and $z \\neq 1$. Evaluate the exact real part of the complex number $\\frac{1}{1-z}$.",
+          "options": [
+            "(A) $0$",
+            "(B) $-\\frac{1}{2}$",
+            "(C) $\\frac{1}{2}$",
+            "(D) $1$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp84-op-gpt54-q2",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Olympiad Problems / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "The point \\((x,y)\\) is given by \\(x=\\cos^3 t,\\ y=\\sin^3 t\\).  \n   Eliminate the parameter and identify the closed curve in a single elegant equation.",
+          "options": [
+            "(A) \\(x^{2/3}+y^{2/3}=1\\)",
+            "(B) \\(x^2+y^2=1\\)",
+            "(C) \\(x^{3/2}+y^{3/2}=1\\)",
+            "(D) \\(x^{2/3}-y^{2/3}=1\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp83-op-gpt54-q2",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Olympiad Problems / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "Find all complex numbers \\(z\\) such that \\(z^4=\\overline{z}^{\\,2}\\) and \\(|z|=1\\).",
+          "options": [
+            "(A) \\(\\{1,-1\\}\\)",
+            "(B) \\(\\{1,-1,i,-i\\}\\)",
+            "(C) \\(\\left\\{1,e^{2\\pi i/3},e^{4\\pi i/3}\\right\\}\\)",
+            "(D) \\(\\left\\{e^{k\\pi i/3}\\mid k=0,1,2,3,4,5\\right\\}\\)"
+          ],
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "id": "exam-86",
+      "title": "Challenge Exam 86",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp84-mm-gem-q2",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "**Eliminating the Parameter (Exponential)**\nGiven the parametric equations $x = e^{2t}$ and $y = e^t$, what is the simplified rectangular equation relating $x$ and $y$?",
+          "options": [
+            "(A) $y = x^2$",
+            "(B) $y = \\frac{x}{2}$",
+            "(C) $y = \\sqrt{x}$",
+            "(D) $y = 2x$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-mm-gpt54-q10",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q10",
+          "question_number": 10,
+          "text": "**Roots Spacing**: The cube roots of a complex number have arguments starting at \\( \\frac{\\pi}{6} \\). What angle do you add each time to get the next root?",
+          "options": [
+            "(A) \u03c0/6",
+            "(B) 2\u03c0/3",
+            "(C) \u03c0/3",
+            "(D) 2\u03c0"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-mm-gem-q1",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "**Eliminating the Parameter (Polynomial)**\nIf a curve is defined parametrically by $x = t^2$ and $y = t^4 + 1$, what is the rectangular equation for $y$ in terms of $x$?",
+          "options": [
+            "(A) $y = x^4 + 1$",
+            "(B) $y = x^2 + 1$",
+            "(C) $y = \\sqrt{x} + 1$",
+            "(D) $y = x^2$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp83-mm-gem-q4",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "**4. Dividing in Polar Form**\nA complex number with a modulus of 20 and an argument of $\\pi$ is divided by a complex number with a modulus of 5 and an argument of $\\frac{\\pi}{2}$. What are the modulus and argument of the resulting quotient?",
+          "options": [
+            "(A) Modulus 4, Argument $2$",
+            "(B) Modulus 15, Argument $\\frac{\\pi}{2}$",
+            "(C) Modulus 4, Argument $\\frac{\\pi}{2}$",
+            "(D) Modulus 100, Argument $\\frac{3\\pi}{2}$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp84-mm-gem-q7",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q7",
+          "question_number": 7,
+          "text": "**Polar to Parametric Conversion**\nAccording to the text, if you have a polar equation $r = f(\\theta)$, what is the corresponding parametric equation for $y$ in terms of the parameter $t$?",
+          "options": [
+            "(A) $y = f(t) \\cos t$",
+            "(B) $y = t \\sin f(t)$",
+            "(C) $y = f(t) \\sin t$",
+            "(D) $y = f(t \\sin t)$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-mm-gem-q6",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "**6. Simple Polar Conversion**\nWhat is the polar form (modulus and argument) of the real number $-5$?",
+          "options": [
+            "(A) Modulus 5, Argument $\\pi$",
+            "(B) Modulus -5, Argument $0$",
+            "(C) Modulus 5, Argument $0$",
+            "(D) Modulus 5, Argument $\\frac{3\\pi}{2}$"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp84-mm-gpt54-q2",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "**Eliminate the Parameter: Line**  \nFor \\(x=6t-4\\) and \\(y=3t\\), what rectangular equation relates \\(x\\) and \\(y\\)?",
+          "options": [
+            "(A) y = x/2 - 2",
+            "(B) y = x/2 + 2",
+            "(C) y = 2x - 4",
+            "(D) y = (x+4)/3"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-op-gpt54-q3",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Olympiad Problems / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "A particle moves on the unit circle with \\(x=\\cos 2t,\\ y=\\sin 3t\\).  \n   Find all points where the path crosses itself, and determine how many distinct self-intersection points there are.",
+          "options": [
+            "(A) \\((0,0)\\) only; \\(1\\) point",
+            "(B) \\((\\pm1,0)\\); \\(2\\) points",
+            "(C) \\((0,0),\\left(\\frac12,\\pm1\\right)\\); \\(3\\) points",
+            "(D) \\((0,0),\\left(-\\frac12,\\pm1\\right)\\); \\(3\\) points"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-op-gem-q4",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Olympiad Problems / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "Evaluate the expression $\\left(\\frac{\\sqrt{3}+i}{\\sqrt{3}-i}\\right)^{2025}$.",
+          "options": [
+            "(A) $\\frac{1}{2} + \\frac{\\sqrt{3}}{2}i$",
+            "(B) $-1$",
+            "(C) $1$",
+            "(D) $i$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-op-gem-q5",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Olympiad Problems / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "A particle moves along a Lissajous curve defined by the parametric equations $x(t) = \\sin t$ and $y(t) = \\cos 2t$. What is the exact shortest distance between the particle and the point $\\left(0, \\frac{1}{2}\\right)$?",
+          "options": [
+            "(A) $\\frac{\\sqrt{3}}{4}$",
+            "(B) $\\frac{1}{2}$",
+            "(C) $\\frac{1}{4}$",
+            "(D) $\\frac{\\sqrt{2}}{2}$"
+          ],
+          "correct": "A"
+        }
+      ]
+    },
+    {
+      "id": "exam-87",
+      "title": "Challenge Exam 87",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp83-mm-gem-q9",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q9",
+          "question_number": 9,
+          "text": "**9. Modulus of Roots**\nIf a complex number has a modulus of 27, what is the modulus of its cube roots?",
+          "options": [
+            "(A) 3",
+            "(B) 9",
+            "(C) $\\pm 3$",
+            "(D) $3\\sqrt{3}$"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp84-mm-gem-q3",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "**Eliminating the Parameter (Trigonometric)**\nIf $x = \\sin^2 t$ and $y = \\cos t$, what is the rectangular equation relating $x$ and $y$ without the parameter $t$?",
+          "options": [
+            "(A) $x = 1 - y^2$",
+            "(B) $x^2 + y^2 = 1$",
+            "(C) $y = 1 - x^2$",
+            "(D) $x = y^2 - 1$"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp83-mm-gpt54-q7",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q7",
+          "question_number": 7,
+          "text": "**Divide in Polar Form**: If \\(z_1\\) has modulus 8 and argument \\( \\frac{5\\pi}{6} \\), and \\(z_2\\) has modulus 2 and argument \\( \\frac{\\pi}{3} \\), what are the modulus and argument of \\( \\frac{z_1}{z_2} \\)?",
+          "options": [
+            "(A) 6, \u03c0/2",
+            "(B) 4, \u03c0/2",
+            "(C) 4, \u03c0/6",
+            "(D) 10, \u03c0/2"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-mm-gpt54-q6",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "**Exponential Parametric Curve**  \nIf \\(x=e^{2t}\\) and \\(y=e^t\\), what simple equation relates \\(x\\) and \\(y\\)?",
+          "options": [
+            "(A) y = x^2",
+            "(B) x = 2y",
+            "(C) x = y^2",
+            "(D) y = e^{2x}"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-mm-gem-q3",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "**3. Multiplying in Polar Form**\nIf $z_1$ has a modulus of 3 and an argument of $\\frac{\\pi}{6}$, and $z_2$ has a modulus of 4 and an argument of $\\frac{\\pi}{3}$, what are the modulus and argument of their product, $z_1z_2$?",
+          "options": [
+            "(A) Modulus 12, Argument $\\frac{\\pi}{2}$",
+            "(B) Modulus 12, Argument $\\frac{\\pi}{18}$",
+            "(C) Modulus 7, Argument $\\frac{\\pi}{2}$",
+            "(D) Modulus 7, Argument $\\frac{\\pi}{18}$"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp84-mm-gem-q9",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q9",
+          "question_number": 9,
+          "text": "**Cycloid Properties**\nThe text notes that a cycloid is the \"curve of equal descent.\" What is the other specific physical property name given to the cycloid?",
+          "options": [
+            "(A) Brachistochrone",
+            "(B) Catenary",
+            "(C) Tractrix",
+            "(D) Loxodrome"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp83-mm-gem-q8",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q8",
+          "question_number": 8,
+          "text": "**8. Spacing of Complex Roots**\nWhen graphing the 6th roots of a complex number, what is the angle (in radians) that separates each successive root around the circle?",
+          "options": [
+            "(A) $\\frac{\\pi}{6}$",
+            "(B) $60$",
+            "(C) $\\frac{\\pi}{3}$",
+            "(D) $\\frac{2\\pi}{3}$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-op-gpt54-q4",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Olympiad Problems / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "The six sixth roots of a complex number \\(w\\) form the vertices of a regular hexagon, and one root is \\(1+i\\sqrt3\\). Determine \\(w\\).",
+          "options": [
+            "(A) \\(-64\\)",
+            "(B) \\(64\\)",
+            "(C) \\(-8\\)",
+            "(D) \\(8\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-op-gem-q2",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Olympiad Problems / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "A plane curve is defined by the polar equation $r = \\frac{24}{3\\cos \\theta + 4\\sin \\theta}$. What is the exact shortest distance from the origin to this curve?",
+          "options": [
+            "(A) $\\frac{24}{7}$",
+            "(B) $6$",
+            "(C) $\\frac{24}{5}$",
+            "(D) $8$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-op-gem-q6",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Olympiad Problems / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "Let $\\zeta = \\cos\\left(\\frac{2\\pi}{7}\\right) + i\\sin\\left(\\frac{2\\pi}{7}\\right)$. Evaluate the sum $\\zeta + \\zeta^2 + \\zeta^3 + \\zeta^4 + \\zeta^5 + \\zeta^6$.",
+          "options": [
+            "(A) $0$",
+            "(B) $1$",
+            "(C) $e^{i\\pi/7}$",
+            "(D) $-1$"
+          ],
+          "correct": "D"
+        }
+      ]
+    },
+    {
+      "id": "exam-88",
+      "title": "Challenge Exam 88",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp84-mm-gpt54-q3",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "**Restricted Curve**  \nFor \\(x=6t-4,\\ y=3t,\\ t\\ge 0\\), what point does the motion start at?",
+          "options": [
+            "(A) (-4, 3)",
+            "(B) (0, 0)",
+            "(C) (-4, 0)",
+            "(D) (4, 0)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-mm-gem-q1",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "**1. Modulus Calculation**\nWhat is the modulus (or absolute value) of the complex number $3 - 4i$?",
+          "options": [
+            "(A) 25",
+            "(B) 5",
+            "(C) 7",
+            "(D) -5"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-mm-gpt54-q1",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "**Meaning of a Parametrization**  \nIf two different parametrizations trace the same curve shape, what extra information can still be different between them?",
+          "options": [
+            "(A) Its orientation and speed",
+            "(B) Only its slope",
+            "(C) Only its endpoints",
+            "(D) Its area"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp83-mm-gpt54-q2",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "**Quick Modulus**: What is the modulus of \\( 3 + 4i \\)?",
+          "options": [
+            "(A) 7",
+            "(B) 25",
+            "(C) 5",
+            "(D) 1"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp84-mm-gpt54-q5",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "**Trig Parametric Curve**  \nIf \\(x=\\sin^2 t\\) and \\(y=\\cos t\\), what rectangular equation connects \\(x\\) and \\(y\\)?",
+          "options": [
+            "(A) x = 1 - y^2",
+            "(B) x = y^2",
+            "(C) x^2 + y^2 = 1",
+            "(D) y = 1 - x^2"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp83-mm-gem-q2",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "**2. Quadrant Identification**\nIn which quadrant of the complex plane would you graph the complex number $-2 + 5i$?",
+          "options": [
+            "(A) Quadrant I",
+            "(B) Quadrant III",
+            "(C) Quadrant IV",
+            "(D) Quadrant II"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp84-mm-gpt54-q10",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q10",
+          "question_number": 10,
+          "text": "**Polar to Parametric**  \nIf a polar curve is \\(r=f(\\theta)\\), what are the corresponding parametric equations for \\(x\\) and \\(y\\)?",
+          "options": [
+            "(A) x=f(\\theta)\\sin\\theta,\\ y=f(\\theta)\\cos\\theta",
+            "(B) x=r\\cos r,\\ y=r\\sin r",
+            "(C) x=f(\\theta),\\ y=\\theta",
+            "(D) x=f(\\theta)\\cos\\theta,\\ y=f(\\theta)\\sin\\theta"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp84-op-gpt54-q4",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Olympiad Problems / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "Let \\(x=(2+\\cos t)\\cos t,\\ y=(2+\\cos t)\\sin t\\).  \n   Eliminate the parameter and describe the curve in rectangular form as simply as possible.",
+          "options": [
+            "(A) \\((x^2+y^2-2x)^2=x^2+y^2\\)",
+            "(B) \\((x^2+y^2-2)^2=x^2+y^2\\)",
+            "(C) \\((x^2+y^2-2x)^2=4(x^2+y^2)\\)",
+            "(D) \\((x^2+y^2-2)^2=4(x^2+y^2)\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp83-op-gem-q1",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Olympiad Problems / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "Let $z_1, z_2, z_3,$ and $z_4$ be the four distinct complex roots of the equation $z^4 + 1 = 0$. Compute the exact value of the product $|z_1 - 2| \\cdot |z_2 - 2| \\cdot |z_3 - 2| \\cdot |z_4 - 2|$.",
+          "options": [
+            "(A) 15",
+            "(B) 16",
+            "(C) 17",
+            "(D) $\\sqrt{17}$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp84-op-gem-q6",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Olympiad Problems / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "A closed curve is parameterized by $x(t) = 5\\sin t + 12\\cos t$ and $y(t) = 5\\cos t - 12\\sin t$. What is the maximum possible area of a rectangle that can be inscribed inside this curve?",
+          "options": [
+            "(A) $120$",
+            "(B) $169$",
+            "(C) $338$",
+            "(D) $676$"
+          ],
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "id": "exam-89",
+      "title": "Challenge Exam 89",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp83-mm-gpt54-q3",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "**Find the Quadrant**: In which quadrant does the complex number \\( -2 - 5i \\) lie?",
+          "options": [
+            "(A) Quadrant II",
+            "(B) Quadrant I",
+            "(C) Quadrant IV",
+            "(D) Quadrant III"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp84-mm-gem-q6",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "**Circular Motion Period**\nIf an object's circular path is modeled by $x = 4 \\cos 3t$ and $y = 4 \\sin 3t$, how much time $t$ does it take to complete exactly one full revolution?",
+          "options": [
+            "(A) $\\frac{2\\pi}{3}$",
+            "(B) $6\\pi$",
+            "(C) $3\\pi$",
+            "(D) $\\frac{\\pi}{3}$"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp83-mm-gem-q7",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q7",
+          "question_number": 7,
+          "text": "**7. Complex Plane Geometry**\nWhat geometric shape is represented by the set of all complex numbers satisfying the equation $|z| = 4$?",
+          "options": [
+            "(A) A square",
+            "(B) A straight line",
+            "(C) A parabola",
+            "(D) A circle"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp84-mm-gpt54-q8",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q8",
+          "question_number": 8,
+          "text": "**Orientation of Motion**  \nFor \\(x=3\\cos t,\\ y=3\\sin t\\), does the particle move clockwise or counterclockwise as \\(t\\) increases?",
+          "options": [
+            "(A) Clockwise",
+            "(B) Back and forth",
+            "(C) No motion",
+            "(D) Counterclockwise"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp83-mm-gpt54-q8",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q8",
+          "question_number": 8,
+          "text": "**De Moivre Power**: If \\(z\\) has modulus 2 and argument \\( \\frac{\\pi}{4} \\), what are the modulus and argument of \\(z^3\\)?",
+          "options": [
+            "(A) 8, \u03c0/12",
+            "(B) 6, 3\u03c0/4",
+            "(C) 8, 3\u03c0/4",
+            "(D) 8, \u03c0"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp84-mm-gem-q4",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "**Circular Motion Radius**\nFor an object whose position is modeled by the parametric equations $x = 3 \\cos t$ and $y = 3 \\sin t$, what is the radius of its circular path?",
+          "options": [
+            "(A) $9$",
+            "(B) $\\sqrt{3}$",
+            "(C) $6$",
+            "(D) $3$"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp83-mm-gpt54-q9",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q9",
+          "question_number": 9,
+          "text": "**Easy Roots**: What are the two square roots of 4 in the complex plane?",
+          "options": [
+            "(A) 2, -2",
+            "(B) 4, -4",
+            "(C) 2i, -2i",
+            "(D) 0, 4"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp83-op-gem-q3",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Olympiad Problems / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "Determine the total number of distinct complex numbers $z$ that satisfy the equation $z^5 = \\bar{z}^3$, where $\\bar{z}$ is the complex conjugate of $z$.",
+          "options": [
+            "(A) 9",
+            "(B) 8",
+            "(C) 5",
+            "(D) 2"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp84-op-gpt54-q5",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Olympiad Problems / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "A circle of radius \\(1\\) rolls without slipping along the \\(x\\)-axis, and a point on its rim traces the cycloid  \n   \\[\n   x=t-\\sin t,\\qquad y=1-\\cos t.\n   \\]\n   Find the exact length of one arch of the cycloid.",
+          "options": [
+            "(A) \\(4\\)",
+            "(B) \\(6\\)",
+            "(C) \\(8\\)",
+            "(D) \\(2\\pi\\)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-op-gpt54-q6",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Olympiad Problems / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "Solve in complex numbers:\n\\[\nz^3+8=0,\n\\]\nand identify which solution has the smallest positive argument.",
+          "options": [
+            "(A) \\(-2\\)",
+            "(B) \\(1+i\\sqrt3\\)",
+            "(C) \\(2\\left(\\frac12-\\frac{\\sqrt3}{2}i\\right)\\)",
+            "(D) \\(2\\left(\\frac12+\\frac{\\sqrt3}{2}i\\right)\\)"
+          ],
+          "correct": "B"
+        }
+      ]
+    },
+    {
+      "id": "exam-90",
+      "title": "Challenge Exam 90",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp84-mm-gem-q10",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q10",
+          "question_number": 10,
+          "text": "**Parametric Equations of a Line**\nWhat is a simple set of parametric equations ($x=$ and $y=$) for a particle traveling on a line that starts at $(6, 7)$ at $t=0$ and reaches $(7, 8)$ at $t=1$?",
+          "options": [
+            "(A) $x = 7 - t$, $y = 8 - t$",
+            "(B) $x = 6 + 7t$, $y = 7 + 8t$",
+            "(C) $x = 6 + t$, $y = 7 + t$",
+            "(D) $x = t$, $y = t + 1$"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-mm-gpt54-q1",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "**Plot Meaning**: What ordered pair in the complex plane represents the complex number \\( -4 + 3i \\)?",
+          "options": [
+            "(A) (3, -4)",
+            "(B) (-4, 3)",
+            "(C) (-4, -3)",
+            "(D) (4, 3)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp84-mm-gpt54-q7",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Mental Math / GPT-5.4 / Q7",
+          "question_number": 7,
+          "text": "**Circle Basics**  \nFor \\(x=3\\cos t,\\ y=3\\sin t\\), what is the radius, and where is the particle when \\(t=0\\)?",
+          "options": [
+            "(A) Radius 3; at (0,3)",
+            "(B) Radius 3; at (3,0)",
+            "(C) Radius 9; at (3,0)",
+            "(D) Radius 3; at (-3,0)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp83-mm-gpt54-q4",
+          "chapter": "8.3",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Mental Math / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "**Simple Polar Idea**: What is the modulus and a principal argument of \\( 2i \\)?",
+          "options": [
+            "(A) 2, \u03c0/2",
+            "(B) 2, 0",
+            "(C) 4, \u03c0/2",
+            "(D) 2, 2\u03c0"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp84-mm-gem-q8",
+          "chapter": "8.4",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Mental Math / Gemini 3.1 Pro / Q8",
+          "question_number": 8,
+          "text": "**Parametric Form of an Ellipse**\nKnowing the rectangular equation for an ellipse is $\\frac{x^2}{a^2} + \\frac{y^2}{b^2} = 1$, what is the simplest parametric equation for $x$ using the constant $a$ and parameter $t$?",
+          "options": [
+            "(A) $x = a \\sin t$",
+            "(B) $x = \\cos(at)$",
+            "(C) $x = a^2 \\cos t$",
+            "(D) $x = a \\cos t$"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp84-op-gpt54-q6",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Olympiad Problems / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "A particle is traced by the polar curve \\(r=2\\sin\\theta+2\\cos\\theta\\), written parametrically as  \n   \\[\n   x=(2\\sin t+2\\cos t)\\cos t,\\qquad y=(2\\sin t+2\\cos t)\\sin t.\n   \\]\n   Show that the curve is a circle and find its center and radius mentally.",
+          "options": [
+            "(A) \\((x-1)^2+(y-1)^2=4\\), center \\((1,1)\\), radius \\(2\\)",
+            "(B) \\((x+1)^2+(y-1)^2=4\\), center \\((-1,1)\\), radius \\(2\\)",
+            "(C) \\(x^2+y^2=2x+2y\\), center \\((1,1)\\), radius \\(\\sqrt2\\)",
+            "(D) \\(x^2+y^2=4x+4y\\), center \\((2,2)\\), radius \\(2\\sqrt2\\)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp83-op-gem-q2",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.3 / Olympiad Problems / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "Find the maximum value of $|z - 4i|$ given that the complex number $z$ satisfies the equation $z^3 = 8i$.",
+          "options": [
+            "(A) $2\\sqrt{3}$",
+            "(B) $4$",
+            "(C) $2\\sqrt{5}$",
+            "(D) $6$"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp84-op-gem-q1",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Olympiad Problems / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "A parametric curve is given by $x(t) = \\sin^3 t + \\cos^2 t \\sin t$ and $y(t) = \\cos^3 t + \\sin^2 t \\cos t$. What is the exact arc length of the curve traced out for $0 \\le t \\le 2\\pi$?",
+          "options": [
+            "(A) $\\pi$",
+            "(B) $2\\pi$",
+            "(C) $4$",
+            "(D) $4\\pi$"
+          ],
+          "correct": "B"
+        }
+      ]
+    },
+    {
+      "id": "exam-91",
+      "title": "Challenge Exam 91",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp83-op-gpt54-q3",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Olympiad Problems / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "Compute exactly, in simplest real form,\n\\[\n(1+i)^{20}+(1-i)^{20}.\n\\]",
+          "options": [
+            "(A) \\(-1024\\)",
+            "(B) \\(0\\)",
+            "(C) \\(1024\\)",
+            "(D) \\(2048\\)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp84-op-gem-q3",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Olympiad Problems / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "A particle's position at time $t > 0$ is defined by the parametric equations $x(t) = t - \\frac{1}{t}$ and $y(t) = t^2 + \\frac{1}{t^2}$. What is the exact minimum value of the quantity $y - 4x$ achieved during its motion?",
+          "options": [
+            "(A) $-2$",
+            "(B) $0$",
+            "(C) $2$",
+            "(D) $-4$"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp83-op-gpt54-q5",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Olympiad Problems / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "Let\n\\[\nz=(\\sqrt3+i)^{10}+(\\sqrt3-i)^{10}.\n\\]\nFind \\(z\\) exactly.",
+          "options": [
+            "(A) \\(1024\\)",
+            "(B) \\(-1024\\)",
+            "(C) \\(-2048\\)",
+            "(D) \\(2048\\)"
+          ],
+          "correct": "D"
+        }
+      ]
+    },
+    {
+      "id": "exam-92",
+      "title": "Challenge Exam 92",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp84-op-gpt54-q1",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.4 / Olympiad Problems / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "A particle moves according to \\(x=\\sin t+\\cos t,\\ y=\\sin t-\\cos t\\).  \n   Without graphing, determine the curve, its orientation, and the smallest positive time for one complete tracing.",
+          "options": [
+            "(A) \\(x^2+y^2=2\\), clockwise, period \\(2\\pi\\)",
+            "(B) \\(x^2+y^2=2\\), counterclockwise, period \\(2\\pi\\)",
+            "(C) \\(x^2+y^2=1\\), counterclockwise, period \\(\\pi\\)",
+            "(D) \\(x^2-y^2=2\\), counterclockwise, period \\(2\\pi\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp83-op-gpt54-q1",
+          "chapter": "8.3",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.3 / Olympiad Problems / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "Let \\(z=\\dfrac{1+i}{1-i\\sqrt3}\\). Without expanding fully, determine the exact value of \\(z^{12}\\).",
+          "options": [
+            "(A) \\(-1\\)",
+            "(B) \\(1\\)",
+            "(C) \\(-64\\)",
+            "(D) \\(64\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp84-op-gem-q4",
+          "chapter": "8.4",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.4 / Olympiad Problems / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "Two points, $P$ and $Q$, move along the unit circle such that their coordinates at time $t$ are given by $P(t) = (\\cos 2t, \\sin 2t)$ and $Q(t) = (\\sin 3t, \\cos 3t)$. How many times do the two points collide in the time interval $0 \\le t < 2\\pi$?",
+          "options": [
+            "(A) $1$",
+            "(B) $2$",
+            "(C) $4$",
+            "(D) $5$"
+          ],
+          "correct": "D"
+        }
+      ]
     }
   ]
 }

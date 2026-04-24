@@ -30,6 +30,8 @@ class CanvasCourseTests(unittest.TestCase):
     def test_matches_target_pdf_accepts_note_variants(self) -> None:
         self.assertTrue(matches_target_pdf("Alg 2 Trig H Chp 5.1 Note.docx"))
         self.assertTrue(matches_target_pdf("Alg 2 Trig H Chp 5.1 Note.pdf"))
+        self.assertTrue(matches_target_pdf("alg 2trigh chp 8.3 note (25-26).pdf"))
+        self.assertTrue(matches_target_pdf("alg 2trig_h chp 8.4 note (25-26).docx.pdf"))
         self.assertFalse(matches_target_pdf("Alg 2 Trig H Chp 5.1 Study Guide.pdf"))
 
     def test_matches_assignment_pdf_uses_leading_chapter_pattern(self) -> None:
