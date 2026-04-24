@@ -320,7 +320,7 @@ def build_prompt_spec(template: PromptTemplate, model_config: ModelConfig) -> Pr
         source_prompt_slug=source_slug,
         include_source_pdf_link=template.include_source_pdf_link,
         generate_response_pdf=template.generate_response_pdf,
-        model=template.model if template.model else (model_config.model if model_config.slug else None),
+        model=model_config.model if model_config.slug else (template.model if template.model else None),
         generate=generate,
         use_google_search=template.use_google_search,
         assignment_only=template.assignment_only,

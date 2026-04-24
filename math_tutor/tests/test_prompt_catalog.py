@@ -50,6 +50,14 @@ class PromptCatalogTests(unittest.TestCase):
         self.assertEqual(prompt.model, "gpt-5.4")
         self.assertFalse(prompt.use_google_search)
 
+    def test_inspiring_videos_gemini_variant_carries_gemini_model(self) -> None:
+        prompt = PROMPTS_BY_SLUG["inspiring-videos-gemini"]
+        self.assertEqual(prompt.model, "gemini-3.1-pro-preview")
+
+    def test_inspiring_videos_gpt5_variant_carries_gpt5_model(self) -> None:
+        prompt = PROMPTS_BY_SLUG["inspiring-videos-gpt5"]
+        self.assertEqual(prompt.model, "gpt-5.4")
+
     def test_other_gemini_prompts_remain_on_gemini_3_1_pro_without_grounding(self) -> None:
         for slug in (
             "mental-math-gemini",

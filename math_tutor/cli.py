@@ -176,9 +176,18 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def validate_args(args: argparse.Namespace) -> None:
+    if args.dry_run and not (args.print_all or args.print_prompt_slugs):
+        raise SystemExit(
+            "error: --dry-run only applies with --print-prompt or --print-all. "
+            "Refusing to run; remove --dry-run or add a print flag."
+        )
+
+
 def main() -> None:
     load_dotenv_if_present()
     args = parse_args()
+    validate_args(args)
     try:
         output_dir = Path(args.output_dir).resolve()
         if handle_print_command(
