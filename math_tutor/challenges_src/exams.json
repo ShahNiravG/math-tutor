@@ -1036,7 +1036,7 @@
             "(C) \\(\\left(\\pm\\frac{\\sqrt2\\,ab}{\\sqrt{a^2+b^2}},\\pm\\frac{\\sqrt2\\,ab}{\\sqrt{a^2+b^2}}\\right)\\)",
             "(D) \\(\\left(\\pm\\frac{ab}{\\sqrt{a^2+b^2}},\\pm\\frac{ab}{\\sqrt{a^2+b^2}}\\right)\\)"
           ],
-          "correct": "C"
+          "correct": "D"
         },
         {
           "id": "chp113-op-gem-q1",
@@ -2266,7 +2266,7 @@
             "(A) \\((1,-1)\\), \\(y=\\pm 3\\sqrt{7}-1\\)",
             "(B) \\((2,-1)\\), \\(y=\\pm 6-1\\)",
             "(C) \\((2,-1)\\), \\(y=-1\\pm 2\\sqrt{7}\\)",
-            "(D) \\((3,-1)\\), \\(y=-1\\pm 3\\sqrt{7}\\)"
+            "(D) \\((2,-1)\\), \\(y=-1\\pm 6\\sqrt{2}\\)"
           ],
           "correct": "D"
         },
@@ -3161,7 +3161,7 @@
           "text": "Two parabolas share the same vertex at the origin: \\(x^2=4ay\\) and \\(y^2=4ax\\), where \\(a>0\\). Find the area enclosed by their arcs.",
           "options": [
             "(A) \\(\\frac{2a^2}{3}\\)",
-            "(B) \\(\\frac{4a^2}{3}\\)",
+            "(B) \\(\\frac{16a^2}{3}\\)",
             "(C) \\(2a^2\\)",
             "(D) \\(\\frac{8a^2}{3}\\)"
           ],
@@ -3320,7 +3320,7 @@
           "text": "Two hyperbolas are given by\n   \\[\n   \\frac{x^2}{a^2}-\\frac{y^2}{b^2}=1\n   \\qquad\\text{and}\\qquad\n   \\frac{y^2}{a^2}-\\frac{x^2}{b^2}=1.\n   \\]\n   If they intersect, determine the coordinates of all intersection points in terms of \\(a\\) and \\(b\\).",
           "options": [
             "(A) \\(\\left(\\pm\\sqrt{\\frac{a^2-b^2}{2}},\\,\\pm\\sqrt{\\frac{a^2-b^2}{2}}\\right)\\)",
-            "(B) \\(\\left(\\pm\\sqrt{\\frac{a^2+b^2}{2}},\\,\\pm\\sqrt{\\frac{a^2+b^2}{2}}\\right)\\)",
+            "(B) \\(\\left(\\pm\\dfrac{ab}{\\sqrt{b^2-a^2}},\\,\\pm\\dfrac{ab}{\\sqrt{b^2-a^2}}\\right)\\) (requires \\(b>a\\))",
             "(C) \\(\\left(\\pm\\sqrt{\\frac{a^2b^2}{a^2+b^2}},\\,\\pm\\sqrt{\\frac{a^2b^2}{a^2+b^2}}\\right)\\)",
             "(D) No real intersection"
           ],
@@ -5590,7 +5590,7 @@
           "question_number": 1,
           "text": "A hyperbola centered at the origin has asymptotes \\(y=\\pm 2x\\) and passes through \\((3,\\sqrt{13})\\). Find its standard equation.",
           "options": [
-            "(A) \\(\\dfrac{x^2}{4}-\\dfrac{y^2}{1}=1\\)",
+            "(A) \\(\\dfrac{x^2}{23/4}-\\dfrac{y^2}{23}=1\\)",
             "(B) \\(\\dfrac{x^2}{9}-\\dfrac{y^2}{\\frac94}=1\\)",
             "(C) \\(\\dfrac{x^2}{3}-\\dfrac{y^2}{\\frac34}=1\\)",
             "(D) \\(\\dfrac{x^2}{16}-\\dfrac{y^2}{4}=1\\)"
@@ -6646,7 +6646,7 @@
           "question_number": 1,
           "text": "An ellipse is centered at the origin with foci on the \\(x\\)-axis. Its eccentricity is \\(\\frac35\\), and it passes through \\((4,3)\\). Find its equation.",
           "options": [
-            "(A) \\(\\frac{x^2}{36}+\\frac{y^2}{\\frac{144}{25}}=1\\)",
+            "(A) \\(\\frac{x^2}{481/16}+\\frac{y^2}{481/25}=1\\)",
             "(B) \\(\\frac{x^2}{25}+\\frac{y^2}{16}=1\\)",
             "(C) \\(\\frac{x^2}{16}+\\frac{y^2}{\\frac{256}{25}}=1\\)",
             "(D) \\(\\frac{x^2}{64}+\\frac{y^2}{\\frac{256}{25}}=1\\)"
@@ -6685,7 +6685,7 @@
             "(C) \\(\\dfrac{(x-2)^2}{12}+\\dfrac{(y-1)^2}{16}=1\\)",
             "(D) \\(\\dfrac{(x-2)^2}{16}+\\dfrac{(y-1)^2}{12}=1\\)"
           ],
-          "correct": "D"
+          "correct": "A"
         }
       ]
     },
@@ -7720,7 +7720,7 @@
           "text": "Two ellipses are given by\n\\[\n\\frac{x^2}{25}+\\frac{y^2}{9}=1\n\\qquad\\text{and}\\qquad\n\\frac{x^2}{16}+\\frac{y^2}{16-k}=1.\n\\]\nFor what value of \\(k\\) do the ellipses intersect in exactly four points forming a square?",
           "options": [
             "(A) \\(9\\)",
-            "(B) \\(7\\)",
+            "(B) \\(\\frac{1504}{319}\\)",
             "(C) \\(5\\)",
             "(D) \\(12\\)"
           ],
@@ -7879,7 +7879,7 @@
           "text": "A hyperbola has asymptotes\n\\[\ny-3=\\pm 2(x+1),\n\\]\nand one vertex at \\((1,3)\\). Find its equation.",
           "options": [
             "(A) \\(\\dfrac{(x+1)^2}{4}-\\dfrac{(y-3)^2}{1}=1\\)",
-            "(B) \\(\\dfrac{(x+1)^2}{1}-\\dfrac{(y-3)^2}{4}=1\\)",
+            "(B) \\(\\dfrac{(x+1)^2}{4}-\\dfrac{(y-3)^2}{16}=1\\)",
             "(C) \\(\\dfrac{(y-3)^2}{4}-\\dfrac{(x+1)^2}{1}=1\\)",
             "(D) \\(\\dfrac{(x-1)^2}{4}-\\dfrac{(y-3)^2}{1}=1\\)"
           ],
@@ -8936,7 +8936,7 @@
           "options": [
             "(A) \\((5,5)\\)",
             "(B) \\((-5,-5)\\)",
-            "(C) \\((5,5),(-5,-5)\\)",
+            "(C) \\(\\left(\\pm\\dfrac{60}{\\sqrt{119}},\\,\\pm\\dfrac{60}{\\sqrt{119}}\\right)\\) (matching signs)",
             "(D) \\((\\sqrt{50},\\sqrt{50})\\)"
           ],
           "correct": "C"
@@ -9645,7 +9645,7 @@
           "text": "A point \\(P\\) lies on the parabola \\(y^2=12x\\). The distance from \\(P\\) to the focus equals \\(10\\). Find the coordinates of \\(P\\).",
           "options": [
             "(A) \\((3,6)\\)",
-            "(B) \\((4,4\\sqrt{3})\\)",
+            "(B) \\((7,\\,2\\sqrt{21})\\)",
             "(C) \\((3,-6)\\)",
             "(D) \\((4,-4\\sqrt{3})\\)"
           ],
@@ -9670,7 +9670,7 @@
             "(A) \\(\\frac{x^2}{25}+\\frac{y^2}{\\frac{625}{9}}=1\\)",
             "(B) \\(\\frac{x^2}{9}+\\frac{y^2}{25}=1\\)",
             "(C) \\(\\frac{x^2}{\\frac{625}{9}}+\\frac{y^2}{25}=1\\)",
-            "(D) \\(\\frac{x^2}{\\frac{225}{16}}+\\frac{y^2}{25}=1\\)"
+            "(D) \\(\\frac{x^2}{369/25}+\\frac{y^2}{41}=1\\)"
           ],
           "correct": "D"
         },
@@ -10413,7 +10413,7 @@
             "(C) \\((\\pm 3,0)\\)",
             "(D) \\((\\pm 5,0)\\)"
           ],
-          "correct": "A"
+          "correct": "C"
         },
         {
           "id": "chp114-op-gem-q4",
@@ -10784,7 +10784,7 @@
           "question_number": 5,
           "text": "Determine all real values of \\(k\\) for which\n\\[\nx^2-4x+y^2+2ky+4k-5=0\n\\]\nrepresents exactly one point.",
           "options": [
-            "(A) \\(k=2\\)",
+            "(A) No real value of \\(k\\)",
             "(B) \\(k=2,\\,-2\\)",
             "(C) \\(k=1\\)",
             "(D) \\(k=-2\\)"
@@ -11327,7 +11327,7 @@
           "text": "Find all angles \\(0\\le \\theta<2\\pi\\) for which the point on\n\\[\nr=4\\sin\\theta\n\\]\nalso lies on\n\\[\nr=4\\cos\\theta.\n\\]",
           "options": [
             "(A) \\(0,\\frac{\\pi}{4}\\)",
-            "(B) \\(\\frac{\\pi}{4},\\frac{5\\pi}{4}\\)",
+            "(B) \\(0,\\frac{\\pi}{4},\\pi,\\frac{5\\pi}{4}\\)",
             "(C) \\(\\frac{\\pi}{4}\\)",
             "(D) \\(\\frac{3\\pi}{4},\\frac{7\\pi}{4}\\)"
           ],
@@ -11343,7 +11343,7 @@
           "question_number": 5,
           "text": "A point \\(P\\) satisfies \\(r=2-\\cos\\theta\\). Find the minimum possible value of \\(x^2+y^2+x\\).",
           "options": [
-            "(A) \\(-\\frac14\\)",
+            "(A) \\(2\\)",
             "(B) \\(0\\)",
             "(C) \\(-1\\)",
             "(D) \\(\\frac34\\)"
@@ -11521,7 +11521,7 @@
           "question_number": 2,
           "text": "The curve \\(r=3(1-\\cos\\theta)\\) is a cardioid. Find, mentally, all angles \\(\\theta\\in[0,2\\pi)\\) for which the point on the curve is exactly \\(3\\sqrt2\\) units from the pole.",
           "options": [
-            "(A) \\(\\theta=\\frac{\\pi}{4},\\frac{7\\pi}{4}\\)",
+            "(A) \\(\\theta=\\arccos(1-\\sqrt2),\\ 2\\pi-\\arccos(1-\\sqrt2)\\)",
             "(B) \\(\\theta=\\frac{\\pi}{2},\\frac{3\\pi}{2}\\)",
             "(C) \\(\\theta=\\frac{\\pi}{4},\\frac{3\\pi}{4}\\)",
             "(D) \\(\\theta=\\frac{3\\pi}{4},\\frac{5\\pi}{4}\\)"
@@ -11907,7 +11907,7 @@
             "(C) \\(\\frac{\\pi}{3}\\)",
             "(D) \\(\\frac{\\pi}{2}\\)"
           ],
-          "correct": "B"
+          "correct": "D"
         },
         {
           "id": "chp82-op-gpt54-q5",
@@ -12119,7 +12119,7 @@
             "(C) \\(\\left\\{1,e^{2\\pi i/3},e^{4\\pi i/3}\\right\\}\\)",
             "(D) \\(\\left\\{e^{k\\pi i/3}\\mid k=0,1,2,3,4,5\\right\\}\\)"
           ],
-          "correct": "C"
+          "correct": "D"
         }
       ]
     },
@@ -12260,7 +12260,7 @@
           "options": [
             "(A) \\((0,0)\\) only; \\(1\\) point",
             "(B) \\((\\pm1,0)\\); \\(2\\) points",
-            "(C) \\((0,0),\\left(\\frac12,\\pm1\\right)\\); \\(3\\) points",
+            "(C) \\(\\left(-\\frac12,0\\right),\\left(\\frac12,\\pm1\\right)\\); \\(3\\) points",
             "(D) \\((0,0),\\left(-\\frac12,\\pm1\\right)\\); \\(3\\) points"
           ],
           "correct": "C"
@@ -12615,7 +12615,7 @@
           "text": "Let \\(x=(2+\\cos t)\\cos t,\\ y=(2+\\cos t)\\sin t\\).  \n   Eliminate the parameter and describe the curve in rectangular form as simply as possible.",
           "options": [
             "(A) \\((x^2+y^2-2x)^2=x^2+y^2\\)",
-            "(B) \\((x^2+y^2-2)^2=x^2+y^2\\)",
+            "(B) \\(x^2+y^2-x=2\\sqrt{x^2+y^2}\\)",
             "(C) \\((x^2+y^2-2x)^2=4(x^2+y^2)\\)",
             "(D) \\((x^2+y^2-2)^2=4(x^2+y^2)\\)"
           ],
@@ -12997,7 +12997,7 @@
           "options": [
             "(A) \\(-1024\\)",
             "(B) \\(0\\)",
-            "(C) \\(1024\\)",
+            "(C) \\(-2048\\)",
             "(D) \\(2048\\)"
           ],
           "correct": "C"
@@ -13034,7 +13034,7 @@
             "(C) \\(-2048\\)",
             "(D) \\(2048\\)"
           ],
-          "correct": "D"
+          "correct": "A"
         }
       ]
     },
@@ -13071,7 +13071,7 @@
           "question_number": 1,
           "text": "Let \\(z=\\dfrac{1+i}{1-i\\sqrt3}\\). Without expanding fully, determine the exact value of \\(z^{12}\\).",
           "options": [
-            "(A) \\(-1\\)",
+            "(A) \\(-\\frac1{64}\\)",
             "(B) \\(1\\)",
             "(C) \\(-64\\)",
             "(D) \\(64\\)"
@@ -13094,6 +13094,1158 @@
             "(D) $5$"
           ],
           "correct": "D"
+        }
+      ]
+    },
+    {
+      "id": "exam-93",
+      "title": "Challenge Exam 93",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp85-mm-gem-q10",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q10",
+          "question_number": 10,
+          "text": "**10. Modeling Velocity as a Vector**\nA river flows due South at 3 mi/h. A swimmer heads due East at 4 mi/h relative to the water. Assuming East is the positive x-direction and North is the positive y-direction, what is the true velocity of the swimmer expressed as a component vector?",
+          "options": [
+            "(A) < 4, 3 >",
+            "(B) < -4, -3 >",
+            "(C) < 4, -3 >",
+            "(D) < 3, -4 >"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-mm-gem-q5",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "**5. Distributive Property**\nIf $\\mathbf{u} \\cdot \\mathbf{v} = 5$ and $\\mathbf{u} \\cdot \\mathbf{w} = 2$, what is the value of $\\mathbf{u} \\cdot (\\mathbf{v} + \\mathbf{w})$?",
+          "options": [
+            "(A) 7",
+            "(B) 10",
+            "(C) 3",
+            "(D) 25"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp85-mm-gpt54-q6",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "**Magnitude Check**  \nWhat is the magnitude of \\(\\langle 3,4\\rangle\\)?",
+          "options": [
+            "(A) 25",
+            "(B) 7",
+            "(C) \u221a7",
+            "(D) 5"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp86-mm-gpt54-q9",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q9",
+          "question_number": 9,
+          "text": "**Projection Idea**: If \\(u\\) is already parallel to \\(v\\), what is \\(\\text{proj}_v\\,u\\) equal to: \\(u\\), \\(0\\), or a vector perpendicular to \\(v\\)?",
+          "options": [
+            "(A) 0",
+            "(B) a vector perpendicular to v",
+            "(C) u",
+            "(D) v"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp85-mm-gem-q5",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "**5. Finding the Terminal Point**\nA vector given by < -2, 4 > has an initial point at (5, 1). What are the coordinates of its terminal point?",
+          "options": [
+            "(A) (3, 5)",
+            "(B) (7, -3)",
+            "(C) (-7, 3)",
+            "(D) (5, 3)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp86-mm-gpt54-q4",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "**Magnitude from Dot Product**: If \\(u = \\langle 3, 4\\rangle\\), what is \\(u\\cdot u\\)?",
+          "options": [
+            "(A) 7",
+            "(B) 12",
+            "(C) 25",
+            "(D) 24"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp85-mm-gpt54-q5",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "**Scalar Multiplication**  \nIf \\(v=\\langle -2,3\\rangle\\), what is \\(-2v\\)?",
+          "options": [
+            "(A) \u27e84,6\u27e9",
+            "(B) \u27e8-4,6\u27e9",
+            "(C) \u27e84,-6\u27e9",
+            "(D) \u27e8-4,-6\u27e9"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp85-op-gem-q5",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Olympiad Problems / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "Let $\\mathbf{a}$ and $\\mathbf{b}$ be two vectors in the plane. If the magnitude of their sum is $14$ and the magnitude of their difference is $10$, find the exact value of the scalar quantity $|\\mathbf{a}|^2 + |\\mathbf{b}|^2$.",
+          "options": [
+            "(A) 74",
+            "(B) 148",
+            "(C) 296",
+            "(D) 48"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp86-op-gpt54-q2",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Olympiad Problems / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "Vectors \\(u\\) and \\(v\\) satisfy \\(|u|=5\\), \\(|v|=12\\), and \\(|u+v|=13\\). Find \\(u\\cdot v\\).",
+          "options": [
+            "(A) \\(30\\)",
+            "(B) \\(0\\)",
+            "(C) \\(-60\\)",
+            "(D) \\(-12\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-op-gpt54-q2",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Olympiad Problems / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "A vector of magnitude \\(10\\) makes an angle of \\(15^\\circ\\) with the positive \\(x\\)-axis, and a vector of magnitude \\(10\\) makes an angle of \\(75^\\circ\\). Find the magnitude and direction of their sum.",
+          "options": [
+            "(A) \\(10\\sqrt3,\\ 45^\\circ\\)",
+            "(B) \\(20,\\ 45^\\circ\\)",
+            "(C) \\(10,\\ 30^\\circ\\)",
+            "(D) \\(5\\sqrt6,\\ 45^\\circ\\)"
+          ],
+          "correct": "A"
+        }
+      ]
+    },
+    {
+      "id": "exam-94",
+      "title": "Challenge Exam 94",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp86-mm-gem-q2",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "**2. Orthogonality Check**\nAre the vectors $\\langle 6, 4 \\rangle$ and $\\langle -2, 3 \\rangle$ perpendicular?",
+          "options": [
+            "(A) Yes, their dot product is 0",
+            "(B) No, their dot product is 24",
+            "(C) No, their dot product is -24",
+            "(D) Yes, their dot product is 1"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp85-mm-gpt54-q10",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q10",
+          "question_number": 10,
+          "text": "**Resultant Velocity**  \nA river flows south at \\(3\\) mi/h, and a swimmer heads east at \\(2\\) mi/h relative to the water. What is the swimmer\u2019s true velocity as a vector?",
+          "options": [
+            "(A) \u27e82,3\u27e9",
+            "(B) \u27e83,2\u27e9",
+            "(C) \u27e8-2,3\u27e9",
+            "(D) \u27e82,-3\u27e9"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp86-mm-gem-q1",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "**1. Basic Dot Product**\nFind the dot product of the vectors $\\langle 3, 2 \\rangle$ and $\\langle 4, -1 \\rangle$.",
+          "options": [
+            "(A) 14",
+            "(B) 11",
+            "(C) 10",
+            "(D) 8"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp85-mm-gem-q4",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "**4. Scalar Multiplication**\nIf vector **v** = < -3, 5 >, what is the component form of the vector 3**v**?",
+          "options": [
+            "(A) < 0, 8 >",
+            "(B) < -9, 15 >",
+            "(C) < -9, 5 >",
+            "(D) < 9, 15 >"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp86-mm-gem-q7",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q7",
+          "question_number": 7,
+          "text": "**7. Component of a Vector**\nWhat is the component of $\\mathbf{u} = \\langle 10, 0 \\rangle$ along $\\mathbf{v} = \\langle 3, 4 \\rangle$? *(Hint: The magnitude of $\\mathbf{v}$ is 5).*",
+          "options": [
+            "(A) 3",
+            "(B) 6",
+            "(C) 30",
+            "(D) 150"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-mm-gem-q6",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "**6. Translating to Unit Vectors**\nHow do you express the vector < 0, -7 > using the standard unit vectors **i** and **j**?",
+          "options": [
+            "(A) -7**i**",
+            "(B) 7**j**",
+            "(C) -7",
+            "(D) -7**j**"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp86-mm-gpt54-q2",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "**Perpendicular Check**: Are the vectors \u27e84, 1\u27e9 and \u27e81, -4\u27e9 perpendicular?",
+          "options": [
+            "(A) No",
+            "(B) Only if scaled",
+            "(C) Yes",
+            "(D) Cannot tell"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-op-gpt54-q3",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Olympiad Problems / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "A force of magnitude \\(100\\) acts at an angle of \\(15^\\circ\\) above the horizontal, and an object moves \\(20\\) units at an angle of \\(75^\\circ\\) above the horizontal. Find the work done.",
+          "options": [
+            "(A) \\(2000\\)",
+            "(B) \\(1000\\)",
+            "(C) \\(1000\\sqrt3\\)",
+            "(D) \\(500\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-op-gem-q4",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Olympiad Problems / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "Vectors $\\mathbf{u}$ and $\\mathbf{v}$ have magnitudes of 5 and 12, respectively. If the magnitude of their sum, $|\\mathbf{u} + \\mathbf{v}|$, is exactly 13, find the exact magnitude of the vector $2\\mathbf{u} - \\mathbf{v}$.",
+          "options": [
+            "(A) $\\sqrt{119}$",
+            "(B) 22",
+            "(C) $2\\sqrt{61}$",
+            "(D) 26"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-op-gem-q5",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Olympiad Problems / Gemini 3.1 Pro / Q5",
+          "question_number": 5,
+          "text": "Let $A, B, C, D, E,$ and $F$ be the consecutive vertices of a regular hexagon with side length 2. Find the exact value of the dot product $\\vec{AB} \\cdot \\vec{AD}$.",
+          "options": [
+            "(A) $-4$",
+            "(B) $4\\sqrt{3}$",
+            "(C) $4$",
+            "(D) $8$"
+          ],
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "id": "exam-95",
+      "title": "Challenge Exam 95",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp85-mm-gem-q9",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q9",
+          "question_number": 9,
+          "text": "**9. Scalar vs. Vector Identification**\nBased on the text's definition that speed is the magnitude of velocity, if a jet's velocity vector indicates it is traveling 500 mph due West, what is the magnitude of this vector?",
+          "options": [
+            "(A) -500 mph",
+            "(B) 500 mph",
+            "(C) < -500, 0 > mph",
+            "(D) 0 mph"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp86-mm-gem-q3",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "**3. Finding an Unknown**\nFor what value of $x$ are the vectors $\\langle x, 3 \\rangle$ and $\\langle 2, -4 \\rangle$ orthogonal?",
+          "options": [
+            "(A) -6",
+            "(B) -1",
+            "(C) 12",
+            "(D) 6"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp85-mm-gpt54-q7",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q7",
+          "question_number": 7,
+          "text": "**Unit Vectors**  \nWrite \\(\\langle -5,2\\rangle\\) in terms of \\(i\\) and \\(j\\).",
+          "options": [
+            "(A) -5j + 2i",
+            "(B) -5i + 2j",
+            "(C) 5i - 2j",
+            "(D) 5j + 2i"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp86-mm-gpt54-q6",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "**Easy Angle**: What angle is between \u27e81, 0\u27e9 and \u27e80, 5\u27e9?",
+          "options": [
+            "(A) 0\u00b0",
+            "(B) 45\u00b0",
+            "(C) 180\u00b0",
+            "(D) 90\u00b0"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp85-mm-gem-q3",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "**3. Vector Addition**\nGiven vector **u** = < 2, -3 > and vector **v** = < 4, 7 >, what is the component form of their sum, **u** + **v**?",
+          "options": [
+            "(A) < -2, -10 >",
+            "(B) < 6, -10 >",
+            "(C) < 8, -21 >",
+            "(D) < 6, 4 >"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp86-mm-gem-q9",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q9",
+          "question_number": 9,
+          "text": "**9. Projection Direction**\nTrue or False: The projection of vector $\\mathbf{u}$ onto vector $\\mathbf{v}$ results in a new vector that is parallel to $\\mathbf{u}$.",
+          "options": [
+            "(A) True, it is parallel to $\\mathbf{u}$",
+            "(B) False, it is parallel to $\\mathbf{v}$",
+            "(C) False, it is perpendicular to $\\mathbf{v}$",
+            "(D) True, it is parallel to both $\\mathbf{u}$ and $\\mathbf{v}$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-mm-gem-q8",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q8",
+          "question_number": 8,
+          "text": "**8. Components from Direction Angle**\nA vector has a magnitude of 10 and a direction of 180\u00b0 in standard position. What is its component form?",
+          "options": [
+            "(A) < 0, -10 >",
+            "(B) < 10, 0 >",
+            "(C) < -10, 0 >",
+            "(D) < 0, 10 >"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp85-op-gpt54-q4",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Olympiad Problems / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "A plane flies at \\(300\\) mi/h due north relative to the air. A wind of \\(100\\) mi/h blows due east. Without using a calculator, determine the plane\u2019s true speed and its direction as a compass bearing.",
+          "options": [
+            "(A) \\(400\\text{ mi/h},\\ \\text{N }18.4^\\circ\\text{ E}\\)",
+            "(B) \\(300\\sqrt2\\text{ mi/h},\\ \\text{N }45^\\circ\\text{ E}\\)",
+            "(C) \\(100\\sqrt{10}\\text{ mi/h},\\ \\text{N }\\tan^{-1}\\!\\left(\\frac13\\right)\\text{ E}\\)",
+            "(D) \\(100\\sqrt{13}\\text{ mi/h},\\ \\text{N }71.6^\\circ\\text{ E}\\)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-op-gem-q2",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Olympiad Problems / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "A constant force $\\vec{F} = \\langle \\cos 73^\\circ, \\sin 73^\\circ \\rangle$ moves an object along a displacement vector $\\vec{D} = \\langle \\cos 13^\\circ, \\sin 13^\\circ \\rangle$. Calculate the exact work done.",
+          "options": [
+            "(A) $\\frac{\\sqrt{3}}{2}$",
+            "(B) $1$",
+            "(C) $\\cos 86^\\circ$",
+            "(D) $\\frac{1}{2}$"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp85-op-gem-q6",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Olympiad Problems / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "Let $\\mathbf{v}$ be an arbitrary vector in the coordinate plane. Find the minimum possible value of the scalar quantity $|\\mathbf{v} - \\langle 8, 15 \\rangle| + |\\mathbf{v} - \\langle -12, 0 \\rangle|$.",
+          "options": [
+            "(A) 25",
+            "(B) 29",
+            "(C) 17",
+            "(D) 5"
+          ],
+          "correct": "A"
+        }
+      ]
+    },
+    {
+      "id": "exam-96",
+      "title": "Challenge Exam 96",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp86-mm-gpt54-q3",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "**Using a Property**: Without multiplying everything out, what is \\((2u)\\cdot v\\) if \\(u\\cdot v = 7\\)?",
+          "options": [
+            "(A) 9",
+            "(B) 14",
+            "(C) 7",
+            "(D) 21"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-mm-gem-q1",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "**1. Finding Component Form**\nIf a vector has an initial point at (2, 5) and a terminal point at (5, 9), what is the component form of the vector?",
+          "options": [
+            "(A) < 3, 4 >",
+            "(B) < -3, -4 >",
+            "(C) < 7, 14 >",
+            "(D) < 4, 3 >"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp86-mm-gpt54-q1",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "**Quick Dot Product**: What is the dot product of \u27e82, 5\u27e9 and \u27e83, -1\u27e9?",
+          "options": [
+            "(A) 1",
+            "(B) 11",
+            "(C) -11",
+            "(D) 5"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp85-mm-gpt54-q2",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q2",
+          "question_number": 2,
+          "text": "**Component Form from Points**  \nWhat is the component form of the vector from \\(P(2,1)\\) to \\(Q(5,3)\\)?",
+          "options": [
+            "(A) \u27e83,2\u27e9",
+            "(B) \u27e82,3\u27e9",
+            "(C) \u27e8-3,-2\u27e9",
+            "(D) \u27e87,4\u27e9"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp86-mm-gpt54-q5",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "**Angle Type**: If \\(u\\cdot v\\) is negative, is the angle between \\(u\\) and \\(v\\) acute, right, or obtuse?",
+          "options": [
+            "(A) acute",
+            "(B) right",
+            "(C) obtuse",
+            "(D) zero"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp85-mm-gem-q2",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "**2. Calculating Magnitude**\nWhat is the magnitude (or length) of the vector < 6, -8 >?",
+          "options": [
+            "(A) 14",
+            "(B) 100",
+            "(C) 10",
+            "(D) -2"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-mm-gpt54-q10",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q10",
+          "question_number": 10,
+          "text": "**Work from Dot Product**: A force \\(F=\\langle 5,0\\rangle\\) moves an object along \\(D=\\langle 4,0\\rangle\\). What is the work \\(F\\cdot D\\)?",
+          "options": [
+            "(A) 9",
+            "(B) 20",
+            "(C) 0",
+            "(D) 25"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp86-op-gpt54-q4",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Olympiad Problems / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "Let \\(u=\\langle 3,4\\rangle\\). Among all nonzero vectors \\(v\\) with integer components and \\(|v|=5\\), find the greatest possible value of the component of \\(u\\) along \\(v\\).",
+          "options": [
+            "(A) \\(1\\)",
+            "(B) \\(5\\)",
+            "(C) \\(7\\)",
+            "(D) \\(25\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-op-gem-q1",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Olympiad Problems / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "Let $P_1, P_2, \\ldots, P_{60}$ be the vertices of a regular 60-gon inscribed in a circle of radius 10 centered at the origin $O$. Find the exact magnitude of the vector sum $\\vec{OP_1} + \\vec{OP_2} + \\ldots + \\vec{OP_{59}}$.",
+          "options": [
+            "(A) 10",
+            "(B) 0",
+            "(C) $10\\sqrt{2}$",
+            "(D) 590"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp86-op-gem-q6",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Olympiad Problems / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "A vector $\\vec{w}$ of magnitude 17 is resolved into two orthogonal component vectors, $\\vec{w_1}$ and $\\vec{w_2}$, where $\\vec{w_1}$ is parallel to a non-zero vector $\\vec{v}$, and $\\vec{w_2}$ is orthogonal to $\\vec{v}$. If the scalar projection of $\\vec{w}$ onto $\\vec{v}$ is $8$, what is the exact magnitude of $\\vec{w_2}$?",
+          "options": [
+            "(A) $\\sqrt{353}$",
+            "(B) $15$",
+            "(C) $9$",
+            "(D) $25$"
+          ],
+          "correct": "B"
+        }
+      ]
+    },
+    {
+      "id": "exam-97",
+      "title": "Challenge Exam 97",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp85-mm-gpt54-q3",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "**Quick Vector Addition**  \nIf \\(u=\\langle 3,-1\\rangle\\) and \\(v=\\langle -2,4\\rangle\\), what is \\(u+v\\)?",
+          "options": [
+            "(A) \u27e81,5\u27e9",
+            "(B) \u27e85,3\u27e9",
+            "(C) \u27e81,3\u27e9",
+            "(D) \u27e8-5,3\u27e9"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-mm-gem-q6",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q6",
+          "question_number": 6,
+          "text": "**6. Calculating Work**\nA constant force vector $\\mathbf{F} = 5\\mathbf{i} + 2\\mathbf{j}$ moves an object along the displacement vector $\\mathbf{D} = 4\\mathbf{i} + 0\\mathbf{j}$. How much work is done?",
+          "options": [
+            "(A) 8",
+            "(B) 11",
+            "(C) 20",
+            "(D) 40"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp85-mm-gem-q7",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q7",
+          "question_number": 7,
+          "text": "**7. Magnitude of an i-j Vector**\nWhat is the length of the vector **v** = 5**i** + 12**j**?",
+          "options": [
+            "(A) 17",
+            "(B) 13",
+            "(C) 169",
+            "(D) 119"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp86-mm-gpt54-q8",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q8",
+          "question_number": 8,
+          "text": "**Simple Component**: What is the component of \u27e86, 0\u27e9 along \u27e83, 0\u27e9?",
+          "options": [
+            "(A) 6",
+            "(B) 3",
+            "(C) 18",
+            "(D) 2"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp85-mm-gpt54-q8",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q8",
+          "question_number": 8,
+          "text": "**From Magnitude and Direction**  \nA vector has magnitude \\(10\\) and direction \\(0^\\circ\\). What are its horizontal and vertical components?",
+          "options": [
+            "(A) (10,10)",
+            "(B) (0,10)",
+            "(C) (10,0)",
+            "(D) (0,-10)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-mm-gem-q4",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "**4. Dot Product and Magnitude**\nAccording to the properties of the dot product, if the magnitude of vector $\\mathbf{u}$ is 7, what is the value of $\\mathbf{u} \\cdot \\mathbf{u}$?",
+          "options": [
+            "(A) 7",
+            "(B) 49",
+            "(C) 14",
+            "(D) $\\sqrt{7}$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-mm-gpt54-q9",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q9",
+          "question_number": 9,
+          "text": "**Special-Angle Components**  \nA vector has magnitude \\(2\\) and direction \\(30^\\circ\\). What are its horizontal and vertical components?",
+          "options": [
+            "(A) (\u221a3,1)",
+            "(B) (1,\u221a3)",
+            "(C) (\u221a3/2,1/2)",
+            "(D) (2\u221a3,2)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp85-op-gem-q3",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Olympiad Problems / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "An airplane flies a programmed square route relative to the surrounding air: 100 miles due North, 100 miles due East, 100 miles due South, and 100 miles due West, maintaining a constant airspeed of 200 mph relative to the air. During the entire flight, a steady wind blows due East at 50 mph. Find the magnitude of the plane's true displacement vector from its starting point at the end of the journey.",
+          "options": [
+            "(A) 0",
+            "(B) 50",
+            "(C) $50\\sqrt{2}$",
+            "(D) 100"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp86-op-gpt54-q5",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Olympiad Problems / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "Suppose \\(u\\) and \\(v\\) are nonzero vectors such that \\(u+v\\) is perpendicular to \\(u-v\\). If \\(|u-v|=10\\) and \\(|u+v|=24\\), find \\(|u|\\) and \\(|v|\\).",
+          "options": [
+            "(A) \\(|u|=13,\\ |v|=11\\)",
+            "(B) \\(|u|=11,\\ |v|=13\\)",
+            "(C) \\(|u|=7,\\ |v|=17\\)",
+            "(D) \\(|u|=13,\\ |v|=13\\)"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp85-op-gpt54-q6",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Olympiad Problems / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "Three forces act on a point: \\(20\\) lb at \\(0^\\circ\\), \\(20\\) lb at \\(120^\\circ\\), and \\(20\\) lb at \\(240^\\circ\\). A fourth force of \\(30\\) lb is then applied at \\(90^\\circ\\). Find the magnitude and direction of the resultant force.",
+          "options": [
+            "(A) \\(30\\text{ lb},\\ 0^\\circ\\)",
+            "(B) \\(60\\text{ lb},\\ 90^\\circ\\)",
+            "(C) \\(30\\text{ lb},\\ 90^\\circ\\)",
+            "(D) \\(10\\sqrt3\\text{ lb},\\ 90^\\circ\\)"
+          ],
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "id": "exam-98",
+      "title": "Challenge Exam 98",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp86-mm-gem-q10",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q10",
+          "question_number": 10,
+          "text": "**10. Orthogonal Resolution**\nVector $\\mathbf{u}$ is resolved into two orthogonal vectors, $\\mathbf{u}_1$ and $\\mathbf{u}_2$, such that $\\mathbf{u} = \\mathbf{u}_1 + \\mathbf{u}_2$. If $\\mathbf{u} = \\langle 5, 8 \\rangle$ and $\\mathbf{u}_1 = \\langle 5, 0 \\rangle$, what is $\\mathbf{u}_2$?",
+          "options": [
+            "(A) $\\langle 0, 8 \\rangle$",
+            "(B) $\\langle 10, 8 \\rangle$",
+            "(C) $\\langle 0, -8 \\rangle$",
+            "(D) $8$"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp85-mm-gpt54-q1",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "**Scalar or Vector?**  \nWhich of these are vectors and which are scalars: speed, velocity, force, and temperature?",
+          "options": [
+            "(A) speed, velocity, force: vectors; temperature: scalar",
+            "(B) speed, temperature: vectors; velocity, force: scalars",
+            "(C) velocity, force: vectors; speed, temperature: scalars",
+            "(D) speed, force: scalars; velocity, temperature: vectors"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-mm-gpt54-q7",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q7",
+          "question_number": 7,
+          "text": "**Scalar Projection Sign**: If the angle between \\(u\\) and \\(v\\) is greater than \\(90^\\circ\\), is the component of \\(u\\) along \\(v\\) positive, zero, or negative?",
+          "options": [
+            "(A) positive",
+            "(B) zero",
+            "(C) undefined",
+            "(D) negative"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp85-mm-gpt54-q4",
+          "chapter": "8.5",
+          "type": "mm",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q4",
+          "question_number": 4,
+          "text": "**Quick Vector Subtraction**  \nIf \\(u=\\langle 4,2\\rangle\\) and \\(v=\\langle 1,5\\rangle\\), what is \\(u-v\\)?",
+          "options": [
+            "(A) \u27e83,-3\u27e9",
+            "(B) \u27e8-3,3\u27e9",
+            "(C) \u27e85,7\u27e9",
+            "(D) \u27e83,3\u27e9"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp86-mm-gem-q8",
+          "chapter": "8.6",
+          "type": "mm",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Mental Math / Gemini 3.1 Pro / Q8",
+          "question_number": 8,
+          "text": "**8. Angle Concept**\nIf the dot product of two nonzero vectors is exactly zero, what is the angle between them in degrees?",
+          "options": [
+            "(A) 0",
+            "(B) 45",
+            "(C) 180",
+            "(D) 90"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp86-op-gpt54-q6",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Olympiad Problems / GPT-5.4 / Q6",
+          "question_number": 6,
+          "text": "Let \\(u=\\langle \\cos\\theta,\\sin\\theta\\rangle\\) and \\(v=\\langle \\cos 3\\theta,\\sin 3\\theta\\rangle\\). Find all \\(\\theta\\) in \\([0,\\pi]\\) for which the component of \\(u\\) along \\(v\\) equals \\(\\tfrac12\\).",
+          "options": [
+            "(A) \\(\\theta=\\frac{\\pi}{6},\\frac{5\\pi}{6}\\)",
+            "(B) \\(\\theta=\\frac{\\pi}{6},\\frac{\\pi}{2}\\)",
+            "(C) \\(\\theta=0,\\frac{\\pi}{3}\\)",
+            "(D) \\(\\theta=\\frac{\\pi}{4},\\frac{3\\pi}{4}\\)"
+          ],
+          "correct": "A"
+        },
+        {
+          "id": "chp85-op-gem-q2",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.5 / Olympiad Problems / Gemini 3.1 Pro / Q2",
+          "question_number": 2,
+          "text": "Four unit vectors originate from the origin with standard position angles of $15^\\circ, 75^\\circ, 105^\\circ,$ and $165^\\circ$. Find the exact magnitude of their resultant (sum) vector.",
+          "options": [
+            "(A) $\\sqrt{2}$",
+            "(B) $\\sqrt{6}$",
+            "(C) $2\\sqrt{2}$",
+            "(D) $2$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp86-op-gem-q1",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Olympiad Problems / Gemini 3.1 Pro / Q1",
+          "question_number": 1,
+          "text": "Let $\\vec{a}$ and $\\vec{b}$ be vectors such that $|\\vec{a}| = 5$ and $|\\vec{b}| = 7$. By utilizing the distributive properties of the dot product, mentally evaluate the exact value of $|\\vec{a} + \\vec{b}|^2 + |\\vec{a} - \\vec{b}|^2$.",
+          "options": [
+            "(A) 24",
+            "(B) 48",
+            "(C) 148",
+            "(D) 74"
+          ],
+          "correct": "C"
+        }
+      ]
+    },
+    {
+      "id": "exam-99",
+      "title": "Challenge Exam 99",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp85-op-gpt54-q3",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Olympiad Problems / GPT-5.4 / Q3",
+          "question_number": 3,
+          "text": "Two nonzero vectors \\(u\\) and \\(v\\) satisfy \\(|u|=|v|\\) and \\(|u+v|=|u-v|\\). What is the angle between \\(u\\) and \\(v\\)?",
+          "options": [
+            "(A) \\(45^\\circ\\)",
+            "(B) \\(60^\\circ\\)",
+            "(C) \\(90^\\circ\\)",
+            "(D) \\(120^\\circ\\)"
+          ],
+          "correct": "C"
+        },
+        {
+          "id": "chp86-op-gem-q3",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Olympiad Problems / Gemini 3.1 Pro / Q3",
+          "question_number": 3,
+          "text": "Let $\\vec{p}$ and $\\vec{q}$ be two distinct, non-zero vectors of equal magnitude. What is the exact measure of the angle (in degrees) between the sum vector $(\\vec{p} + \\vec{q})$ and the difference vector $(\\vec{p} - \\vec{q})$?",
+          "options": [
+            "(A) $0^\\circ$",
+            "(B) $90^\\circ$",
+            "(C) $45^\\circ$",
+            "(D) $180^\\circ$"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-op-gpt54-q5",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Olympiad Problems / GPT-5.4 / Q5",
+          "question_number": 5,
+          "text": "Let \\(u=\\langle 3,4\\rangle\\). Find the magnitude of\n\\[\n\\frac12u+\\frac13u+\\frac14u+\\frac15u+\\frac16u.\n\\]",
+          "options": [
+            "(A) \\(\\frac{29}{10}\\)",
+            "(B) \\(\\frac{29}{4}\\)",
+            "(C) \\(\\frac{145}{12}\\)",
+            "(D) \\(\\frac{145}{6}\\)"
+          ],
+          "correct": "B"
+        }
+      ]
+    },
+    {
+      "id": "exam-100",
+      "title": "Challenge Exam 100",
+      "bank": "classic",
+      "bank_title": "AI-Generated",
+      "questions": [
+        {
+          "id": "chp86-op-gpt54-q1",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.6 / Olympiad Problems / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "Let \\(u=\\langle a,b\\rangle\\) and \\(v=\\langle a-b,\\;a+b\\rangle\\), where \\(a^2+b^2=25\\). Find the maximum possible value of \\(u\\cdot v\\).",
+          "options": [
+            "(A) \\(50\\)",
+            "(B) \\(25\\)",
+            "(C) \\(0\\)",
+            "(D) \\(125\\)"
+          ],
+          "correct": "B"
+        },
+        {
+          "id": "chp85-op-gpt54-q1",
+          "chapter": "8.5",
+          "type": "op",
+          "model": "gpt54",
+          "model_label": "GPT-5.4",
+          "source_label": "Chapter 8.5 / Olympiad Problems / GPT-5.4 / Q1",
+          "question_number": 1,
+          "text": "Let \\(u\\) and \\(v\\) be vectors with \\(|u|=5,\\ |v|=12,\\) and \\(|u+v|=13\\). Find \\(|u-v|\\).",
+          "options": [
+            "(A) \\(8\\)",
+            "(B) \\(10\\)",
+            "(C) \\(12\\)",
+            "(D) \\(13\\)"
+          ],
+          "correct": "D"
+        },
+        {
+          "id": "chp86-op-gem-q4",
+          "chapter": "8.6",
+          "type": "op",
+          "model": "gem",
+          "model_label": "Gemini 3.1 Pro",
+          "source_label": "Chapter 8.6 / Olympiad Problems / Gemini 3.1 Pro / Q4",
+          "question_number": 4,
+          "text": "Let $\\vec{u}$ and $\\vec{v}$ be unit vectors separated by an angle of $30^\\circ$. A sequence of vectors is defined by setting $\\vec{x_0} = 64\\vec{u}$. For each integer $k \\ge 1$, let $\\vec{x_{2k-1}} = \\text{proj}_{\\vec{v}}(\\vec{x_{2k-2}})$ and $\\vec{x_{2k}} = \\text{proj}_{\\vec{u}}(\\vec{x_{2k-1}})$. Find the magnitude of $\\vec{x_6}$.",
+          "options": [
+            "(A) $27$",
+            "(B) $24\\sqrt{3}$",
+            "(C) $8$",
+            "(D) $1$"
+          ],
+          "correct": "A"
         }
       ]
     }
