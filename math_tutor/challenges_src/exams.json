@@ -293,10 +293,10 @@
           "question_number": 10,
           "text": "**Quick Exact Evaluation**  \nFind the exact value of \\(\\cos 75^\\circ+\\cos 15^\\circ\\).",
           "options": [
-            "(A) \u221a6",
-            "(B) \u221a3/2",
+            "(A) √6",
+            "(B) √3/2",
             "(C) 1",
-            "(D) \u221a6/2"
+            "(D) √6/2"
           ],
           "correct": "D"
         },
@@ -367,10 +367,10 @@
           "question_number": 2,
           "text": "**All Tangent Solutions**  \nFind all solutions to \\( \\tan \\theta = -1 \\).",
           "options": [
-            "(A) \u03b8 = \u03c0/4 + 2k\u03c0",
-            "(B) \u03b8 = -\u03c0/4 + 2k\u03c0",
-            "(C) \u03b8 = 3\u03c0/4 + 2k\u03c0",
-            "(D) \u03b8 = -\u03c0/4 + k\u03c0"
+            "(A) θ = π/4 + 2kπ",
+            "(B) θ = -π/4 + 2kπ",
+            "(C) θ = 3π/4 + 2kπ",
+            "(D) θ = -π/4 + kπ"
           ],
           "correct": "D"
         },
@@ -384,10 +384,10 @@
           "question_number": 9,
           "text": "**Equation from Focus**\nA parabola has its vertex at the origin and its focus at $(3, 0)$. What is its standard equation?",
           "options": [
-            "(A) y\u00b2 = 3x",
-            "(B) y\u00b2 = 12x",
-            "(C) x\u00b2 = 12y",
-            "(D) x\u00b2 = 3y"
+            "(A) y² = 3x",
+            "(B) y² = 12x",
+            "(C) x² = 12y",
+            "(D) x² = 3y"
           ],
           "correct": "B"
         },
@@ -418,10 +418,10 @@
           "question_number": 7,
           "text": "**Vertical Hyperbola**  \nFor \\( \\frac{y^2}{49} - \\frac{x^2}{9} = 1 \\), what are the vertices?",
           "options": [
-            "(A) (\u00b17, 0)",
-            "(B) (0, \u00b149)",
-            "(C) (\u00b13, 0)",
-            "(D) (0, \u00b17)"
+            "(A) (±7, 0)",
+            "(B) (0, ±49)",
+            "(C) (±3, 0)",
+            "(D) (0, ±7)"
           ],
           "correct": "D"
         },
@@ -472,7 +472,7 @@
             "(A) 5",
             "(B) 20",
             "(C) 10",
-            "(D) \u221a10"
+            "(D) √10"
           ],
           "correct": "C"
         },
@@ -543,10 +543,10 @@
           "question_number": 1,
           "text": "**Reference Angle**: What is the reference angle for \\(210^\\circ\\)?",
           "options": [
-            "(A) 150\u00b0",
-            "(B) 30\u00b0",
-            "(C) 60\u00b0",
-            "(D) 120\u00b0"
+            "(A) 150°",
+            "(B) 30°",
+            "(C) 60°",
+            "(D) 120°"
           ],
           "correct": "B"
         },
@@ -787,7 +787,7 @@
           "question_number": 3,
           "text": "**Cosine Double-Angle Shortcut**  \nIf \\(\\cos x=\\frac{\\sqrt{3}}{2}\\), what is \\(\\cos 2x\\)?",
           "options": [
-            "(A) \u221a3/2",
+            "(A) √3/2",
             "(B) -1/2",
             "(C) 1/4",
             "(D) 1/2"
@@ -804,10 +804,10 @@
           "question_number": 10,
           "text": "**Recognize a Formula**  \nSolve \\( \\sin 2\\theta \\cos\\theta - \\cos 2\\theta \\sin\\theta = \\tfrac{\\sqrt{3}}{2} \\) for \\(0 \\le \\theta < 2\\pi\\).",
           "options": [
-            "(A) \u03c0/6, 5\u03c0/6",
-            "(B) \u03c0/3, 5\u03c0/3",
-            "(C) \u03c0/3, 2\u03c0/3, 4\u03c0/3, 5\u03c0/3",
-            "(D) \u03c0/3, 2\u03c0/3"
+            "(A) π/6, 5π/6",
+            "(B) π/3, 5π/3",
+            "(C) π/3, 2π/3, 4π/3, 5π/3",
+            "(D) π/3, 2π/3"
           ],
           "correct": "D"
         },
@@ -961,12 +961,12 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 5.2 / Mental Math / GPT-5.4 / Q4",
           "question_number": 4,
-          "text": "**Special Angle: 30\u00b0**  \nWhat is the exact value of \\( \\tan 30^\\circ \\)?",
+          "text": "**Special Angle: 30°**  \nWhat is the exact value of \\( \\tan 30^\\circ \\)?",
           "options": [
-            "(A) \u221a3",
-            "(B) \u221a3/3",
+            "(A) √3",
+            "(B) √3/3",
             "(C) 1",
-            "(D) \u221a2/2"
+            "(D) √2/2"
           ],
           "correct": "B"
         },
@@ -1071,10 +1071,10 @@
           "question_number": 2,
           "text": "**Third Angle First**  \nA triangle has angles \\(50^\\circ\\) and \\(68^\\circ\\). What is the third angle?",
           "options": [
-            "(A) 62\u00b0",
-            "(B) 58\u00b0",
-            "(C) 72\u00b0",
-            "(D) 112\u00b0"
+            "(A) 62°",
+            "(B) 58°",
+            "(C) 72°",
+            "(D) 112°"
           ],
           "correct": "A"
         },
@@ -1506,7 +1506,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 5.5 / Mental Math / Gemini 3.1 Pro / Q5",
           "question_number": 5,
-          "text": "**5. Obtuse Angle Evaluation (Part 2)**\nYou are given triangle dimensions where angle A is an obtuse 110\u00b0, side *a* = 28, and side *b* = 15. How many possible triangles can be formed?",
+          "text": "**5. Obtuse Angle Evaluation (Part 2)**\nYou are given triangle dimensions where angle A is an obtuse 110°, side *a* = 28, and side *b* = 15. How many possible triangles can be formed?",
           "options": [
             "(A) 0",
             "(B) 1",
@@ -1526,7 +1526,7 @@
           "text": "**Kite Lines**  \nTwo kite strings are each 100 ft long. If the angle between them is \\(60^\\circ\\), how far apart are the kites?",
           "options": [
             "(A) 200 ft",
-            "(B) 100\u221a2 ft",
+            "(B) 100√2 ft",
             "(C) 50 ft",
             "(D) 100 ft"
           ],
@@ -1648,7 +1648,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 6.4 / Mental Math / Gemini 3.1 Pro / Q2",
           "question_number": 2,
-          "text": "**Secondary Periods**\n2. Which two trigonometric functions discussed in the text have a fundamental period of 2\u03c0?",
+          "text": "**Secondary Periods**\n2. Which two trigonometric functions discussed in the text have a fundamental period of 2π?",
           "options": [
             "(A) Tangent and Cotangent",
             "(B) Sine and Tangent",
@@ -1792,10 +1792,10 @@
           "question_number": 6,
           "text": "**Double Angle First**  \nSolve \\( \\sin(2\\theta)=0 \\) for \\(0 \\le \\theta < 2\\pi\\).",
           "options": [
-            "(A) 0, \u03c0",
-            "(B) \u03c0/2, 3\u03c0/2",
-            "(C) \u03c0/4, 3\u03c0/4, 5\u03c0/4, 7\u03c0/4",
-            "(D) 0, \u03c0/2, \u03c0, 3\u03c0/2"
+            "(A) 0, π",
+            "(B) π/2, 3π/2",
+            "(C) π/4, 3π/4, 5π/4, 7π/4",
+            "(D) 0, π/2, π, 3π/2"
           ],
           "correct": "D"
         },
@@ -1843,10 +1843,10 @@
           "question_number": 6,
           "text": "**Asymptotes from Standard Form**  \nFor \\( \\frac{x^2}{4} - \\frac{y^2}{25} = 1 \\), what are the asymptotes?",
           "options": [
-            "(A) y = \u00b1(5/2)x",
-            "(B) y = \u00b1(2/5)x",
-            "(C) x = \u00b1(5/2)y",
-            "(D) y = \u00b15x"
+            "(A) y = ±(5/2)x",
+            "(B) y = ±(2/5)x",
+            "(C) x = ±(5/2)y",
+            "(D) y = ±5x"
           ],
           "correct": "A"
         },
@@ -2002,10 +2002,10 @@
           "question_number": 9,
           "text": "**Supplement Test**  \nIf the Law of Sines gives \\(\\sin B=\\sin 40^\\circ\\), what is the other possible angle value for \\(B\\) before checking whether it makes a valid triangle?",
           "options": [
-            "(A) 40\u00b0",
-            "(B) 100\u00b0",
-            "(C) 140\u00b0",
-            "(D) 220\u00b0"
+            "(A) 40°",
+            "(B) 100°",
+            "(C) 140°",
+            "(D) 220°"
           ],
           "correct": "C"
         },
@@ -2229,10 +2229,10 @@
           "question_number": 9,
           "text": "**Factor Out a Trig Function**  \nSolve \\( 4\\cos\\theta\\sin\\theta + 3\\cos\\theta = 0 \\) for \\(0 \\le \\theta < 2\\pi\\).",
           "options": [
-            "(A) \u03c0/2, 3\u03c0/2, arcsin(3/4), \u03c0-arcsin(3/4)",
-            "(B) \u03c0/2, 3\u03c0/2, \u03c0+arcsin(3/4), 2\u03c0-arcsin(3/4)",
-            "(C) \u03c0/2, 3\u03c0/2, \u03c0-arcsin(3/4), 2\u03c0+arcsin(3/4)",
-            "(D) \u03c0/2, \u03c0+arcsin(3/4)"
+            "(A) π/2, 3π/2, arcsin(3/4), π-arcsin(3/4)",
+            "(B) π/2, 3π/2, π+arcsin(3/4), 2π-arcsin(3/4)",
+            "(C) π/2, 3π/2, π-arcsin(3/4), 2π+arcsin(3/4)",
+            "(D) π/2, π+arcsin(3/4)"
           ],
           "correct": "B"
         },
@@ -2494,7 +2494,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 5.5 / Mental Math / Gemini 3.1 Pro / Q3",
           "question_number": 3,
-          "text": "**3. Calculating Triangle Height**\nIn an ambiguous case triangle where angle A is 30\u00b0 and the adjacent side *b* is 12, what is the height (*h*) of the triangle? (Recall that sin 30\u00b0 = 0.5)",
+          "text": "**3. Calculating Triangle Height**\nIn an ambiguous case triangle where angle A is 30° and the adjacent side *b* is 12, what is the height (*h*) of the triangle? (Recall that sin 30° = 0.5)",
           "options": [
             "(A) 6",
             "(B) 10.4",
@@ -2511,7 +2511,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 5.6 / Mental Math / Gemini 3.1 Pro / Q5",
           "question_number": 5,
-          "text": "**5. Mental Semiperimeter**\nHeron\u2019s Formula requires the \"semiperimeter\" ($s$). In Example 4, a triangle is given with sides $a = 1$, $b = 2$, and $c = 2$. What is the value of $s$ for this triangle?",
+          "text": "**5. Mental Semiperimeter**\nHeron’s Formula requires the \"semiperimeter\" ($s$). In Example 4, a triangle is given with sides $a = 1$, $b = 2$, and $c = 2$. What is the value of $s$ for this triangle?",
           "options": [
             "(A) 5",
             "(B) 2",
@@ -2723,10 +2723,10 @@
           "question_number": 4,
           "text": "**Quadratic in Sine**  \nSolve \\( 2\\sin^2\\theta + 5\\sin\\theta - 12 = 0 \\) for \\(0 \\le \\theta < 2\\pi\\).",
           "options": [
-            "(A) \u03c0/2",
-            "(B) 3\u03c0/2",
+            "(A) π/2",
+            "(B) 3π/2",
             "(C) no solution",
-            "(D) 0, \u03c0"
+            "(D) 0, π"
           ],
           "correct": "C"
         },
@@ -3007,10 +3007,10 @@
           "question_number": 2,
           "text": "**Right Triangle Check**  \nA triangle has sides 6, 8, and 10. What is the largest angle?",
           "options": [
-            "(A) 60\u00b0",
-            "(B) 120\u00b0",
-            "(C) 45\u00b0",
-            "(D) 90\u00b0"
+            "(A) 60°",
+            "(B) 120°",
+            "(C) 45°",
+            "(D) 90°"
           ],
           "correct": "D"
         },
@@ -3160,12 +3160,12 @@
           "question_number": 4,
           "text": "Two parabolas share the same vertex at the origin: \\(x^2=4ay\\) and \\(y^2=4ax\\), where \\(a>0\\). Find the area enclosed by their arcs.",
           "options": [
-            "(A) \\(\\frac{2a^2}{3}\\)",
-            "(B) \\(\\frac{16a^2}{3}\\)",
-            "(C) \\(2a^2\\)",
-            "(D) \\(\\frac{8a^2}{3}\\)"
+            "(A) \\(\\frac{4a^2}{3}\\)",
+            "(B) \\(\\frac{8a^2}{3}\\)",
+            "(C) \\(\\frac{16a^2}{3}\\)",
+            "(D) \\(8a^2\\)"
           ],
-          "correct": "B"
+          "correct": "C"
         }
       ]
     },
@@ -3425,7 +3425,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 5.5 / Mental Math / Gemini 3.1 Pro / Q4",
           "question_number": 4,
-          "text": "**4. Obtuse Angle Evaluation (Part 1)**\nYou are given triangle dimensions where angle A is an obtuse 120\u00b0, side *a* = 15, and side *b* = 20. Based on the rules for obtuse angles, how many possible triangles can be formed?",
+          "text": "**4. Obtuse Angle Evaluation (Part 1)**\nYou are given triangle dimensions where angle A is an obtuse 120°, side *a* = 15, and side *b* = 20. Based on the rules for obtuse angles, how many possible triangles can be formed?",
           "options": [
             "(A) 1",
             "(B) 2",
@@ -3711,10 +3711,10 @@
           "question_number": 8,
           "text": "**Simple Identity Rewrite**  \nSolve \\( 2\\tan^2\\theta + \\sec^2\\theta = 4 \\) for \\(0 \\le \\theta < 2\\pi\\).",
           "options": [
-            "(A) \u03c0/4, 5\u03c0/4",
-            "(B) \u03c0/2, 3\u03c0/2",
-            "(C) \u03c0/4, 3\u03c0/4, 5\u03c0/4, 7\u03c0/4",
-            "(D) 0, \u03c0/2, \u03c0, 3\u03c0/2"
+            "(A) π/4, 5π/4",
+            "(B) π/2, 3π/2",
+            "(C) π/4, 3π/4, 5π/4, 7π/4",
+            "(D) 0, π/2, π, 3π/2"
           ],
           "correct": "C"
         },
@@ -3765,7 +3765,7 @@
             "(A) Yes, one",
             "(B) Yes, two",
             "(C) No",
-            "(D) y = \u00b14"
+            "(D) y = ±4"
           ],
           "correct": "C"
         },
@@ -3813,10 +3813,10 @@
           "question_number": 6,
           "text": "**Radians Check**  \nWhat is the exact value of \\( \\sin \\left(\\frac{\\pi}{3}\\right) \\)?",
           "options": [
-            "(A) \u221a3/2",
+            "(A) √3/2",
             "(B) 1/2",
-            "(C) \u221a2/2",
-            "(D) \u221a3"
+            "(C) √2/2",
+            "(D) √3"
           ],
           "correct": "A"
         },
@@ -3923,7 +3923,7 @@
           "options": [
             "(A) Angle C is the smallest",
             "(B) Angle C is the largest",
-            "(C) Angle C is 90\u00b0",
+            "(C) Angle C is 90°",
             "(D) Angle C equals side c"
           ],
           "correct": "B"
@@ -3936,7 +3936,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 5.6 / Mental Math / Gemini 3.1 Pro / Q6",
           "question_number": 6,
-          "text": "**6. Mental Heron's Area**\nUsing Heron\u2019s Formula ($\\sqrt{s(s-a)(s-b)(s-c)}$), what is the area of a right triangle with sides of 3, 4, and 5? (Hint: The semiperimeter is 6).",
+          "text": "**6. Mental Heron's Area**\nUsing Heron’s Formula ($\\sqrt{s(s-a)(s-b)(s-c)}$), what is the area of a right triangle with sides of 3, 4, and 5? (Hint: The semiperimeter is 6).",
           "options": [
             "(A) 6",
             "(B) 12",
@@ -4148,10 +4148,10 @@
           "question_number": 5,
           "text": "**Use a Pythagorean Identity**  \nSolve \\( \\sin^2\\theta = 1 - \\cos^2\\theta \\). What does this tell you about \\(\\theta\\)?",
           "options": [
-            "(A) \u03b8 = n\u03c0",
-            "(B) all real \u03b8",
-            "(C) \u03b8 = \u03c0/2 + n\u03c0",
-            "(D) 0 \u2264 \u03b8 < 2\u03c0"
+            "(A) θ = nπ",
+            "(B) all real θ",
+            "(C) θ = π/2 + nπ",
+            "(D) 0 ≤ θ < 2π"
           ],
           "correct": "B"
         },
@@ -4325,9 +4325,9 @@
           "text": "**Triangle Area**\nA triangle has two sides of length 10 and 12, and the included angle between them is 30 degrees. What is the exact area of the triangle?",
           "options": [
             "(A) 60",
-            "(B) 30\u221a3",
+            "(B) 30√3",
             "(C) 30",
-            "(D) 60\u221a3"
+            "(D) 60√3"
           ],
           "correct": "C"
         },
@@ -4356,14 +4356,14 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 11.1 / Olympiad Problems / GPT-5.4 / Q5",
           "question_number": 5,
-          "text": "A circle centered at \\((2,0)\\) passes through the focus of the parabola \\(y^2=8x\\) and is tangent to its directrix. Find the equation of the circle.",
+          "text": "A circle centered at \\((2,0)\\) is tangent to the directrix of the parabola \\(y^2=8x\\). Find the equation of the circle.",
           "options": [
             "(A) \\((x-2)^2+y^2=16\\)",
             "(B) \\((x-2)^2+y^2=4\\)",
             "(C) \\((x-2)^2+y^2=8\\)",
             "(D) \\((x-2)^2+y^2=12\\)"
           ],
-          "correct": "B"
+          "correct": "A"
         },
         {
           "id": "chp112-op-gem-q5",
@@ -4433,9 +4433,9 @@
           "text": "**Isosceles with Included Angle**  \nTwo sides of a triangle are both 10, and the included angle is \\(60^\\circ\\). What is the third side?",
           "options": [
             "(A) 20",
-            "(B) 10\u221a3",
+            "(B) 10√3",
             "(C) 10",
-            "(D) 5\u221a3"
+            "(D) 5√3"
           ],
           "correct": "C"
         },
@@ -5347,7 +5347,7 @@
           "text": "**Equal Sides, Equal Angles**  \nIf two sides of a triangle are equal, what must be true about their opposite angles?",
           "options": [
             "(A) They are supplementary",
-            "(B) They add to 90\u00b0",
+            "(B) They add to 90°",
             "(C) One is larger",
             "(D) They are equal"
           ],
@@ -5429,10 +5429,10 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 11.1 / Olympiad Problems / GPT-5.4 / Q6",
           "question_number": 6,
-          "text": "Let \\(P\\) be a point on the parabola \\(x^2=4y\\). A line through \\(P\\) with slope \\(1\\) meets the directrix at \\(A\\) and the \\(y\\)-axis at \\(B\\). Find the value of \\(AB\\), independent of the choice of \\(P\\).",
+          "text": "Let \\(P\\) be a point on the parabola \\(x^2=4y\\). A line through \\(P\\) with slope \\(1\\) meets the directrix at \\(A\\) and the \\(x\\)-axis at \\(B\\). Find the value of \\(AB\\), independent of the choice of \\(P\\).",
           "options": [
-            "(A) \\(2\\sqrt{2}\\)",
-            "(B) \\(4\\sqrt{2}\\)",
+            "(A) \\(\\sqrt{2}\\)",
+            "(B) \\(2\\sqrt{2}\\)",
             "(C) \\(2\\)",
             "(D) \\(4\\)"
           ],
@@ -5730,11 +5730,11 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 5.2 / Mental Math / GPT-5.4 / Q5",
           "question_number": 5,
-          "text": "**Special Angle: 45\u00b0**  \nWhat is the exact value of \\( \\sec 45^\\circ \\)?",
+          "text": "**Special Angle: 45°**  \nWhat is the exact value of \\( \\sec 45^\\circ \\)?",
           "options": [
-            "(A) 1/\u221a2",
+            "(A) 1/√2",
             "(B) 2",
-            "(C) \u221a2",
+            "(C) √2",
             "(D) 1"
           ],
           "correct": "C"
@@ -5751,8 +5751,8 @@
           "options": [
             "(A) -1/2",
             "(B) 1/2",
-            "(C) -\u221a3/2",
-            "(D) \u221a3/2"
+            "(C) -√3/2",
+            "(D) √3/2"
           ],
           "correct": "A"
         },
@@ -5857,8 +5857,8 @@
           "question_number": 5,
           "text": "**Straight Comparison**  \nTwo triangles each have sides 8 and 8. One has included angle \\(30^\\circ\\), the other has included angle \\(120^\\circ\\). Which triangle has the longer third side?",
           "options": [
-            "(A) 30\u00b0 triangle",
-            "(B) 120\u00b0 triangle",
+            "(A) 30° triangle",
+            "(B) 120° triangle",
             "(C) Same length",
             "(D) Cannot tell"
           ],
@@ -6050,10 +6050,10 @@
           "question_number": 4,
           "text": "**Half-Angle Exact Value**  \nWhat is \\(\\cos\\frac{\\pi}{8}\\)?",
           "options": [
-            "(A) \u221a(2-\u221a2)/2",
-            "(B) \u221a(2+\u221a2)/2",
-            "(C) (2+\u221a2)/2",
-            "(D) \u221a(2+\u221a2)/4"
+            "(A) √(2-√2)/2",
+            "(B) √(2+√2)/2",
+            "(C) (2+√2)/2",
+            "(D) √(2+√2)/4"
           ],
           "correct": "B"
         },
@@ -6067,10 +6067,10 @@
           "question_number": 3,
           "text": "**Zero-Product Idea**  \nSolve \\( (2\\sin \\theta - 1)(\\cos \\theta)=0 \\) for \\(0 \\le \\theta < 2\\pi\\).",
           "options": [
-            "(A) \u03c0/6, \u03c0/2, 5\u03c0/6, 3\u03c0/2",
-            "(B) \u03c0/6, 5\u03c0/6",
-            "(C) \u03c0/2, 3\u03c0/2",
-            "(D) \u03c0/3, \u03c0/2, 2\u03c0/3, 3\u03c0/2"
+            "(A) π/6, π/2, 5π/6, 3π/2",
+            "(B) π/6, 5π/6",
+            "(C) π/2, 3π/2",
+            "(D) π/3, π/2, 2π/3, 3π/2"
           ],
           "correct": "A"
         },
@@ -6561,10 +6561,10 @@
           "question_number": 1,
           "text": "**One-Period Sine**  \nSolve \\( \\sin \\theta = \\tfrac{1}{2} \\) for \\(0 \\le \\theta < 2\\pi\\).",
           "options": [
-            "(A) \u03c0/6, 7\u03c0/6",
-            "(B) \u03c0/6, 5\u03c0/6",
-            "(C) 5\u03c0/6, 11\u03c0/6",
-            "(D) \u03c0/3, 2\u03c0/3"
+            "(A) π/6, 7π/6",
+            "(B) π/6, 5π/6",
+            "(C) 5π/6, 11π/6",
+            "(D) π/3, 2π/3"
           ],
           "correct": "B"
         },
@@ -6578,10 +6578,10 @@
           "question_number": 5,
           "text": "**Circle Equation**\nWhat is the equation of a circle centered at the origin with a radius of 9?",
           "options": [
-            "(A) x\u00b2 + y\u00b2 = 9",
-            "(B) x\u00b2 + y\u00b2 = 81",
-            "(C) x\u00b2 + y\u00b2 = 18",
-            "(D) x\u00b2 + y\u00b2 = 3"
+            "(A) x² + y² = 9",
+            "(B) x² + y² = 81",
+            "(C) x² + y² = 18",
+            "(D) x² + y² = 3"
           ],
           "correct": "B"
         },
@@ -6612,10 +6612,10 @@
           "question_number": 8,
           "text": "**Find the Foci**  \nFor \\( \\frac{x^2}{9} - \\frac{y^2}{16} = 1 \\), what are the foci?",
           "options": [
-            "(A) (0, \u00b15)",
-            "(B) (\u00b13, 0)",
-            "(C) (\u00b15, 0)",
-            "(D) (\u00b14, 0)"
+            "(A) (0, ±5)",
+            "(B) (±3, 0)",
+            "(C) (±5, 0)",
+            "(D) (±4, 0)"
           ],
           "correct": "C"
         },
@@ -6837,7 +6837,7 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 5.2 / Olympiad Problems / GPT-5.4 / Q5",
           "question_number": 5,
-          "text": "In a right triangle, the altitude from the right angle to the hypotenuse divides the hypotenuse into segments of lengths \\(1\\) and \\(4\\). Find the exact value of the triangle\u2019s perimeter.",
+          "text": "In a right triangle, the altitude from the right angle to the hypotenuse divides the hypotenuse into segments of lengths \\(1\\) and \\(4\\). Find the exact value of the triangle’s perimeter.",
           "options": [
             "(A) \\(5+\\sqrt5\\)",
             "(B) \\(5+2\\sqrt5\\)",
@@ -7160,7 +7160,7 @@
             "(A) 8",
             "(B) 12",
             "(C) 18",
-            "(D) \u221a194"
+            "(D) √194"
           ],
           "correct": "B"
         },
@@ -7600,10 +7600,10 @@
           "question_number": 3,
           "text": "**Vertices Quick Find**  \nFor \\( \\frac{x^2}{25} - \\frac{y^2}{4} = 1 \\), what are the vertices?",
           "options": [
-            "(A) (\u00b15, 0)",
-            "(B) (0, \u00b15)",
-            "(C) (\u00b125, 0)",
-            "(D) (\u00b12, 0)"
+            "(A) (±5, 0)",
+            "(B) (0, ±5)",
+            "(C) (±25, 0)",
+            "(D) (±2, 0)"
           ],
           "correct": "A"
         },
@@ -7776,9 +7776,9 @@
           "question_number": 8,
           "text": "**Bearing Language**  \nWhat compass direction does the bearing \\(N\\,40^\\circ E\\) describe?",
           "options": [
-            "(A) 40\u00b0 north of east",
+            "(A) 40° north of east",
             "(B) Northwest",
-            "(C) 40\u00b0 east of north",
+            "(C) 40° east of north",
             "(D) Southeast"
           ],
           "correct": "C"
@@ -7986,10 +7986,10 @@
           "question_number": 7,
           "text": "**Solve for the Multiple Angle**  \nSolve \\( \\tan(3\\theta)=1 \\) for \\(0 \\le \\theta < 2\\pi\\).",
           "options": [
-            "(A) \u03c0/12, 5\u03c0/12, 3\u03c0/4, 13\u03c0/12, 17\u03c0/12, 7\u03c0/4",
-            "(B) \u03c0/4, 5\u03c0/4",
-            "(C) \u03c0/12 + 2k\u03c0/3",
-            "(D) \u03c0/4 + k\u03c0/3"
+            "(A) π/12, 5π/12, 3π/4, 13π/12, 17π/12, 7π/4",
+            "(B) π/4, 5π/4",
+            "(C) π/12 + 2kπ/3",
+            "(D) π/4 + kπ/3"
           ],
           "correct": "A"
         },
@@ -8211,12 +8211,12 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 5.6 / Mental Math / Gemini 3.1 Pro / Q8",
           "question_number": 8,
-          "text": "**8. Reverse Bearing**\nExample 7 features a flight from Airport A to Airport B at a bearing of N 50\u00b0 E. If the pilot wanted to fly directly back from Airport B to Airport A, what would the new bearing be?",
+          "text": "**8. Reverse Bearing**\nExample 7 features a flight from Airport A to Airport B at a bearing of N 50° E. If the pilot wanted to fly directly back from Airport B to Airport A, what would the new bearing be?",
           "options": [
-            "(A) S 50\u00b0 E",
-            "(B) S 50\u00b0 W",
-            "(C) N 50\u00b0 W",
-            "(D) S 40\u00b0 W"
+            "(A) S 50° E",
+            "(B) S 50° W",
+            "(C) N 50° W",
+            "(D) S 40° W"
           ],
           "correct": "B"
         },
@@ -8463,10 +8463,10 @@
           "question_number": 5,
           "text": "**Half-Angle Tangent**  \nWhat is \\(\\tan 22.5^\\circ\\)?",
           "options": [
-            "(A) \u221a2+1",
-            "(B) 1-\u221a2",
-            "(C) \u221a2-1",
-            "(D) 1/\u221a2"
+            "(A) √2+1",
+            "(B) 1-√2",
+            "(C) √2-1",
+            "(D) 1/√2"
           ],
           "correct": "C"
         },
@@ -8639,10 +8639,10 @@
           "question_number": 7,
           "text": "**Complementary Angles**  \nIn a right triangle, if one acute angle is \\( 35^\\circ \\), what is the other acute angle?",
           "options": [
-            "(A) 45\u00b0",
-            "(B) 65\u00b0",
-            "(C) 145\u00b0",
-            "(D) 55\u00b0"
+            "(A) 45°",
+            "(B) 65°",
+            "(C) 145°",
+            "(D) 55°"
           ],
           "correct": "D"
         },
@@ -8690,10 +8690,10 @@
           "question_number": 9,
           "text": "**9. The Supplement Check**\nWhen checking for a second possible triangle in the ambiguous case, you must verify that the sum of the original angle and the new supplementary angle does not exceed what degree measure?",
           "options": [
-            "(A) 90\u00b0",
-            "(B) 180\u00b0",
-            "(C) 270\u00b0",
-            "(D) 360\u00b0"
+            "(A) 90°",
+            "(B) 180°",
+            "(C) 270°",
+            "(D) 360°"
           ],
           "correct": "B"
         },
@@ -8705,7 +8705,7 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 5.6 / Mental Math / GPT-5.4 / Q6",
           "question_number": 6,
-          "text": "**Heron\u2019s Formula Setup**  \nA triangle has side lengths 5, 5, and 6. What is its semiperimeter?",
+          "text": "**Heron’s Formula Setup**  \nA triangle has side lengths 5, 5, and 6. What is its semiperimeter?",
           "options": [
             "(A) 16",
             "(B) 7.5",
@@ -9199,7 +9199,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 5.6 / Mental Math / Gemini 3.1 Pro / Q10",
           "question_number": 10,
-          "text": "**10. Mental Law of Cosines**\nImagine a triangle where side $a = 3$, side $b = 8$, and the included angle $C = 60^\\circ$. Knowing that the cosine of 60\u00b0 is exactly 0.5, what is the length of side $c$?",
+          "text": "**10. Mental Law of Cosines**\nImagine a triangle where side $a = 3$, side $b = 8$, and the included angle $C = 60^\\circ$. Knowing that the cosine of 60° is exactly 0.5, what is the length of side $c$?",
           "options": [
             "(A) 49",
             "(B) 5",
@@ -9644,12 +9644,12 @@
           "question_number": 3,
           "text": "A point \\(P\\) lies on the parabola \\(y^2=12x\\). The distance from \\(P\\) to the focus equals \\(10\\). Find the coordinates of \\(P\\).",
           "options": [
-            "(A) \\((3,6)\\)",
-            "(B) \\((7,\\,2\\sqrt{21})\\)",
-            "(C) \\((3,-6)\\)",
-            "(D) \\((4,-4\\sqrt{3})\\)"
+            "(A) \\((7,2\\sqrt{21})\\)",
+            "(B) \\((7,-2\\sqrt{21})\\)",
+            "(C) \\((7,\\pm 2\\sqrt{21})\\)",
+            "(D) \\((3,\\pm 6)\\)"
           ],
-          "correct": "B"
+          "correct": "C"
         }
       ]
     },
@@ -10007,7 +10007,7 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 11.1 / Olympiad Problems / GPT-5.4 / Q1",
           "question_number": 1,
-          "text": "A circle centered at the origin is tangent to the parabola \\(y^2=8x\\). Find the radius of the circle.",
+          "text": "A circle centered at \\((4,0)\\) is tangent to the parabola \\(y^2=8x\\) at its vertex. Find the radius of the circle.",
           "options": [
             "(A) \\(4\\)",
             "(B) \\(2\\)",
@@ -10024,10 +10024,10 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 11.2 / Olympiad Problems / GPT-5.4 / Q3",
           "question_number": 3,
-          "text": "An ellipse centered at the origin has vertices \\((\\pm 10,0)\\). A point \\(P\\) on the ellipse is such that its distances to the two foci are \\(6\\) and \\(14\\). Find the coordinates of \\(P\\).",
+          "text": "An ellipse centered at the origin has vertices \\((\\pm 10,0)\\) and foci \\((\\pm 5,0)\\). A point \\(P\\) on the ellipse is such that its distances to the two foci are \\(6\\) and \\(14\\). Find the coordinates of \\(P\\).",
           "options": [
             "(A) \\((\\pm 3,\\pm 4)\\)",
-            "(B) \\((\\pm 4,\\pm 3)\\)",
+            "(B) \\((\\pm 8,\\pm 3\\sqrt3)\\)",
             "(C) \\((\\pm 8,\\pm 6)\\)",
             "(D) \\((\\pm 6,\\pm 8)\\)"
           ],
@@ -10807,7 +10807,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q10",
           "question_number": 10,
-          "text": "**Understanding the Pole**\nWithout calculating, what are the rectangular coordinates for the polar point (0, 13\u03c0)?",
+          "text": "**Understanding the Pole**\nWithout calculating, what are the rectangular coordinates for the polar point (0, 13π)?",
           "options": [
             "(A) (0, 13)",
             "(B) (13, 0)",
@@ -10841,10 +10841,10 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q5",
           "question_number": 5,
-          "text": "**Converting Rectangular Equations (Circles)**\nConvert the rectangular equation x\u00b2 + y\u00b2 = 49 into its simplest polar equation form.",
+          "text": "**Converting Rectangular Equations (Circles)**\nConvert the rectangular equation x² + y² = 49 into its simplest polar equation form.",
           "options": [
             "(A) r = 49",
-            "(B) r\u00b2 = 7",
+            "(B) r² = 7",
             "(C) r = 7",
             "(D) r = 24.5"
           ],
@@ -10892,12 +10892,12 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q4",
           "question_number": 4,
-          "text": "**Equivalent Coordinates (Positive Angle)**\nThe polar point (7, -\u03c0/2) uses a negative angle. What is the equivalent polar coordinate that keeps the same radius but uses a positive angle between 0 and 2\u03c0?",
+          "text": "**Equivalent Coordinates (Positive Angle)**\nThe polar point (7, -π/2) uses a negative angle. What is the equivalent polar coordinate that keeps the same radius but uses a positive angle between 0 and 2π?",
           "options": [
-            "(A) (-7, \u03c0/2)",
-            "(B) (7, 3\u03c0/2)",
-            "(C) (7, \u03c0/2)",
-            "(D) (7, 5\u03c0/2)"
+            "(A) (-7, π/2)",
+            "(B) (7, 3π/2)",
+            "(C) (7, π/2)",
+            "(D) (7, 5π/2)"
           ],
           "correct": "B"
         },
@@ -10909,7 +10909,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q6",
           "question_number": 6,
-          "text": "**Converting Polar Equations (Horizontal Line)**\nConvert the polar equation r sin \u03b8 = -6 into a rectangular equation.",
+          "text": "**Converting Polar Equations (Horizontal Line)**\nConvert the polar equation r sin θ = -6 into a rectangular equation.",
           "options": [
             "(A) x = -6",
             "(B) y = -6",
@@ -10987,10 +10987,10 @@
           "question_number": 9,
           "text": "**Converting Polar Equations (Constant Radius)**\nWhat is the rectangular equation for the polar equation r = 10?",
           "options": [
-            "(A) x\u00b2 + y\u00b2 = 10",
-            "(B) x\u00b2 + y\u00b2 = 100",
+            "(A) x² + y² = 10",
+            "(B) x² + y² = 100",
             "(C) x + y = 10",
-            "(D) x\u00b2 + y\u00b2 = 20"
+            "(D) x² + y² = 20"
           ],
           "correct": "B"
         },
@@ -11019,12 +11019,12 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q3",
           "question_number": 3,
-          "text": "**Equivalent Coordinates (Negative Radius)**\nGive an equivalent polar coordinate for (3, \u03c0/2) that uses a negative radius (r = -3) and a positive angle between 0 and 2\u03c0.",
+          "text": "**Equivalent Coordinates (Negative Radius)**\nGive an equivalent polar coordinate for (3, π/2) that uses a negative radius (r = -3) and a positive angle between 0 and 2π.",
           "options": [
-            "(A) (-3, \u03c0/2)",
-            "(B) (-3, -\u03c0/2)",
-            "(C) (-3, 5\u03c0/2)",
-            "(D) (-3, 3\u03c0/2)"
+            "(A) (-3, π/2)",
+            "(B) (-3, -π/2)",
+            "(C) (-3, 5π/2)",
+            "(D) (-3, 3π/2)"
           ],
           "correct": "D"
         },
@@ -11036,12 +11036,12 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q8",
           "question_number": 8,
-          "text": "**Converting Rectangular Equations (Linear)**\nConvert the rectangular equation y = x into a polar equation of the form \u03b8 = c, where c is a positive angle less than \u03c0.",
+          "text": "**Converting Rectangular Equations (Linear)**\nConvert the rectangular equation y = x into a polar equation of the form θ = c, where c is a positive angle less than π.",
           "options": [
-            "(A) \u03b8 = \u03c0/4",
-            "(B) \u03b8 = 1",
-            "(C) \u03b8 = \u03c0/2",
-            "(D) \u03b8 = 3\u03c0/4"
+            "(A) θ = π/4",
+            "(B) θ = 1",
+            "(C) θ = π/2",
+            "(D) θ = 3π/4"
           ],
           "correct": "A"
         },
@@ -11053,7 +11053,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q1",
           "question_number": 1,
-          "text": "**Polar to Rectangular (Axis Point)**\nWhat are the rectangular coordinates (x, y) for the polar point (4, \u03c0)?",
+          "text": "**Polar to Rectangular (Axis Point)**\nWhat are the rectangular coordinates (x, y) for the polar point (4, π)?",
           "options": [
             "(A) (4, 0)",
             "(B) (0, -4)",
@@ -11087,12 +11087,12 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q2",
           "question_number": 2,
-          "text": "**Rectangular to Polar (Axis Point)**\nWhat are the polar coordinates (r, \u03b8) for the rectangular point (0, 5), assuming r > 0 and 0 \u2264 \u03b8 < 2\u03c0?",
+          "text": "**Rectangular to Polar (Axis Point)**\nWhat are the polar coordinates (r, θ) for the rectangular point (0, 5), assuming r > 0 and 0 ≤ θ < 2π?",
           "options": [
-            "(A) (5, \u03c0/2)",
+            "(A) (5, π/2)",
             "(B) (5, 0)",
-            "(C) (5, \u03c0)",
-            "(D) (5, 3\u03c0/2)"
+            "(C) (5, π)",
+            "(D) (5, 3π/2)"
           ],
           "correct": "A"
         },
@@ -11180,7 +11180,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.1 / Mental Math / Gemini 3.1 Pro / Q7",
           "question_number": 7,
-          "text": "**Converting Polar Equations (Vertical Line)**\nConvert the polar equation r cos \u03b8 = 8 into a rectangular equation.",
+          "text": "**Converting Polar Equations (Vertical Line)**\nConvert the polar equation r cos θ = 8 into a rectangular equation.",
           "options": [
             "(A) y = 8",
             "(B) y = -8",
@@ -11612,7 +11612,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.2 / Mental Math / Gemini 3.1 Pro / Q8",
           "question_number": 8,
-          "text": "**8. Lima\u00e7on Inner Loops**\nWill the lima\u00e7on defined by the equation $r = 2 + 6\\sin\\theta$ have an inner loop?",
+          "text": "**8. Limaçon Inner Loops**\nWill the limaçon defined by the equation $r = 2 + 6\\sin\\theta$ have an inner loop?",
           "options": [
             "(A) No, because $2 < 6$",
             "(B) Yes, because $2 > 0$",
@@ -11697,7 +11697,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.2 / Olympiad Problems / Gemini 3.1 Pro / Q6",
           "question_number": 6,
-          "text": "Two mutually perpendicular straight lines are drawn through the pole, intersecting the lima\u00e7on $r = 9 + 5\\cos\\theta$ at four distinct points. Calculate the sum of the distances from the pole to these four points.",
+          "text": "Two mutually perpendicular straight lines are drawn through the pole, intersecting the limaçon $r = 9 + 5\\cos\\theta$ at four distinct points. Calculate the sum of the distances from the pole to these four points.",
           "options": [
             "(A) $18$",
             "(B) $40$",
@@ -11744,7 +11744,7 @@
             "(A) Circle",
             "(B) Rose curve",
             "(C) Cardioid",
-            "(D) Lima\u00e7on with inner loop"
+            "(D) Limaçon with inner loop"
           ],
           "correct": "C"
         },
@@ -11758,9 +11758,9 @@
           "question_number": 7,
           "text": "**7. Recognizing Cardioids**\nBased on its coefficients, what specific heart-shaped curve is represented by the equation $r = 4 + 4\\cos\\theta$?",
           "options": [
-            "(A) Dimpled lima\u00e7on",
-            "(B) Convex lima\u00e7on",
-            "(C) Lima\u00e7on with an inner loop",
+            "(A) Dimpled limaçon",
+            "(B) Convex limaçon",
+            "(C) Limaçon with an inner loop",
             "(D) Cardioid"
           ],
           "correct": "D"
@@ -11824,12 +11824,12 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 8.2 / Mental Math / GPT-5.4 / Q4",
           "question_number": 4,
-          "text": "**Lima\u00e7on Type**: Is \\(r=5+2\\sin\\theta\\) a cardioid, a lima\u00e7on without inner loop, or a lima\u00e7on with inner loop?",
+          "text": "**Limaçon Type**: Is \\(r=5+2\\sin\\theta\\) a cardioid, a limaçon without inner loop, or a limaçon with inner loop?",
           "options": [
             "(A) Cardioid",
-            "(B) Lima\u00e7on with inner loop",
+            "(B) Limaçon with inner loop",
             "(C) Circle",
-            "(D) Lima\u00e7on without inner loop"
+            "(D) Limaçon without inner loop"
           ],
           "correct": "D"
         },
@@ -11995,10 +11995,10 @@
           "question_number": 6,
           "text": "**Multiply in Polar Form**: If \\(z_1\\) has modulus 2 and argument \\( \\frac{\\pi}{6} \\), and \\(z_2\\) has modulus 3 and argument \\( \\frac{\\pi}{3} \\), what are the modulus and argument of \\(z_1z_2\\)?",
           "options": [
-            "(A) 6, \u03c0/2",
-            "(B) 5, \u03c0/2",
-            "(C) 6, \u03c0/6",
-            "(D) 1, \u03c0/2"
+            "(A) 6, π/2",
+            "(B) 5, π/2",
+            "(C) 6, π/6",
+            "(D) 1, π/2"
           ],
           "correct": "A"
         },
@@ -12012,10 +12012,10 @@
           "question_number": 9,
           "text": "**Speeding Around a Circle**  \nFor \\(x=4\\cos(3t),\\ y=4\\sin(3t)\\), how long does one full revolution take?",
           "options": [
-            "(A) 3\u03c0",
-            "(B) 2\u03c0",
-            "(C) 2\u03c0/3",
-            "(D) \u03c0/3"
+            "(A) 3π",
+            "(B) 2π",
+            "(C) 2π/3",
+            "(D) π/3"
           ],
           "correct": "C"
         },
@@ -12027,7 +12027,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.3 / Mental Math / Gemini 3.1 Pro / Q5",
           "question_number": 5,
-          "text": "**5. De Moivre\u2019s Theorem**\nIf $z = 2(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4})$, what are the modulus and argument of $z^3$?",
+          "text": "**5. De Moivre’s Theorem**\nIf $z = 2(\\cos\\frac{\\pi}{4} + i\\sin\\frac{\\pi}{4})$, what are the modulus and argument of $z^3$?",
           "options": [
             "(A) Modulus 6, Argument $\\frac{3\\pi}{4}$",
             "(B) Modulus 8, Argument $\\frac{3\\pi}{4}$",
@@ -12064,9 +12064,9 @@
           "text": "**Negative Real Axis**: Write the complex number \\( -3 \\) in polar form by giving its modulus and a principal argument.",
           "options": [
             "(A) 3, 0",
-            "(B) -3, \u03c0",
-            "(C) 3, \u03c0",
-            "(D) 3, \u03c0/2"
+            "(B) -3, π",
+            "(C) 3, π",
+            "(D) 3, π/2"
           ],
           "correct": "C"
         },
@@ -12156,10 +12156,10 @@
           "question_number": 10,
           "text": "**Roots Spacing**: The cube roots of a complex number have arguments starting at \\( \\frac{\\pi}{6} \\). What angle do you add each time to get the next root?",
           "options": [
-            "(A) \u03c0/6",
-            "(B) 2\u03c0/3",
-            "(C) \u03c0/3",
-            "(D) 2\u03c0"
+            "(A) π/6",
+            "(B) 2π/3",
+            "(C) π/3",
+            "(D) 2π"
           ],
           "correct": "B"
         },
@@ -12351,10 +12351,10 @@
           "question_number": 7,
           "text": "**Divide in Polar Form**: If \\(z_1\\) has modulus 8 and argument \\( \\frac{5\\pi}{6} \\), and \\(z_2\\) has modulus 2 and argument \\( \\frac{\\pi}{3} \\), what are the modulus and argument of \\( \\frac{z_1}{z_2} \\)?",
           "options": [
-            "(A) 6, \u03c0/2",
-            "(B) 4, \u03c0/2",
-            "(C) 4, \u03c0/6",
-            "(D) 10, \u03c0/2"
+            "(A) 6, π/2",
+            "(B) 4, π/2",
+            "(C) 4, π/6",
+            "(D) 10, π/2"
           ],
           "correct": "B"
         },
@@ -12741,10 +12741,10 @@
           "question_number": 8,
           "text": "**De Moivre Power**: If \\(z\\) has modulus 2 and argument \\( \\frac{\\pi}{4} \\), what are the modulus and argument of \\(z^3\\)?",
           "options": [
-            "(A) 8, \u03c0/12",
-            "(B) 6, 3\u03c0/4",
-            "(C) 8, 3\u03c0/4",
-            "(D) 8, \u03c0"
+            "(A) 8, π/12",
+            "(B) 6, 3π/4",
+            "(C) 8, 3π/4",
+            "(D) 8, π"
           ],
           "correct": "C"
         },
@@ -12902,10 +12902,10 @@
           "question_number": 4,
           "text": "**Simple Polar Idea**: What is the modulus and a principal argument of \\( 2i \\)?",
           "options": [
-            "(A) 2, \u03c0/2",
+            "(A) 2, π/2",
             "(B) 2, 0",
-            "(C) 4, \u03c0/2",
-            "(D) 2, 2\u03c0"
+            "(C) 4, π/2",
+            "(D) 2, 2π"
           ],
           "correct": "A"
         },
@@ -13149,7 +13149,7 @@
           "options": [
             "(A) 25",
             "(B) 7",
-            "(C) \u221a7",
+            "(C) √7",
             "(D) 5"
           ],
           "correct": "D"
@@ -13215,10 +13215,10 @@
           "question_number": 5,
           "text": "**Scalar Multiplication**  \nIf \\(v=\\langle -2,3\\rangle\\), what is \\(-2v\\)?",
           "options": [
-            "(A) \u27e84,6\u27e9",
-            "(B) \u27e8-4,6\u27e9",
-            "(C) \u27e84,-6\u27e9",
-            "(D) \u27e8-4,-6\u27e9"
+            "(A) ⟨4,6⟩",
+            "(B) ⟨-4,6⟩",
+            "(C) ⟨4,-6⟩",
+            "(D) ⟨-4,-6⟩"
           ],
           "correct": "C"
         },
@@ -13306,12 +13306,12 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 8.5 / Mental Math / GPT-5.4 / Q10",
           "question_number": 10,
-          "text": "**Resultant Velocity**  \nA river flows south at \\(3\\) mi/h, and a swimmer heads east at \\(2\\) mi/h relative to the water. What is the swimmer\u2019s true velocity as a vector?",
+          "text": "**Resultant Velocity**  \nA river flows south at \\(3\\) mi/h, and a swimmer heads east at \\(2\\) mi/h relative to the water. What is the swimmer’s true velocity as a vector?",
           "options": [
-            "(A) \u27e82,3\u27e9",
-            "(B) \u27e83,2\u27e9",
-            "(C) \u27e8-2,3\u27e9",
-            "(D) \u27e82,-3\u27e9"
+            "(A) ⟨2,3⟩",
+            "(B) ⟨3,2⟩",
+            "(C) ⟨-2,3⟩",
+            "(D) ⟨2,-3⟩"
           ],
           "correct": "D"
         },
@@ -13391,7 +13391,7 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q2",
           "question_number": 2,
-          "text": "**Perpendicular Check**: Are the vectors \u27e84, 1\u27e9 and \u27e81, -4\u27e9 perpendicular?",
+          "text": "**Perpendicular Check**: Are the vectors ⟨4, 1⟩ and ⟨1, -4⟩ perpendicular?",
           "options": [
             "(A) No",
             "(B) Only if scaled",
@@ -13518,12 +13518,12 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q6",
           "question_number": 6,
-          "text": "**Easy Angle**: What angle is between \u27e81, 0\u27e9 and \u27e80, 5\u27e9?",
+          "text": "**Easy Angle**: What angle is between ⟨1, 0⟩ and ⟨0, 5⟩?",
           "options": [
-            "(A) 0\u00b0",
-            "(B) 45\u00b0",
-            "(C) 180\u00b0",
-            "(D) 90\u00b0"
+            "(A) 0°",
+            "(B) 45°",
+            "(C) 180°",
+            "(D) 90°"
           ],
           "correct": "D"
         },
@@ -13569,7 +13569,7 @@
           "model_label": "Gemini 3.1 Pro",
           "source_label": "Chapter 8.5 / Mental Math / Gemini 3.1 Pro / Q8",
           "question_number": 8,
-          "text": "**8. Components from Direction Angle**\nA vector has a magnitude of 10 and a direction of 180\u00b0 in standard position. What is its component form?",
+          "text": "**8. Components from Direction Angle**\nA vector has a magnitude of 10 and a direction of 180° in standard position. What is its component form?",
           "options": [
             "(A) < 0, -10 >",
             "(B) < 10, 0 >",
@@ -13586,7 +13586,7 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 8.5 / Olympiad Problems / GPT-5.4 / Q4",
           "question_number": 4,
-          "text": "A plane flies at \\(300\\) mi/h due north relative to the air. A wind of \\(100\\) mi/h blows due east. Without using a calculator, determine the plane\u2019s true speed and its direction as a compass bearing.",
+          "text": "A plane flies at \\(300\\) mi/h due north relative to the air. A wind of \\(100\\) mi/h blows due east. Without using a calculator, determine the plane’s true speed and its direction as a compass bearing.",
           "options": [
             "(A) \\(400\\text{ mi/h},\\ \\text{N }18.4^\\circ\\text{ E}\\)",
             "(B) \\(300\\sqrt2\\text{ mi/h},\\ \\text{N }45^\\circ\\text{ E}\\)",
@@ -13679,7 +13679,7 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q1",
           "question_number": 1,
-          "text": "**Quick Dot Product**: What is the dot product of \u27e82, 5\u27e9 and \u27e83, -1\u27e9?",
+          "text": "**Quick Dot Product**: What is the dot product of ⟨2, 5⟩ and ⟨3, -1⟩?",
           "options": [
             "(A) 1",
             "(B) 11",
@@ -13698,10 +13698,10 @@
           "question_number": 2,
           "text": "**Component Form from Points**  \nWhat is the component form of the vector from \\(P(2,1)\\) to \\(Q(5,3)\\)?",
           "options": [
-            "(A) \u27e83,2\u27e9",
-            "(B) \u27e82,3\u27e9",
-            "(C) \u27e8-3,-2\u27e9",
-            "(D) \u27e87,4\u27e9"
+            "(A) ⟨3,2⟩",
+            "(B) ⟨2,3⟩",
+            "(C) ⟨-3,-2⟩",
+            "(D) ⟨7,4⟩"
           ],
           "correct": "A"
         },
@@ -13825,10 +13825,10 @@
           "question_number": 3,
           "text": "**Quick Vector Addition**  \nIf \\(u=\\langle 3,-1\\rangle\\) and \\(v=\\langle -2,4\\rangle\\), what is \\(u+v\\)?",
           "options": [
-            "(A) \u27e81,5\u27e9",
-            "(B) \u27e85,3\u27e9",
-            "(C) \u27e81,3\u27e9",
-            "(D) \u27e8-5,3\u27e9"
+            "(A) ⟨1,5⟩",
+            "(B) ⟨5,3⟩",
+            "(C) ⟨1,3⟩",
+            "(D) ⟨-5,3⟩"
           ],
           "correct": "C"
         },
@@ -13874,7 +13874,7 @@
           "model_label": "GPT-5.4",
           "source_label": "Chapter 8.6 / Mental Math / GPT-5.4 / Q8",
           "question_number": 8,
-          "text": "**Simple Component**: What is the component of \u27e86, 0\u27e9 along \u27e83, 0\u27e9?",
+          "text": "**Simple Component**: What is the component of ⟨6, 0⟩ along ⟨3, 0⟩?",
           "options": [
             "(A) 6",
             "(B) 3",
@@ -13927,10 +13927,10 @@
           "question_number": 9,
           "text": "**Special-Angle Components**  \nA vector has magnitude \\(2\\) and direction \\(30^\\circ\\). What are its horizontal and vertical components?",
           "options": [
-            "(A) (\u221a3,1)",
-            "(B) (1,\u221a3)",
-            "(C) (\u221a3/2,1/2)",
-            "(D) (2\u221a3,2)"
+            "(A) (√3,1)",
+            "(B) (1,√3)",
+            "(C) (√3/2,1/2)",
+            "(D) (2√3,2)"
           ],
           "correct": "A"
         },
@@ -14054,10 +14054,10 @@
           "question_number": 4,
           "text": "**Quick Vector Subtraction**  \nIf \\(u=\\langle 4,2\\rangle\\) and \\(v=\\langle 1,5\\rangle\\), what is \\(u-v\\)?",
           "options": [
-            "(A) \u27e83,-3\u27e9",
-            "(B) \u27e8-3,3\u27e9",
-            "(C) \u27e85,7\u27e9",
-            "(D) \u27e83,3\u27e9"
+            "(A) ⟨3,-3⟩",
+            "(B) ⟨-3,3⟩",
+            "(C) ⟨5,7⟩",
+            "(D) ⟨3,3⟩"
           ],
           "correct": "A"
         },
