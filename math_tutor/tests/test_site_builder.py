@@ -141,6 +141,14 @@ class SiteBuilderTests(unittest.TestCase):
             self.assertNotIn("Live Tutor", course_html)
             self.assertNotIn("Challenge Exams", course_html)
             self.assertIn("Class Note PDF", record_html)
+            self.assertIn("Chapter 2 textbook", record_html)
+            self.assertIn("Open Chapter 2 through Canvas", record_html)
+            self.assertIn("Read It", record_html)
+            self.assertNotIn("Open the textbook", record_html)
+            self.assertNotIn("snapshotId=1529049", record_html)
+            self.assertNotIn("gateway.cengage.com", record_html)
+            self.assertNotIn("ltioidc", record_html)
+            self.assertNotIn("token=", record_html)
             self.assertIn(
                 '/site/courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf',
                 record_html,

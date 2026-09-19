@@ -65,6 +65,7 @@ CORE_MODULES = [
     "math_tutor/site_sections.py",
     "math_tutor/site_shell.py",
     "math_tutor/site_theme.py",
+    "math_tutor/site_textbook.py",
     "math_tutor/site_builder.py",
     "math_tutor/state_store.py",
     "math_tutor/video_recommendations.py",

@@ -82,6 +82,7 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 - `index.html` is a course selector for Algebra II / Trigonometry and AP Calculus AB
 - Algebra pages live under `courses/algebra-2-trig/` and include a persistent `Switch Course` action
 - AP Calculus AB lives under `courses/ap-calculus-ab/`; Chapter 2 is published from its isolated output and no Algebra content is inherited
+- The Calculus Chapter 2 page includes a validated Cengage textbook map: students launch through a normal Canvas homework link and choose `Read It` in WebAssign; no direct MindTap or transient LTI/OIDC link is published
 - Calculus currently exposes only the verified class note, not Live Tutor, generated practice, or challenge exams
 - The Algebra library keeps the chapter list in the left rail and moves the branded nav header into the main panel
 - The Algebra Live Tutor is a no-sidebar page with the same branded top header as the library overview
@@ -128,6 +129,7 @@ Current important module boundaries:
   - [math_tutor/site_theme.py](/home/nshah/projects/math-tutor/math_tutor/site_theme.py)
   - [math_tutor/site_navigation.py](/home/nshah/projects/math-tutor/math_tutor/site_navigation.py)
   - [math_tutor/site_challenges.py](/home/nshah/projects/math-tutor/math_tutor/site_challenges.py)
+  - [math_tutor/site_textbook.py](/home/nshah/projects/math-tutor/math_tutor/site_textbook.py)
 
 This means future cleanup should usually target one focused module at a time instead of editing `cli.py` or `site_builder.py` as giant catch-all files.
 
@@ -198,7 +200,7 @@ Architecture and validation references:
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 - CLI fetch logs now summarize already-fetched vs pending files before processing
 - All JSON state writers route through `math_tutor/atomic_io.py` and PDF downloads stream via a `.part` rename — mid-operation crashes no longer corrupt state files or leave truncated PDFs on disk (see [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md) "Crash Safety")
-- Local validation baseline is `223` passing tests via `math_tutor/scripts/validate_project.py`
+- Local validation baseline is `244` passing tests via `math_tutor/scripts/validate_project.py`
 - The current refactor checkpoint did not rerun model APIs and did not rebuild the deploy tree in place unless explicitly requested
 
 ## Known Risks

@@ -7,6 +7,7 @@ from tempfile import TemporaryDirectory
 from math_tutor.site_challenges import render_chapter_challenge_card
 from math_tutor.site_models import DocumentRecord, PromptOutputRecord
 from math_tutor.site_records import render_document_overview_card, render_document_page_content
+from math_tutor.site_textbook import AP_CALCULUS_CHAPTER_2_TEXTBOOK
 
 
 def site_page_href(filename: str, base_path: str) -> str:
@@ -128,6 +129,7 @@ class SiteRecordsTests(unittest.TestCase):
                 include_guided_learning=False,
                 site_page_href=site_page_href,
                 experience_variant="staging",
+                textbook_navigation=AP_CALCULUS_CHAPTER_2_TEXTBOOK,
             )
 
             self.assertIn("Chapter 2", html)
@@ -137,6 +139,10 @@ class SiteRecordsTests(unittest.TestCase):
             self.assertNotIn('id="challenge"', html)
             self.assertNotIn("Start Practice", html)
             self.assertNotIn("Take Challenge", html)
+            self.assertIn("Chapter 2 textbook", html)
+            self.assertIn("Open Chapter 2 through Canvas", html)
+            self.assertNotIn("Open the textbook", html)
+            self.assertIn("2.4", html)
 
 
 if __name__ == "__main__":

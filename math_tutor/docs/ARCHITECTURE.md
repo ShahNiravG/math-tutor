@@ -493,9 +493,23 @@ Reusable record-page rendering for document pages.
 
 Key contract:
 
-- Inputs: document records, prompt outputs, assignment files, site/output paths, and href builders
-- Outputs: stable HTML fragments for chapter overview cards, guided learning sections, and full record pages
+- Inputs: document records, prompt outputs, assignment files, optional validated textbook navigation, site/output paths, and href builders
+- Outputs: stable HTML fragments for chapter overview cards, guided learning sections, textbook navigation, and full record pages
 - Side effects: filesystem reads only
+
+### `site_textbook.py`
+
+Defines and renders non-secret, course-scoped textbook navigation. AP Calculus AB Chapter 2
+uses a normal Canvas assignment as the Cengage entitlement bootstrap and instructs students
+to choose `Read It` inside WebAssign. Direct MindTap reader links and transient LTI/OIDC
+requests are never rendered.
+
+Key contract:
+
+- Inputs: course ID, chapter, allowlisted Canvas assignment URLs, and the approved Cengage reader URL
+- Outputs: immutable validated navigation metadata and escaped textbook HTML
+- Validation: rejects unexpected reader query keys, fragments, off-domain URLs, wrong Canvas course paths, duplicate sections, and unordered sections
+- Side effects: none
 
 ### `site_prompt_cards.py`
 

@@ -727,12 +727,157 @@ BASE_SITE_PAGE_STYLES = """
     .summary-card .card-summary li {
       margin-bottom: 8px;
     }
+    .textbook-panel {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at top right, rgba(29, 78, 216, 0.08), transparent 32%),
+        linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    }
+    .textbook-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 5px;
+      background: linear-gradient(180deg, #1d4ed8, #f97316);
+    }
+    .textbook-heading {
+      display: flex;
+      align-items: start;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 22px;
+    }
+    .textbook-heading h3 {
+      margin: 6px 0 8px;
+      font-size: clamp(1.65rem, 3vw, 2.2rem);
+      letter-spacing: -0.035em;
+    }
+    .textbook-edition {
+      flex: 0 0 auto;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      font-size: 0.78rem;
+      font-weight: 750;
+    }
+    .textbook-access-path {
+      display: grid;
+      grid-template-columns: minmax(0, 760px);
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+    .textbook-access-step {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 14px;
+      padding: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.28);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.86);
+    }
+    .textbook-access-step strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 1.02rem;
+    }
+    .textbook-access-step p {
+      margin: 0 0 14px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+    .textbook-step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background: #1d4ed8;
+      color: #ffffff;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      font-weight: 800;
+      box-shadow: 0 8px 18px rgba(29, 78, 216, 0.2);
+    }
+    .textbook-section-head {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(148, 163, 184, 0.28);
+    }
+    .textbook-section-head p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .textbook-sections {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .textbook-section {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 12px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      border-radius: 16px;
+      background: rgba(248, 250, 252, 0.88);
+    }
+    .textbook-section-number {
+      min-width: 42px;
+      color: #1d4ed8;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+    .textbook-section-copy {
+      display: grid;
+      gap: 7px;
+      min-width: 0;
+    }
+    .textbook-section-copy strong {
+      line-height: 1.35;
+    }
+    .textbook-section-copy a,
+    .textbook-section-status {
+      justify-self: start;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .textbook-section-copy a {
+      color: #1d4ed8;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    .textbook-section-status {
+      color: #64748b;
+    }
+    .textbook-access-note {
+      margin: 18px 0 0;
+      color: #64748b;
+      font-family: "Inter", "Segoe UI", sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
     @media (max-width: 960px) {
       .page { grid-template-columns: 1fr; }
       .sidebar { position: static; max-height: none; }
       .landing-grid { grid-template-columns: 1fr; }
       .nav-pill-switch { margin-left: 0; }
       .home-brand { margin-bottom: 18px; }
+      .textbook-heading { display: grid; }
+      .textbook-edition { justify-self: start; }
+      .textbook-access-path,
+      .textbook-sections { grid-template-columns: 1fr; }
     }
 """
 

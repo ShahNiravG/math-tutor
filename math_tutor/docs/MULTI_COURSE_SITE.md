@@ -155,3 +155,170 @@ Approved, implemented, deployed, and user-verified on 2026-09-19.
 - A production-shaped `/tmp` build contained only the five intended Calculus files: home, library, chapter page, privacy policy, and PDF.
 - The watched deployment tree was rebuilt at `math_tutor/output/deploy/math_tutor/site/` with base path `/site/`.
 - The user verified the deployed Chapter 2 experience on `mathdelight.com`.
+
+## Phase 5: Chapter 2 Cengage Textbook Navigation
+
+Approved for an authenticated feasibility spike only on 2026-09-19. Site implementation,
+deployment, and publication remain subject to a separate approval after the spike reports
+its findings.
+
+### Goal
+
+Make the AP Calculus AB Chapter 2 page a convenient starting point for the course's
+online Cengage textbook. Prefer verified section-level links that keep protected textbook
+content on Cengage and let Cengage enforce each student's entitlement.
+
+Supplied reader URL:
+
+```text
+https://ng.cengage.com/static/nb/ui/evo/index.html?snapshotId=1529049&id=677758950&eISBN=9780357049105
+```
+
+### Approved Feasibility Spike
+
+- Reuse the existing Canvas/OneLogin credentials and authenticated browser flow without
+  requiring interactive user input when the existing login remains sufficient.
+- Use an ephemeral Playwright browser context; do not persist browser storage unless a
+  later plan explicitly requires and receives approval for it.
+- Inspect the Calculus Canvas Modules area for the authorized Cengage/MindTap launch path.
+- Open the authenticated reader and identify Chapter 2's title, ordered section structure,
+  and navigation identifiers without publishing or logging protected chapter text.
+- Test whether section destinations remain usable in a fresh authenticated context.
+- Determine whether access is a direct Cengage login, a Canvas LTI launch, or a
+  session-bound route.
+- Report feasibility and recommend the smallest safe site integration before writing tests
+  or implementation code.
+
+### Safety and Rights Boundaries
+
+- Never log, commit, deploy, or expose credentials, cookies, session tokens, signed launch
+  parameters, or other authentication material.
+- Do not mirror, scrape for republication, or deploy protected textbook pages, prose,
+  illustrations, exercises, or DRM-controlled assets without documented permission.
+- Navigation metadata may include chapter/section titles, ordering, stable publisher URLs,
+  and non-secret publisher identifiers when verified safe.
+- If usable navigation requires session-bearing URLs or copied protected content, stop and
+  report the limitation rather than attempting to bypass Cengage access controls.
+
+### Approved Integration
+
+- Store validated, non-secret Chapter 2 navigation metadata in the source-controlled
+  `site_textbook.py` module so clean builds remain deterministic.
+- Render a clearly labeled `Chapter 2 Textbook` section on
+  `courses/ap-calculus-ab/doc-4839635.html`.
+- Open textbook destinations on Cengage, where each student authenticates with their own
+  entitlement.
+- Keep Algebra and other Calculus chapters unchanged.
+- Validate publisher hosts and reject URLs containing credentials, tokens, or session data.
+
+### Planned TDD Sequence
+
+1. Red/green/refactor for textbook-manifest validation and unsafe-URL rejection.
+2. Red/green/refactor for Calculus course and Chapter 2 isolation.
+3. Red/green/refactor for ordered textbook navigation on the Chapter 2 page.
+4. Red/green/refactor for safe missing or invalid metadata behavior.
+5. Regression validation for the existing Algebra and Calculus experiences.
+6. Build into `/tmp`, inspect emitted URLs and files, and only then request deployment
+   approval.
+
+### Acceptance Criteria
+
+1. The Chapter 2 page distinguishes the school class note from the publisher textbook.
+2. Verified textbook sections appear in the correct order when stable safe destinations
+   exist.
+3. Cengage continues to enforce student authentication and entitlement.
+4. No protected textbook body content or authentication material is emitted into the site,
+   logs, source control, or saved metadata.
+5. Missing or invalid navigation metadata fails safely and explicitly.
+6. No textbook resource appears in Algebra or an unrelated Calculus chapter.
+7. Existing tests and the production-shaped staging build remain green.
+
+### Recovery and Rollback
+
+The feasibility spike is read-only and uses an ephemeral browser context. A future
+implementation would add only isolated navigation metadata and generated-page rendering;
+rollback would remove that metadata/rendering and rebuild the site. The saved Chapter 2
+class note and all existing course artifacts remain untouched.
+
+### Current Spike Status
+
+- An unauthenticated request reached the MindTap reader shell but exposed no chapter
+  structure, confirming that authenticated inspection is required.
+- The first authenticated Playwright attempt stopped before login because Chromium could
+  not start inside the filesystem/process sandbox (`Operation not permitted`). The approved
+  rerun outside that sandbox started successfully.
+- The existing Canvas/OneLogin flow authenticated successfully to Canvas course `4446`.
+- Neither the rendered Calculus Modules page nor its authenticated Modules API metadata
+  contains a Cengage/MindTap external URL or external-tool launch item.
+- Opening the supplied reader URL inside the authenticated Canvas browser redirected to
+  `/static/nb/logout.html`. Cengage states that MindTap must be restarted from Cengage login
+  or the learning-management system; Canvas authentication alone does not establish the
+  required Cengage entitlement session.
+- Cengage exposes a first-party two-step login at `account.cengage.com`. One corrected,
+  ephemeral sign-in attempt using the already configured school credentials did not leave
+  the Cengage login page, and the reader again redirected to the logout page. No further
+  credential attempts were made to avoid account-lockout risk.
+- A later inspection of the authenticated Canvas Assignments API found seven Chapter 2
+  external-tool assignments. They launch through `gateway.cengage.com` and cover sections
+  2.1, 2.2, 2.3, 2.5, 2.6, 2.7, and 2.8. Canvas assignment IDs are non-secret navigation
+  metadata; signed launch parameters were not recorded.
+- The launch uses Cengage's LTI/OIDC authorization flow at
+  `gateway.cengage.com/ws/mlapi/ltioidc/authorize`. This authorization endpoint is
+  session-bound and must not be published as a reusable student link.
+- Launching a Chapter 2 assignment through authenticated Canvas successfully established a
+  WebAssign session. The supplied WebAssign route then opened the entitled course homework.
+- WebAssign exposes JavaScript-driven `Read It` controls. Activating one opened the supplied
+  MindTap reader successfully in the same ephemeral browser context.
+- The authenticated reader exposed the Chapter 2 table-of-contents entries:
+  - 2.1: The Tangent and Velocity Problems
+  - 2.2: The Limit of a Function
+  - 2.3: Calculating Limits Using the Limit Laws
+  - 2.4: The Precise Definition of a Limit
+  - 2.5: Continuity
+  - 2.6: Limits at Infinity; Horizontal Asymptotes
+  - 2.7: Derivatives and Rates of Change
+  - 2.8: The Derivative as a Function
+- The raw MindTap reader URL remains an authenticated resource: it redirects to the logout
+  page before the LTI/WebAssign session exists, but opens after the legitimate Canvas launch
+  and WebAssign `Read It` flow establish entitlement.
+- No protected textbook body content, browser state, credentials, cookies, signed launch
+  data, or tokens were printed or saved.
+- Feasibility was confirmed for navigation, with an important constraint: the site may
+  publish stable Canvas assignment links and the non-secret reader location, but it cannot
+  publish or synthesize the transient LTI/OIDC authorization request. The implementation
+  should provide an `Open Cengage access` bootstrap through a normal Canvas assignment and
+  an ordered Chapter 2 textbook index, clearly explaining that a current entitled Cengage
+  session is required. A section-specific MindTap stability probe did not expose a reliable
+  reusable deep-link contract, so no section-specific reader URLs are stored.
+
+### Implementation Status
+
+Approved and implemented locally on 2026-09-19; not yet deployed.
+
+- `site_textbook.py` owns immutable Chapter 2 textbook metadata, validates exact Cengage
+  reader query keys, allowlists the school Canvas host/course assignment paths, and rejects
+  fragments, off-domain destinations, duplicate sections, and unordered sections.
+- The Calculus Chapter 2 page renders one reliable access path: launch a normal Canvas
+  assignment, then choose `Read It` inside the entitled WebAssign session.
+- The page lists sections 2.1 through 2.8 in order. Sections with verified Canvas homework
+  link to their normal assignment; section 2.4 is labeled as textbook-only.
+- External links open in a new tab with `noopener noreferrer`.
+- The component is responsive and uses the existing Calculus source-page visual language.
+- Course/chapter lookup prevents the component from appearing on Algebra or unrelated
+  Calculus pages.
+- Generated-site tests assert that no `gateway.cengage.com`, `ltioidc`, or `token=` value is
+  emitted.
+- No textbook body content, Cengage cookies, tokens, signed requests, or protected assets
+  are stored or deployed.
+- Live verification showed that a direct MindTap link could still reach the logout page even
+  after a separate Canvas launch. That link was removed; generated pages now contain no
+  direct `snapshotId` reader URL. Section 2.4 directs students to MindTap's `Full Book` menu.
+- Red/green/refactor TDD was observed across metadata validation, rendering, course/chapter
+  wiring, and responsive styling.
+- Full offline validation passed with 244 tests plus Python compilation and
+  `git diff --check`.
+- A production-shaped `/tmp` build contained the intended five Calculus files, rendered
+  sections 2.1 through 2.8 in order, emitted no gateway/OIDC/token material, and added no
+  textbook component to Algebra.
+- Desktop and 390-pixel mobile screenshots were inspected successfully. The watched deploy
+  tree was not modified.

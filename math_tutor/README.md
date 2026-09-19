@@ -148,7 +148,7 @@ Useful flags:
 
 **Calculus course home (`courses/ap-calculus-ab/index.html`)** — a source-first course experience listing the school chapters currently available. Chapter 2 links to the original `Chapter 2 Notetakers.pdf`; unavailable generated study tools are not advertised.
 
-**Calculus library and chapter pages** — `courses/ap-calculus-ab/library.html` lists the available chapters and `doc-4839635.html` provides the verified school PDF. Calculus does not inherit Algebra challenges, assignments, or generated responses.
+**Calculus library and chapter pages** — `courses/ap-calculus-ab/library.html` lists the available chapters and `doc-4839635.html` provides the verified school PDF plus a Chapter 2 textbook map. Students open the normal Canvas Cengage launch and choose `Read It` inside WebAssign; the site does not link directly to the session-dependent MindTap reader. Calculus does not inherit Algebra challenges, generated responses, or transient Cengage launch data.
 
 **Algebra library (`courses/algebra-2-trig/library.html`)** — one card per document, each showing a summary row. The chapter list stays in the left rail only on this page.
 

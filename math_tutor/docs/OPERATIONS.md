@@ -155,6 +155,12 @@ The build publishes the saved Calculus Chapter 2 source note under:
 
 The Calculus site is built from `output/courses/ap-calculus-ab/`; no model call or Canvas login is needed for a rebuild.
 
+The Chapter 2 page also publishes non-secret Cengage navigation from
+`math_tutor/site_textbook.py`. Students use `Open Chapter 2 through Canvas`, then choose
+`Read It` inside WebAssign. Do not add a direct MindTap reader link or replace the Canvas URL
+with a captured `gateway.cengage.com` LTI/OIDC authorization URL; both depend on protected
+session state and the authorization request may contain sensitive launch data.
+
 ## Safe Expectations
 
 - Validation must pass before structural refactors are considered complete.

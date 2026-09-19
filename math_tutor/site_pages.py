@@ -7,6 +7,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from pathlib import Path
 
+from math_tutor.chaptering import parse_display_name_chapter
 from math_tutor.site_cards import document_label, record_page_filename
 from math_tutor.site_content import build_curriculum_guided_learning_prompt
 from math_tutor.site_courses import CourseConfig
@@ -14,6 +15,7 @@ from math_tutor.site_models import DocumentRecord, PromptOutputRecord
 from math_tutor.site_records import render_document_overview_card, render_document_page_content
 from math_tutor.site_sections import render_guided_learning_card, render_surface_header
 from math_tutor.site_shell import render_page_shell
+from math_tutor.site_textbook import get_textbook_navigation
 
 
 CALIFORNIA_TZ = ZoneInfo("America/Los_Angeles")
@@ -332,6 +334,10 @@ def build_record_page_html(
         assignment_prompt_outputs=assignment_prompt_outputs or {},
         site_page_href=site_page_href,
         experience_variant=experience_variant,
+        textbook_navigation=get_textbook_navigation(
+            course.course_id,
+            parse_display_name_chapter(record.display_name) or "",
+        ),
     )
     body_html = f"""
     {header_html}

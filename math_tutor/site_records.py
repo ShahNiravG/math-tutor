@@ -18,6 +18,7 @@ from math_tutor.site_content import (
 from math_tutor.site_models import DocumentRecord, PromptOutputRecord
 from math_tutor.site_prompt_cards import build_document_prompt_card_groups, build_document_prompt_cards_html
 from math_tutor.site_sections import render_guided_learning_card, render_index_card
+from math_tutor.site_textbook import TextbookNavigation, render_textbook_navigation
 
 
 def render_document_overview_card(
@@ -60,6 +61,7 @@ def render_document_page_content(
     assignment_prompt_outputs: dict[str, list[PromptOutputRecord]] | None = None,
     site_page_href: Callable[[str, str], str],
     experience_variant: str = "default",
+    textbook_navigation: TextbookNavigation | None = None,
 ) -> str:
     document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
@@ -109,6 +111,9 @@ def render_document_page_content(
         site_page_href,
         experience_variant=experience_variant,
     )
+    textbook_html = (
+        render_textbook_navigation(textbook_navigation) if textbook_navigation is not None else ""
+    )
 
     if experience_variant == "staging":
         has_generated_learning = any(output.processed_at for output in record.prompt_outputs)
@@ -151,6 +156,7 @@ def render_document_page_content(
           </div>
           <p class="page-intro">This course grows from the material used in class. New learning tools will appear only after they are deliberately added and reviewed.</p>
         </section>
+        {textbook_html}
         """
         summary_body = extract_record_summary_html(record) or "<p>No chapter summary is available yet. Start with the class note, then move into practice.</p>"
         learn_cards_html = "\n".join(prompt_groups["learn"])
@@ -292,6 +298,7 @@ def render_document_page_content(
         {prompt_cards_html}
       </div>
       {chapter_challenge_html}
+      {textbook_html}
     </section>
     """
 
