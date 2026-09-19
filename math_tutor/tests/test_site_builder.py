@@ -1,8 +1,10 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from math_tutor.site_content import render_record_summary
 from math_tutor.site_models import DocumentRecord, PromptOutputRecord
@@ -48,7 +50,6 @@ class SiteBuilderTests(unittest.TestCase):
                 mock_write.assert_not_called()
 
     def test_write_html_if_changed_writes_when_content_changed(self) -> None:
-        from unittest.mock import patch
         from math_tutor.site_builder import _write_html_if_changed
         with tempfile.TemporaryDirectory() as temp_dir:
             path = Path(temp_dir) / "test.html"
@@ -56,6 +57,97 @@ class SiteBuilderTests(unittest.TestCase):
             with patch.object(Path, "write_text") as mock_write:
                 _write_html_if_changed(path, "<html>new</html>")
                 mock_write.assert_called_once()
+
+    def test_build_site_creates_portal_and_isolated_course_directories(self) -> None:
+        from math_tutor.site_builder import build_site
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            output_dir = root / "output"
+            site_dir = root / "site"
+            output_dir.mkdir()
+
+            with patch("math_tutor.site_builder.build_challenges") as build_challenges:
+                index_path = build_site(
+                    output_dir=output_dir,
+                    site_dir=site_dir,
+                    base_path="/site/",
+                )
+
+            algebra_dir = site_dir / "courses" / "algebra-2-trig"
+            calculus_dir = site_dir / "courses" / "ap-calculus-ab"
+            self.assertEqual(index_path, site_dir / "index.html")
+            self.assertTrue((site_dir / "index.html").is_file())
+            self.assertTrue((algebra_dir / "index.html").is_file())
+            self.assertTrue((algebra_dir / "library.html").is_file())
+            self.assertTrue((algebra_dir / "live-tutor.html").is_file())
+            self.assertTrue((algebra_dir / "privacy-policy.html").is_file())
+            self.assertEqual([path.name for path in calculus_dir.iterdir()], ["index.html"])
+            build_challenges.assert_called_once_with(
+                output_dir=output_dir,
+                site_dir=algebra_dir,
+                experience_variant="staging",
+            )
+
+    def test_build_site_publishes_calculus_chapter_from_isolated_output(self) -> None:
+        from math_tutor.site_builder import build_site
+
+        with tempfile.TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            output_dir = root / "output"
+            site_dir = root / "site"
+            calculus_output_dir = output_dir / "courses" / "ap-calculus-ab"
+            calculus_downloads_dir = calculus_output_dir / "downloads"
+            calculus_downloads_dir.mkdir(parents=True)
+            source_pdf = calculus_downloads_dir / "4839635_chapter-2-notetakers.pdf"
+            source_pdf.write_bytes(b"%PDF-1.7\nchapter two")
+            (calculus_output_dir / "fetch_state.json").write_text(
+                json.dumps(
+                    {
+                        "fetched": {
+                            "4839635": {
+                                "display_name": "Chapter 2 Notetakers.pdf",
+                                "pdf_path": str(source_pdf),
+                                "download_url": "https://mitty.instructure.com/files/4839635/download",
+                                "fetched_at": "2026-09-19T12:00:00Z",
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            with patch("math_tutor.site_builder.build_challenges"):
+                build_site(
+                    output_dir=output_dir,
+                    site_dir=site_dir,
+                    base_path="/site/",
+                )
+
+            calculus_dir = site_dir / "courses" / "ap-calculus-ab"
+            deployed_pdf = calculus_dir / "downloads" / source_pdf.name
+            portal_html = (site_dir / "index.html").read_text(encoding="utf-8")
+            course_html = (calculus_dir / "index.html").read_text(encoding="utf-8")
+            record_html = (calculus_dir / "doc-4839635.html").read_text(encoding="utf-8")
+
+            self.assertTrue((calculus_dir / "library.html").is_file())
+            self.assertTrue((calculus_dir / "privacy-policy.html").is_file())
+            self.assertFalse((calculus_dir / "live-tutor.html").exists())
+            self.assertFalse((calculus_dir / "challenges").exists())
+            self.assertEqual(deployed_pdf.read_bytes(), source_pdf.read_bytes())
+            self.assertIn("AP Calculus AB", course_html)
+            self.assertIn("Chapter 2", course_html)
+            self.assertIn("doc-4839635.html", course_html)
+            self.assertNotIn("Live Tutor", course_html)
+            self.assertNotIn("Challenge Exams", course_html)
+            self.assertIn("Class Note PDF", record_html)
+            self.assertIn(
+                '/site/courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf',
+                record_html,
+            )
+            calculus_card = portal_html[portal_html.index("AP Calculus AB") - 250 :]
+            self.assertIn("Ready", calculus_card)
+            self.assertNotIn("Opening soon", calculus_card[:400])
 
 
 if __name__ == "__main__":

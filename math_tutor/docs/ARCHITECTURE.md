@@ -25,7 +25,7 @@ Primary operator entry point for:
 
 Key contract:
 
-- Inputs: Canvas credentials, prompt selection, output directory
+- Inputs: explicit course ID, Canvas credentials, prompt selection, base output directory
 - Outputs: downloaded PDFs, response `.md/.html/.pdf`, metadata JSON, state JSON
 - Side effects: delegates network access, filesystem writes, and API calls to dedicated modules
 
@@ -44,7 +44,7 @@ Key contract:
 - Outputs: discovered `CanvasFile` records and downloaded PDFs
 - Side effects: Canvas network access and filesystem writes
 
-Download atomicity: `download_pdf` streams to a sibling `.<name>.part` file and renames it into the final destination only on full success. A dropped connection, HTTP error, or disk-full mid-stream removes the partial file and leaves any previously existing destination file untouched, so operators never observe a truncated PDF on disk.
+Download atomicity and integrity: `download_pdf` streams to a sibling `.<name>.part` file, flushes and `fsync`s it, verifies the `%PDF-` signature, and renames it into the final destination only on full success. A dropped connection, HTTP error, non-PDF login/error page, or disk-full mid-stream removes the partial file and leaves any previously existing destination file untouched.
 
 ### `canvas_files.py`
 
@@ -197,13 +197,33 @@ Key contract:
 
 ### `site_builder.py`
 
-Builds the tutoring site and chapter pages from saved artifacts.
+Builds the course portal and course-scoped tutoring pages from saved artifacts. Algebra reads the preserved legacy output root; AP Calculus AB reads its isolated `output/courses/ap-calculus-ab/` root. The builder publishes Chapter 2 as source-only content without copying Algebra artifacts or advertising unavailable Calculus features.
 
 Key contract:
 
-- Inputs: saved downloads, response files, metadata, state JSON
-- Outputs: HTML site under `output/site/` or deploy tree
+- Inputs: course-specific saved downloads, response files, metadata, state JSON, and feature capabilities
+- Outputs: root course portal plus course directories under `output/site/` or the deploy tree
 - Side effects: filesystem writes only
+
+### `site_courses.py`
+
+Defines the immutable site course registry and rejects unknown course IDs.
+
+Key contract:
+
+- Inputs: stable course ID and Canvas display names
+- Outputs: explicit `CourseConfig` containing site identity, Canvas course URL, document naming contract, assignment policy, and content-readiness state
+- Side effects: none
+
+### `site_portal.py`
+
+Renders the root course selector and the intentional empty state for courses that do not yet have published content.
+
+Key contract:
+
+- Inputs: validated course definitions and deployment paths
+- Outputs: self-contained responsive HTML
+- Side effects: none
 
 ### `mcq_generator.py`
 

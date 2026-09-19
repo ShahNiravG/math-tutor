@@ -7,8 +7,15 @@ the current canonical state and artifact conventions.
 
 ## Canonical State Files
 
+Algebra II / Trigonometry retains its existing state paths:
+
 - `math_tutor/output/fetch_state.json`
 - `math_tutor/output/generated_output_state.json`
+
+AP Calculus AB uses isolated state and artifacts:
+
+- `math_tutor/output/courses/ap-calculus-ab/fetch_state.json`
+- `math_tutor/output/courses/ap-calculus-ab/downloads/`
 
 Generated metadata files live under:
 
@@ -20,7 +27,7 @@ Generated response artifacts live under:
 
 ## Environment
 
-The CLI loads `../.env` automatically when present.
+The CLI loads `.env` from the repository root automatically. `export KEY=value` entries are supported.
 
 Typical variables:
 
@@ -34,44 +41,52 @@ Typical variables:
 ### Fetch and generate all class-note outputs
 
 ```bash
-.venv/bin/math-tutor --username EMAIL --password PASS
+.venv/bin/math-tutor --course algebra-2-trig
 ```
 
 ### Fetch only, without generation
 
 ```bash
-.venv/bin/math-tutor --username EMAIL --password PASS --fetch-only
+.venv/bin/math-tutor --course algebra-2-trig --fetch-only
 ```
 
 ### Skip Canvas login and process already-fetched notes
 
 ```bash
-.venv/bin/math-tutor --skip-fetch
+.venv/bin/math-tutor --course algebra-2-trig --skip-fetch
 ```
 
 ### Limit processing to a chapter
 
 ```bash
-.venv/bin/math-tutor --skip-fetch --chapter 5.1
+.venv/bin/math-tutor --course algebra-2-trig --skip-fetch --chapter 5.1
 ```
 
 ### Run only selected prompts
 
 ```bash
-.venv/bin/math-tutor --skip-fetch --prompt study-guide --prompt mental-math-gpt5
+.venv/bin/math-tutor --course algebra-2-trig --skip-fetch --prompt study-guide --prompt mental-math-gpt5
 ```
 
 ### Force regeneration for already-saved prompt outputs
 
 ```bash
-.venv/bin/math-tutor --skip-fetch --force-generation
+.venv/bin/math-tutor --course algebra-2-trig --skip-fetch --force-generation
 ```
 
 ### Fetch assignments only
 
 ```bash
-.venv/bin/math-tutor --username EMAIL --password PASS --fetch-assignments
+.venv/bin/math-tutor --course algebra-2-trig --fetch-assignments
 ```
+
+### Fetch AP Calculus AB Chapter 2 only
+
+```bash
+.venv/bin/math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
+```
+
+This phase intentionally rejects Calculus generation, other chapters, assignment mode, and site generation. A repeated command uses the isolated fetch state and skips Canvas login and download.
 
 ### Build the tutoring site
 
@@ -132,6 +147,13 @@ The current SFTP setup syncs from:
 to the remote hosting tree configured in:
 
 - `.vscode/sftp.json`
+
+The build publishes the saved Calculus Chapter 2 source note under:
+
+- `site/courses/ap-calculus-ab/doc-4839635.html`
+- `site/courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf`
+
+The Calculus site is built from `output/courses/ap-calculus-ab/`; no model call or Canvas login is needed for a rebuild.
 
 ## Safe Expectations
 

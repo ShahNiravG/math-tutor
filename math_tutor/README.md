@@ -37,13 +37,17 @@ pip install -e ".[dev]"
 ## Usage
 
 ```bash
-cp ../.env.example ../.env
-math-tutor \
-  --username your_canvas_username \
-  --password your_canvas_password
+cp .env.example .env
+math-tutor --course algebra-2-trig
 ```
 
-The CLI automatically loads environment variables from `../.env` when present, so you usually do not need to `export OPENAI_API_KEY` or `export GEMINI_API_KEY` manually first.
+The CLI automatically loads `.env` from the repository root. Canvas credentials use `MATH_TUTOR_USERNAME` and `MATH_TUTOR_PASSWORD`; command-line credentials remain available as explicit overrides. Course selection is required.
+
+Fetch the currently enabled AP Calculus AB chapter without any model calls:
+
+```bash
+math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
+```
 
 For exact operator workflows, recovery steps, and deploy commands, see [docs/OPERATIONS.md](/home/nshah/projects/math-tutor/math_tutor/docs/OPERATIONS.md).
 
@@ -71,6 +75,8 @@ Each prompt generates a separate output file. Supported slugs:
 ### Useful flags
 
 - `--headful`: opens the browser so you can watch or debug login
+- `--course algebra-2-trig`: explicitly select Algebra II / Trigonometry
+- `--course ap-calculus-ab`: explicitly select AP Calculus AB
 - `--limit 3`: process only the first three PDFs
 - `--prompt mental-math-gpt5`: run only that prompt slug for each matched PDF (repeatable; auto-includes dependent MCQ prompts)
 - `--force-prompt inspiring-videos`: rerun just that prompt while leaving other prompts alone
@@ -96,7 +102,7 @@ When all selected prompts use Gemini, `OPENAI_API_KEY` is not required:
 
 ```bash
 math-tutor \
-  --username ... --password ... \
+  --course algebra-2-trig \
   --prompt mental-math-gemini \
   --prompt olympiad-problems-gemini \
   --prompt olympiad-solutions-gemini
@@ -113,8 +119,11 @@ Outputs are written under the selected output directory (default: `math_tutor/ou
 - `metadata/`: JSON metadata for traceability
 - `fetch_state.json`: remembers which PDFs were fetched successfully
 - `generated_output_state.json`: remembers which PDFs completed each prompt step successfully across OpenAI and Gemini
-- `site/index.html`: a browsable tutoring library landing page
-- `site/doc-<file_id>.html`: per-document pages with shared left navigation
+- `site/index.html`: the course-selection portal
+- `site/courses/algebra-2-trig/`: the complete Algebra II / Trigonometry site
+- `site/courses/ap-calculus-ab/`: the AP Calculus AB course space built from its isolated artifacts
+
+AP Calculus AB fetch state and source PDFs are isolated under `math_tutor/output/courses/ap-calculus-ab/`. Existing Algebra artifacts remain at the legacy output root until a separately approved migration.
 
 ## Build the Tutoring Site
 
@@ -133,17 +142,19 @@ Useful flags:
 
 ### Site layout
 
-**Home page (`index.html`)** — a top-level landing page with three primary destinations:
+**Course portal (`index.html`)** — the top-level course selector for Algebra II / Trigonometry and AP Calculus AB.
 
-- **Library** — chapter browsing
-- **Challenge Exams** — the timed exam app
-- **Live Tutor** — curriculum-wide guided learning launch page
+**Algebra course home (`courses/algebra-2-trig/index.html`)** — the existing course experience with three primary destinations: Library, Challenge Exams, and Live Tutor.
 
-**Library page (`library.html`)** — one card per document, each showing a summary row. The chapter list stays in the left rail only on this page.
+**Calculus course home (`courses/ap-calculus-ab/index.html`)** — a source-first course experience listing the school chapters currently available. Chapter 2 links to the original `Chapter 2 Notetakers.pdf`; unavailable generated study tools are not advertised.
 
-**Live Tutor page (`live-tutor.html`)** — a full-curriculum guided learning page with one combined prompt assembled from all chapter summaries, plus Gemini/ChatGPT Study Mode launch actions.
+**Calculus library and chapter pages** — `courses/ap-calculus-ab/library.html` lists the available chapters and `doc-4839635.html` provides the verified school PDF. Calculus does not inherit Algebra challenges, assignments, or generated responses.
 
-**Per-document pages (`doc-<id>.html`)** — four prompt cards per document:
+**Algebra library (`courses/algebra-2-trig/library.html`)** — one card per document, each showing a summary row. The chapter list stays in the left rail only on this page.
+
+**Algebra Live Tutor (`courses/algebra-2-trig/live-tutor.html`)** — a full-curriculum guided learning page with one combined prompt assembled from all chapter summaries, plus Gemini/ChatGPT Study Mode launch actions.
+
+**Algebra per-document pages (`courses/algebra-2-trig/doc-<id>.html`)** — four prompt cards per document:
 
 - **Study Guide** — one row per model (GPT-4.1, Gemini 3.1 Pro), with an HTML link and a `[PDF]` link
 - **Inspiring Videos** — same model-row layout
@@ -152,7 +163,7 @@ Useful flags:
 
 Each per-document page also includes a **Guided Learning** section with Gemini and ChatGPT Study Mode helper links and a copy button for the short summary from the Study Guide.
 
-**Challenge Exams (`challenges/index.html`)** — branded challenge landing page with random exam picker. Exam runner at `challenges/exam.html` presents MCQ questions (mental math first, then up to 3 olympiad problems) with immediate correct/wrong feedback after each selection. Results page shows score and per-question MCQ review. Cloudflare Access protected.
+**Algebra Challenge Exams (`courses/algebra-2-trig/challenges/index.html`)** — branded challenge landing page with random exam picker. The exam runner presents MCQ questions (mental math first, then up to 3 olympiad problems) with immediate correct/wrong feedback after each selection. Results show the score and per-question MCQ review. Cloudflare Access protected.
 
 The challenge area also includes:
 

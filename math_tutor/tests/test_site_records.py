@@ -106,6 +106,38 @@ class SiteRecordsTests(unittest.TestCase):
             self.assertIn("Class Note PDF", learn_html)
             self.assertEqual(html.count("Class Note PDF"), 1)
 
+    def test_source_only_chapter_offers_note_without_unavailable_learning_modes(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            pdf_path = root / "4839635_chapter-2-notetakers.pdf"
+            pdf_path.write_bytes(b"%PDF-1.7\nchapter two")
+            record = DocumentRecord(
+                file_id="4839635",
+                display_name="Chapter 2 Notetakers.pdf",
+                pdf_path=pdf_path,
+                download_url=None,
+                fetched_at="2026-09-19T12:00:00Z",
+                prompt_outputs=[],
+            )
+
+            html = render_document_page_content(
+                record,
+                output_dir=root,
+                site_dir=root,
+                base_path="/site/courses/ap-calculus-ab/",
+                include_guided_learning=False,
+                site_page_href=site_page_href,
+                experience_variant="staging",
+            )
+
+            self.assertIn("Chapter 2", html)
+            self.assertIn("Class Note PDF", html)
+            self.assertIn("Study guides and practice are not available yet", html)
+            self.assertNotIn('id="practice"', html)
+            self.assertNotIn('id="challenge"', html)
+            self.assertNotIn("Start Practice", html)
+            self.assertNotIn("Take Challenge", html)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -9,13 +9,13 @@ from pathlib import Path
 
 from math_tutor.site_cards import document_label, record_page_filename
 from math_tutor.site_content import build_curriculum_guided_learning_prompt
+from math_tutor.site_courses import CourseConfig
 from math_tutor.site_models import DocumentRecord, PromptOutputRecord
 from math_tutor.site_records import render_document_overview_card, render_document_page_content
 from math_tutor.site_sections import render_guided_learning_card, render_surface_header
 from math_tutor.site_shell import render_page_shell
 
 
-SITE_TITLE = "Algebra II with Trigonometry Tutor"
 CALIFORNIA_TZ = ZoneInfo("America/Los_Angeles")
 
 
@@ -27,12 +27,18 @@ def _featured_record(records: list[DocumentRecord]) -> DocumentRecord | None:
     return records[0] if records else None
 
 
+def _site_title(course: CourseConfig) -> str:
+    return f"{course.display_name} Tutor"
+
+
 def build_index_html(
     *,
     records: list[DocumentRecord],
     output_dir: Path,
     site_dir: Path,
     base_path: str,
+    course: CourseConfig,
+    portal_href: str,
     include_guided_learning: bool,
     site_page_href,
     experience_variant: str = "default",
@@ -45,17 +51,72 @@ def build_index_html(
     library_href = site_page_href("library.html", base_path)
     challenges_href = f"{base_path}challenges/index.html" if base_path else "challenges/index.html"
     live_tutor_href = site_page_href("live-tutor.html", base_path)
-    privacy_policy_href = "https://mathdelight.com/site/privacy-policy.html"
+    privacy_policy_href = site_page_href("privacy-policy.html", base_path)
     featured_record = _featured_record(records)
-    if experience_variant == "staging":
-        header_html = render_surface_header(
-            active="home",
+    header_html = render_surface_header(
+        active="home",
+        base_path=base_path,
+        eyebrow="Math Delight",
+        title=f"{course.short_name} Tutor",
+        site_page_href=site_page_href,
+        course=course,
+        portal_href=portal_href,
+        experience_variant=experience_variant,
+    )
+    if experience_variant == "staging" and records and total_prompt_outputs == 0:
+        featured_href = site_page_href(record_page_filename(records[0]), base_path)
+        featured_title = document_label(records[0])
+        body_html = f"""
+        {header_html}
+        <section class="landing-hero landing-hero-staging source-course-hero">
+          <div class="landing-hero-copy">
+            <span class="eyebrow">First Chapter Available</span>
+            <h1 class="hero-title">Calculus starts with the notes from class.</h1>
+            <p class="page-intro">{html.escape(featured_title)} is ready. Open the original school handout and keep every new chapter organized in one dependable place.</p>
+            <div class="hero-action-grid">
+              <a class="hero-action primary" href="{html.escape(featured_href)}">Open Chapter 2</a>
+              <a class="hero-action" href="{html.escape(library_href)}">Browse Class Notes</a>
+            </div>
+            <div class="landing-stats">
+              <div class="stat-pill"><strong>{len(records)}</strong><span>chapter ready</span></div>
+              <div class="stat-pill"><strong>PDF</strong><span>school source</span></div>
+              <div class="stat-pill"><strong>{generated_at}</strong><span>latest update</span></div>
+            </div>
+          </div>
+          <aside class="continue-card source-note-card">
+            <span class="task-kicker">Now Available</span>
+            <h3>{html.escape(featured_title)}</h3>
+            <p class="continue-copy">The exact classroom notetaker, ready to read or print.</p>
+            <div class="continue-actions">
+              <a class="hero-action primary" href="{html.escape(featured_href)}">View Class Note</a>
+            </div>
+          </aside>
+        </section>
+        <section class="landing-grid landing-grid-staging source-course-grid">
+          <a class="destination-card destination-library" href="{html.escape(library_href)}">
+            <span class="destination-kicker">Course Library</span>
+            <h3>AP Calculus AB Chapters</h3>
+            <p>Return here as each school chapter is published and added to the course.</p>
+            <span class="destination-link">Browse chapters</span>
+          </a>
+        </section>
+        <section class="landing-footer-note">
+          <a href="{html.escape(privacy_policy_href)}">Privacy Policy</a>
+        </section>
+        """
+        return render_page_shell(
+            title=_site_title(course),
+            records=records,
+            active_record=None,
+            body_html=body_html,
+            total_prompt_outputs=total_prompt_outputs,
+            generated_at=generated_at,
             base_path=base_path,
-            eyebrow="Math Delight",
-            title="Algebra II Trig Tutor",
             site_page_href=site_page_href,
+            page_kind="home",
             experience_variant=experience_variant,
         )
+    if experience_variant == "staging":
         featured_practice_href = (
             f"{site_page_href(record_page_filename(featured_record), base_path)}#practice"
             if featured_record
@@ -145,7 +206,7 @@ def build_index_html(
         </section>
         """
         return render_page_shell(
-            title=SITE_TITLE,
+            title=_site_title(course),
             records=records,
             active_record=None,
             body_html=body_html,
@@ -157,6 +218,7 @@ def build_index_html(
             experience_variant=experience_variant,
         )
     body_html = f"""
+    {header_html}
     <section class="landing-hero">
       <div class="home-brand">
         <div class="brand-mark" aria-hidden="true">
@@ -179,11 +241,11 @@ def build_index_html(
         </div>
         <div>
           <span class="eyebrow">Math Delight</span>
-          <h1 class="home-brand-title">Algebra II Trig Tutor</h1>
+          <h1 class="home-brand-title">{html.escape(course.short_name)} Tutor</h1>
         </div>
       </div>
       <div class="landing-copy">
-        <span class="eyebrow">Algebra II with Trigonometry</span>
+        <span class="eyebrow">{html.escape(course.display_name)}</span>
         <h2>Choose how you want to study today.</h2>
         <p class="page-intro">Start in the class-note library, jump into a timed challenge exam, or use the future live tutor once it is ready.</p>
       </div>
@@ -218,7 +280,7 @@ def build_index_html(
     </section>
     """
     return render_page_shell(
-        title=SITE_TITLE,
+        title=_site_title(course),
         records=records,
         active_record=None,
         body_html=body_html,
@@ -238,6 +300,8 @@ def build_record_page_html(
     output_dir: Path,
     site_dir: Path,
     base_path: str,
+    course: CourseConfig,
+    portal_href: str,
     include_guided_learning: bool,
     assignments: list[Path] | None = None,
     assignment_prompt_outputs: dict[str, list[PromptOutputRecord]] | None = None,
@@ -252,8 +316,10 @@ def build_record_page_html(
         active="library",
         base_path=base_path,
         eyebrow="Math Delight",
-        title="Algebra II Trig Tutor",
+        title=f"{course.short_name} Tutor",
         site_page_href=site_page_href,
+        course=course,
+        portal_href=portal_href,
         experience_variant=experience_variant,
     )
     record_html = render_document_page_content(
@@ -272,7 +338,7 @@ def build_record_page_html(
     {record_html}
     """
     return render_page_shell(
-        title=f"{document_label(record)} - {SITE_TITLE}",
+        title=f"{document_label(record)} - {_site_title(course)}",
         records=records,
         active_record=record,
         body_html=body_html,
@@ -291,6 +357,8 @@ def build_library_page_html(
     output_dir: Path,
     site_dir: Path,
     base_path: str,
+    course: CourseConfig,
+    portal_href: str,
     include_guided_learning: bool,
     site_page_href,
     experience_variant: str = "default",
@@ -315,35 +383,51 @@ def build_library_page_html(
         active="library",
         base_path=base_path,
         eyebrow="Math Delight",
-        title="Algebra II Trig Tutor",
+        title=f"{course.short_name} Tutor",
         site_page_href=site_page_href,
+        course=course,
+        portal_href=portal_href,
         experience_variant=experience_variant,
     )
     if experience_variant == "staging":
         featured_record = _featured_record(records)
+        source_only = bool(records) and total_prompt_outputs == 0
         featured_practice_href = (
-            f"{site_page_href(record_page_filename(featured_record), base_path)}#practice"
+            site_page_href(record_page_filename(featured_record), base_path)
+            if source_only and featured_record
+            else f"{site_page_href(record_page_filename(featured_record), base_path)}#practice"
             if featured_record
             else site_page_href("index.html", base_path)
         )
+        library_heading = (
+            "Choose a chapter to open its class note"
+            if source_only
+            else "Choose a chapter, then pick your mode"
+        )
+        library_intro = (
+            "Each chapter begins with the original material used at school. Additional study tools appear only when they are ready."
+            if source_only
+            else "Every chapter now gives students three clear paths: learn the idea, practice with quick wins, or test themselves in challenge mode."
+        )
+        library_action = "Open the available chapter" if source_only else "Jump straight into practice"
         body_html = f"""
         {header_html}
         <section class="content-card section-card section-surface">
           <div class="section-head">
             <div>
               <span class="eyebrow">Library</span>
-              <h3>Choose a chapter, then pick your mode</h3>
+              <h3>{html.escape(library_heading)}</h3>
             </div>
-            <a class="section-link" href="{html.escape(featured_practice_href)}">Jump straight into practice</a>
+            <a class="section-link" href="{html.escape(featured_practice_href)}">{html.escape(library_action)}</a>
           </div>
-          <p class="page-intro">Every chapter now gives students three clear paths: learn the idea, practice with quick wins, or test themselves in challenge mode.</p>
+          <p class="page-intro">{html.escape(library_intro)}</p>
           <div class="prompt-grid">
             {overview_cards}
           </div>
         </section>
         """
         return render_page_shell(
-            title=f"Library - {SITE_TITLE}",
+            title=f"Library - {_site_title(course)}",
             records=records,
             active_record=None,
             body_html=body_html,
@@ -370,7 +454,7 @@ def build_library_page_html(
     </section>
     """
     return render_page_shell(
-        title=f"Library - {SITE_TITLE}",
+        title=f"Library - {_site_title(course)}",
         records=records,
         active_record=None,
         body_html=body_html,
@@ -387,6 +471,8 @@ def build_live_tutor_page_html(
     *,
     records: list[DocumentRecord],
     base_path: str,
+    course: CourseConfig,
+    portal_href: str,
     site_page_href,
     experience_variant: str = "default",
 ) -> str:
@@ -399,8 +485,10 @@ def build_live_tutor_page_html(
         active="live-tutor",
         base_path=base_path,
         eyebrow="Math Delight",
-        title="Algebra II Trig Tutor",
+        title=f"{course.short_name} Tutor",
         site_page_href=site_page_href,
+        course=course,
+        portal_href=portal_href,
         experience_variant=experience_variant,
     )
     if experience_variant == "staging":
@@ -441,7 +529,7 @@ def build_live_tutor_page_html(
         </section>
         """
         return render_page_shell(
-            title=f"Live Tutor - {SITE_TITLE}",
+            title=f"Live Tutor - {_site_title(course)}",
             records=records,
             active_record=None,
             body_html=body_html,
@@ -472,7 +560,7 @@ def build_live_tutor_page_html(
     </section>
     """
     return render_page_shell(
-        title=f"Live Tutor - {SITE_TITLE}",
+        title=f"Live Tutor - {_site_title(course)}",
         records=records,
         active_record=None,
         body_html=body_html,
@@ -489,6 +577,8 @@ def build_privacy_policy_page_html(
     *,
     records: list[DocumentRecord],
     base_path: str,
+    course: CourseConfig,
+    portal_href: str,
     site_page_href,
     experience_variant: str = "default",
 ) -> str:
@@ -502,6 +592,8 @@ def build_privacy_policy_page_html(
         eyebrow="Math Delight",
         title="Privacy Policy",
         site_page_href=site_page_href,
+        course=course,
+        portal_href=portal_href,
         experience_variant=experience_variant,
     )
     body_html = f"""
@@ -513,7 +605,7 @@ def build_privacy_policy_page_html(
           <h3>Privacy Policy</h3>
         </div>
       </div>
-      <p class="page-intro">This privacy policy explains how Algebra II Trig Tutor collects, uses, and protects information when students or families use the website and related Google OAuth sign-in flow.</p>
+      <p class="page-intro">This privacy policy explains how {html.escape(course.display_name)} Tutor collects, uses, and protects information when students or families use the website and related Google OAuth sign-in flow.</p>
 
       <h3>Information We Collect</h3>
       <p>We collect only the user's email address from Google Sign-In, along with app data needed to operate the service such as challenge exam progress, submitted answers, timestamps, and saved learning activity.</p>
@@ -547,7 +639,7 @@ def build_privacy_policy_page_html(
     </section>
     """
     return render_page_shell(
-        title=f"Privacy Policy - {SITE_TITLE}",
+        title=f"Privacy Policy - {_site_title(course)}",
         records=records,
         active_record=None,
         body_html=body_html,

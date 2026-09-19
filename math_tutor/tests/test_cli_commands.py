@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 from unittest.mock import Mock, patch
 
 from math_tutor.cli_commands import (
@@ -352,6 +353,54 @@ class CliCommandTests(unittest.TestCase):
         self.assertEqual(result, {"1", "10"})
         discover_assignment_files.assert_called_once()
         self.assertEqual(process_file_batch.call_count, 2)
+
+    def test_calculus_class_note_workflow_uses_course_matcher_and_skips_assignments(self) -> None:
+        output_layout = build_output_layout(Path("/tmp/output/courses/ap-calculus-ab"))
+        context = SimpleNamespace(
+            course_id="ap-calculus-ab",
+            course_url="https://mitty.instructure.com/courses/4446",
+            output_layout=output_layout,
+            fetch_state=FetchState(path=output_layout.output_dir / "fetch_state.json", fetched={}),
+            generated_output_state=GeneratedOutputState(
+                path=output_layout.output_dir / "generated_output_state.json",
+                processed={},
+            ),
+            normalized_chapter_filters=["2"],
+            force=False,
+            limit=None,
+            fetch_only=True,
+            openai_api_key=None,
+            gemini_client=None,
+            default_model="gpt-5.4",
+            selected_prompts=(PROMPTS_BY_SLUG["study-guide"],),
+            forced_prompt_slugs=set(),
+            requested_prompt_slugs=set(),
+            force_generation=False,
+            dry_run=False,
+        )
+        chapter_two = Mock(file_id=20, display_name="Chapter 2 Notetakers.pdf")
+
+        with patch(
+            "math_tutor.cli_commands.list_canvas_pdfs_from_ui",
+            return_value=[chapter_two],
+        ) as list_canvas_pdfs_from_ui:
+            with patch("math_tutor.cli_commands.discover_assignment_files") as discover_assignment_files:
+                with patch(
+                    "math_tutor.cli_commands.process_file_batch",
+                    return_value={"20"},
+                ):
+                    result = run_class_note_workflow(
+                        page=Mock(),
+                        canvas_client=Mock(),
+                        browser=Mock(),
+                        command_context=context,
+                    )
+
+        matcher = list_canvas_pdfs_from_ui.call_args.kwargs["name_matcher"]
+        self.assertTrue(matcher("Chapter 2 Notetakers.pdf"))
+        self.assertFalse(matcher("Alg 2 Trig H Chp 2 Note.pdf"))
+        discover_assignment_files.assert_not_called()
+        self.assertEqual(result, {"20"})
 
 
 if __name__ == "__main__":

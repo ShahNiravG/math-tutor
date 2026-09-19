@@ -8,13 +8,19 @@ from pathlib import Path
 
 from math_tutor.cli_commands import CliCommandContext
 from math_tutor.cli_generation import initialize_gemini_client, resolve_openai_api_key
-from math_tutor.cli_runtime import build_output_layout, ensure_output_layout, normalize_cli_chapter_filters
+from math_tutor.cli_runtime import (
+    build_output_layout,
+    ensure_output_layout,
+    normalize_cli_chapter_filters,
+    resolve_course_output_dir,
+)
 from math_tutor.prompt_catalog import resolve_prompt_slug_set, resolve_selected_prompts
 from math_tutor.state_store import (
     canonical_generated_output_state_path,
     load_fetch_state,
     load_generated_output_state,
 )
+from math_tutor.site_courses import get_course
 
 
 def build_command_context(
@@ -23,6 +29,8 @@ def build_command_context(
     output_dir: Path,
     log: Callable[[str], None],
 ) -> CliCommandContext:
+    course = get_course(args.course_id)
+    output_dir = resolve_course_output_dir(output_dir, course.course_id)
     output_layout = build_output_layout(output_dir)
     fetch_state = load_fetch_state(output_dir / "fetch_state.json")
     generated_output_state = load_generated_output_state(
@@ -63,11 +71,12 @@ def build_command_context(
         headful=args.headful,
         limit=args.limit,
         assignment_limit=args.assignment_limit,
-        course_url=args.course_url,
+        course_url=args.course_url or course.canvas_course_url,
         login_url=args.login_url,
         site_dir=args.site_dir,
         site_base_path=args.site_base_path,
         build_site_guided_learning=args.build_site_guided_learning,
         openai_api_key=openai_api_key,
         gemini_client=gemini_client,
+        course_id=course.course_id,
     )

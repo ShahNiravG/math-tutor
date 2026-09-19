@@ -78,6 +78,8 @@ def document_title(record: DocumentRecord) -> str:
 def document_label(record: DocumentRecord) -> str:
     chapter = parse_display_name_chapter(record.display_name)
     title = document_title(record)
+    if chapter and re.match(rf"(?i)^chapter\s+{re.escape(chapter)}\b", title):
+        return title
     if chapter and title:
         return f"Chapter {chapter}: {title}"
     if chapter:

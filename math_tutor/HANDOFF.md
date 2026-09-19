@@ -63,21 +63,28 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 
 - `responses/` — copied from `output/responses/` during build
 - `.htaccess` and other hosting-level assets can live at the deploy root
-- `index.html` — top-level landing page
-- `library.html` — chapter overview page
-- `live-tutor.html` — curriculum-wide guided learning page
-- `privacy-policy.html` — generated legal page linked from the auth flow
-- `doc-<file_id>.html` — per-document pages
-- `challenges/` — challenge exam app (Cloudflare Access protected)
-- `assignments/` — assignment PDFs (Cloudflare Access protected)
+- `index.html` — course-selection portal
+- `courses/algebra-2-trig/index.html` — Algebra course home
+- `courses/algebra-2-trig/library.html` — Algebra chapter overview
+- `courses/algebra-2-trig/live-tutor.html` — Algebra curriculum-wide guided learning
+- `courses/algebra-2-trig/privacy-policy.html` — generated legal page linked from the auth flow
+- `courses/algebra-2-trig/doc-<file_id>.html` — Algebra per-document pages
+- `courses/algebra-2-trig/challenges/` — Algebra challenge exam app (Cloudflare Access protected)
+- `courses/ap-calculus-ab/index.html` — AP Calculus AB course home with the available school chapters
+- `courses/ap-calculus-ab/library.html` — Calculus chapter library
+- `courses/ap-calculus-ab/doc-4839635.html` — Chapter 2 source-note page
+- `courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf` — deployed school PDF
 
 ## Current Site UX
 
 - Public deploy base path is `/site/`
 - `.vscode/sftp.json` currently syncs from local `output/deploy/math_tutor/` to remote `public_html/math_tutor/`
-- `index.html` is now a three-card landing page: Library, Challenge Exams, Live Tutor
-- `library.html` keeps the chapter list in the left rail and moves the branded nav header into the main panel
-- `live-tutor.html` is a no-sidebar page with the same branded top header as the library overview
+- `index.html` is a course selector for Algebra II / Trigonometry and AP Calculus AB
+- Algebra pages live under `courses/algebra-2-trig/` and include a persistent `Switch Course` action
+- AP Calculus AB lives under `courses/ap-calculus-ab/`; Chapter 2 is published from its isolated output and no Algebra content is inherited
+- Calculus currently exposes only the verified class note, not Live Tutor, generated practice, or challenge exams
+- The Algebra library keeps the chapter list in the left rail and moves the branded nav header into the main panel
+- The Algebra Live Tutor is a no-sidebar page with the same branded top header as the library overview
 - Per-document pages keep a slim left rail without the full chapter list
 - Challenge exam pages now use the same brand identity and top navigation language as the main site
 - The challenge landing page tracks completed exams, hides already-finished picks, and links to `reports.php`
@@ -128,13 +135,16 @@ This means future cleanup should usually target one focused module at a time ins
 
 ```bash
 # Full run (fetch + generate all prompts)
-.venv/bin/math-tutor --username EMAIL --password PASS
+.venv/bin/math-tutor --course algebra-2-trig
 
 # Skip fetch, generate for a specific chapter
-.venv/bin/math-tutor --skip-fetch --chapter 11.4
+.venv/bin/math-tutor --course algebra-2-trig --skip-fetch --chapter 11.4
 
 # Fetch only (no generation)
-.venv/bin/math-tutor --username EMAIL --password PASS --fetch-only
+.venv/bin/math-tutor --course algebra-2-trig --fetch-only
+
+# Fetch the currently enabled AP Calculus AB chapter only
+.venv/bin/math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
 
 # Build and deploy site
 .venv/bin/math-tutor-build-site --site-dir math_tutor/output/deploy/math_tutor/site --base-path /site/
@@ -182,13 +192,13 @@ Architecture and validation references:
 - 19 class note chapters fully processed (through chapter 11.4)
 - All prompts: study-guide, inspiring-videos, mental-math-gpt5 + MCQ, mental-math-gemini + MCQ, olympiad-problems/solutions-gpt5 + MCQ, olympiad-problems/solutions-gemini + MCQ
 - 76 MCQ challenge exams deployed; master_questions.json committed to git
-- Site redesigned: index.html (landing), library.html, live-tutor.html pages added
+- Site reorganized around a root course portal, a complete course-scoped Algebra experience, and an empty AP Calculus AB course space
 - Privacy policy page and challenge auth/reporting pages are part of the generated deploy output
 - Deploy base path is `/site/`; all build commands use `--base-path /site/`
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 - CLI fetch logs now summarize already-fetched vs pending files before processing
 - All JSON state writers route through `math_tutor/atomic_io.py` and PDF downloads stream via a `.part` rename — mid-operation crashes no longer corrupt state files or leave truncated PDFs on disk (see [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md) "Crash Safety")
-- Local validation baseline is `195` passing tests via `math_tutor/scripts/validate_project.py`
+- Local validation baseline is `223` passing tests via `math_tutor/scripts/validate_project.py`
 - The current refactor checkpoint did not rerun model APIs and did not rebuild the deploy tree in place unless explicitly requested
 
 ## Known Risks

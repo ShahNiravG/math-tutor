@@ -14,7 +14,6 @@ from math_tutor.canvas_course import (
     list_canvas_assignment_entries,
     list_canvas_pdfs_from_assignments,
     list_canvas_pdfs_from_ui,
-    matches_target_pdf,
     perform_login,
     summarize_discovered_files,
 )
@@ -32,6 +31,7 @@ from math_tutor.cli_runtime import (
 from math_tutor.cli_workflows import FileBatchContext, process_file_batch
 from math_tutor.prompt_catalog import PRINTABLE_PROMPT_SLUGS, PromptSpec
 from math_tutor.prompt_saved_outputs import print_saved_prompt_pdfs
+from math_tutor.site_courses import get_course, matches_course_document
 from math_tutor.state_store import FetchState, GeneratedOutputState
 
 
@@ -62,6 +62,7 @@ class CliCommandContext:
     build_site_guided_learning: bool
     openai_api_key: str | None
     gemini_client: Any
+    course_id: str = "algebra-2-trig"
 
 
 def handle_print_command(
@@ -388,11 +389,15 @@ def run_class_note_workflow(
     browser: Any,
     command_context: CliCommandContext,
 ) -> set[str]:
+    course = get_course(command_context.course_id)
     files = list_canvas_pdfs_from_ui(
         page,
         canvas_client,
         command_context.course_url,
-        name_matcher=matches_target_pdf,
+        name_matcher=lambda display_name: matches_course_document(
+            course.course_id,
+            display_name,
+        ),
     )
     if command_context.normalized_chapter_filters:
         files = [
@@ -434,6 +439,9 @@ def run_class_note_workflow(
             dry_run=command_context.dry_run,
         ),
     )
+
+    if not course.include_assignments_in_note_fetch:
+        return processed_file_ids
 
     assignment_files = discover_assignment_files(
         page=page,

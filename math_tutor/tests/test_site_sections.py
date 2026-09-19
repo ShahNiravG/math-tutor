@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import unittest
 
+from math_tutor.site_courses import get_course
 from math_tutor.site_sections import render_index_card, render_surface_header
 
 
@@ -13,9 +14,27 @@ class SiteSectionsTests(unittest.TestCase):
             eyebrow="Math Delight",
             title="Algebra II Trig Tutor",
             site_page_href=lambda filename, base_path: f"{base_path}{filename}",
+            course=get_course("algebra-2-trig"),
+            portal_href="/site/index.html",
         )
         self.assertIn("/site/library.html", html)
         self.assertIn("Challenge Exams", html)
+
+    def test_render_surface_header_hides_unavailable_calculus_sections(self) -> None:
+        html = render_surface_header(
+            active="library",
+            base_path="/site/courses/ap-calculus-ab/",
+            eyebrow="Math Delight",
+            title="Calculus AB Tutor",
+            site_page_href=lambda filename, base_path: f"{base_path}{filename}",
+            course=get_course("ap-calculus-ab"),
+            portal_href="/site/index.html",
+        )
+
+        self.assertIn("Library", html)
+        self.assertIn("Switch Course", html)
+        self.assertNotIn("Live Tutor", html)
+        self.assertNotIn("Challenge Exams", html)
 
     def test_render_index_card_includes_summary_and_link(self) -> None:
         html = render_index_card(

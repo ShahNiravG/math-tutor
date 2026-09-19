@@ -125,6 +125,11 @@ BASE_SITE_PAGE_STYLES = """
       border-color: var(--line-strong);
       color: #6a2e16;
     }
+    .nav-pill-switch {
+      margin-left: auto;
+      border-style: dashed;
+      color: var(--muted);
+    }
     .toc {
       list-style: none;
       margin: 0;
@@ -201,6 +206,15 @@ BASE_SITE_PAGE_STYLES = """
       margin: 4px 0 0;
       font-size: 1.65rem;
       line-height: 1.02;
+    }
+    .course-context {
+      display: inline-block;
+      margin-top: 7px;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 650;
+      letter-spacing: 0.045em;
     }
     .landing-hero {
       position: relative;
@@ -717,6 +731,7 @@ BASE_SITE_PAGE_STYLES = """
       .page { grid-template-columns: 1fr; }
       .sidebar { position: static; max-height: none; }
       .landing-grid { grid-template-columns: 1fr; }
+      .nav-pill-switch { margin-left: 0; }
       .home-brand { margin-bottom: 18px; }
     }
 """

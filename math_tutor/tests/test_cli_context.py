@@ -14,6 +14,7 @@ class CliContextTests(unittest.TestCase):
         with TemporaryDirectory() as temp_dir:
             output_dir = Path(temp_dir) / "output"
             args = Namespace(
+                course_id="ap-calculus-ab",
                 prompt_slugs=["study-guide"],
                 force_prompt_slugs=["study-guide"],
                 chapter_filters=["5.1"],
@@ -26,7 +27,7 @@ class CliContextTests(unittest.TestCase):
                 headful=False,
                 limit=3,
                 assignment_limit=2,
-                course_url="https://example.com/course",
+                course_url=None,
                 login_url=None,
                 site_dir=None,
                 site_base_path="/site/",
@@ -41,7 +42,14 @@ class CliContextTests(unittest.TestCase):
                     log=lambda message: None,
                 )
 
-            self.assertEqual(context.output_dir, output_dir)
+            calculus_output = output_dir / "courses" / "ap-calculus-ab"
+            self.assertEqual(context.output_dir, calculus_output)
+            self.assertEqual(context.course_id, "ap-calculus-ab")
+            self.assertEqual(
+                context.course_url,
+                "https://mitty.instructure.com/courses/4446",
+            )
+            self.assertEqual(context.fetch_state.path, calculus_output / "fetch_state.json")
             self.assertEqual(context.default_model, "gpt-5.4")
             self.assertEqual(context.limit, 3)
             self.assertEqual(context.selected_prompts[0].slug, "study-guide")

@@ -114,7 +114,7 @@ class CanvasCourseTests(unittest.TestCase):
             stream_ctx = Mock()
             response = Mock()
             response.raise_for_status = Mock()
-            response.iter_bytes = Mock(return_value=iter([b"chunk1-", b"chunk2"]))
+            response.iter_bytes = Mock(return_value=iter([b"%PDF-1.7\n", b"document-body"]))
             stream_ctx.__enter__ = Mock(return_value=response)
             stream_ctx.__exit__ = Mock(return_value=False)
             client.stream = Mock(return_value=stream_ctx)
@@ -122,7 +122,28 @@ class CanvasCourseTests(unittest.TestCase):
             download_pdf(client, "https://example.com/file.pdf", destination)
 
             self.assertTrue(destination.exists())
-            self.assertEqual(destination.read_bytes(), b"chunk1-chunk2")
+            self.assertEqual(destination.read_bytes(), b"%PDF-1.7\ndocument-body")
+            residual = [p.name for p in destination.parent.iterdir() if p.name != "out.pdf"]
+            self.assertEqual(residual, [])
+
+    def test_download_pdf_rejects_non_pdf_payload_and_preserves_existing_file(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            destination = Path(temp_dir) / "out.pdf"
+            destination.write_bytes(b"%PDF-1.7\nprevious-good-pdf")
+
+            client = Mock()
+            stream_ctx = Mock()
+            response = Mock()
+            response.raise_for_status = Mock()
+            response.iter_bytes = Mock(return_value=iter([b"<!doctype html>", b"login page"]))
+            stream_ctx.__enter__ = Mock(return_value=response)
+            stream_ctx.__exit__ = Mock(return_value=False)
+            client.stream = Mock(return_value=stream_ctx)
+
+            with self.assertRaisesRegex(ValueError, "not a PDF"):
+                download_pdf(client, "https://example.com/file.pdf", destination)
+
+            self.assertEqual(destination.read_bytes(), b"%PDF-1.7\nprevious-good-pdf")
             residual = [p.name for p in destination.parent.iterdir() if p.name != "out.pdf"]
             self.assertEqual(residual, [])
 

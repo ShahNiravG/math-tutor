@@ -34,9 +34,13 @@ def parse_display_name_chapter(display_name: str) -> str | None:
     Examples:
     - ``"Alg 2 Trig H Chp 5.1 Note.docx"`` -> ``"5.1"``
     - ``"Alg 2 Trig H Chp 7.4 & 7.5 Note.docx"`` -> ``"7.4 & 7.5"``
+    - ``"Chapter 2 Notetakers.pdf"`` -> ``"2"``
     """
 
-    match = re.search(r"chp[.\s]+(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)", display_name.lower())
+    match = re.search(
+        r"(?:chp[.\s]+|chapter\s+)(\d+(?:\.\d+)?(?:\s*&\s*\d+(?:\.\d+)?)*)",
+        display_name.lower(),
+    )
     if not match:
         return None
     return re.sub(r"\s+", " ", match.group(1).strip())

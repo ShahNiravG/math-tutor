@@ -15,12 +15,25 @@ from math_tutor.cli_runtime import (
     needs_openai_generation_client,
     needs_pdf_browser,
     normalize_cli_chapter_filters,
+    resolve_course_output_dir,
 )
 from math_tutor.prompt_catalog import PROMPTS_BY_SLUG
 from math_tutor.state_store import FetchState
 
 
 class CliRuntimeTests(unittest.TestCase):
+    def test_resolve_course_output_dir_isolates_calculus_and_preserves_algebra(self) -> None:
+        base_output = Path("/tmp/math-tutor-output")
+
+        self.assertEqual(
+            resolve_course_output_dir(base_output, "ap-calculus-ab"),
+            base_output / "courses" / "ap-calculus-ab",
+        )
+        self.assertEqual(
+            resolve_course_output_dir(base_output, "algebra-2-trig"),
+            base_output,
+        )
+
     def test_build_output_layout_uses_standard_directories(self) -> None:
         layout = build_output_layout(Path("/tmp/math-tutor-output"))
 
@@ -53,6 +66,26 @@ class CliRuntimeTests(unittest.TestCase):
             display_name_matches_chapter_filters(
                 "Alg 2 Trig H Chp 5.1 Note.docx",
                 filters,
+            )
+        )
+
+    def test_calculus_notetaker_name_matches_only_its_exact_chapter(self) -> None:
+        self.assertTrue(
+            display_name_matches_chapter_filters(
+                "Chapter 2 Notetakers.pdf",
+                normalize_cli_chapter_filters(["2"]),
+            )
+        )
+        self.assertFalse(
+            display_name_matches_chapter_filters(
+                "Chapter 20 Notetakers.pdf",
+                normalize_cli_chapter_filters(["2"]),
+            )
+        )
+        self.assertFalse(
+            display_name_matches_chapter_filters(
+                "Chapter 2 Notetakers.pdf",
+                normalize_cli_chapter_filters(["2.1"]),
             )
         )
 

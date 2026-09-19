@@ -17,10 +17,19 @@ def resolve_canvas_credentials(
         return None
 
     environment = os.environ if env is None else env
-    resolved_username = username or environment.get("MATH_TUTOR_USERNAME")
-    resolved_password = password or environment.get("MATH_TUTOR_PASSWORD")
+    resolved_username = (
+        username
+        or environment.get("MATH_TUTOR_USERNAME")
+        or environment.get("CANVAS_USERNAME")
+    )
+    resolved_password = (
+        password
+        or environment.get("MATH_TUTOR_PASSWORD")
+        or environment.get("CANVAS_PASSWORD")
+    )
     if not resolved_username or not resolved_password:
         raise SystemExit(
-            "--username and --password are required (or set MATH_TUTOR_USERNAME / MATH_TUTOR_PASSWORD in .env)."
+            "MATH_TUTOR_USERNAME and MATH_TUTOR_PASSWORD are required in .env "
+            "unless --username and --password are supplied explicitly."
         )
     return resolved_username, resolved_password

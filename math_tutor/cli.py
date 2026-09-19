@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import re
 from pathlib import Path
 
 from math_tutor.cli_auth import resolve_canvas_credentials
@@ -13,22 +12,29 @@ from math_tutor.cli_commands import (
     should_use_saved_fetch_shortcut,
 )
 from math_tutor.cli_context import build_command_context
+from math_tutor.cli_runtime import normalize_cli_chapter_filters, resolve_course_output_dir
 from math_tutor.env_config import load_dotenv_if_present
 from math_tutor.prompt_catalog import DEFAULT_MODEL, PRINTABLE_PROMPT_SLUGS, PROMPTS_BY_SLUG
-
-COURSE_URL = "https://mitty.instructure.com/courses/4187"
+from math_tutor.site_courses import COURSE_REGISTRY
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Download PDFs from a Canvas course and generate tutoring artifacts."
     )
+    parser.add_argument(
+        "--course",
+        dest="course_id",
+        choices=[course.course_id for course in COURSE_REGISTRY],
+        required=True,
+        help="Course to operate on. Course selection is required to prevent cross-course writes.",
+    )
     parser.add_argument("--username", required=False, help="Canvas login username or email.")
     parser.add_argument("--password", required=False, help="Canvas login password.")
     parser.add_argument(
         "--course-url",
-        default=COURSE_URL,
-        help=f"Canvas course URL to scan. Defaults to {COURSE_URL}.",
+        default=None,
+        help="Optional Canvas course URL override. Defaults to the selected course's configured URL.",
     )
     parser.add_argument(
         "--login-url",
@@ -177,14 +183,25 @@ def parse_args() -> argparse.Namespace:
             "generate/skip verdicts without calling Canvas, OpenAI, or Gemini."
         ),
     )
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.course_id == "ap-calculus-ab":
+        if args.fetch_assignments:
+            parser.error("AP Calculus AB assignment fetching is not enabled in the Chapter 2 fetch phase.")
+        if not args.fetch_only:
+            parser.error("AP Calculus AB currently requires --fetch-only; model generation is not enabled.")
+        if normalize_cli_chapter_filters(args.chapter_filters) != ["2"]:
+            parser.error("AP Calculus AB currently requires exactly --chapter 2.")
+        if args.build_site_guided_learning:
+            parser.error("AP Calculus AB site generation is not enabled in the Chapter 2 fetch phase.")
+    return args
 
 
 def main() -> None:
     load_dotenv_if_present()
     args = parse_args()
     try:
-        output_dir = Path(args.output_dir).resolve()
+        base_output_dir = Path(args.output_dir).resolve()
+        output_dir = resolve_course_output_dir(base_output_dir, args.course_id)
         if handle_print_command(
             output_dir=output_dir,
             print_all=args.print_all,
@@ -197,7 +214,7 @@ def main() -> None:
 
         command_context = build_command_context(
             args=args,
-            output_dir=output_dir,
+            output_dir=base_output_dir,
             log=lambda message: print(message, flush=True),
         )
 
@@ -218,7 +235,7 @@ def main() -> None:
 
         if args.build_site_guided_learning:
             index_path = build_guided_learning_site(
-                output_dir=output_dir,
+                output_dir=command_context.output_dir,
                 site_dir=args.site_dir,
                 base_path=args.site_base_path,
                 limit=args.limit,

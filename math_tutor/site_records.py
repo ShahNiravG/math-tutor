@@ -111,6 +111,47 @@ def render_document_page_content(
     )
 
     if experience_variant == "staging":
+        has_generated_learning = any(output.processed_at for output in record.prompt_outputs)
+        if not has_generated_learning:
+            return f"""
+        <section class="content-card chapter-hero-card source-chapter-hero" id="doc-{record.file_id}">
+          <div class="chapter-hero-grid">
+            <div class="chapter-hero-main">
+              <span class="chapter-kicker">School Notetaker</span>
+              <div class="doc-header">
+                <h2>{html.escape(document_label(record))}</h2>
+              </div>
+              <div class="chip-row">
+                <span class="chip">Original class material</span>
+                <span class="chip">PDF ready</span>
+              </div>
+              <div class="chapter-summary-panel">
+                <h3>Start with the class handout</h3>
+                <div class="card-summary">
+                  <p>This is the exact Chapter 2 notetaker published by the school. Study guides and practice are not available yet.</p>
+                </div>
+              </div>
+            </div>
+            <aside class="chapter-support-card source-note-card">
+              <span class="task-kicker">Ready now</span>
+              <h3>Chapter 2 class note</h3>
+              <p>Open the PDF to read, annotate, or print the original handout.</p>
+              <div class="hero-action-grid">
+                {' '.join(document_links)}
+              </div>
+            </aside>
+          </div>
+        </section>
+        <section class="content-card section-card section-surface source-course-note">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">What&apos;s available</span>
+              <h3>One trusted source, clearly labeled</h3>
+            </div>
+          </div>
+          <p class="page-intro">This course grows from the material used in class. New learning tools will appear only after they are deliberately added and reviewed.</p>
+        </section>
+        """
         summary_body = extract_record_summary_html(record) or "<p>No chapter summary is available yet. Start with the class note, then move into practice.</p>"
         learn_cards_html = "\n".join(prompt_groups["learn"])
         practice_cards_html = "\n".join(prompt_groups["practice"])

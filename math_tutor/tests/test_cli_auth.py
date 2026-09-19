@@ -29,6 +29,19 @@ class CliAuthTests(unittest.TestCase):
 
         self.assertEqual(credentials, ("env-user@example.com", "env-secret"))
 
+    def test_resolve_canvas_credentials_prefers_arguments_over_environment(self) -> None:
+        credentials = resolve_canvas_credentials(
+            username="flag-user@example.com",
+            password="flag-secret",
+            skip_fetch=False,
+            env={
+                "MATH_TUTOR_USERNAME": "env-user@example.com",
+                "MATH_TUTOR_PASSWORD": "env-secret",
+            },
+        )
+
+        self.assertEqual(credentials, ("flag-user@example.com", "flag-secret"))
+
     def test_resolve_canvas_credentials_returns_none_when_skip_fetch_enabled(self) -> None:
         credentials = resolve_canvas_credentials(
             username=None,
@@ -40,7 +53,10 @@ class CliAuthTests(unittest.TestCase):
         self.assertIsNone(credentials)
 
     def test_resolve_canvas_credentials_requires_both_values(self) -> None:
-        with self.assertRaises(SystemExit):
+        with self.assertRaisesRegex(
+            SystemExit,
+            "MATH_TUTOR_USERNAME and MATH_TUTOR_PASSWORD",
+        ):
             resolve_canvas_credentials(
                 username=None,
                 password=None,

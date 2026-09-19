@@ -456,6 +456,11 @@ def download_pdf(client: httpx.Client, url: str, destination: Path) -> None:
             with part_path.open("wb") as handle:
                 for chunk in response.iter_bytes():
                     handle.write(chunk)
+                handle.flush()
+                os.fsync(handle.fileno())
+        with part_path.open("rb") as handle:
+            if handle.read(5) != b"%PDF-":
+                raise ValueError("Downloaded content is not a PDF (missing %PDF- signature).")
         os.replace(part_path, destination)
     except BaseException:
         try:

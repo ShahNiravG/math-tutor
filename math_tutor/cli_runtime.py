@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 from math_tutor.canvas_course import CanvasFile
 from math_tutor.chaptering import chapter_sort_key, parse_assignment_chapters, parse_display_name_chapter
 from math_tutor.print_targets import chapter_matches_filters, normalize_chapter_filter
+from math_tutor.site_courses import get_course
 from math_tutor.state_store import FetchState
 
 if TYPE_CHECKING:
@@ -23,6 +24,13 @@ class OutputLayout:
     assignments_dir: Path
     responses_dir: Path
     metadata_dir: Path
+
+
+def resolve_course_output_dir(base_output_dir: Path, course_id: str) -> Path:
+    get_course(course_id)
+    if course_id == "algebra-2-trig":
+        return base_output_dir
+    return base_output_dir / "courses" / course_id
 
 
 def build_output_layout(output_dir: Path) -> OutputLayout:
