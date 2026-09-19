@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Callable
 
 from math_tutor.chaptering import format_assignment_display_name, parse_assignment_chapters, parse_display_name_chapter
+from math_tutor.course_curriculum import get_chapter_curriculum
 from math_tutor.prompt_catalog import DEFAULT_MODEL, PromptSpec
 from math_tutor.response_artifacts import pretty_title
 from math_tutor.site_assets import build_site_href
@@ -64,20 +65,24 @@ def generated_document_title(record: DocumentRecord) -> str | None:
     return None
 
 
-def document_title(record: DocumentRecord) -> str:
+def document_title(record: DocumentRecord, *, course_id: str | None = None) -> str:
+    chapter = parse_display_name_chapter(record.display_name)
+    if course_id and chapter:
+        curriculum = get_chapter_curriculum(course_id, chapter)
+        if curriculum is not None:
+            return curriculum.title
     generated_title = generated_document_title(record)
     if generated_title:
         return generated_title
-    chapter = parse_display_name_chapter(record.display_name)
     title = chapter_title(chapter)
     if title:
         return title
     return pretty_title(record.display_name)
 
 
-def document_label(record: DocumentRecord) -> str:
+def document_label(record: DocumentRecord, *, course_id: str | None = None) -> str:
     chapter = parse_display_name_chapter(record.display_name)
-    title = document_title(record)
+    title = document_title(record, course_id=course_id)
     if chapter and re.match(rf"(?i)^chapter\s+{re.escape(chapter)}\b", title):
         return title
     if chapter and title:

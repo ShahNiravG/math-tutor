@@ -18,6 +18,7 @@ from math_tutor.state_store import (
     FetchState,
     GeneratedOutputState,
 )
+from math_tutor.study_guide_validation import validate_prompt_output
 
 
 def prompt_applies_to_file(
@@ -224,6 +225,7 @@ def run_prompt(
         prompt_spec=prompt_spec,
         source_output=source_output,
     )
+    validate_prompt_output(prompt_spec, result.output_text)
     persist_prompt_output(
         canvas_file=canvas_file,
         prompt_spec=prompt_spec,

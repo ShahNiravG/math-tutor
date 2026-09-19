@@ -49,6 +49,16 @@ Fetch the currently enabled AP Calculus AB chapter without any model calls:
 math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
 ```
 
+Preview the only enabled Calculus generation without credentials, browser launch, or a model call:
+
+```bash
+math-tutor --course ap-calculus-ab --skip-fetch --chapter 2 --prompt study-guide --dry-run
+```
+
+The corresponding command without `--dry-run` generates the mastery-oriented Chapter 2 study guide. Run it
+only with explicit approval because it incurs model cost. If the saved output already exists,
+the normal command skips it; never use force-generation for Calculus without renewed approval.
+
 For exact operator workflows, recovery steps, and deploy commands, see [docs/OPERATIONS.md](/home/nshah/projects/math-tutor/math_tutor/docs/OPERATIONS.md).
 
 ### Prompt slugs
@@ -146,9 +156,9 @@ Useful flags:
 
 **Algebra course home (`courses/algebra-2-trig/index.html`)** — the existing course experience with three primary destinations: Library, Challenge Exams, and Live Tutor.
 
-**Calculus course home (`courses/ap-calculus-ab/index.html`)** — a source-first course experience listing the school chapters currently available. Chapter 2 links to the original `Chapter 2 Notetakers.pdf`; unavailable generated study tools are not advertised.
+**Calculus course home (`courses/ap-calculus-ab/index.html`)** — a focused course experience listing the school chapters currently available. Chapter 2 uses the canonical title `Limits and Derivatives` and links to its reviewed study guide and original `Chapter 2 Notetakers.pdf`; unavailable study tools are not advertised.
 
-**Calculus library and chapter pages** — `courses/ap-calculus-ab/library.html` lists the available chapters and `doc-4839635.html` provides the verified school PDF plus a Chapter 2 textbook map. Students open the normal Canvas Cengage launch and choose `Read It` inside WebAssign; the site does not link directly to the session-dependent MindTap reader. Calculus does not inherit Algebra challenges, generated responses, or transient Cengage launch data.
+**Calculus library and chapter pages** — `courses/ap-calculus-ab/library.html` lists the available chapters and `doc-4839635.html` provides the reviewed mastery guide, verified school PDF, and Chapter 2 textbook map. The PDF defines topic scope; clearly labeled supplemental aids deepen only those topics. Students open the normal Canvas Cengage launch and choose `Read It` inside WebAssign; the site does not link directly to the session-dependent MindTap reader. Calculus does not inherit Algebra challenges, other prompt families, or transient Cengage launch data.
 
 **Algebra library (`courses/algebra-2-trig/library.html`)** — one card per document, each showing a summary row. The chapter list stays in the left rail only on this page.
 
@@ -174,15 +184,19 @@ The challenge area also includes:
 
 ### Deploy path
 
-The current production site is deployed under `/site/`, while the SFTP sync root is `math_tutor/output/deploy/math_tutor/` as configured in `.vscode/sftp.json`. Build the site into that deploy tree with:
+The current production site is deployed under `/site/`, while the sync root is `math_tutor/output/deploy/math_tutor/`. Use the guarded production build command so the directory level and base path cannot be omitted:
 
 ```bash
-.venv/bin/math-tutor-build-site \
-  --site-dir math_tutor/output/deploy/math_tutor/site \
-  --base-path /site/
+.venv/bin/math-tutor-build-production
 ```
 
-Then sync the whole `math_tutor/output/deploy/math_tutor/` folder to Bluehost. The generated tutoring pages live under its `site/` subfolder, and the deploy root can also contain top-level files like `.htaccess`.
+To build, validate, sync the whole deploy root to Bluehost, and verify the live Calculus and Algebra II pages, explicitly confirm the production mutation:
+
+```bash
+.venv/bin/math-tutor-deploy-production --confirm-production
+```
+
+The deployment command refuses to run without confirmation and rejects a missing `site/` subtree, incorrect `/site/` links, or the known orphan-MathJax delimiter defect. The generated tutoring pages live under the `site/` subfolder, while the deploy root can also contain hosting-level files such as `.htaccess`.
 
 ### Model display names
 

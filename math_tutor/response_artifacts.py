@@ -294,7 +294,7 @@ def render_response_pdf(*, browser: Any, response_html_path: Path, response_pdf_
 
 
 def markdown_to_html(markdown_text: str) -> str:
-    lines = markdown_text.splitlines()
+    lines = _join_multiline_math_list_items(markdown_text.splitlines())
     parts: list[str] = []
     paragraph: list[str] = []
     in_list = False
@@ -360,6 +360,38 @@ def markdown_to_html(markdown_text: str) -> str:
     close_list()
     flush_blockquote()
     return "\n".join(parts)
+
+
+def _join_multiline_math_list_items(lines: list[str]) -> list[str]:
+    """Keep display-math delimiters and indented list-item prose in one block."""
+    joined: list[str] = []
+    index = 0
+    while index < len(lines):
+        opening = re.match(r"^(\s*[-*]\s+)(\\\[|\$\$)\s*$", lines[index])
+        if opening is None:
+            joined.append(lines[index])
+            index += 1
+            continue
+
+        closing = r"\]" if opening.group(2) == r"\[" else "$$"
+        end = index + 1
+        while end < len(lines) and lines[end].strip() != closing:
+            end += 1
+        if end == len(lines):
+            joined.append(lines[index])
+            index += 1
+            continue
+
+        pieces = [opening.group(2)]
+        pieces.extend(line.strip() for line in lines[index + 1 : end])
+        pieces.append(closing)
+        end += 1
+        while end < len(lines) and lines[end].strip() and lines[end][:1].isspace():
+            pieces.append(lines[end].strip())
+            end += 1
+        joined.append(f"{opening.group(1)}{' '.join(pieces)}")
+        index = end
+    return joined
 
 
 def render_inline(text: str) -> str:

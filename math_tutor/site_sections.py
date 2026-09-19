@@ -128,12 +128,15 @@ def render_index_card(
     practice_href: str | None = None,
     challenge_href: str | None = None,
     experience_variant: str = "default",
+    learning_only: bool = False,
 ) -> str:
     if experience_variant == "staging":
         source_only = prompt_count == 0
         action_links: list[str] = (
             [f'<a href="{html.escape(page_href)}">Open Chapter</a>']
             if source_only
+            else [f'<a href="{html.escape(page_href)}">Open Study Guide</a>']
+            if learning_only
             else [
                 f'<a href="{html.escape(page_href)}">Learn</a>',
                 f'<a href="{html.escape(practice_href or page_href)}">Practice</a>',

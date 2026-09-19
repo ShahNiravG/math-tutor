@@ -65,9 +65,16 @@ def build_index_html(
         portal_href=portal_href,
         experience_variant=experience_variant,
     )
-    if experience_variant == "staging" and records and total_prompt_outputs == 0:
+    if (
+        experience_variant == "staging"
+        and records
+        and (
+            total_prompt_outputs == 0
+            or (not course.supports_challenges and not course.supports_live_tutor)
+        )
+    ):
         featured_href = site_page_href(record_page_filename(records[0]), base_path)
-        featured_title = document_label(records[0])
+        featured_title = document_label(records[0], course_id=course.course_id)
         body_html = f"""
         {header_html}
         <section class="landing-hero landing-hero-staging source-course-hero">
@@ -129,7 +136,11 @@ def build_index_html(
             if featured_record
             else library_href
         )
-        featured_title = document_label(featured_record) if featured_record else "Your next chapter"
+        featured_title = (
+            document_label(featured_record, course_id=course.course_id)
+            if featured_record
+            else "Your next chapter"
+        )
         body_html = f"""
         {header_html}
         <section class="landing-hero landing-hero-staging">
@@ -338,13 +349,15 @@ def build_record_page_html(
             course.course_id,
             parse_display_name_chapter(record.display_name) or "",
         ),
+        course_id=course.course_id,
+        supports_challenges=course.supports_challenges,
     )
     body_html = f"""
     {header_html}
     {record_html}
     """
     return render_page_shell(
-        title=f"{document_label(record)} - {_site_title(course)}",
+        title=f"{document_label(record, course_id=course.course_id)} - {_site_title(course)}",
         records=records,
         active_record=record,
         body_html=body_html,
@@ -382,6 +395,8 @@ def build_library_page_html(
             include_guided_learning=include_guided_learning,
             site_page_href=site_page_href,
             experience_variant=experience_variant,
+            course_id=course.course_id,
+            supports_challenges=course.supports_challenges,
         )
         for record in records
     )
@@ -398,9 +413,10 @@ def build_library_page_html(
     if experience_variant == "staging":
         featured_record = _featured_record(records)
         source_only = bool(records) and total_prompt_outputs == 0
+        learning_only = not course.supports_challenges and not course.supports_live_tutor
         featured_practice_href = (
             site_page_href(record_page_filename(featured_record), base_path)
-            if source_only and featured_record
+            if (source_only or learning_only) and featured_record
             else f"{site_page_href(record_page_filename(featured_record), base_path)}#practice"
             if featured_record
             else site_page_href("index.html", base_path)
@@ -408,14 +424,24 @@ def build_library_page_html(
         library_heading = (
             "Choose a chapter to open its class note"
             if source_only
+            else "Choose a chapter to open its study guide"
+            if learning_only
             else "Choose a chapter, then pick your mode"
         )
         library_intro = (
             "Each chapter begins with the original material used at school. Additional study tools appear only when they are ready."
             if source_only
+            else "Use the reviewed study guide beside the original school material and textbook chapter map."
+            if learning_only
             else "Every chapter now gives students three clear paths: learn the idea, practice with quick wins, or test themselves in challenge mode."
         )
-        library_action = "Open the available chapter" if source_only else "Jump straight into practice"
+        library_action = (
+            "Open the available chapter"
+            if source_only
+            else "Open study guide"
+            if learning_only
+            else "Jump straight into practice"
+        )
         body_html = f"""
         {header_html}
         <section class="content-card section-card section-surface">

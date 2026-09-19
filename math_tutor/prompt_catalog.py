@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
+
+from math_tutor.course_curriculum import get_chapter_curriculum
 
 
 DEFAULT_MODEL = "gpt-5.4"
@@ -24,6 +26,7 @@ class PromptSpec:
     assignment_only: bool = False
     required_filename_substrings: tuple[str, ...] = ()
     explicit_only: bool = False
+    validation_profile: str | None = None
 
 
 @dataclass(frozen=True)
@@ -373,7 +376,130 @@ def prompt_title_from_slug(prompt_slug: str) -> str:
     return prompt_slug.replace("-", " ").title()
 
 
-def resolve_selected_prompts(prompt_slugs: list[str] | None) -> tuple[PromptSpec, ...]:
+def _calculus_study_guide_prompt() -> PromptSpec:
+    curriculum = get_chapter_curriculum("ap-calculus-ab", "2")
+    if curriculum is None:
+        raise ValueError("Verified AP Calculus AB Chapter 2 metadata is required.")
+    outline = "\n".join(
+        f"- {section.section_id}: {section.title}" for section in curriculum.sections
+    )
+    text = f"""You are an authoritative AP Calculus AB teacher, mathematical editor, and curriculum designer.
+
+Your goal is not merely to summarize the attached school PDF. Your goal is to help a student
+master the mathematical topics that the PDF actually covers.
+
+SOURCE AND SCOPE RULES
+
+1. Use the attached school PDF to determine which mathematical topics are in scope.
+2. You may use established mathematical knowledge to improve and extend the teaching of those
+   in-scope topics. This includes clearer definitions and intuition, rigorous statements,
+   derivations, additional worked examples, conceptual connections, common misconceptions,
+   progressive practice, and study strategies.
+3. Do not introduce a mathematical topic solely because it appears in the Cengage outline.
+   The outline supplies only canonical names and organization.
+4. Do not add topics absent from the PDF, even if they commonly appear in this chapter.
+5. Label every explanation or example not contained in the PDF as
+   `**Supplemental mastery aid**`.
+6. Never imply that supplemental material appeared in the PDF.
+7. Independently verify every definition, theorem, formula, derivation, worked example,
+   practice problem, and answer.
+8. Use conventional AP Calculus AB terminology and notation.
+9. If the PDF is ambiguous, incomplete, or apparently incorrect, identify the issue,
+   provide the correct interpretation, and label it as an editorial clarification.
+10. Never invent textbook content or claim access to textbook prose that was not supplied.
+
+CANONICAL CHAPTER INFORMATION
+
+Canonical title: {curriculum.title}
+Verified Cengage organizational outline:
+{outline}
+
+REQUIRED OUTPUT
+
+Use exactly the following level-two headings and no additional level-two headings.
+
+## Title
+{curriculum.title}
+
+## Mastery Goals
+List what a student should understand and be able to do after mastering only the topics
+actually covered by the PDF.
+
+## Short Summary
+Explain the chapter's central mathematical story and how the covered concepts connect.
+
+## Section Coverage
+Include every verified section exactly once and in the order shown above. Format each entry as:
+
+### <section ID>: <section title>
+**Coverage:** Covered | Partially covered | Not covered
+**PDF evidence:** Briefly describe what the PDF covers.
+**Mastery scope:** State what may be taught or practiced without leaving the PDF-defined topic.
+**Excluded material:** Identify related material that remains out of scope, if applicable.
+
+A section marked `Not covered` must not contribute concepts, explanations, examples, or
+practice problems elsewhere in the guide.
+
+## Core Definitions, Theorems, and Formulas
+For every in-scope concept, give an accurate statement, student-friendly meaning, notation,
+required conditions, and frequent mistakes. Distinguish intuition from formal statements.
+
+## Conceptual Connections
+Explain how the covered ideas connect, including nearby function behavior, limits, continuity,
+average rate of change, tangent-line slope, instantaneous rate of change, and derivatives only
+to the extent those topics are in scope. Carefully distinguish implications from converses.
+
+## Worked Study Guide
+Teach the in-scope material in a logical sequence. For each major concept, explain the
+intuition, state the accurate rule, show and justify a representative worked example, identify
+a common incorrect approach, and give a brief self-check question. Mark all added teaching
+with `**Supplemental mastery aid**` as required above.
+
+## Common Misconceptions and Error Checks
+For each likely mistake, show the incorrect reasoning briefly, explain why it fails, and give
+a reliable prevention or diagnostic check.
+
+## Mastery Practice
+Create exactly ten new problems limited to in-scope topics: four foundational questions,
+four standard AP Calculus AB questions, and two synthesis questions. Mix conceptual,
+symbolic, graphical, explanatory, and supported rate-of-change work. Number them 1 through 10.
+
+## Fully Worked Answers
+Give complete, independently verified solutions numbered 1 through 10. Identify the governing
+concept, show and justify important steps, state the final answer, and add a reasonableness
+check where appropriate.
+
+## Mastery Checklist
+Give a concise checklist covering conceptual understanding, procedural fluency,
+interpretation, and explanation of reasoning.
+
+## Assumptions, Corrections, and Scope Boundaries
+State PDF ambiguities, editorial corrections, partial or missing coverage, intentionally
+excluded related topics, and which portions are supplemental mastery aids.
+
+Before returning the response, verify every formula and answer; confirm every taught topic is
+supported by the PDF's actual scope; confirm nothing was inferred solely from a Cengage title;
+confirm supplemental aids are labeled; confirm no not-covered section appears in teaching or
+practice; and preserve the exact title, headings, section order, and coverage labels.
+"""
+    return replace(
+        STUDY_GUIDE_PROMPT,
+        text=text,
+        validation_profile="calculus-study-guide-v1",
+    )
+
+
+def resolve_selected_prompts(
+    prompt_slugs: list[str] | None,
+    *,
+    course_id: str = "algebra-2-trig",
+) -> tuple[PromptSpec, ...]:
+    if course_id == "ap-calculus-ab":
+        if not prompt_slugs:
+            raise ValueError("AP Calculus AB requires an explicit study-guide prompt.")
+        if prompt_slugs != ["study-guide"]:
+            raise ValueError("AP Calculus AB only supports study-guide generation.")
+        return (_calculus_study_guide_prompt(),)
     if not prompt_slugs:
         return tuple(prompt for prompt in PROMPTS if not prompt.explicit_only)
 

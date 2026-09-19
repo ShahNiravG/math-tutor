@@ -2,7 +2,8 @@
 
 ## Status
 
-Approved for implementation on 2026-09-19: Phase 1 and Phase 2 only.
+Phases 1 through 5 are completed. Phase 6A and the Phase 6B study-guide pilot were
+approved on 2026-09-19. Later Calculus prompt families remain unapproved.
 
 This document is the durable checkpoint for continuing the work in a future session.
 
@@ -293,7 +294,7 @@ class note and all existing course artifacts remain untouched.
 
 ### Implementation Status
 
-Approved and implemented locally on 2026-09-19; not yet deployed.
+Approved, implemented, and deployed on 2026-09-19.
 
 - `site_textbook.py` owns immutable Chapter 2 textbook metadata, validates exact Cengage
   reader query keys, allowlists the school Canvas host/course assignment paths, and rejects
@@ -322,3 +323,173 @@ Approved and implemented locally on 2026-09-19; not yet deployed.
   textbook component to Algebra.
 - Desktop and 390-pixel mobile screenshots were inspected successfully. The watched deploy
   tree was not modified.
+
+## Phase 6: AP Calculus AB Generated Learning Content
+
+### Approved Scope
+
+Implement Phase 6A and Phase 6B for the Chapter 2 study guide only. Do not enable or run
+mental math, MCQ, olympiad/stretch, inspiring-video, assignment, challenge, or Live Tutor
+generation for Calculus in this phase.
+
+### Canonical Chapter Identity
+
+- Chapter identity is keyed by `(course_id, chapter_id)`, never by chapter number alone.
+- The canonical Chapter 2 title is `Limits and Derivatives`.
+- The student-facing label is `Chapter 2: Limits and Derivatives`.
+- Provenance is the authenticated Cengage table of contents observed through the legitimate
+  Canvas/WebAssign LTI flow.
+- The verified section outline is:
+  - 2.1: The Tangent and Velocity Problems
+  - 2.2: The Limit of a Function
+  - 2.3: Calculating Limits Using the Limit Laws
+  - 2.4: The Precise Definition of a Limit
+  - 2.5: Continuity
+  - 2.6: Limits at Infinity; Horizontal Asymptotes
+  - 2.7: Derivatives and Rates of Change
+  - 2.8: The Derivative as a Function
+- Calculus pages use the canonical title before and after generation. A model-generated title
+  cannot override it.
+- Algebra keeps its existing static-title and generated-study-guide-title behavior.
+
+### Textbook Metadata Fetch Contract
+
+- A newly fetched Calculus chapter must have verified, course-scoped title and section
+  metadata before generation or publication.
+- Reuse cached verified metadata on idempotent fetches; do not make every repeat fetch depend
+  on Cengage availability.
+- An explicit metadata refresh may authenticate through Canvas, launch the matching Cengage
+  assignment, choose the entitled `Read It` path, and capture only the chapter title and
+  ordered section labels.
+- Never save textbook prose, examples, exercises, images, cookies, session tokens, signed
+  LTI/OIDC requests, or DRM-controlled assets.
+- A failed refresh never erases previously verified metadata. If no verified metadata exists,
+  the PDF fetch may remain saved but generation and publication stop.
+- If a chapter has no usable Cengage launch, require a reviewed manual title and section
+  outline rather than inventing either with a model.
+
+### Phase 6A: Generation Foundation
+
+- Add immutable course-scoped chapter metadata with provenance.
+- Make the site, textbook navigation, and Calculus prompt profile consume the same chapter
+  definition.
+- Preserve all Algebra prompt text, slugs, model selection, artifact paths, title behavior,
+  state files, and commands.
+- Enable only this Calculus generation command shape:
+
+  ```text
+  --course ap-calculus-ab --skip-fetch --chapter 2 --prompt study-guide
+  ```
+
+- Require an explicit prompt for Calculus; an omitted prompt must not launch every family.
+- Continue rejecting other Calculus chapters, assignment mode, and every non-study-guide
+  prompt.
+- Support `--dry-run` without Canvas or model calls.
+- Keep artifacts isolated under `output/courses/ap-calculus-ab/`.
+
+### Phase 6B: Study-Guide Pilot
+
+The attached school PDF remains the mathematical content authority. Verified Cengage
+metadata supplies only the canonical title and ordered organizational outline.
+
+The Calculus prompt must require:
+
+- exact `## Title` value: `Limits and Derivatives`;
+- a short summary;
+- ordered section coverage entries for 2.1 through 2.8;
+- an explicit `Covered`, `Partially covered`, or `Not covered` status for every section;
+- definitions, theorems, formulas, and worked explanations supported by the school PDF;
+- practice problems and answers based only on concepts supported by the school PDF;
+- assumptions, ambiguities, and missing coverage;
+- no inference of textbook body content from section titles.
+
+Before canonical persistence, validate that:
+
+- the title exists exactly once and matches the canonical title;
+- required headings exist exactly once;
+- sections 2.1 through 2.8 appear exactly once and in order;
+- each section contains an allowed coverage status;
+- the response is nonempty and contains no provider error text.
+
+A validation failure must not mark the prompt complete or overwrite a prior valid artifact.
+Do not automatically retry the first pilot; report the rejected output so prompt defects and
+additional model cost remain visible.
+
+### Phase 6 Backward-Compatibility Contract
+
+1. Algebra resolves the existing prompt specifications without text changes.
+2. Algebra generation requires no Cengage or course-chapter metadata.
+3. Algebra title resolution remains unchanged.
+4. Calculus metadata cannot resolve for an Algebra course lookup.
+5. Algebra artifact paths and state filenames remain unchanged.
+6. Calculus validation failures cannot block an Algebra run.
+7. Existing Algebra artifacts are not migrated, regenerated, or rewritten.
+
+### Phase 6 TDD and Execution Sequence
+
+1. Red/green/refactor for course-scoped chapter identity and Algebra isolation.
+2. Red/green/refactor for canonical site titles before and after generation.
+3. Red/green/refactor for Calculus-only prompt selection and CLI rejection paths.
+4. Red/green/refactor for PDF-plus-outline study-guide prompt construction.
+5. Red/green/refactor for strict output validation before persistence.
+6. Run the full offline validator and a production-shaped `/tmp` build.
+7. Run a no-network dry run for the exact study-guide command.
+8. Execute one approved Chapter 2 study-guide model call.
+9. Review title, structure, source fidelity, mathematical content, artifact isolation, and
+   site rendering.
+10. Do not deploy until the generated guide is reviewed and deployment is separately
+    approved.
+
+### Phase 6 Acceptance Criteria
+
+1. Every Calculus chapter has verified metadata before generation or publication.
+2. All Chapter 2 surfaces say `Chapter 2: Limits and Derivatives` consistently.
+3. The model receives the school PDF plus title/section metadata, but no textbook body
+   content.
+4. Only the explicit Chapter 2 study-guide prompt can run for Calculus.
+5. Invalid output cannot become canonical or mark generated state complete.
+6. Calculus artifacts and state remain isolated from Algebra.
+7. Algebra behavior is unchanged and protected by regression tests.
+8. The generated page retains the class note and Cengage/WebAssign navigation while adding
+   only the reviewed study guide.
+9. Calculus still exposes no assignments, challenges, Live Tutor, or other prompt families.
+10. Full tests, compilation, diff checks, dry run, and staging build pass.
+
+### Phase 6 Recovery and Rollback
+
+- Existing file-existence skip logic makes a successful pilot idempotent.
+- Use targeted force only for the Calculus `study-guide` prompt after an explicit review
+  decision.
+- Atomic state persistence preserves completed work across interruption or provider failure.
+- Rollback reverts the generation policy, prompt profile, and site-title wiring, then rebuilds
+  the site. Preserve generated artifacts for review unless deletion is separately approved.
+- No artifact migration or database change is required.
+
+### Phase 6 Implementation Status
+
+Phase 6A and the Phase 6B study-guide pilot were implemented locally on 2026-09-19 and have
+not been deployed.
+
+- `course_curriculum.py` is the single immutable source for the course-scoped Chapter 2 title,
+  ordered sections, provenance, and verification date.
+- Calculus pages use `Chapter 2: Limits and Derivatives` before and after generation; the
+  existing Algebra generated-title behavior is unchanged.
+- Calculus accepts only the explicit saved-PDF command
+  `--course ap-calculus-ab --skip-fetch --chapter 2 --prompt study-guide`.
+- Dry-run performs no Canvas call, credential resolution, model-client initialization, or
+  browser launch.
+- `calculus-study-guide-v1` validates the exact title, headings, section order, one coverage
+  status per section, nonempty output, and provider-error absence before persistence.
+- The original GPT-5.4 pilot was replaced with one explicitly approved mastery-oriented run.
+  The replacement uses the PDF to establish topic scope while allowing verified supplemental
+  teaching within those topics. It contains 15 worked examples and ten progressively structured
+  practice problems with fully worked answers. Section 2.4 is `Not covered`; section 2.8 is
+  `Partially covered`; the remaining sections are `Covered`.
+- Never regenerate this study guide, including with any force option, without explicit user
+  approval. Rebuilds consume the saved artifacts and make no model call.
+- A staging build preserved the class note and Cengage navigation, added only the study guide,
+  and exposed no Calculus challenges, Live Tutor, assignments, mental math, or olympiad links.
+- The superseded guide and its temporary rollback copy were discarded only after the replacement
+  passed validation and editorial review. No automatic retry or additional model call occurred.
+- The mastery replacement is complete locally but has not been deployed.
+- Full offline validation passes 266 tests plus Python compilation and `git diff --check`.

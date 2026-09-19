@@ -84,6 +84,7 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 - AP Calculus AB lives under `courses/ap-calculus-ab/`; Chapter 2 is published from its isolated output and no Algebra content is inherited
 - The Calculus Chapter 2 page includes a validated Cengage textbook map: students launch through a normal Canvas homework link and choose `Read It` in WebAssign; no direct MindTap or transient LTI/OIDC link is published
 - Calculus currently exposes only the verified class note, not Live Tutor, generated practice, or challenge exams
+- Calculus Chapter 2 now also exposes one reviewed GPT-5.4 study guide. It retains the class note and Cengage map, and still exposes no Live Tutor, challenges, assignments, mental math, or olympiad content.
 - The Algebra library keeps the chapter list in the left rail and moves the branded nav header into the main panel
 - The Algebra Live Tutor is a no-sidebar page with the same branded top header as the library overview
 - Per-document pages keep a slim left rail without the full chapter list
@@ -119,6 +120,8 @@ Current important module boundaries:
   - [math_tutor/prompt_pipeline.py](/home/nshah/projects/math-tutor/math_tutor/prompt_pipeline.py)
   - [math_tutor/prompt_generation.py](/home/nshah/projects/math-tutor/math_tutor/prompt_generation.py)
   - [math_tutor/prompt_output_store.py](/home/nshah/projects/math-tutor/math_tutor/prompt_output_store.py)
+  - [math_tutor/study_guide_validation.py](/home/nshah/projects/math-tutor/math_tutor/study_guide_validation.py)
+  - [math_tutor/course_curriculum.py](/home/nshah/projects/math-tutor/math_tutor/course_curriculum.py)
   - [math_tutor/response_artifacts.py](/home/nshah/projects/math-tutor/math_tutor/response_artifacts.py)
 - Site generation:
   - [math_tutor/site_builder.py](/home/nshah/projects/math-tutor/math_tutor/site_builder.py)
@@ -148,8 +151,14 @@ This means future cleanup should usually target one focused module at a time ins
 # Fetch the currently enabled AP Calculus AB chapter only
 .venv/bin/math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
 
-# Build and deploy site
-.venv/bin/math-tutor-build-site --site-dir math_tutor/output/deploy/math_tutor/site --base-path /site/
+# Preview the enabled Calculus study guide without any model call
+.venv/bin/math-tutor --course ap-calculus-ab --skip-fetch --chapter 2 --prompt study-guide --dry-run
+
+# Build and validate the canonical production tree
+.venv/bin/math-tutor-build-production
+
+# Build, validate, deploy, and verify live content (explicit production mutation)
+.venv/bin/math-tutor-deploy-production --confirm-production
 
 # Backfill MCQ for existing notes (skips already-done)
 .venv/bin/math-tutor-generate-mcq
@@ -200,7 +209,11 @@ Architecture and validation references:
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 - CLI fetch logs now summarize already-fetched vs pending files before processing
 - All JSON state writers route through `math_tutor/atomic_io.py` and PDF downloads stream via a `.part` rename — mid-operation crashes no longer corrupt state files or leave truncated PDFs on disk (see [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md) "Crash Safety")
-- Local validation baseline is `244` passing tests via `math_tutor/scripts/validate_project.py`
+- AP Calculus AB Chapter 2 canonical metadata is course-scoped as `Limits and Derivatives`, with verified sections 2.1 through 2.8.
+- One validated mastery-oriented GPT-5.4 study guide is saved under the isolated Calculus output tree. It uses authoritative supplemental teaching only within PDF-established topics, includes 15 worked examples and ten fully solved mastery problems, marks section 2.4 `Not covered`, and marks section 2.8 `Partially covered`.
+- Never regenerate the Calculus study guide without explicit approval; site builds and recovery must reuse the saved Markdown/HTML/PDF.
+- Local validation baseline is `266` passing tests, plus Python compilation and `git diff --check`.
+- The initial Phase 6 guide was deployed. Its approved mastery-oriented replacement is complete locally but has not been deployed.
 - The current refactor checkpoint did not rerun model APIs and did not rebuild the deploy tree in place unless explicitly requested
 
 ## Known Risks

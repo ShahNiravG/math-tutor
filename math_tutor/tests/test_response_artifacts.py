@@ -28,6 +28,21 @@ class ResponseArtifactsTests(unittest.TestCase):
         self.assertIn(r"\end{align*}", html)
         self.assertNotIn("<em>", html)
 
+    def test_markdown_to_html_keeps_multiline_display_math_inside_list_item(self) -> None:
+        html = markdown_to_html(
+            "- \\[\n"
+            "  \\lim_{x\\to c}f(x)=\\infty\n"
+            "  \\]\n"
+            "  means \\(f(x)\\) becomes arbitrarily large as \\(x\\to c\\)."
+        )
+
+        self.assertIn(
+            r"<li>\[ \lim_{x\to c}f(x)=\infty \] means \(f(x)\) "
+            r"becomes arbitrarily large as \(x\to c\).</li>",
+            html,
+        )
+        self.assertNotIn(r"<li>\[</li>", html)
+
     def test_markdown_to_html_renders_blockquotes(self) -> None:
         html = markdown_to_html("> **Answer:** Use the double-angle formula.")
 

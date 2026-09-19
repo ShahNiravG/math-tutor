@@ -6,6 +6,8 @@ from dataclasses import dataclass
 import html
 from urllib.parse import parse_qsl, urlsplit
 
+from math_tutor.course_curriculum import AP_CALCULUS_CHAPTER_2
+
 
 CANVAS_HOST = "mitty.instructure.com"
 CENGAGE_READER_HOST = "ng.cengage.com"
@@ -34,44 +36,37 @@ def _canvas_assignment_url(assignment_id: str) -> str:
     return f"https://{CANVAS_HOST}/courses/4446/assignments/{assignment_id}"
 
 
+_CHAPTER_2_ASSIGNMENTS = {
+    "2.1": "299777",
+    "2.2": "299778",
+    "2.3": "299779",
+    "2.5": "299780",
+    "2.6": "299781",
+    "2.7": "299782",
+    "2.8": "299783",
+}
+
+
 AP_CALCULUS_CHAPTER_2_TEXTBOOK = TextbookNavigation(
-    course_id="ap-calculus-ab",
-    chapter="2",
-    title="Chapter 2: Limits and Derivatives",
+    course_id=AP_CALCULUS_CHAPTER_2.course_id,
+    chapter=AP_CALCULUS_CHAPTER_2.chapter,
+    title=AP_CALCULUS_CHAPTER_2.display_label,
     reader_url=(
         "https://ng.cengage.com/static/nb/ui/evo/index.html"
         "?snapshotId=1529049&id=677758950&eISBN=9780357049105"
     ),
     access_bootstrap_url=_canvas_assignment_url("299777"),
-    sections=(
+    sections=tuple(
         TextbookSection(
-            "2.1",
-            "The Tangent and Velocity Problems",
-            _canvas_assignment_url("299777"),
-        ),
-        TextbookSection("2.2", "The Limit of a Function", _canvas_assignment_url("299778")),
-        TextbookSection(
-            "2.3",
-            "Calculating Limits Using the Limit Laws",
-            _canvas_assignment_url("299779"),
-        ),
-        TextbookSection("2.4", "The Precise Definition of a Limit", None),
-        TextbookSection("2.5", "Continuity", _canvas_assignment_url("299780")),
-        TextbookSection(
-            "2.6",
-            "Limits at Infinity; Horizontal Asymptotes",
-            _canvas_assignment_url("299781"),
-        ),
-        TextbookSection(
-            "2.7",
-            "Derivatives and Rates of Change",
-            _canvas_assignment_url("299782"),
-        ),
-        TextbookSection(
-            "2.8",
-            "The Derivative as a Function",
-            _canvas_assignment_url("299783"),
-        ),
+            section.section_id,
+            section.title,
+            (
+                None
+                if section.section_id not in _CHAPTER_2_ASSIGNMENTS
+                else _canvas_assignment_url(_CHAPTER_2_ASSIGNMENTS[section.section_id])
+            ),
+        )
+        for section in AP_CALCULUS_CHAPTER_2.sections
     ),
 )
 

@@ -124,7 +124,11 @@ def process_saved_files(
     downloads_dir: Path,
     openai_client: Any,
 ) -> set[str]:
-    if not command_context.fetch_only and needs_pdf_browser(command_context.selected_prompts):
+    if (
+        not command_context.fetch_only
+        and not command_context.dry_run
+        and needs_pdf_browser(command_context.selected_prompts)
+    ):
         with sync_playwright() as playwright:
             browser = playwright.chromium.launch(headless=not command_context.headful)
             try:

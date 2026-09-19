@@ -139,6 +139,52 @@ class CliCommandTests(unittest.TestCase):
         process_file_batch.assert_called_once()
         sync_playwright.assert_not_called()
 
+    def test_process_saved_files_skips_browser_in_dry_run_mode(self) -> None:
+        output_layout = build_output_layout(Path("/tmp/output"))
+        context = CliCommandContext(
+            output_dir=Path("/tmp/output"),
+            output_layout=output_layout,
+            fetch_state=FetchState(path=Path("/tmp/output/fetch_state.json"), fetched={}),
+            generated_output_state=GeneratedOutputState(
+                path=Path("/tmp/output/generated_output_state.json"), processed={}
+            ),
+            default_model="gpt-5.4",
+            selected_prompts=(PROMPTS_BY_SLUG["study-guide"],),
+            forced_prompt_slugs=set(),
+            requested_prompt_slugs={"study-guide"},
+            normalized_chapter_filters=["2"],
+            force=False,
+            force_generation=False,
+            dry_run=True,
+            fetch_only=False,
+            fetch_assignments=False,
+            list_files=False,
+            headful=False,
+            limit=1,
+            assignment_limit=None,
+            course_url="https://example.com/course",
+            login_url=None,
+            site_dir=None,
+            site_base_path="/site/",
+            build_site_guided_learning=False,
+            openai_api_key=None,
+            gemini_client=None,
+        )
+
+        with (
+            patch("math_tutor.cli_commands.process_file_batch", return_value={"1"}),
+            patch("math_tutor.cli_commands.sync_playwright") as sync_playwright,
+        ):
+            result = process_saved_files(
+                command_context=context,
+                files=[Mock(file_id=1)],
+                downloads_dir=output_layout.downloads_dir,
+                openai_client=None,
+            )
+
+        self.assertEqual(result, {"1"})
+        sync_playwright.assert_not_called()
+
     def test_run_assignment_fetch_workflow_uses_manifest_covered_saved_files(self) -> None:
         output_layout = build_output_layout(Path("/tmp/output"))
         context = CliCommandContext(

@@ -116,6 +116,36 @@ class SiteBuilderTests(unittest.TestCase):
                 ),
                 encoding="utf-8",
             )
+            responses_dir = calculus_output_dir / "responses"
+            responses_dir.mkdir()
+            response_md = responses_dir / "4839635_chapter-2-notetakers__study-guide-gpt5.md"
+            response_html = responses_dir / "4839635_chapter-2-notetakers__study-guide-gpt5.html"
+            response_pdf = responses_dir / "4839635_chapter-2-notetakers__study-guide-gpt5.pdf"
+            response_md.write_text(
+                "## Title\nLimits and Derivatives\n\n## Short Summary\nLimits become derivatives.\n",
+                encoding="utf-8",
+            )
+            response_html.write_text("<html><body>Study Guide</body></html>", encoding="utf-8")
+            response_pdf.write_bytes(b"%PDF-1.7\nstudy guide")
+            (calculus_output_dir / "generated_output_state.json").write_text(
+                json.dumps(
+                    {
+                        "processed": {
+                            "4839635": {
+                                "study-guide": {
+                                    "display_name": "Chapter 2 Notetakers.pdf",
+                                    "prompt_title": "Study Guide",
+                                    "response_path": str(response_md),
+                                    "response_html_path": str(response_html),
+                                    "response_pdf_path": str(response_pdf),
+                                    "processed_at": "2026-09-19T13:00:00Z",
+                                }
+                            }
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
 
             with patch("math_tutor.site_builder.build_challenges"):
                 build_site(
@@ -136,11 +166,15 @@ class SiteBuilderTests(unittest.TestCase):
             self.assertFalse((calculus_dir / "challenges").exists())
             self.assertEqual(deployed_pdf.read_bytes(), source_pdf.read_bytes())
             self.assertIn("AP Calculus AB", course_html)
-            self.assertIn("Chapter 2", course_html)
+            self.assertIn("Chapter 2: Limits and Derivatives", course_html)
             self.assertIn("doc-4839635.html", course_html)
             self.assertNotIn("Live Tutor", course_html)
             self.assertNotIn("Challenge Exams", course_html)
             self.assertIn("Class Note PDF", record_html)
+            self.assertIn("Study guide", record_html)
+            self.assertIn("Read Guide", record_html)
+            self.assertIn("Chapter 2: Limits and Derivatives", record_html)
+            self.assertNotIn("Chapter 2: Chapter 2 Notetakers", record_html)
             self.assertIn("Chapter 2 textbook", record_html)
             self.assertIn("Open Chapter 2 through Canvas", record_html)
             self.assertIn("Read It", record_html)
@@ -149,6 +183,14 @@ class SiteBuilderTests(unittest.TestCase):
             self.assertNotIn("gateway.cengage.com", record_html)
             self.assertNotIn("ltioidc", record_html)
             self.assertNotIn("token=", record_html)
+            for unsupported in ("Challenge Exams", "Live Tutor", "Mental Math", "Olympiad"):
+                self.assertNotIn(unsupported, course_html)
+                self.assertNotIn(unsupported, record_html)
+            library_html = (calculus_dir / "library.html").read_text(encoding="utf-8")
+            self.assertNotIn(">Challenge<", library_html)
+            self.assertNotIn("#challenge", library_html)
+            self.assertNotIn("#practice", library_html)
+            self.assertNotIn("#practice", record_html)
             self.assertIn(
                 '/site/courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf',
                 record_html,

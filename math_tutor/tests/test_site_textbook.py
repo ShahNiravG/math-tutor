@@ -27,6 +27,17 @@ class SiteTextbookTests(unittest.TestCase):
         self.assertIsNone(get_textbook_navigation("algebra-2-trig", "2"))
         self.assertIsNone(get_textbook_navigation("ap-calculus-ab", "3"))
 
+    def test_assignment_links_remain_matched_to_verified_sections(self) -> None:
+        assignments = {
+            section.section_id: section.canvas_assignment_url
+            for section in AP_CALCULUS_CHAPTER_2_TEXTBOOK.sections
+        }
+
+        self.assertTrue(assignments["2.1"].endswith("/299777"))
+        self.assertIsNone(assignments["2.4"])
+        self.assertTrue(assignments["2.5"].endswith("/299780"))
+        self.assertTrue(assignments["2.8"].endswith("/299783"))
+
     def test_validation_rejects_session_bearing_reader_url(self) -> None:
         unsafe = replace(
             AP_CALCULUS_CHAPTER_2_TEXTBOOK,

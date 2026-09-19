@@ -36,20 +36,26 @@ def build_command_context(
     generated_output_state = load_generated_output_state(
         canonical_generated_output_state_path(output_dir)
     )
-    selected_prompts = resolve_selected_prompts(args.prompt_slugs)
+    selected_prompts = resolve_selected_prompts(args.prompt_slugs, course_id=course.course_id)
     forced_prompt_slugs = resolve_prompt_slug_set(args.force_prompt_slugs)
     requested_prompt_slugs = resolve_prompt_slug_set(args.prompt_slugs)
     normalized_chapter_filters = normalize_cli_chapter_filters(args.chapter_filters)
 
     ensure_output_layout(output_layout)
 
-    openai_api_key = resolve_openai_api_key(
-        prompts=selected_prompts,
-        fetch_only=args.fetch_only,
-        fetch_assignments=args.fetch_assignments,
-    )
+    openai_api_key = None
+    if not args.dry_run:
+        openai_api_key = resolve_openai_api_key(
+            prompts=selected_prompts,
+            fetch_only=args.fetch_only,
+            fetch_assignments=args.fetch_assignments,
+        )
     gemini_client = None
-    if not args.fetch_only and any((prompt.model or "").startswith("gemini") for prompt in selected_prompts):
+    if (
+        not args.dry_run
+        and not args.fetch_only
+        and any((prompt.model or "").startswith("gemini") for prompt in selected_prompts)
+    ):
         gemini_client = initialize_gemini_client(log=log)
 
     return CliCommandContext(

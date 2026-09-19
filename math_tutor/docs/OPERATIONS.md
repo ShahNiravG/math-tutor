@@ -16,6 +16,9 @@ AP Calculus AB uses isolated state and artifacts:
 
 - `math_tutor/output/courses/ap-calculus-ab/fetch_state.json`
 - `math_tutor/output/courses/ap-calculus-ab/downloads/`
+- `math_tutor/output/courses/ap-calculus-ab/generated_output_state.json`
+- `math_tutor/output/courses/ap-calculus-ab/responses/`
+- `math_tutor/output/courses/ap-calculus-ab/metadata/`
 
 Generated metadata files live under:
 
@@ -86,7 +89,23 @@ Typical variables:
 .venv/bin/math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
 ```
 
-This phase intentionally rejects Calculus generation, other chapters, assignment mode, and site generation. A repeated command uses the isolated fetch state and skips Canvas login and download.
+Other Calculus chapters and assignment mode remain disabled.
+
+### Preview the AP Calculus AB Chapter 2 study guide
+
+```bash
+.venv/bin/math-tutor --course ap-calculus-ab --skip-fetch --chapter 2 --prompt study-guide --dry-run
+```
+
+Dry-run mode does not resolve model credentials, initialize provider clients, launch Chromium,
+or call Canvas. Remove `--dry-run` only after explicit approval for the model cost. The normal
+non-force command is idempotent and skips the saved guide. Do not pass `--force`,
+`--force-generation`, or `--force-prompt study-guide` without separate approval.
+
+The Calculus response is validated before persistence. Invalid title, mastery headings,
+section order, coverage fields, supplemental-aid disclosures, not-covered topic leakage,
+incomplete 1–10 practice/answer sets, empty content, or provider-error output leaves prior
+artifacts and generated state unchanged.
 
 ### Build the tutoring site
 
@@ -100,10 +119,23 @@ For the older pre-refresh look, use `--experience archived`.
 ### Build the deploy tree used by SFTP
 
 ```bash
-.venv/bin/math-tutor-build-site \
-  --site-dir math_tutor/output/deploy/math_tutor/site \
-  --base-path /site/
+.venv/bin/math-tutor-build-production
 ```
+
+This command always writes to `math_tutor/output/deploy/math_tutor/site/`, always uses
+the `/site/` base path, and validates the production tree. It fails closed if the tree is
+at the wrong directory level or contains the known orphan-MathJax list delimiter defect.
+
+### Deploy and verify production
+
+```bash
+.venv/bin/math-tutor-deploy-production --confirm-production
+```
+
+The confirmation flag is mandatory. The command rebuilds and validates before syncing
+`math_tutor/output/deploy/math_tutor/` to `public_html/math_tutor/`, then verifies the live
+Calculus guide and Algebra II site. A failed build or validation prevents the sync; a failed
+live check returns a nonzero exit after the sync so the operator knows verification failed.
 
 ### Rebuild response HTML from saved Markdown only
 
@@ -153,7 +185,7 @@ The build publishes the saved Calculus Chapter 2 source note under:
 - `site/courses/ap-calculus-ab/doc-4839635.html`
 - `site/courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf`
 
-The Calculus site is built from `output/courses/ap-calculus-ab/`; no model call or Canvas login is needed for a rebuild.
+The Calculus site is built from `output/courses/ap-calculus-ab/`; no model call or Canvas login is needed for a rebuild. Site builds must reuse the saved study guide and must never regenerate it.
 
 The Chapter 2 page also publishes non-secret Cengage navigation from
 `math_tutor/site_textbook.py`. Students use `Open Chapter 2 through Canvas`, then choose

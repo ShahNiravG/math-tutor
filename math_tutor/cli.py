@@ -186,13 +186,18 @@ def parse_args() -> argparse.Namespace:
     args = parser.parse_args()
     if args.course_id == "ap-calculus-ab":
         if args.fetch_assignments:
-            parser.error("AP Calculus AB assignment fetching is not enabled in the Chapter 2 fetch phase.")
-        if not args.fetch_only:
-            parser.error("AP Calculus AB currently requires --fetch-only; model generation is not enabled.")
+            parser.error("AP Calculus AB assignment fetching is not enabled.")
         if normalize_cli_chapter_filters(args.chapter_filters) != ["2"]:
             parser.error("AP Calculus AB currently requires exactly --chapter 2.")
         if args.build_site_guided_learning:
-            parser.error("AP Calculus AB site generation is not enabled in the Chapter 2 fetch phase.")
+            parser.error("AP Calculus AB guided-learning site generation is not enabled.")
+        if not args.fetch_only:
+            if not args.skip_fetch:
+                parser.error("AP Calculus AB generation requires --skip-fetch.")
+            if args.prompt_slugs != ["study-guide"]:
+                parser.error("AP Calculus AB generation requires exactly --prompt study-guide.")
+            if any(slug != "study-guide" for slug in (args.force_prompt_slugs or [])):
+                parser.error("AP Calculus AB can force only the study-guide prompt.")
     return args
 
 

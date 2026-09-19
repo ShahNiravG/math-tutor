@@ -60,6 +60,34 @@ class SiteCardsTests(unittest.TestCase):
         self.assertEqual(document_title(record), "Angles as Rotation and Arc Measure")
         self.assertEqual(document_label(record), "Chapter 5.1: Angles as Rotation and Arc Measure")
 
+    def test_calculus_title_uses_course_scoped_curriculum_before_and_after_generation(self) -> None:
+        record = DocumentRecord(
+            file_id="4839635",
+            display_name="Chapter 2 Notetakers.pdf",
+            pdf_path=None,
+            download_url=None,
+            fetched_at=None,
+            prompt_outputs=[
+                PromptOutputRecord(
+                    slug="study-guide",
+                    title="Study Guide",
+                    response_path=Path("output/responses/calculus.md"),
+                    response_html_path=None,
+                    response_pdf_path=None,
+                    metadata_path=None,
+                    processed_at="2026-09-19T00:00:00Z",
+                    response_markdown="## Title\nA Conflicting Generated Title\n",
+                )
+            ],
+        )
+
+        self.assertEqual(document_title(record, course_id="ap-calculus-ab"), "Limits and Derivatives")
+        self.assertEqual(
+            document_label(record, course_id="ap-calculus-ab"),
+            "Chapter 2: Limits and Derivatives",
+        )
+        self.assertNotEqual(document_title(record), "Limits and Derivatives")
+
     def test_match_assignments_to_record(self) -> None:
         record = DocumentRecord(
             file_id="4506904",

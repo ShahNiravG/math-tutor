@@ -30,6 +30,8 @@ def render_document_overview_card(
     include_guided_learning: bool,
     site_page_href: Callable[[str, str], str],
     experience_variant: str = "default",
+    course_id: str | None = None,
+    supports_challenges: bool = True,
 ) -> str:
     prompt_count = sum(1 for prompt_output in record.prompt_outputs if prompt_output.processed_at)
     chapter = parse_display_name_chapter(record.display_name)
@@ -38,7 +40,11 @@ def render_document_overview_card(
     if include_guided_learning and not summary_html:
         summary_html = f"<p>{render_inline(build_guided_learning_prompt(record))}</p>"
     return render_index_card(
-        heading=document_title(record) if experience_variant == "staging" else document_label(record),
+        heading=(
+            document_title(record, course_id=course_id)
+            if experience_variant == "staging"
+            else document_label(record, course_id=course_id)
+        ),
         kicker=f"Chapter {chapter}" if experience_variant == "staging" and chapter else None,
         prompt_count=prompt_count,
         page_href=site_page_href(record_page_filename(record), base_path),
@@ -47,6 +53,7 @@ def render_document_overview_card(
         practice_href=f'{site_page_href(record_page_filename(record), base_path)}#practice',
         challenge_href=f'{site_page_href(record_page_filename(record), base_path)}#challenge',
         experience_variant=experience_variant,
+        learning_only=not supports_challenges,
     )
 
 
@@ -62,6 +69,8 @@ def render_document_page_content(
     site_page_href: Callable[[str, str], str],
     experience_variant: str = "default",
     textbook_navigation: TextbookNavigation | None = None,
+    course_id: str | None = None,
+    supports_challenges: bool = True,
 ) -> str:
     document_links: list[str] = []
     if record.pdf_path and record.pdf_path.exists():
@@ -124,7 +133,7 @@ def render_document_page_content(
             <div class="chapter-hero-main">
               <span class="chapter-kicker">School Notetaker</span>
               <div class="doc-header">
-                <h2>{html.escape(document_label(record))}</h2>
+                <h2>{html.escape(document_label(record, course_id=course_id))}</h2>
               </div>
               <div class="chip-row">
                 <span class="chip">Original class material</span>
@@ -160,6 +169,43 @@ def render_document_page_content(
         """
         summary_body = extract_record_summary_html(record) or "<p>No chapter summary is available yet. Start with the class note, then move into practice.</p>"
         learn_cards_html = "\n".join(prompt_groups["learn"])
+        if not supports_challenges:
+            return f"""
+        <section class="content-card chapter-hero-card" id="doc-{record.file_id}">
+          <div class="chapter-hero-grid">
+            <div class="chapter-hero-main">
+              <span class="chapter-kicker">Chapter Focus</span>
+              <div class="doc-header">
+                <h2>{html.escape(document_label(record, course_id=course_id))}</h2>
+              </div>
+              <div class="chip-row">
+                <span class="chip">Study guide ready</span>
+                <span class="chip">Original class material</span>
+              </div>
+              <div class="chapter-summary-panel">
+                <h3>What this chapter is about</h3>
+                <div class="card-summary">{summary_body}</div>
+              </div>
+            </div>
+            <aside class="chapter-support-card source-note-card">
+              <span class="task-kicker">School source</span>
+              <h3>Chapter 2 class note</h3>
+              <p>Keep the original handout beside the generated guide.</p>
+              <div class="hero-action-grid">{' '.join(document_links)}</div>
+            </aside>
+          </div>
+        </section>
+        <section class="content-card section-card section-surface" id="learn">
+          <div class="section-head">
+            <div>
+              <span class="eyebrow">Learn</span>
+              <h3>Study guide</h3>
+            </div>
+          </div>
+          <div class="prompt-grid">{learn_cards_html}</div>
+        </section>
+        {textbook_html}
+        """
         practice_cards_html = "\n".join(prompt_groups["practice"])
         resource_cards_html = "\n".join(prompt_groups["resources"] + prompt_groups["extras"])
         resource_panel = f"""
@@ -230,7 +276,7 @@ def render_document_page_content(
             <div class="chapter-hero-main">
               <span class="chapter-kicker">Chapter Focus</span>
               <div class="doc-header">
-                <h2>{html.escape(document_label(record))}</h2>
+                <h2>{html.escape(document_label(record, course_id=course_id))}</h2>
               </div>
               <div class="chip-row">
                 {' '.join(document_chips)}
@@ -279,7 +325,7 @@ def render_document_page_content(
     return f"""
     <section class="content-card" id="doc-{record.file_id}">
       <div class="doc-header">
-        <h2>{html.escape(document_label(record))}</h2>
+        <h2>{html.escape(document_label(record, course_id=course_id))}</h2>
       </div>
       <div class="chip-row">
         {' '.join(document_chips)}

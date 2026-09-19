@@ -36,6 +36,34 @@ class PromptCatalogTests(unittest.TestCase):
     def test_study_guide_prompt_export(self) -> None:
         self.assertIs(STUDY_GUIDE_PROMPT, PROMPTS_BY_SLUG["study-guide"])
 
+    def test_calculus_resolves_only_explicit_study_guide_with_verified_outline(self) -> None:
+        prompt = resolve_selected_prompts(
+            ["study-guide"],
+            course_id="ap-calculus-ab",
+        )[0]
+
+        self.assertEqual(prompt.slug, "study-guide")
+        self.assertEqual(prompt.model, STUDY_GUIDE_PROMPT.model)
+        self.assertIn("## Title\nLimits and Derivatives", prompt.text)
+        self.assertIn("2.1: The Tangent and Velocity Problems", prompt.text)
+        self.assertIn("2.8: The Derivative as a Function", prompt.text)
+        self.assertIn("PDF to determine which mathematical topics are in scope", prompt.text)
+        self.assertIn("established mathematical knowledge", prompt.text)
+        self.assertIn("Supplemental mastery aid", prompt.text)
+        self.assertIn("## Mastery Goals", prompt.text)
+        self.assertIn("## Mastery Practice", prompt.text)
+        self.assertIn("## Fully Worked Answers", prompt.text)
+        self.assertIn("Do not introduce a mathematical topic solely", prompt.text)
+
+    def test_calculus_rejects_implicit_or_non_study_guide_prompt_selection(self) -> None:
+        with self.assertRaisesRegex(ValueError, "explicit study-guide"):
+            resolve_selected_prompts(None, course_id="ap-calculus-ab")
+        with self.assertRaisesRegex(ValueError, "only supports study-guide"):
+            resolve_selected_prompts(["mental-math"], course_id="ap-calculus-ab")
+
+    def test_default_algebra_prompt_resolution_remains_the_existing_catalog(self) -> None:
+        self.assertIs(resolve_selected_prompts(["study-guide"])[0], STUDY_GUIDE_PROMPT)
+
     def test_auto_grading_assignment_prompt_exists(self) -> None:
         prompt = PROMPTS_BY_SLUG["auto-grading-assignment"]
         self.assertEqual(prompt.title, "Auto Grading Assignment")

@@ -511,6 +511,18 @@ Key contract:
 - Validation: rejects unexpected reader query keys, fragments, off-domain URLs, wrong Canvas course paths, duplicate sections, and unordered sections
 - Side effects: none
 
+### `course_curriculum.py`
+
+Owns immutable chapter identity keyed by `(course_id, chapter)`. The Calculus Chapter 2
+canonical title and ordered Cengage section outline are shared by site titles, textbook
+navigation, prompt construction, and output validation; Algebra title behavior is unchanged.
+
+### `study_guide_validation.py`
+
+Provides the fail-closed `calculus-study-guide-v1` response contract. The prompt pipeline
+invokes it after the provider returns but before any canonical response, metadata, PDF, or
+generated-state write. Prompts without a validation profile preserve their existing behavior.
+
 ### `site_prompt_cards.py`
 
 Prompt-card ordering and rendering for generated chapter pages.
