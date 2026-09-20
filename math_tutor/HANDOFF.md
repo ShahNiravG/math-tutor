@@ -212,9 +212,22 @@ Architecture and validation references:
 - AP Calculus AB Chapter 2 canonical metadata is course-scoped as `Limits and Derivatives`, with verified sections 2.1 through 2.8.
 - One validated mastery-oriented GPT-5.4 study guide is saved under the isolated Calculus output tree. It uses authoritative supplemental teaching only within PDF-established topics, includes 15 worked examples and ten fully solved mastery problems, marks section 2.4 `Not covered`, and marks section 2.8 `Partially covered`.
 - Never regenerate the Calculus study guide without explicit approval; site builds and recovery must reuse the saved Markdown/HTML/PDF.
-- Local validation baseline is `266` passing tests, plus Python compilation and `git diff --check`.
-- The initial Phase 6 guide was deployed. Its approved mastery-oriented replacement is complete locally but has not been deployed.
-- The current refactor checkpoint did not rerun model APIs and did not rebuild the deploy tree in place unless explicitly requested
+- Local validation baseline is `273` passing tests, plus Python compilation and `git diff --check`.
+- The approved mastery-oriented replacement is deployed at the production `/site/` path. Its
+  HTML/PDF were rebuilt from saved Markdown after fixing multiline display math inside list items;
+  no additional model call occurred.
+- Production builds use `.venv/bin/math-tutor-build-production`. Production deployment uses
+  `.venv/bin/math-tutor-deploy-production --confirm-production`; it validates the `/site/`
+  layout, rejects the known orphan-MathJax defect, syncs the correct parent directory, and
+  verifies live Calculus and Algebra content.
+- A possible cumulative, subsection-oriented Calculus mental-math workflow was discussed but
+  explicitly abandoned for now. It is not an approved phase or implementation plan. Do not add,
+  expose, or generate Calculus mental-math content until the user provides new guidance and
+  approves a new specification.
+- The project `.env` contains updated Canvas credentials. Values must never be logged. The current
+  shell may contain older inherited credential variables, so future authenticated fetches must
+  clear `MATH_TUTOR_USERNAME`, `MATH_TUTOR_PASSWORD`, `CANVAS_USERNAME`, and `CANVAS_PASSWORD`
+  for that command before the CLI reloads `.env`.
 
 ## Known Risks
 

@@ -467,8 +467,7 @@ additional model cost remain visible.
 
 ### Phase 6 Implementation Status
 
-Phase 6A and the Phase 6B study-guide pilot were implemented locally on 2026-09-19 and have
-not been deployed.
+Phase 6A and the Phase 6B study-guide pilot were implemented and deployed on 2026-09-19.
 
 - `course_curriculum.py` is the single immutable source for the course-scoped Chapter 2 title,
   ordered sections, provenance, and verification date.
@@ -491,5 +490,18 @@ not been deployed.
   and exposed no Calculus challenges, Live Tutor, assignments, mental math, or olympiad links.
 - The superseded guide and its temporary rollback copy were discarded only after the replacement
   passed validation and editorial review. No automatic retry or additional model call occurred.
-- The mastery replacement is complete locally but has not been deployed.
-- Full offline validation passes 266 tests plus Python compilation and `git diff --check`.
+- The mastery replacement is deployed under the production `/site/` tree. A later deterministic
+  rebuild corrected multiline display math inside list items without changing the saved Markdown
+  or making another model call.
+- Guarded production commands now fix the site directory and `/site/` base path, validate the
+  deploy tree before syncing, require explicit production confirmation, and verify live Calculus
+  and Algebra content after deployment.
+- Full offline validation passes 273 tests plus Python compilation and `git diff --check`.
+
+### Deferred Calculus Mental Math
+
+A cumulative mental-math bank organized by released subsection was discussed after Phase 6, but
+the user explicitly abandoned that plan pending further guidance. It is not approved work. Do not
+implement a Calculus mental-math prompt, release detector, cumulative bank, site card, or model
+generation until a new specification is written and explicitly approved. The existing Algebra II
+mental-math behavior remains unchanged.
