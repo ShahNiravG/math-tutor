@@ -1208,3 +1208,28 @@ updated, and the site redeployed so `config.php` regenerates. History rewriting 
 deferred as optional hygiene rather than remediation — it rewrites every later commit SHA,
 breaks existing clones including a concurrent agent's, and GitHub retains unreachable objects
 by SHA until Support garbage-collects them. Rotation is what actually closes the exposure.
+
+### Challenge JSON Production Outage (same session)
+
+The challenge picker displayed `Could not load exams`, while direct chapter links displayed
+`Could not load exam`. The catalog and individual exam files existed locally and remotely, were
+valid JSON, and had matching checksums. Their generated mode was `0600`; `rsync -a` correctly
+preserved it, leaving the web server able to serve the `0644` HTML shell but unable to read
+`exams-index.json` or files under `exams/`.
+
+Commit `3ebea09` fixed the outage:
+
+- `atomic_write_text` gained an optional mode applied before atomic publication; callers that
+  omit it retain the prior secure default.
+- `challenge_outputs.write_json` creates public challenge JSON as `0644` and repairs unchanged
+  files with the wrong mode.
+- production validation rejects challenge JSON without world-read permission before rsync.
+- the picker treats `completed.php` progress as optional, preventing database, authentication,
+  or malformed-progress responses from blocking the static catalog.
+- catalog and exam loaders validate HTTP/JSON responses and provide actionable reload guidance.
+
+Strict red/green/refactor cycles covered atomic mode support, new and unchanged JSON modes, the
+production permission gate, and resilient template loading. The combined relevant suite passed
+50 tests. The canonical tree was rebuilt with `.env` sourced opaquely, deployed successfully,
+and the user verified that both the main challenge page and individual chapter exams work. No
+secret values were printed or inspected during the repair.

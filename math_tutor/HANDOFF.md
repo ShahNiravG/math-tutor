@@ -243,6 +243,12 @@ Architecture and validation references:
   `.venv/bin/math-tutor-deploy-production --confirm-production`; it validates the domain-root
   layout, rejects nested `site/` output and stale `/site/` links, syncs the deploy tree once,
   and verifies domain-root Calculus and Algebra content.
+- Challenge exams were restored after generated public JSON was written as mode `0600` and
+  `rsync -a` preserved that unreadable mode on production. Public challenge JSON is now created
+  as `0644`, unchanged files have their mode repaired during builds, and production validation
+  blocks JSON that is not web-readable. The static catalog now loads independently from optional
+  `completed.php` progress data, so progress/database failure cannot block the picker. The fix was
+  deployed, user-verified, committed as `3ebea09`, and pushed to `origin/main`.
 - The obsolete local and remote `site/` trees were deleted after the root deployment passed live
   verification. The canonical Chapter 2 URL returns HTTP 200; the former `/site/` URL returns 404.
 - A possible cumulative, subsection-oriented Calculus mental-math workflow was discussed but
