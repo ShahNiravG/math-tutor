@@ -1172,3 +1172,39 @@ produced by `response_artifacts.py`, not the site shell, so the favicon work did
 them. Students open these directly. Closing the gap means rebuilding their HTML from saved
 Markdown, which requires no model calls but does touch saved artifacts, including the Calculus
 study guide that must never be regenerated.
+
+### Security Audit (same session)
+
+After the brand work was pushed, a `.gitignore` gap surfaced during commit preparation: the
+repository-root `.vscode/sftp.json` was untracked and unignored while only the `math_tutor/`
+copy was covered. Auditing history for similar cases found a real and more serious exposure.
+
+A generated `challenges/config.php` with live MySQL credentials was committed in `ded60d6`
+(2026-04-09 18:49) and removed from HEAD in `556fafc` sixteen minutes later. Deleting it from
+HEAD did not remove the blob, which stayed reachable by commit SHA in a **public** repository
+for roughly 5.4 months. `DB_NAME`, `DB_USER`, `DB_PASS`, and `DB_HOST` were all populated, and
+the committed values are identical to the credentials still deployed.
+
+Root cause was not a developer committing a password. `challenge_config.py` generates
+`config.php` from environment values at build time, and the build had written a repo-root
+`output/` tree while `.gitignore` covered only `math_tutor/output/`. The generated file landed
+in an unignored path and was swept into a commit.
+
+A full-history scan found no other exposure: no OpenAI, Gemini, or GitHub tokens and no private
+keys. `.env` and `sftp.json` were never committed, only their `.example` forms.
+
+Actions taken:
+
+- `.vscode/sftp.json` at the repository root is now ignored (committed with the brand work in
+  `171955a`). It carries the production host and username; no password, since it uses SSH agent
+  authentication.
+- Bare `output/` is now ignored at any level (`f6d9b12`), closing the recurrence path.
+- `SECURITY.md` gained a section on generated files that contain secrets, the
+  `git check-ignore -v` pre-check for new output locations, and a history-audit recipe.
+- `HANDOFF.md` gained an "OPEN SECURITY ACTION" section.
+
+**Outstanding and not resolved in this session:** the database password must be rotated, `.env`
+updated, and the site redeployed so `config.php` regenerates. History rewriting was explicitly
+deferred as optional hygiene rather than remediation — it rewrites every later commit SHA,
+breaks existing clones including a concurrent agent's, and GitHub retains unreachable objects
+by SHA until Support garbage-collects them. Rotation is what actually closes the exposure.

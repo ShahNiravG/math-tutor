@@ -254,11 +254,58 @@ Architecture and validation references:
   clear `MATH_TUTOR_USERNAME`, `MATH_TUTOR_PASSWORD`, `CANVAS_USERNAME`, and `CANVAS_PASSWORD`
   for that command before the CLI reloads `.env`.
 
+## OPEN SECURITY ACTION: Rotate The Database Password
+
+Unresolved as of 2026-09-20. Do not consider this closed until the password is rotated.
+
+A generated `challenges/config.php` containing live MySQL credentials was committed to this
+**public** repository. `challenge_config.py` writes that file at build time from `DBNAME`,
+`DBUSER`, `DBPASSWORD`, and `MySQL_HOST`. At the time, `.gitignore` covered
+`math_tutor/output/` but the build had written a **repo-root** `output/` tree, which was not
+ignored.
+
+- Paths: `output/deploy/math_tutor/site/challenges/config.php` and
+  `output/deploy/math_tutor/site/staging/challenges/config.php`
+- Introduced: `ded60d6` (2026-04-09 18:49); removed from HEAD: `556fafc` (19:05)
+- `DB_NAME`, `DB_USER`, `DB_PASS`, and `DB_HOST` were all populated
+- The committed values are **identical to the credentials currently deployed**
+- Publicly readable in history for roughly 5.4 months; deleting from HEAD did not remove the
+  blob, which is still fetchable by commit SHA
+
+Severity is reduced but not removed by `DB_HOST` being `localhost`: direct remote MySQL is
+probably unavailable, but shared hosting often exposes phpMyAdmin or remote MySQL, and the
+leaked `DB_USER` reveals the account naming convention.
+
+Required, in order:
+
+1. Rotate the MySQL password in the hosting control panel.
+2. Update `DBPASSWORD` in `.env`.
+3. Redeploy so `config.php` regenerates:
+   `set -a && . ./.env && set +a && .venv/bin/math-tutor-deploy-production --confirm-production`
+4. Review the challenge database and host access logs for unauthorized use.
+
+History rewriting (`git filter-repo --path output/ --invert-paths` plus a force push) is
+**optional hygiene and not remediation**. It rewrites every later commit SHA, breaks existing
+clones including any a concurrent agent holds, and GitHub retains unreachable objects by SHA
+until Support garbage-collects them. Rotate first; once rotated the leaked value is worthless.
+
+A scan of full history found no other exposure: no OpenAI, Gemini, or GitHub tokens, no
+private keys. `.env` and `sftp.json` were never committed, only their `.example` forms.
+
+Recurrence is closed by `f6d9b12`, which ignores bare `output/` at any level.
+
 ## Known Risks
 
 - The school SSO flow could change and require selector updates
 - The Modules page structure could change
 - OpenAI and Gemini runs require valid API keys with available quota
-- Challenge exam app requires MySQL DB credentials in `.env`
+- Challenge exam app requires MySQL DB credentials in `.env`. These are injected into a
+  generated `challenges/config.php` at build time; that file must never be tracked. See
+  "OPEN SECURITY ACTION" above — the current credentials are exposed in public git history
+  and rotation is still outstanding.
+- `load_dotenv_if_present()` does not override an already-set non-empty environment variable,
+  so a stale value inherited in the shell silently wins over `.env`. Source `.env` before
+  deploying or `config.php` is generated with wrong credentials, breaking `reports.php`,
+  `submit.php`, `result.php`, and `save_progress.php`.
 - `challenge_builder.py` remains a larger orchestration module than the rest of the cleaned codebase, though its long function is procedural deploy wiring rather than mixed responsibility (lower priority than previously stated)
 - `mcq_generator.py` was flagged in earlier handoffs but has since been split into `mcq_clients`, `mcq_workflow`, `mcq_artifacts`, and `mcq_prompts` — the remaining file is ~80 lines and no longer a refactor target
