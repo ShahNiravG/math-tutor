@@ -131,11 +131,41 @@ with an empty base path and validates the production tree. It fails closed if an
 nested `site/` directory or `/site/` HTML link remains, or if the tree contains the known
 orphan-MathJax list delimiter defect.
 
+### Preview a build without touching the deploy tree
+
+```bash
+.venv/bin/math-tutor-build-production --deploy-root /tmp/<somewhere>/preview
+```
+
+`--deploy-root` redirects the production build away from
+`math_tutor/output/deploy/math_tutor/`, which is the tree the SFTP watcher syncs. The build
+still runs the full `validate_production_tree` gate, so the stale-`/site/`-link and
+orphan-MathJax guards apply. Nothing is synced and no network call is made.
+
+Because the production base path is empty, every generated href is relative, so the preview
+tree is browsable directly from `file://` including click-through navigation.
+
+Note that `staging` in this project is a *visual theme* (`--experience staging`, the default;
+`--experience archived` is the older look). It has nothing to do with a staging directory.
+Call throwaway build directories "preview" to avoid the collision.
+
 ### Deploy and verify production
 
 ```bash
-.venv/bin/math-tutor-deploy-production --confirm-production
+set -a && . ./.env && set +a && \
+  .venv/bin/math-tutor-deploy-production --confirm-production
 ```
+
+Source `.env` first. The command does call `load_dotenv_if_present()`, but that helper
+**skips any variable already set to a non-empty value** (`math_tutor/env_config.py`), so a
+stale value inherited in the current shell silently wins over `.env`.
+
+The generated `challenges/config.php` takes its database credentials from `DBNAME`,
+`DBUSER`, `DBPASSWORD`, and `MySQL_HOST` (note the mixed-case host key). If those are unset
+or stale, `config.php` is written with blank or wrong credentials and every PHP page that
+queries MySQL breaks: `reports.php`, `submit.php`, `result.php`, and `save_progress.php`.
+To check, confirm the `define(...)` values in the generated `config.php` are non-empty.
+Never print the values themselves.
 
 The confirmation flag is mandatory. The command rebuilds and validates before synchronizing the
 canonical `math_tutor/output/deploy/math_tutor/` tree once to `public_html/math_tutor/`. Live

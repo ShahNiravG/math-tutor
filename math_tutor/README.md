@@ -267,13 +267,14 @@ Examples:
   - [site_records.py](/home/nshah/projects/math-tutor/math_tutor/site_records.py)
   - [site_prompt_cards.py](/home/nshah/projects/math-tutor/math_tutor/site_prompt_cards.py)
   - [site_shell.py](/home/nshah/projects/math-tutor/math_tutor/site_shell.py)
+  - [site_brand.py](/home/nshah/projects/math-tutor/math_tutor/site_brand.py)
   - [site_theme.py](/home/nshah/projects/math-tutor/math_tutor/site_theme.py)
   - [site_navigation.py](/home/nshah/projects/math-tutor/math_tutor/site_navigation.py)
   - [site_challenges.py](/home/nshah/projects/math-tutor/math_tutor/site_challenges.py)
 
 Current validation baseline:
 
-- `195` unit tests pass through [scripts/validate_project.py](/home/nshah/projects/math-tutor/math_tutor/scripts/validate_project.py)
+- `323` unit tests pass through [scripts/validate_project.py](/home/nshah/projects/math-tutor/math_tutor/scripts/validate_project.py)
 - core modules compile successfully with `py_compile`
 - validation does not call model APIs, fetch from Canvas, or rewrite the current deploy tree
 

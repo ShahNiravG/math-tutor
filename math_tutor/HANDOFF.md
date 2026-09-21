@@ -92,6 +92,18 @@ copies, but the legacy directory has not been deleted.
 - The Calculus Chapter 2 page includes a validated Cengage textbook map: students launch through a normal Canvas homework link and choose `Read It` in WebAssign; no direct MindTap or transient LTI/OIDC link is published
 - Calculus currently exposes the verified class note and one reviewed GPT-5.4 study guide. It retains the Cengage map and exposes no Live Tutor, assignments, generated mental math, olympiad content, or internal challenge-exam bank.
 - The current working tree adds an external AI Challenge section to Calculus Chapter 2 with Medium and Hard prompt cards. Each card copies a scoped ten-question prompt and opens Gemini or ChatGPT; no API call, saved score, internal question bank, or model selection is involved. The canonical deployed location is the domain-root `/courses/...` URL.
+- One brand mark per page, all rendered from
+  [math_tutor/site_brand.py](/home/nshah/projects/math-tutor/math_tutor/site_brand.py): the
+  long-standing detailed π mark for the site and portal, a θ mark for Algebra, an ∫ mark for
+  Calculus. Course pages carry their own course mark plus a `Math Delight` eyebrow, never two
+  marks. The portal's former one-off circled glyph is retired.
+- Every generated site page emits an inline percent-encoded SVG favicon. Documents under
+  `responses/` do not; they come from `response_artifacts.py`, not the site shell.
+- Course accent is the only color signal. Algebra keeps its shipped `#a14d2e`; Calculus uses
+  `#12606b`. There is deliberately no per-chapter color.
+- The library sidebar names no course and carries no brand mark. Course identity and the
+  capability-aware nav belong to `site_sections.render_surface_header`; the sidebar's old
+  hardcoded `Algebra II Trig Tutor` branch was unreachable dead code and was deleted.
 - The Algebra library keeps the chapter list in the left rail and moves the branded nav header into the main panel
 - The Algebra Live Tutor is a no-sidebar page with the same branded top header as the library overview
 - Per-document pages keep a slim left rail without the full chapter list
@@ -220,7 +232,10 @@ Architecture and validation references:
 - AP Calculus AB Chapter 2 now has a deployed external-AI challenge component with Medium and Hard ten-question prompts, Gemini and ChatGPT launch actions, clipboard fallback, exact course/chapter isolation, and responsive desktop/mobile rendering.
 - One validated mastery-oriented GPT-5.4 study guide is saved under the isolated Calculus output tree. It uses authoritative supplemental teaching only within PDF-established topics, includes 15 worked examples and ten fully solved mastery problems, marks section 2.4 `Not covered`, and marks section 2.8 `Partially covered`.
 - Never regenerate the Calculus study guide without explicit approval; site builds and recovery must reuse the saved Markdown/HTML/PDF.
-- Local validation baseline is `299` passing tests, plus Python compilation and `git diff --check`.
+- Local validation baseline is `323` passing tests, plus Python compilation and `git diff --check`.
+  The brand/navigation pass added `tests/test_site_brand.py` and `tests/test_site_navigation.py`,
+  including a drift guard that fails if `challenges_src/*.html` diverges from the canonical mark
+  in `site_brand.py`.
 - The approved mastery-oriented replacement is deployed at the production domain-root path. Its
   HTML/PDF were rebuilt from saved Markdown after fixing multiline display math inside list items;
   no additional model call occurred.

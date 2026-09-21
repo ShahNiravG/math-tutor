@@ -397,24 +397,57 @@ Key contract:
 - Outputs: complete HTML documents with shared CSS, MathJax bootstrapping, and page layout
 - Side effects: none
 
+### `site_brand.py`
+
+Single source of truth for the Math Delight site mark, the per-course marks, and
+course accent colors.
+
+The mark previously existed as five pasted SVG copies across `site_pages.py`,
+`site_navigation.py`, `site_sections.py`, and both `challenges_src` pages. All
+Python rendering now routes through this module. `challenges_src/*.html` is
+byte-copied by the challenge builder and cannot import Python, so its embedded
+copy is held in sync by a drift-guard test in `tests/test_site_brand.py` rather
+than by imports.
+
+Every mark shares the same geometry — rounded square, diagonal gradient, two
+orbit rings, a mathematical motif, and a serif glyph — so course marks read as
+siblings of the site mark. Course identity is the only color signal on the site;
+there is deliberately no per-chapter color.
+
+Key contract:
+
+- Inputs: a mark id or course id, and a caller-supplied variant id that scopes
+  the SVG gradient element id so several marks can share one document
+- Outputs: full mark SVG, a simplified favicon variant and its percent-encoded
+  `data:` link tag, and a `:root` CSS block binding the accent tokens
+- Side effects: none
+- An unknown mark id raises; an unknown course id falls back to the site mark
+
 ### `site_theme.py`
 
 Shared CSS and helper scripts for generated site pages.
 
 Key contract:
 
-- Inputs: none beyond the generated shell including the constants
-- Outputs: stable CSS and shared in-page helper JavaScript for copy-button behavior
+- Inputs: the experience variant and an optional course id
+- Outputs: stable CSS and shared in-page helper JavaScript for copy-button
+  behavior, with the course accent override appended last so it wins over the
+  base token
 - Side effects: none
 
 ### `site_navigation.py`
 
-Sidebar and navigation rendering for generated site pages.
+Chapter-list sidebar rendering for the library page.
+
+Course identity and the capability-aware nav belong to
+`site_sections.render_surface_header`. This sidebar is shared by every course,
+so it names no course and carries no brand mark; it returns an empty string for
+every page kind other than `library`.
 
 Key contract:
 
 - Inputs: document records, active page state, deployment base path, and page-href builder
-- Outputs: stable sidebar HTML fragments for library and non-library pages
+- Outputs: the library sidebar HTML fragment, or an empty string
 - Side effects: none
 
 ### `site_assets.py`

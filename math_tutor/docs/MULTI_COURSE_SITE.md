@@ -567,3 +567,49 @@ The feature is a deterministic site-rendering component with no stored questions
 database changes, or generated model artifacts. Rollback removes the isolated renderer and its
 Chapter 2 wiring, then rebuilds the site. Existing course content and challenge results are
 unchanged.
+
+## Course Visual Identity
+
+Implemented and deployed on 2026-09-20. This was not a numbered phase; it is a cross-cutting
+presentation pass over the course structure the phases above established.
+
+### Approved Scope
+
+- One logo family across the site, with the long-standing detailed π mark kept as the site
+  mark rather than replaced.
+- A distinct mark per course, used on course pages.
+- A visible distinction between the two courses, with one scheme per course.
+
+Per-chapter colour was considered and **explicitly rejected** by the user: within a single
+course, one colour scheme. Do not reintroduce per-chapter hues without a new approval.
+
+### Contract
+
+- `site_brand.py` is the single source for the site mark, the course marks, and the course
+  accent colours. No other module may contain brand SVG geometry or a brand gradient; tests
+  enforce this.
+- Marks share geometry — rounded square, diagonal gradient, two orbit rings, a mathematical
+  motif, a serif glyph — so course marks read as siblings of the site mark.
+- `brand_mark_id_for_course` returns the course's mark, falling back to the site mark for an
+  unknown or absent course. `get_brand_mark` raises on an unknown mark id.
+- `render_brand_mark` takes a caller-supplied `variant_id` that scopes the SVG gradient
+  element id, so several marks can appear in one document without colliding.
+- One mark per page. A course page carries its course mark and the `Math Delight` eyebrow;
+  it does not stack the site mark alongside.
+- Course accent is the only colour signal. Algebra `#a14d2e` (unchanged from what it shipped),
+  Calculus `#12606b`. The override is appended after the base stylesheet so it wins.
+- `challenges_src/*.html` is byte-copied by the challenge builder and cannot import Python, so
+  its embedded mark is duplicated by necessity and held in sync by a drift-guard test.
+
+### Adding a Course
+
+A new course needs a `BrandMark` entry in `site_brand.py` whose `mark_id` matches its
+`course_id` and whose `label` matches its `display_name` — a test asserts every registered
+course has a mark. Choose a glyph and motif drawn from that subject's own mathematics, and a
+gradient far enough from the existing marks to stay distinguishable at 48px.
+
+If a future course enables `supports_challenges`, the drift-guard test
+`test_challenge_pages_name_the_course_that_owns_challenges` will fail. That is deliberate: the
+challenge pages currently hardcode the Algebra title because Algebra is the only course with
+challenges, and the failure forces that title to become build-substituted rather than silently
+mislabelling another course's exams.

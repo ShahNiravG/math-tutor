@@ -5,6 +5,7 @@ from __future__ import annotations
 import html
 from urllib.parse import quote
 
+from math_tutor.site_brand import brand_mark_id_for_course, render_brand_mark
 from math_tutor.site_courses import CourseConfig
 
 
@@ -40,24 +41,7 @@ def render_surface_header(
     return f"""
     <section class="surface-header{' surface-header-staging' if experience_variant == 'staging' else ''}">
       <div class="surface-brand">
-        <div class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 72 72" role="img" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="surfaceBrandGlow" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#fff5da"/>
-                <stop offset="55%" stop-color="#f3c98f"/>
-                <stop offset="100%" stop-color="#cf7c43"/>
-              </linearGradient>
-            </defs>
-            <rect width="72" height="72" rx="16" fill="url(#surfaceBrandGlow)"/>
-            <circle cx="36" cy="36" r="22" fill="none" stroke="#8b4a2c" stroke-width="2.4" opacity="0.35"/>
-            <circle cx="36" cy="36" r="14" fill="none" stroke="#8b4a2c" stroke-width="1.7" opacity="0.22"/>
-            <path d="M12 43 C21 28, 28 52, 37 37 S53 21, 60 33" fill="none" stroke="#134f59" stroke-width="3.2" stroke-linecap="round"/>
-            <circle cx="24" cy="25" r="3.4" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.4"/>
-            <circle cx="51" cy="21" r="2.8" fill="#fff7f0" stroke="#8b4a2c" stroke-width="1.2"/>
-            <text x="36" y="53" text-anchor="middle" font-size="21" font-family="Georgia, serif" font-weight="700" fill="#8b4a2c">π</text>
-          </svg>
-        </div>
+        <div class="brand-mark">{render_brand_mark(mark_id=brand_mark_id_for_course(course.course_id), variant_id="surface")}</div>
         <div class="surface-brand-copy">
           <span class="eyebrow">{html.escape(eyebrow)}</span>
           <h2>{html.escape(title)}</h2>

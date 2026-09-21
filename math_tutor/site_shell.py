@@ -6,7 +6,9 @@ import html
 from typing import Callable
 
 from math_tutor.response_artifacts import MATHJAX_SCRIPT
+from math_tutor.site_brand import brand_mark_id_for_course, render_favicon_link_tag
 from math_tutor.site_cards import document_label, record_page_filename
+from math_tutor.site_courses import CourseConfig
 from math_tutor.site_navigation import render_sidebar_html
 from math_tutor.site_models import DocumentRecord
 from math_tutor.site_theme import (
@@ -30,6 +32,7 @@ def render_page_shell(
     generated_at: str,
     base_path: str,
     site_page_href: Callable[[str, str], str],
+    course: CourseConfig,
     page_kind: str = "record",
     experience_variant: str = "default",
 ) -> str:
@@ -102,10 +105,11 @@ def render_page_shell(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{html.escape(title)}</title>
+  {render_favicon_link_tag(mark_id=brand_mark_id_for_course(course.course_id))}
 {font_links}
 {math_assets}
   <style>
-{get_site_page_styles(experience_variant)}
+{get_site_page_styles(experience_variant, course_id=course.course_id)}
   </style>
 </head>
 <body {' '.join(body_attrs)}>

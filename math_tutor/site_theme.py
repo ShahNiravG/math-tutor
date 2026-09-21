@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from math_tutor.site_brand import render_course_accent_css
+
 
 BASE_SITE_PAGE_STYLES = """
     :root {
@@ -1562,10 +1564,16 @@ STAGING_SITE_SCRIPT = """
 """
 
 
-def get_site_page_styles(experience_variant: str = "default") -> str:
+def get_site_page_styles(experience_variant: str = "default", *, course_id: str | None = None) -> str:
+    """Return the page stylesheet, with accent tokens bound to ``course_id``.
+
+    The course override is appended last so it wins over the base token.
+    """
+
+    styles = BASE_SITE_PAGE_STYLES
     if experience_variant == "staging":
-        return BASE_SITE_PAGE_STYLES + "\n" + STAGING_SITE_PAGE_OVERRIDES
-    return BASE_SITE_PAGE_STYLES
+        styles += "\n" + STAGING_SITE_PAGE_OVERRIDES
+    return styles + render_course_accent_css(course_id)
 
 
 COPY_PROMPT_SCRIPT = """

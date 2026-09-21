@@ -4,6 +4,12 @@ from __future__ import annotations
 
 import html
 
+from math_tutor.site_brand import (
+    SITE_MARK_ID,
+    brand_mark_id_for_course,
+    render_brand_mark,
+    render_favicon_link_tag,
+)
 from math_tutor.site_courses import CourseConfig
 
 
@@ -57,17 +63,24 @@ PORTAL_STYLES = """
       gap: 13px;
       text-decoration: none;
     }
-    .wordmark-symbol {
-      display: grid;
+    .wordmark-mark {
+      display: block;
+      flex: 0 0 48px;
       width: 48px;
       height: 48px;
-      place-items: center;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      background: rgba(255, 253, 247, 0.78);
-      color: var(--algebra);
-      font-size: 1.55rem;
-      box-shadow: 0 8px 30px rgba(58, 43, 27, 0.09);
+      filter: drop-shadow(0 8px 30px rgba(58, 43, 27, 0.09));
+    }
+    .wordmark-mark svg,
+    .course-card-mark svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .course-card-mark {
+      display: block;
+      width: 52px;
+      height: 52px;
+      margin-bottom: 18px;
     }
     .wordmark-copy { display: grid; gap: 2px; }
     .wordmark-copy strong { font-size: 1.13rem; letter-spacing: 0.01em; }
@@ -167,7 +180,7 @@ PORTAL_STYLES = """
     }
     .course-card h2 {
       max-width: 12ch;
-      margin: 58px 0 16px;
+      margin: 26px 0 16px;
       color: var(--ink);
       font-size: clamp(2rem, 4vw, 3.4rem);
       font-weight: 500;
@@ -253,13 +266,14 @@ def _course_href(course: CourseConfig, base_path: str) -> str:
     return f"{prefix}courses/{course.course_id}/index.html"
 
 
-def _document(*, title: str, body: str) -> str:
+def _document(*, title: str, body: str, mark_id: str = SITE_MARK_ID) -> str:
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{html.escape(title)}</title>
+  {render_favicon_link_tag(mark_id=mark_id)}
   <style>
 {PORTAL_STYLES}
   </style>
@@ -276,6 +290,7 @@ def build_portal_html(*, courses: tuple[CourseConfig, ...], base_path: str) -> s
         f"""
         <a class="course-card course-card-{html.escape(course.course_id)}" href="{html.escape(_course_href(course, base_path))}">
           <span class="course-number" aria-hidden="true">{index:02d}</span>
+          <span class="course-card-mark">{render_brand_mark(mark_id=brand_mark_id_for_course(course.course_id), variant_id=f"card-{course.course_id}")}</span>
           <span class="course-status">{'Ready' if course.content_ready else 'Opening soon'}</span>
           <h2>{html.escape(course.display_name)}</h2>
           <p>{html.escape(course.description)}</p>
@@ -288,7 +303,7 @@ def build_portal_html(*, courses: tuple[CourseConfig, ...], base_path: str) -> s
   <div class="portal-shell">
     <header class="masthead">
       <a class="wordmark" href="#courses" aria-label="Math Delight course portal">
-        <span class="wordmark-symbol" aria-hidden="true">π</span>
+        <span class="wordmark-mark">{render_brand_mark(mark_id=SITE_MARK_ID, variant_id="portal")}</span>
         <span class="wordmark-copy"><strong>Math Delight</strong><span>Learning Studio</span></span>
       </a>
       <span class="masthead-note">One place · every course</span>
@@ -316,7 +331,7 @@ def build_empty_course_html(*, course: CourseConfig, portal_href: str) -> str:
   <div class="portal-shell">
     <header class="masthead">
       <a class="wordmark" href="{html.escape(portal_href)}" aria-label="Return to Math Delight course portal">
-        <span class="wordmark-symbol" aria-hidden="true">∫</span>
+        <span class="wordmark-mark">{render_brand_mark(mark_id=brand_mark_id_for_course(course.course_id), variant_id="course-masthead")}</span>
         <span class="wordmark-copy"><strong>Math Delight</strong><span>Learning Studio</span></span>
       </a>
       <span class="masthead-note">{html.escape(course.short_name)}</span>
@@ -332,4 +347,8 @@ def build_empty_course_html(*, course: CourseConfig, portal_href: str) -> str:
     </main>
   </div>
     """
-    return _document(title=f"{course.display_name} | Math Delight", body=body)
+    return _document(
+        title=f"{course.display_name} | Math Delight",
+        body=body,
+        mark_id=brand_mark_id_for_course(course.course_id),
+    )

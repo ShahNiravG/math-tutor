@@ -1072,3 +1072,103 @@ One existing test (`test_write_json_writes_when_content_changed`) was updated be
 - `math_tutor/docs/ARCHITECTURE.md` gained a new `atomic_io.py` module entry, a `Crash Safety` section under Hardening Strategy, and updated contract notes on `canvas_course.py`, `state_store.py`, and `video_recommendations.py`
 - no model API calls, no Canvas fetches, no deploy-tree rewrites were required to land the change
 - shipped as commit `b1662d3`
+
+## Session: 2026-09-20 — Brand Consistency, Course Marks, and Navigation Cleanup
+
+### Goal
+
+Make the site's UI and navigation consistent, use one logo across the site and its chapters,
+and give each course a distinct but restrained colour identity. Per-chapter colour was
+explicitly considered and rejected by the user in favour of a single scheme per course.
+
+### What Was Wrong
+
+The brand mark existed as **five pasted SVG copies** — in `site_pages.py`,
+`site_navigation.py`, `site_sections.py`, `challenges_src/index.html`, and
+`challenges_src/exam.html` — differing only by gradient element id. Changing the logo meant
+five coordinated edits with nothing enforcing agreement.
+
+The portal did not use that mark at all. It rendered a separate circled-glyph treatment, and
+the glyph varied by page: `π` on the portal, `∫` on the empty-course page. The first screen a
+student saw carried different branding from every page behind it.
+
+No page emitted a favicon.
+
+`site_navigation.render_sidebar_html` contained a second, hardcoded navigation with a
+hardcoded `Algebra II Trig Tutor` title and a fixed Home/Library/Live Tutor/Challenge Exams
+list that ignored course capabilities. Investigation showed this branch was **unreachable**:
+`class="brand-head"` appeared in zero generated HTML anywhere in the output tree, because
+`render_page_shell` only renders a sidebar for `page_kind == "library"`, and that path takes
+the compact branch. The "two competing nav systems" problem was one working system plus dead
+code.
+
+### What Changed
+
+- Added `site_brand.py` as the single source for the site mark, the per-course marks, and the
+  course accent colours. All Python rendering routes through it.
+- Kept the long-standing detailed π mark unchanged as the site mark, and gave the portal that
+  mark. Retired the circled glyph and the page-specific `∫`.
+- Added two course marks built from the same geometry so they read as siblings: Algebra uses
+  `θ` with a sine wave on a rosier gradient (deliberately pushed away from the site mark's
+  amber so the two are not confusable); Calculus uses `∫` with a parabola, a tangent line, and
+  a marked point of tangency.
+- One mark per page. Course pages carry their course mark with a `Math Delight` eyebrow rather
+  than stacking two marks.
+- Added a simplified favicon variant — rings, motif, and dots dropped, glyph enlarged — because
+  the full mark turns to mud at 16px. The `data:` URI is fully percent-encoded; hex colours
+  contain `#`, which would otherwise start a fragment and truncate the document.
+- Made `--accent` course-driven. Algebra resolves to `#a14d2e`, the value it already shipped,
+  so Algebra pages did not shift. Calculus resolves to `#12606b`. No per-chapter colour.
+- Deleted the dead sidebar branch, removing the fourth logo copy, the hardcoded course name,
+  and the capability-ignoring nav in one change.
+- Renamed `.wordmark-symbol` to `.wordmark-mark`; the class is now a mark container rather
+  than a glyph treatment.
+
+### Testing
+
+Strict red/green/refactor throughout, with the red observed for the expected reason each time.
+Two stubs were added first (`render_brand_mark`, then `brand_mark_id_for_course`) specifically
+so the initial failures were behavioural rather than `ImportError`, which `AGENTS.md` does not
+accept as a valid red.
+
+`tests/test_site_brand.py` and `tests/test_site_navigation.py` were added, including:
+
+- pinning the historic site-mark path data so an accidental redraw fails the suite
+- asserting no module other than `site_brand.py` contains the mark geometry or a hand-rolled
+  brand gradient
+- a drift guard that fails if `challenges_src/*.html` diverges from the canonical mark, since
+  those files are byte-copied and cannot import Python
+- asserting the course accent override is emitted *after* the base token so it actually wins
+- asserting the sidebar names no course, carries no mark, and runs no second nav
+
+One existing test file (`tests/test_site_shell.py`) was updated for the new required `course`
+argument on `render_page_shell`. No test was weakened to obtain a green.
+
+### Result
+
+- validation baseline: `317` tests passing for this pass; `323` after reconciling with the
+  concurrent challenge-JSON work committed in `3ebea09`
+- built to a scratchpad preview via `--deploy-root`, inspected, then deployed with
+  `math-tutor-deploy-production --confirm-production`
+- live verification confirmed on `mathdelight.com`: portal carries π plus both course marks,
+  Algebra carries `θ` with accent `#a14d2e`, Calculus carries `∫` with accent `#12606b`, and
+  all three emit a favicon
+
+### Incidental Fixes
+
+- `.gitignore` ignored `math_tutor/.vscode/sftp.json` but not the repository-root
+  `.vscode/sftp.json`, which was untracked and would have been committed. The root path is now
+  ignored too. That file carries the production host and username (no password; it uses SSH
+  agent auth).
+- `OPERATIONS.md` gained the `--deploy-root` preview workflow and, more importantly, the
+  requirement to `source .env` before deploying. `load_dotenv_if_present()` does not override
+  an already-set non-empty variable, so a stale shell value silently wins and
+  `challenges/config.php` is generated with wrong database credentials.
+
+### Known Gap
+
+The 273 documents under `responses/` and 2 under `ai-grading/` still have no favicon. They are
+produced by `response_artifacts.py`, not the site shell, so the favicon work did not reach
+them. Students open these directly. Closing the gap means rebuilding their HTML from saved
+Markdown, which requires no model calls but does touch saved artifacts, including the Calculus
+study guide that must never be regenerated.

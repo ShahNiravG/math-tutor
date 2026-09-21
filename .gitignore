@@ -11,3 +11,4 @@ __pycache__/
 math_tutor.egg-info/
 math_tutor/output/
 math_tutor/.vscode/sftp.json
+.vscode/sftp.json

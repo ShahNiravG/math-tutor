@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import unittest
 
+from math_tutor.site_courses import get_course
 from math_tutor.site_navigation import render_sidebar_item
 from math_tutor.site_models import DocumentRecord
 from math_tutor.site_shell import render_page_shell
@@ -48,6 +49,7 @@ class SiteShellTests(unittest.TestCase):
             base_path="/site/",
             site_page_href=site_page_href,
             page_kind="library",
+            course=get_course("algebra-2-trig"),
         )
 
         self.assertIn('<aside class="sidebar sidebar-library">', html)
@@ -68,6 +70,7 @@ class SiteShellTests(unittest.TestCase):
             base_path="/site/staging/",
             site_page_href=site_page_href,
             page_kind="library",
+            course=get_course("algebra-2-trig"),
             experience_variant="staging",
         )
 
