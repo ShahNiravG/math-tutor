@@ -567,6 +567,23 @@ const LEGACY_SESSION_KEY = 'math_tutor_challenge_session';
 const SESSION_KEY_PREFIX = 'math_tutor_challenge_session:';
 let selectedBank = 'classic';
 
+function isJsonResponse(response) {
+  const contentType = response.headers.get('content-type') || '';
+  return contentType.toLowerCase().includes('application/json');
+}
+
+async function loadCompletedExamIds() {
+  try {
+    const completedRes = await fetch('completed.php', { cache: 'no-store' });
+    if (!completedRes.ok || !isJsonResponse(completedRes)) return [];
+    const cdata = await completedRes.json();
+    return Array.isArray(cdata.completed) ? cdata.completed : [];
+  } catch (error) {
+    console.warn('Could not load completed exam progress.', error);
+    return [];
+  }
+}
+
 function readStoredSession(key) {
   try {
     var saved = JSON.parse(localStorage.getItem(key) || 'null');
@@ -705,23 +722,25 @@ function renderResumeCards(completedSet, examIndexById) {
 (async function () {
   const root = document.getElementById('root');
 
-  // Fetch exam index and completed list in parallel
-  let data, completedIds = [];
+  // Progress is optional: a database or authentication failure must not block the static catalog.
+  const completedIdsPromise = loadCompletedExamIds();
+  let data;
   try {
     const examIndexUrl = 'exams-index.json?v=' + Date.now();
-    const [indexRes, completedRes] = await Promise.all([
-      fetch(examIndexUrl, { cache: 'no-store' }),
-      fetch('completed.php').catch(function() { return null; }),
-    ]);
+    const indexRes = await fetch(examIndexUrl, { cache: 'no-store' });
+    if (!indexRes.ok || !isJsonResponse(indexRes)) {
+      throw new Error('Challenge catalog did not return JSON.');
+    }
     data = await indexRes.json();
-    if (completedRes && completedRes.ok) {
-      const cdata = await completedRes.json();
-      completedIds = cdata.completed || [];
+    if (!data || !Array.isArray(data.exams)) {
+      throw new Error('Challenge catalog has an invalid format.');
     }
   } catch (e) {
-    root.innerHTML = '<div class="error-box">Could not load exams. Please try again later.</div>';
+    console.error('Could not load challenge catalog.', e);
+    root.innerHTML = '<div class="error-box">Could not load exams. Your sign-in session may have expired. <button class="another-link" type="button" onclick="location.reload()">Reload and sign in again</button></div>';
     return;
   }
+  const completedIds = await completedIdsPromise;
 
   const allExams = data.exams || [];
   if (!allExams.length) {

@@ -65,6 +65,18 @@ def validate_production_tree(deploy_root: Path) -> None:
             "Production tree is incomplete; missing: " + ", ".join(missing)
         )
 
+    challenges_dir = site_dir / "courses" / "algebra-2-trig" / "challenges"
+    unreadable_challenge_json = [
+        path.relative_to(deploy_root).as_posix()
+        for path in challenges_dir.rglob("*.json")
+        if not path.stat().st_mode & 0o004
+    ] if challenges_dir.exists() else []
+    if unreadable_challenge_json:
+        raise ProductionLayoutError(
+            "Production challenge JSON is not web-readable: "
+            + ", ".join(unreadable_challenge_json)
+        )
+
     stale_links = [
         path.relative_to(deploy_root).as_posix()
         for path in deploy_root.rglob("*.html")

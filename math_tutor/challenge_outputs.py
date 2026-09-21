@@ -13,11 +13,15 @@ from math_tutor.chaptering import chapter_slug, chapter_sort_key
 from math_tutor.challenge_catalog import CLASSIC_BANK_ID, CLASSIC_BANK_TITLE
 
 
+PUBLIC_JSON_MODE = 0o644
+
+
 def write_json(path: Path, payload: dict[str, Any], *, indent: int | None = None) -> None:
     new_content = json.dumps(payload, indent=indent)
     if path.exists() and path.read_text(encoding="utf-8") == new_content:
+        path.chmod(PUBLIC_JSON_MODE)
         return
-    atomic_write_text(path, new_content)
+    atomic_write_text(path, new_content, mode=PUBLIC_JSON_MODE)
 
 
 def write_canonical_challenge_catalogs(

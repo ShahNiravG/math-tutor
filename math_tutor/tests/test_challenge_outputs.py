@@ -169,6 +169,24 @@ class ChallengeOutputsTests(unittest.TestCase):
             write_json(path, {"key": "new"})
             self.assertEqual(json.loads(path.read_text(encoding="utf-8")), {"key": "new"})
 
+    def test_write_json_creates_web_readable_public_file(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "test.json"
+
+            write_json(path, {"key": "value"})
+
+            self.assertEqual(path.stat().st_mode & 0o777, 0o644)
+
+    def test_write_json_repairs_mode_when_content_is_unchanged(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            path = Path(temp_dir) / "test.json"
+            write_json(path, {"key": "value"})
+            path.chmod(0o600)
+
+            write_json(path, {"key": "value"})
+
+            self.assertEqual(path.stat().st_mode & 0o777, 0o644)
+
     def test_copy_static_challenge_assets_skips_unchanged_files(self) -> None:
         import math_tutor.challenge_outputs as co
         from unittest.mock import patch

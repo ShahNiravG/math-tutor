@@ -36,13 +36,22 @@ from pathlib import Path
 from typing import Any
 
 
-def atomic_write_text(path: Path, content: str, *, encoding: str = "utf-8") -> None:
+def atomic_write_text(
+    path: Path,
+    content: str,
+    *,
+    encoding: str = "utf-8",
+    mode: int | None = None,
+) -> None:
     """Write ``content`` to ``path`` atomically.
 
     Args:
         path: Destination file path. Parent directories are created if missing.
         content: Text payload to write.
         encoding: Text encoding for the write. Defaults to UTF-8.
+        mode: Optional permission bits applied to the temporary file before it
+            is atomically published. When omitted, the platform default for a
+            secure temporary file is preserved.
 
     Raises:
         OSError: If the temporary file cannot be written or the final
@@ -63,6 +72,8 @@ def atomic_write_text(path: Path, content: str, *, encoding: str = "utf-8") -> N
             handle.write(content)
             handle.flush()
             os.fsync(handle.fileno())
+        if mode is not None:
+            temp_path.chmod(mode)
         os.replace(temp_path, path)
     except BaseException:
         try:

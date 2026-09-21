@@ -35,6 +35,14 @@ class AtomicWriteTextTests(unittest.TestCase):
 
             self.assertEqual(target.read_text(encoding="utf-8"), "new")
 
+    def test_applies_requested_mode_before_publishing_file(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            target = Path(temp_dir) / "public.json"
+
+            atomic_write_text(target, "{}", mode=0o644)
+
+            self.assertEqual(target.stat().st_mode & 0o777, 0o644)
+
     def test_failure_mid_write_preserves_original_file(self) -> None:
         with TemporaryDirectory() as temp_dir:
             target = Path(temp_dir) / "out.txt"

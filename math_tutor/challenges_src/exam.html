@@ -770,6 +770,11 @@ async function doSubmit() {
 }
 
 // ── Boot ──
+function isJsonResponse(response) {
+  var contentType = response.headers.get('content-type') || '';
+  return contentType.toLowerCase().includes('application/json');
+}
+
 (async function() {
   var params = new URLSearchParams(window.location.search);
   var examId = params.get('id');
@@ -784,10 +789,12 @@ async function doSubmit() {
   try {
     var res = await fetch('exams/' + encodeURIComponent(examId) + '.json');
     if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (!isJsonResponse(res)) throw new Error('Exam did not return JSON.');
     S.exam = await res.json();
   } catch(e) {
+    console.error('Could not load challenge exam.', e);
     document.getElementById('root').innerHTML =
-      '<div class="error-box">Could not load exam "' + escHtml(examId) + '". <a href="index.html">Back to exams</a></div>';
+      '<div class="error-box">Could not load exam "' + escHtml(examId) + '". Your sign-in session may have expired. <button class="btn" type="button" onclick="location.reload()">Reload and sign in again</button> <a href="index.html">Back to exams</a></div>';
     return;
   }
 

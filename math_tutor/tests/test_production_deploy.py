@@ -79,6 +79,29 @@ class ProductionDeployTests(unittest.TestCase):
             with self.assertRaisesRegex(ProductionLayoutError, "obsolete /site/ links"):
                 validate_production_tree(deploy_root)
 
+    def test_validate_production_tree_rejects_non_web_readable_challenge_json(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            deploy_root = Path(temp_dir) / "math_tutor"
+            calculus = deploy_root / "courses" / "ap-calculus-ab"
+            algebra = deploy_root / "courses" / "algebra-2-trig"
+            responses = calculus / "responses"
+            challenges = algebra / "challenges"
+            responses.mkdir(parents=True)
+            challenges.mkdir(parents=True)
+            (deploy_root / "index.html").write_text('href="courses/"', encoding="utf-8")
+            (calculus / "doc-4839635.html").write_text("Read Guide", encoding="utf-8")
+            (algebra / "index.html").write_text("Algebra II", encoding="utf-8")
+            (responses / "4839635_chapter-2-notetakers__study-guide-gpt5.html").write_text(
+                r"<li>\[ \lim_{x\to c}f(x)=\infty \] means \(f(x)\)</li>",
+                encoding="utf-8",
+            )
+            catalog = challenges / "exams-index.json"
+            catalog.write_text('{"exams": []}', encoding="utf-8")
+            catalog.chmod(0o600)
+
+            with self.assertRaisesRegex(ProductionLayoutError, "not web-readable"):
+                validate_production_tree(deploy_root)
+
     def test_deploy_requires_explicit_confirmation_before_build_or_sync(self) -> None:
         with patch("math_tutor.production_deploy.build_production_site") as build_site:
             with patch("math_tutor.production_deploy.subprocess.run") as run:

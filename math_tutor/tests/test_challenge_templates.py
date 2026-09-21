@@ -32,6 +32,24 @@ class ChallengeTemplateTests(unittest.TestCase):
         self.assertIn("Choose a challenge bank", template)
         self.assertIn("cache: 'no-store'", template)
 
+    def test_index_template_does_not_block_catalog_when_completed_progress_fails(self) -> None:
+        template = (ROOT / "challenges_src" / "index.html").read_text(encoding="utf-8")
+
+        self.assertIn("async function loadCompletedExamIds()", template)
+        self.assertIn("return Array.isArray(cdata.completed) ? cdata.completed : [];", template)
+        self.assertIn("console.warn('Could not load completed exam progress.'", template)
+        self.assertNotIn("const [indexRes, completedRes] = await Promise.all", template)
+
+    def test_challenge_templates_reject_non_json_static_responses(self) -> None:
+        index_template = (ROOT / "challenges_src" / "index.html").read_text(encoding="utf-8")
+        exam_template = (ROOT / "challenges_src" / "exam.html").read_text(encoding="utf-8")
+
+        for template in (index_template, exam_template):
+            self.assertIn("function isJsonResponse(response)", template)
+            self.assertIn("content-type", template)
+            self.assertIn("application/json", template)
+            self.assertIn("Your sign-in session may have expired.", template)
+
     def test_exam_and_result_templates_support_five_choice_mcq(self) -> None:
         exam_template = (ROOT / "challenges_src" / "exam.html").read_text(encoding="utf-8")
         result_template = (ROOT / "challenges_src" / "result.php").read_text(encoding="utf-8")
