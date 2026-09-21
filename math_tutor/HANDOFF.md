@@ -61,6 +61,13 @@ Deploy root: `math_tutor/output/deploy/math_tutor/`
 
 Generated production pages live directly under: `math_tutor/output/deploy/math_tutor/`
 
+The disposable local preview tree `math_tutor/output/site/` was explicitly deleted on
+2026-09-20. It is not a production input and can be recreated with `math-tutor-build-site`.
+The 18 files in `math_tutor/output/deploy/math_tutor/downloads/` are retained legacy Algebra
+copies; each was verified byte-for-byte against both `output/downloads/` and the active
+`deploy/math_tutor/courses/algebra-2-trig/downloads/` copy. Current pages use the course-scoped
+copies, but the legacy directory has not been deleted.
+
 - `responses/` — copied from `output/responses/` during build
 - `.htaccess` and other hosting-level assets can live at the deploy root
 - `index.html` — course-selection portal

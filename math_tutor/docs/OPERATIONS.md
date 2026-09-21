@@ -116,6 +116,10 @@ artifacts and generated state unchanged.
 This now defaults to the styled `staging` experience.
 For the older pre-refresh look, use `--experience archived`.
 
+This general command writes a disposable local preview under `math_tutor/output/site/`. That
+preview directory is currently absent after an explicitly approved cleanup and is recreated on
+demand. It is not read by the guarded production build or deployment commands.
+
 ### Build the deploy tree used by SFTP
 
 ```bash
