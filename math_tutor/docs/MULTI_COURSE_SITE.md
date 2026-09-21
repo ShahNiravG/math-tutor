@@ -154,7 +154,9 @@ Approved, implemented, deployed, and user-verified on 2026-09-19.
 - Red/green/refactor TDD completed for course isolation, feature-aware navigation, source-only presentation, and PDF deployment.
 - Full project validation passed with 238 tests, compilation checks, and `git diff --check`.
 - A production-shaped `/tmp` build contained only the five intended Calculus files: home, library, chapter page, privacy policy, and PDF.
-- The watched deployment tree was rebuilt at `math_tutor/output/deploy/math_tutor/site/` with base path `/site/`.
+- At the time of this phase, the watched deployment tree used
+  `math_tutor/output/deploy/math_tutor/site/` with base path `/site/`; Phase 7 later superseded
+  that layout with the canonical domain-root deployment.
 - The user verified the deployed Chapter 2 experience on `mathdelight.com`.
 
 ## Phase 5: Chapter 2 Cengage Textbook Navigation
@@ -490,13 +492,13 @@ Phase 6A and the Phase 6B study-guide pilot were implemented and deployed on 202
   and exposed no Calculus challenges, Live Tutor, assignments, mental math, or olympiad links.
 - The superseded guide and its temporary rollback copy were discarded only after the replacement
   passed validation and editorial review. No automatic retry or additional model call occurred.
-- The mastery replacement is deployed under the production `/site/` tree. A later deterministic
+- The mastery replacement is deployed in the production domain-root tree. A later deterministic
   rebuild corrected multiline display math inside list items without changing the saved Markdown
   or making another model call.
-- Guarded production commands now fix the site directory and `/site/` base path, validate the
-  deploy tree before syncing, require explicit production confirmation, and verify live Calculus
-  and Algebra content after deployment.
-- Full offline validation passes 273 tests plus Python compilation and `git diff --check`.
+- Guarded production commands now enforce the root deploy directory and empty base path, reject
+  nested `site/` output and stale `/site/` links, require explicit production confirmation, and
+  verify live Calculus and Algebra content after deployment.
+- Full offline validation passes 299 tests plus Python compilation and `git diff --check`.
 
 ### Deferred Calculus Mental Math
 
@@ -505,3 +507,63 @@ the user explicitly abandoned that plan pending further guidance. It is not appr
 implement a Calculus mental-math prompt, release detector, cumulative bank, site card, or model
 generation until a new specification is written and explicitly approved. The existing Algebra II
 mental-math behavior remains unchanged.
+
+## Phase 7: External AI Chapter Challenge Cards
+
+Approved, implemented, deployed, and user-verified on 2026-09-20.
+
+### Scope
+
+- Add an `AI Challenge` section only to AP Calculus AB Chapter 2.
+- Offer Medium and Hard prompt cards, each configured for ten original sequential MCQs.
+- Each card offers Gemini and ChatGPT actions that copy the prompt and open the provider's official
+  consumer homepage in a new tab.
+- Provide an accessible manual-copy fallback when clipboard access is unavailable.
+- Reuse the visual language of the Algebra chapter challenge cards without enabling the Algebra
+  challenge application, PHP backend, database, saved progress, or exam catalogs for Calculus.
+- Do not make a model API call, select a provider model, generate saved artifacts, or incur a project
+  model charge.
+
+### Prompt Boundaries
+
+- Generate original AP Calculus AB-style practice from first principles; never quote, reproduce,
+  paraphrase, imitate, or transform a published exam or textbook question.
+- Ask one question at a time, wait for the student's response, explain the result, maintain a score,
+  and finish after exactly ten questions.
+- Require exactly four choices and exactly one correct answer, with private validation before each
+  question is shown.
+- Stay within the verified Chapter 2 outline while excluding the PDF-uncovered formal epsilon-delta
+  definition in section 2.4 and limiting section 2.8 to introductory derivative-as-a-function ideas.
+- Exclude later differentiation, integration, differential-equation, optimization, and related-rate
+  topics.
+
+### Implementation Status
+
+- `site_ai_challenges.py` owns immutable provider definitions, scoped prompts, URL validation,
+  escaped rendering, clipboard behavior, and fallback controls.
+- Provider destinations are exact parameter-free HTTPS URLs for `gemini.google.com/app` and
+  `chatgpt.com/`; undocumented prompt or model-selection query parameters are not used.
+- `site_records.py` wires the component only for `(ap-calculus-ab, 2)` and leaves Algebra unchanged.
+- Red/green/refactor TDD covered initial Chapter 2 rendering and responsive styling. Focused
+  regression coverage validates prompt boundaries, provider safety, external-link protections,
+  accessibility status, clipboard fallback, and course/chapter isolation.
+- Full offline validation passes 299 tests plus Python compilation.
+- A production-shaped `/tmp` build passed guarded layout validation. Its generated Chapter 2 page
+  contains exactly the Medium and Hard cards with both providers, while unique component identifiers
+  do not appear anywhere under the Algebra course directory.
+- Desktop and 390-pixel mobile screenshots were inspected successfully.
+- The initial production deployment exposed a compatibility regression: the guarded command
+  refreshed `/site/courses/...` but left the established domain-root `/courses/...` copy stale.
+  A temporary repair synchronized both copies. The final approved architecture restores
+  `/courses/...` as the sole canonical location: production builds use an empty base path, reject
+  nested `site/` output and stale `/site/` links, synchronize the root once, and verify only the
+  canonical live pages. The obsolete local and remote `site/` trees were removed after canonical
+  live verification passed; the root Chapter 2 URL returns HTTP 200 and the former `/site/` URL
+  returns 404.
+
+### Recovery and Rollback
+
+The feature is a deterministic site-rendering component with no stored questions, user state,
+database changes, or generated model artifacts. Rollback removes the isolated renderer and its
+Chapter 2 wiring, then rebuilds the site. Existing course content and challenge results are
+unchanged.

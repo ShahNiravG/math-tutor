@@ -59,7 +59,7 @@ Default output root: `math_tutor/output/`
 
 Deploy root: `math_tutor/output/deploy/math_tutor/`
 
-Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
+Generated production pages live directly under: `math_tutor/output/deploy/math_tutor/`
 
 - `responses/` — copied from `output/responses/` during build
 - `.htaccess` and other hosting-level assets can live at the deploy root
@@ -77,14 +77,14 @@ Generated site pages live under: `math_tutor/output/deploy/math_tutor/site/`
 
 ## Current Site UX
 
-- Public deploy base path is `/site/`
+- Public deploy base path is the domain root; canonical course URLs begin with `/courses/`
 - `.vscode/sftp.json` currently syncs from local `output/deploy/math_tutor/` to remote `public_html/math_tutor/`
 - `index.html` is a course selector for Algebra II / Trigonometry and AP Calculus AB
 - Algebra pages live under `courses/algebra-2-trig/` and include a persistent `Switch Course` action
 - AP Calculus AB lives under `courses/ap-calculus-ab/`; Chapter 2 is published from its isolated output and no Algebra content is inherited
 - The Calculus Chapter 2 page includes a validated Cengage textbook map: students launch through a normal Canvas homework link and choose `Read It` in WebAssign; no direct MindTap or transient LTI/OIDC link is published
-- Calculus currently exposes only the verified class note, not Live Tutor, generated practice, or challenge exams
-- Calculus Chapter 2 now also exposes one reviewed GPT-5.4 study guide. It retains the class note and Cengage map, and still exposes no Live Tutor, challenges, assignments, mental math, or olympiad content.
+- Calculus currently exposes the verified class note and one reviewed GPT-5.4 study guide. It retains the Cengage map and exposes no Live Tutor, assignments, generated mental math, olympiad content, or internal challenge-exam bank.
+- The current working tree adds an external AI Challenge section to Calculus Chapter 2 with Medium and Hard prompt cards. Each card copies a scoped ten-question prompt and opens Gemini or ChatGPT; no API call, saved score, internal question bank, or model selection is involved. The canonical deployed location is the domain-root `/courses/...` URL.
 - The Algebra library keeps the chapter list in the left rail and moves the branded nav header into the main panel
 - The Algebra Live Tutor is a no-sidebar page with the same branded top header as the library overview
 - Per-document pages keep a slim left rail without the full chapter list
@@ -205,21 +205,24 @@ Architecture and validation references:
 - 76 MCQ challenge exams deployed; master_questions.json committed to git
 - Site reorganized around a root course portal, a complete course-scoped Algebra experience, and an empty AP Calculus AB course space
 - Privacy policy page and challenge auth/reporting pages are part of the generated deploy output
-- Deploy base path is `/site/`; all build commands use `--base-path /site/`
+- Deploy base path is empty; canonical production URLs are rooted at `/courses/...`
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
 - CLI fetch logs now summarize already-fetched vs pending files before processing
 - All JSON state writers route through `math_tutor/atomic_io.py` and PDF downloads stream via a `.part` rename — mid-operation crashes no longer corrupt state files or leave truncated PDFs on disk (see [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md) "Crash Safety")
 - AP Calculus AB Chapter 2 canonical metadata is course-scoped as `Limits and Derivatives`, with verified sections 2.1 through 2.8.
+- AP Calculus AB Chapter 2 now has a deployed external-AI challenge component with Medium and Hard ten-question prompts, Gemini and ChatGPT launch actions, clipboard fallback, exact course/chapter isolation, and responsive desktop/mobile rendering.
 - One validated mastery-oriented GPT-5.4 study guide is saved under the isolated Calculus output tree. It uses authoritative supplemental teaching only within PDF-established topics, includes 15 worked examples and ten fully solved mastery problems, marks section 2.4 `Not covered`, and marks section 2.8 `Partially covered`.
 - Never regenerate the Calculus study guide without explicit approval; site builds and recovery must reuse the saved Markdown/HTML/PDF.
-- Local validation baseline is `273` passing tests, plus Python compilation and `git diff --check`.
-- The approved mastery-oriented replacement is deployed at the production `/site/` path. Its
+- Local validation baseline is `299` passing tests, plus Python compilation and `git diff --check`.
+- The approved mastery-oriented replacement is deployed at the production domain-root path. Its
   HTML/PDF were rebuilt from saved Markdown after fixing multiline display math inside list items;
   no additional model call occurred.
 - Production builds use `.venv/bin/math-tutor-build-production`. Production deployment uses
-  `.venv/bin/math-tutor-deploy-production --confirm-production`; it validates the `/site/`
-  layout, rejects the known orphan-MathJax defect, syncs the correct parent directory, and
-  verifies live Calculus and Algebra content.
+  `.venv/bin/math-tutor-deploy-production --confirm-production`; it validates the domain-root
+  layout, rejects nested `site/` output and stale `/site/` links, syncs the deploy tree once,
+  and verifies domain-root Calculus and Algebra content.
+- The obsolete local and remote `site/` trees were deleted after the root deployment passed live
+  verification. The canonical Chapter 2 URL returns HTTP 200; the former `/site/` URL returns 404.
 - A possible cumulative, subsection-oriented Calculus mental-math workflow was discussed but
   explicitly abandoned for now. It is not an approved phase or implementation plan. Do not add,
   expose, or generate Calculus mental-math content until the user provides new guidance and

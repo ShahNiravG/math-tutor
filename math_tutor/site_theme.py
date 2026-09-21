@@ -615,6 +615,52 @@ BASE_SITE_PAGE_STYLES = """
       font-family: system-ui, sans-serif;
       font-size: 0.82rem;
     }
+    .ai-challenge-card {
+      margin-top: 0;
+    }
+    .ai-challenge-actions {
+      margin: 4px 0 0;
+    }
+    .ai-challenge-provider,
+    .ai-challenge-copy {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+    }
+    .ai-challenge-status {
+      min-height: 1.4em;
+      margin: 0;
+      color: #334155;
+      font-family: system-ui, sans-serif;
+      font-size: 0.86rem;
+      font-weight: 650;
+    }
+    .ai-challenge-fallback {
+      margin-top: 4px;
+      padding-top: 10px;
+      border-top: 1px dashed rgba(148, 163, 184, 0.45);
+    }
+    .ai-challenge-fallback summary {
+      color: var(--accent);
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+    .ai-challenge-fallback textarea {
+      display: block;
+      width: 100%;
+      min-height: 220px;
+      margin: 12px 0;
+      padding: 12px;
+      resize: vertical;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      color: var(--ink);
+      font: 0.82rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
     details pre {
       white-space: pre-wrap;
       word-break: break-word;
@@ -878,6 +924,19 @@ BASE_SITE_PAGE_STYLES = """
       .textbook-edition { justify-self: start; }
       .textbook-access-path,
       .textbook-sections { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      .ai-challenge-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+      .ai-challenge-provider,
+      .ai-challenge-copy {
+        width: 100%;
+      }
+      .ai-challenge-fallback textarea {
+        min-height: 260px;
+      }
     }
 """
 

@@ -52,6 +52,7 @@ CORE_MODULES = [
     "math_tutor/response_artifacts.py",
     "math_tutor/site_data.py",
     "math_tutor/site_assets.py",
+    "math_tutor/site_ai_challenges.py",
     "math_tutor/site_cards.py",
     "math_tutor/site_challenges.py",
     "math_tutor/site_content.py",

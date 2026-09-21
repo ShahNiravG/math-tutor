@@ -8,6 +8,7 @@ from typing import Callable
 
 from math_tutor.chaptering import parse_display_name_chapter
 from math_tutor.response_artifacts import render_inline
+from math_tutor.site_ai_challenges import render_ai_challenge_section
 from math_tutor.site_assets import link_tag
 from math_tutor.site_challenges import render_chapter_challenge_card
 from math_tutor.site_cards import document_label, document_title, record_page_filename
@@ -120,6 +121,10 @@ def render_document_page_content(
         site_page_href,
         experience_variant=experience_variant,
     )
+    ai_challenge_html = render_ai_challenge_section(
+        course_id=course_id,
+        chapter=parse_display_name_chapter(record.display_name),
+    )
     textbook_html = (
         render_textbook_navigation(textbook_navigation) if textbook_navigation is not None else ""
     )
@@ -166,6 +171,7 @@ def render_document_page_content(
           <p class="page-intro">This course grows from the material used in class. New learning tools will appear only after they are deliberately added and reviewed.</p>
         </section>
         {textbook_html}
+        {ai_challenge_html}
         """
         summary_body = extract_record_summary_html(record) or "<p>No chapter summary is available yet. Start with the class note, then move into practice.</p>"
         learn_cards_html = "\n".join(prompt_groups["learn"])
@@ -205,6 +211,7 @@ def render_document_page_content(
           <div class="prompt-grid">{learn_cards_html}</div>
         </section>
         {textbook_html}
+        {ai_challenge_html}
         """
         practice_cards_html = "\n".join(prompt_groups["practice"])
         resource_cards_html = "\n".join(prompt_groups["resources"] + prompt_groups["extras"])
@@ -345,6 +352,7 @@ def render_document_page_content(
       </div>
       {chapter_challenge_html}
       {textbook_html}
+      {ai_challenge_html}
     </section>
     """
 

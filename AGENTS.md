@@ -44,6 +44,33 @@ These rules are mandatory unless you explicitly override them in the same messag
 ### 9) Secrets and sensitive data
 - Never print full secrets, tokens, or keys in output.
 - If a file may contain secrets, summarize findings without exposing values.
+- Never open, read, search, parse, summarize, or print `.env` files or other
+  secret-bearing files.
+- Never attempt to discover secrets through `env`, `printenv`, shell expansion,
+  process arguments, debugging output, credential stores, or application logs.
+- Never place secret values directly in commands, reusable approval rules, tool
+  calls, prompts, generated files, or conversation output.
+- Programs that require credentials must receive them through exported environment
+  variables. Source the project `.env` without displaying its contents, then run
+  the program in the same shell process so it inherits those variables.
+- Do not validate credentials by inspecting or printing their values. Programs may
+  report only that a required variable is absent or unusable, without revealing it.
+- If a secret is accidentally exposed, redact it from subsequent output and advise
+  the user to revoke or rotate it.
+- Never create or modify `.env` or another secret-bearing file unless the user
+  separately and explicitly authorizes that exact change.
+
+### 10) Production deployment invariants
+- The sole canonical public site is served from the domain root; course URLs begin
+  with `/courses/`, not `/site/courses/`.
+- Production builds write directly to
+  `math_tutor/output/deploy/math_tutor/` with an empty base path.
+- Never recreate a nested `math_tutor/output/deploy/math_tutor/site/` tree or
+  generate `/site/` links.
+- Use the guarded `math-tutor-build-production` and
+  `math-tutor-deploy-production --confirm-production` commands for production.
+- Never use an ad hoc production sync or delete a remote production path without
+  explicit approval for the exact target.
 
 ## Software Development Lifecycle
 

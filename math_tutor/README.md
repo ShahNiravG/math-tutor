@@ -184,19 +184,19 @@ The challenge area also includes:
 
 ### Deploy path
 
-The current production site is deployed under `/site/`, while the sync root is `math_tutor/output/deploy/math_tutor/`. Use the guarded production build command so the directory level and base path cannot be omitted:
+The production site is canonical at the domain root, with the local sync root at `math_tutor/output/deploy/math_tutor/`. Use the guarded production build command so the root layout and empty base path cannot be changed accidentally:
 
 ```bash
 .venv/bin/math-tutor-build-production
 ```
 
-To build, validate, sync the whole deploy root to Bluehost, and verify the live Calculus and Algebra II pages, explicitly confirm the production mutation:
+To build, validate, sync the deploy root once to Bluehost, and verify the live Calculus and Algebra II pages, explicitly confirm the production mutation:
 
 ```bash
 .venv/bin/math-tutor-deploy-production --confirm-production
 ```
 
-The deployment command refuses to run without confirmation and rejects a missing `site/` subtree, incorrect `/site/` links, or the known orphan-MathJax delimiter defect. The generated tutoring pages live under the `site/` subfolder, while the deploy root can also contain hosting-level files such as `.htaccess`.
+The deployment command refuses to run without confirmation and rejects an obsolete nested `site/` subtree, any generated `/site/` links, or the known orphan-MathJax delimiter defect. It publishes one canonical copy at domain-root paths such as `/courses/...`. The deploy root can also contain hosting-level files such as `.htaccess`.
 
 ### Model display names
 

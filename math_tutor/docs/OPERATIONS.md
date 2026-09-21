@@ -122,9 +122,10 @@ For the older pre-refresh look, use `--experience archived`.
 .venv/bin/math-tutor-build-production
 ```
 
-This command always writes to `math_tutor/output/deploy/math_tutor/site/`, always uses
-the `/site/` base path, and validates the production tree. It fails closed if the tree is
-at the wrong directory level or contains the known orphan-MathJax list delimiter defect.
+This command writes the canonical site directly to `math_tutor/output/deploy/math_tutor/`
+with an empty base path and validates the production tree. It fails closed if an obsolete
+nested `site/` directory or `/site/` HTML link remains, or if the tree contains the known
+orphan-MathJax list delimiter defect.
 
 ### Deploy and verify production
 
@@ -132,10 +133,12 @@ at the wrong directory level or contains the known orphan-MathJax list delimiter
 .venv/bin/math-tutor-deploy-production --confirm-production
 ```
 
-The confirmation flag is mandatory. The command rebuilds and validates before syncing
-`math_tutor/output/deploy/math_tutor/` to `public_html/math_tutor/`, then verifies the live
-Calculus guide and Algebra II site. A failed build or validation prevents the sync; a failed
-live check returns a nonzero exit after the sync so the operator knows verification failed.
+The confirmation flag is mandatory. The command rebuilds and validates before synchronizing the
+canonical `math_tutor/output/deploy/math_tutor/` tree once to `public_html/math_tutor/`. Live
+verification uses domain-root URLs only, including the Calculus Chapter 2 AI challenge, Calculus
+guide, and Algebra II site. A failed step returns a nonzero exit and the idempotent command can
+be retried. The obsolete remote `site/` directory is a one-time migration cleanup, not part of
+normal deployment.
 
 ### Rebuild response HTML from saved Markdown only
 
@@ -161,16 +164,14 @@ you can recover the generated HTML site without new OpenAI or Gemini calls:
 
 ```bash
 PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m math_tutor.backfill_response_html
-PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m math_tutor.site_builder \
-  --site-dir math_tutor/output/deploy/math_tutor/site \
-  --force-challenges
+.venv/bin/math-tutor-build-production
 ```
 
 ## Deploy Notes
 
 The active deploy tree is:
 
-- `math_tutor/output/deploy/math_tutor/site/`
+- `math_tutor/output/deploy/math_tutor/`
 
 The current SFTP setup syncs from:
 
@@ -182,8 +183,8 @@ to the remote hosting tree configured in:
 
 The build publishes the saved Calculus Chapter 2 source note under:
 
-- `site/courses/ap-calculus-ab/doc-4839635.html`
-- `site/courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf`
+- `courses/ap-calculus-ab/doc-4839635.html`
+- `courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf`
 
 The Calculus site is built from `output/courses/ap-calculus-ab/`; no model call or Canvas login is needed for a rebuild. Site builds must reuse the saved study guide and must never regenerate it.
 

@@ -14,13 +14,14 @@ from math_tutor.site_builder import build_site
 PACKAGE_DIR = Path(__file__).resolve().parent
 DEFAULT_OUTPUT_DIR = PACKAGE_DIR / "output"
 DEFAULT_DEPLOY_ROOT = DEFAULT_OUTPUT_DIR / "deploy" / "math_tutor"
-PRODUCTION_BASE_PATH = "/site/"
+PRODUCTION_BASE_PATH = ""
 REMOTE_DESTINATION = "bupbismy@aksharconsultants.com:public_html/math_tutor/"
 LIVE_GUIDE_URL = (
-    "https://mathdelight.com/site/courses/ap-calculus-ab/responses/"
+    "https://mathdelight.com/courses/ap-calculus-ab/responses/"
     "4839635_chapter-2-notetakers__study-guide-gpt5.html"
 )
-LIVE_ALGEBRA_URL = "https://mathdelight.com/site/courses/algebra-2-trig/"
+LIVE_ALGEBRA_URL = "https://mathdelight.com/courses/algebra-2-trig/"
+LIVE_CHAPTER_TWO_URL = "https://mathdelight.com/courses/ap-calculus-ab/doc-4839635.html"
 
 
 class ProductionLayoutError(ValueError):
@@ -31,14 +32,20 @@ def build_production_site(*, deploy_root: Path = DEFAULT_DEPLOY_ROOT) -> Path:
     deploy_root = deploy_root.resolve()
     return build_site(
         output_dir=DEFAULT_OUTPUT_DIR,
-        site_dir=deploy_root / "site",
+        site_dir=deploy_root,
         base_path=PRODUCTION_BASE_PATH,
     )
 
 
 def validate_production_tree(deploy_root: Path) -> None:
     deploy_root = deploy_root.resolve()
-    site_dir = deploy_root / "site"
+    obsolete_site_dir = deploy_root / "site"
+    if obsolete_site_dir.exists():
+        raise ProductionLayoutError(
+            f"Production tree contains obsolete nested site directory: {obsolete_site_dir}"
+        )
+
+    site_dir = deploy_root
     guide_path = (
         site_dir
         / "courses"
@@ -58,9 +65,15 @@ def validate_production_tree(deploy_root: Path) -> None:
             "Production tree is incomplete; missing: " + ", ".join(missing)
         )
 
-    index_html = required[0].read_text(encoding="utf-8")
-    if 'href="/site/' not in index_html:
-        raise ProductionLayoutError("Production index does not use the required /site/ base path.")
+    stale_links = [
+        path.relative_to(deploy_root).as_posix()
+        for path in deploy_root.rglob("*.html")
+        if '"/site/' in path.read_text(encoding="utf-8")
+    ]
+    if stale_links:
+        raise ProductionLayoutError(
+            "Production HTML contains obsolete /site/ links: " + ", ".join(stale_links)
+        )
 
     guide_html = guide_path.read_text(encoding="utf-8")
     if r"<li>\[</li>" in guide_html:
@@ -75,6 +88,7 @@ def verify_live_site() -> None:
         (LIVE_GUIDE_URL, "Mastery Goals"),
         (LIVE_GUIDE_URL, r"\[ \lim_{x\to c}f(x)=\infty \] means \(f(x)\)"),
         (LIVE_ALGEBRA_URL, "Algebra II"),
+        (LIVE_CHAPTER_TWO_URL, 'id="ai-challenge"'),
     )
     cache: dict[str, str] = {}
     for url, expected in checks:
@@ -115,7 +129,7 @@ def _deploy_root_argument(parser: argparse.ArgumentParser) -> None:
 
 
 def main_build() -> None:
-    parser = argparse.ArgumentParser(description="Build and validate the production /site/ tree.")
+    parser = argparse.ArgumentParser(description="Build and validate the production domain-root tree.")
     _deploy_root_argument(parser)
     args = parser.parse_args()
     load_dotenv_if_present()
@@ -126,7 +140,7 @@ def main_build() -> None:
 
 def main_deploy() -> None:
     parser = argparse.ArgumentParser(
-        description="Build, validate, deploy, and verify the production /site/ tree."
+        description="Build, validate, deploy, and verify the production domain-root tree."
     )
     _deploy_root_argument(parser)
     parser.add_argument(

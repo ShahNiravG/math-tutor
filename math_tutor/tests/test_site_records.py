@@ -144,6 +144,40 @@ class SiteRecordsTests(unittest.TestCase):
             self.assertNotIn("Open the textbook", html)
             self.assertIn("2.4", html)
 
+    def test_calculus_chapter_two_offers_external_medium_and_hard_ai_challenges(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            root = Path(temp_dir)
+            pdf_path = root / "4839635_chapter-2-notetakers.pdf"
+            pdf_path.write_bytes(b"%PDF-1.7\nchapter two")
+            record = DocumentRecord(
+                file_id="4839635",
+                display_name="Chapter 2 Notetakers.pdf",
+                pdf_path=pdf_path,
+                download_url=None,
+                fetched_at="2026-09-19T12:00:00Z",
+                prompt_outputs=[],
+            )
+
+            html = render_document_page_content(
+                record,
+                output_dir=root,
+                site_dir=root,
+                base_path="/site/courses/ap-calculus-ab/",
+                include_guided_learning=False,
+                site_page_href=site_page_href,
+                experience_variant="staging",
+                textbook_navigation=AP_CALCULUS_CHAPTER_2_TEXTBOOK,
+                course_id="ap-calculus-ab",
+                supports_challenges=False,
+            )
+
+            self.assertIn('id="ai-challenge"', html)
+            self.assertIn("Medium Challenge", html)
+            self.assertIn("Hard Challenge", html)
+            self.assertEqual(html.count("https://gemini.google.com/app"), 2)
+            self.assertEqual(html.count("https://chatgpt.com/"), 2)
+            self.assertIn("Results are not saved in Math Delight", html)
+
 
 if __name__ == "__main__":
     unittest.main()
