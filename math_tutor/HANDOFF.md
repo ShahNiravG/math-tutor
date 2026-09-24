@@ -81,6 +81,8 @@ copies, but the legacy directory has not been deleted.
 - `courses/ap-calculus-ab/library.html` — Calculus chapter library
 - `courses/ap-calculus-ab/doc-4839635.html` — Chapter 2 source-note page
 - `courses/ap-calculus-ab/downloads/4839635_chapter-2-notetakers.pdf` — deployed school PDF
+- `courses/ap-calculus-ab/doc-4839646.html` — Chapter 3 source-note, AI Challenge, and Cengage page
+- `courses/ap-calculus-ab/downloads/4839646_chapter-3-notetakers.pdf` — deployed school PDF
 
 ## Current Site UX
 
@@ -88,10 +90,10 @@ copies, but the legacy directory has not been deleted.
 - `.vscode/sftp.json` currently syncs from local `output/deploy/math_tutor/` to remote `public_html/math_tutor/`
 - `index.html` is a course selector for Algebra II / Trigonometry and AP Calculus AB
 - Algebra pages live under `courses/algebra-2-trig/` and include a persistent `Switch Course` action
-- AP Calculus AB lives under `courses/ap-calculus-ab/`; Chapter 2 is published from its isolated output and no Algebra content is inherited
+- AP Calculus AB lives under `courses/ap-calculus-ab/`; Chapters 2 and 3 are published from its isolated output and no Algebra content is inherited
 - The Calculus Chapter 2 page includes a validated Cengage textbook map: students launch through a normal Canvas homework link and choose `Read It` in WebAssign; no direct MindTap or transient LTI/OIDC link is published
-- Calculus currently exposes the verified class note and one reviewed GPT-5.4 study guide. It retains the Cengage map and exposes no Live Tutor, assignments, generated mental math, olympiad content, or internal challenge-exam bank.
-- The current working tree adds an external AI Challenge section to Calculus Chapter 2 with Medium and Hard prompt cards. Each card copies a scoped ten-question prompt and opens Gemini or ChatGPT; no API call, saved score, internal question bank, or model selection is involved. The canonical deployed location is the domain-root `/courses/...` URL.
+- Calculus exposes verified class notes for Chapters 2 and 3 and one reviewed GPT-5.4 study guide for Chapter 2 only. Both chapters retain their reviewed Cengage maps and expose no Live Tutor, generated mental math, olympiad content, or internal challenge-exam bank.
+- Chapters 2 and 3 have deployed external AI Challenge sections with manifest-scoped Medium and Hard prompt cards. Each card copies a ten-question prompt and opens Gemini or ChatGPT; no API call, saved score, internal question bank, or provider model selection is involved. Canonical deployed locations use domain-root `/courses/...` URLs.
 - One brand mark per page, all rendered from
   [math_tutor/site_brand.py](/home/nshah/projects/math-tutor/math_tutor/site_brand.py): the
   long-standing detailed π mark for the site and portal, a θ mark for Algebra, an ∫ mark for
@@ -167,11 +169,14 @@ This means future cleanup should usually target one focused module at a time ins
 # Fetch only (no generation)
 .venv/bin/math-tutor --course algebra-2-trig --fetch-only
 
-# Fetch the currently enabled AP Calculus AB chapter only
-.venv/bin/math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
+# Fetch any AP Calculus AB chapter note without model calls
+.venv/bin/math-tutor --course ap-calculus-ab --chapter 3 --fetch-only
 
-# Preview the enabled Calculus study guide without any model call
-.venv/bin/math-tutor --course ap-calculus-ab --skip-fetch --chapter 2 --prompt study-guide --dry-run
+# Discover review-only Canvas/Cengage metadata for a future chapter
+.venv/bin/python -m math_tutor.calculus_onboarding --chapter 4
+
+# Preview a reviewed Calculus chapter study guide without any model call
+.venv/bin/math-tutor --course ap-calculus-ab --skip-fetch --chapter 3 --prompt study-guide --dry-run
 
 # Build and validate the canonical production tree
 .venv/bin/math-tutor-build-production
@@ -222,7 +227,7 @@ Architecture and validation references:
 - 19 class note chapters fully processed (through chapter 11.4)
 - All prompts: study-guide, inspiring-videos, mental-math-gpt5 + MCQ, mental-math-gemini + MCQ, olympiad-problems/solutions-gpt5 + MCQ, olympiad-problems/solutions-gemini + MCQ
 - 76 MCQ challenge exams deployed; master_questions.json committed to git
-- Site reorganized around a root course portal, a complete course-scoped Algebra experience, and an empty AP Calculus AB course space
+- Site reorganized around a root course portal, a complete course-scoped Algebra experience, and an isolated AP Calculus AB course with Chapters 2 and 3
 - Privacy policy page and challenge auth/reporting pages are part of the generated deploy output
 - Deploy base path is empty; canonical production URLs are rooted at `/courses/...`
 - Response file deploy copying works correctly (fixed `is_deploy_site_dir` bug)
@@ -230,9 +235,19 @@ Architecture and validation references:
 - All JSON state writers route through `math_tutor/atomic_io.py` and PDF downloads stream via a `.part` rename — mid-operation crashes no longer corrupt state files or leave truncated PDFs on disk (see [docs/ARCHITECTURE.md](/home/nshah/projects/math-tutor/math_tutor/docs/ARCHITECTURE.md) "Crash Safety")
 - AP Calculus AB Chapter 2 canonical metadata is course-scoped as `Limits and Derivatives`, with verified sections 2.1 through 2.8.
 - AP Calculus AB Chapter 2 now has a deployed external-AI challenge component with Medium and Hard ten-question prompts, Gemini and ChatGPT launch actions, clipboard fallback, exact course/chapter isolation, and responsive desktop/mobile rendering.
+- AP Calculus AB Chapter 3 is deployed as `Chapter 3: Differentiation Rules` from Canvas file
+  `4839646`. Its ten reviewed sections map to normal Canvas assignments `299784` through
+  `299793`; the page contains ten Cengage cards and manifest-scoped Medium and Hard AI
+  Challenge cards. It has no generated study guide and no Chapter 3 model call has occurred.
+- Future Calculus chapters use `calculus_onboarding.py` for read-only Canvas assignment
+  discovery. It writes a non-secret `review-required` candidate; after review, one
+  `CalculusChapterManifest` supplies curriculum, textbook navigation, AI Challenge scope, and
+  study-guide scope without renderer changes. Fetch-only accepts one whole-number chapter,
+  while generation accepts only a reviewed manifest plus explicit `--skip-fetch --prompt
+  study-guide`.
 - One validated mastery-oriented GPT-5.4 study guide is saved under the isolated Calculus output tree. It uses authoritative supplemental teaching only within PDF-established topics, includes 15 worked examples and ten fully solved mastery problems, marks section 2.4 `Not covered`, and marks section 2.8 `Partially covered`.
 - Never regenerate the Calculus study guide without explicit approval; site builds and recovery must reuse the saved Markdown/HTML/PDF.
-- Local validation baseline is `323` passing tests, plus Python compilation and `git diff --check`.
+- Local validation baseline is `338` passing tests plus `git diff --check`.
   The brand/navigation pass added `tests/test_site_brand.py` and `tests/test_site_navigation.py`,
   including a drift guard that fails if `challenges_src/*.html` diverges from the canonical mark
   in `site_brand.py`.
@@ -243,6 +258,10 @@ Architecture and validation references:
   `.venv/bin/math-tutor-deploy-production --confirm-production`; it validates the domain-root
   layout, rejects nested `site/` output and stale `/site/` links, syncs the deploy tree once,
   and verifies domain-root Calculus and Algebra content.
+- The 2026-09-23 Chapter 3 production build passed the guarded validator. A pre-sync check
+  confirmed ten textbook cards, two AI Challenge modes, and no gateway/OIDC/token or stale
+  `/site/` material. The first SSH connection reset during key exchange before transfer; one
+  retry completed and the guarded command reported successful live verification.
 - Challenge exams were restored after generated public JSON was written as mode `0600` and
   `rsync -a` preserved that unreadable mode on production. Public challenge JSON is now created
   as `0644`, unchanged files have their mode repaired during builds, and production validation

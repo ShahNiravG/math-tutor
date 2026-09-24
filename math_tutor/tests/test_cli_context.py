@@ -10,6 +10,41 @@ from math_tutor.cli_context import build_command_context
 
 
 class CliContextTests(unittest.TestCase):
+    def test_calculus_fetch_only_does_not_require_a_generation_prompt(self) -> None:
+        with TemporaryDirectory() as temp_dir:
+            args = Namespace(
+                course_id="ap-calculus-ab",
+                prompt_slugs=None,
+                force_prompt_slugs=None,
+                chapter_filters=None,
+                fetch_only=True,
+                fetch_assignments=False,
+                default_model="gpt-5.4",
+                force=False,
+                force_generation=False,
+                list_files=False,
+                headful=False,
+                limit=None,
+                assignment_limit=None,
+                course_url=None,
+                login_url=None,
+                site_dir=None,
+                site_base_path="/site/",
+                build_site_guided_learning=False,
+                dry_run=False,
+            )
+
+            context = build_command_context(
+                args=args,
+                output_dir=Path(temp_dir) / "output",
+                log=lambda message: None,
+            )
+
+            self.assertEqual(context.selected_prompts, ())
+            self.assertEqual(context.normalized_chapter_filters, [])
+            self.assertIsNone(context.openai_api_key)
+            self.assertIsNone(context.gemini_client)
+
     def test_dry_run_does_not_resolve_model_credentials_or_clients(self) -> None:
         with TemporaryDirectory() as temp_dir:
             args = Namespace(
@@ -56,7 +91,7 @@ class CliContextTests(unittest.TestCase):
                 course_id="ap-calculus-ab",
                 prompt_slugs=["study-guide"],
                 force_prompt_slugs=["study-guide"],
-                chapter_filters=["5.1"],
+                chapter_filters=["3"],
                 fetch_only=True,
                 fetch_assignments=False,
                 default_model="gpt-5.4",
@@ -93,7 +128,7 @@ class CliContextTests(unittest.TestCase):
             self.assertEqual(context.limit, 3)
             self.assertEqual(context.selected_prompts[0].slug, "study-guide")
             self.assertEqual(context.forced_prompt_slugs, {"study-guide"})
-            self.assertEqual(context.normalized_chapter_filters, ["5.1"])
+            self.assertEqual(context.normalized_chapter_filters, ["3"])
             self.assertIsNone(context.gemini_client)
             initialize_gemini_client.assert_not_called()
             self.assertTrue(context.output_layout.downloads_dir.is_dir())

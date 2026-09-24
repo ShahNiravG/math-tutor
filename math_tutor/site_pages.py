@@ -8,6 +8,7 @@ from zoneinfo import ZoneInfo
 from pathlib import Path
 
 from math_tutor.chaptering import parse_display_name_chapter
+from math_tutor.site_ai_challenges import has_ai_challenge
 from math_tutor.site_brand import brand_mark_id_for_course, render_brand_mark
 from math_tutor.site_cards import document_label, record_page_filename
 from math_tutor.site_content import build_curriculum_guided_learning_prompt
@@ -401,10 +402,23 @@ def build_library_page_html(
     if experience_variant == "staging":
         featured_record = _featured_record(records)
         source_only = bool(records) and total_prompt_outputs == 0
-        learning_only = not course.supports_challenges and not course.supports_live_tutor
+        featured_chapter = (
+            parse_display_name_chapter(featured_record.display_name) if featured_record else None
+        )
+        has_featured_ai_challenge = has_ai_challenge(
+            course_id=course.course_id,
+            chapter=featured_chapter,
+        )
+        learning_only = (
+            not course.supports_challenges
+            and not course.supports_live_tutor
+            and not has_featured_ai_challenge
+        )
         featured_practice_href = (
             site_page_href(record_page_filename(featured_record), base_path)
             if (source_only or learning_only) and featured_record
+            else f"{site_page_href(record_page_filename(featured_record), base_path)}#ai-challenge"
+            if has_featured_ai_challenge and featured_record
             else f"{site_page_href(record_page_filename(featured_record), base_path)}#practice"
             if featured_record
             else site_page_href("index.html", base_path)
@@ -421,6 +435,8 @@ def build_library_page_html(
             if source_only
             else "Use the reviewed study guide beside the original school material and textbook chapter map."
             if learning_only
+            else "Each chapter offers a clear path to learn the material and test yourself with an AI challenge."
+            if has_featured_ai_challenge
             else "Every chapter now gives students three clear paths: learn the idea, practice with quick wins, or test themselves in challenge mode."
         )
         library_action = (
@@ -428,6 +444,8 @@ def build_library_page_html(
             if source_only
             else "Open study guide"
             if learning_only
+            else "Jump straight into challenge"
+            if has_featured_ai_challenge
             else "Jump straight into practice"
         )
         body_html = f"""

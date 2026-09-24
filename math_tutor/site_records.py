@@ -8,7 +8,7 @@ from typing import Callable
 
 from math_tutor.chaptering import parse_display_name_chapter
 from math_tutor.response_artifacts import render_inline
-from math_tutor.site_ai_challenges import render_ai_challenge_section
+from math_tutor.site_ai_challenges import has_ai_challenge, render_ai_challenge_section
 from math_tutor.site_assets import link_tag
 from math_tutor.site_challenges import render_chapter_challenge_card
 from math_tutor.site_cards import document_label, document_title, record_page_filename
@@ -36,6 +36,7 @@ def render_document_overview_card(
 ) -> str:
     prompt_count = sum(1 for prompt_output in record.prompt_outputs if prompt_output.processed_at)
     chapter = parse_display_name_chapter(record.display_name)
+    ai_challenge_available = has_ai_challenge(course_id=course_id, chapter=chapter)
     record_summary_html = extract_record_summary_html(record)
     summary_html = f'<div class="card-summary">{record_summary_html}</div>' if record_summary_html else ""
     if include_guided_learning and not summary_html:
@@ -51,10 +52,20 @@ def render_document_overview_card(
         page_href=site_page_href(record_page_filename(record), base_path),
         class_note_link=None,
         summary_html="" if experience_variant == "staging" else summary_html,
-        practice_href=f'{site_page_href(record_page_filename(record), base_path)}#practice',
-        challenge_href=f'{site_page_href(record_page_filename(record), base_path)}#challenge',
+        practice_href=(
+            f'{site_page_href(record_page_filename(record), base_path)}#practice'
+            if supports_challenges
+            else None
+        ),
+        challenge_href=(
+            f'{site_page_href(record_page_filename(record), base_path)}#challenge'
+            if supports_challenges
+            else f'{site_page_href(record_page_filename(record), base_path)}#ai-challenge'
+            if ai_challenge_available
+            else None
+        ),
         experience_variant=experience_variant,
-        learning_only=not supports_challenges,
+        readiness_label="Study guide and AI challenge ready" if ai_challenge_available else None,
     )
 
 
@@ -170,8 +181,8 @@ def render_document_page_content(
           </div>
           <p class="page-intro">This course grows from the material used in class. New learning tools will appear only after they are deliberately added and reviewed.</p>
         </section>
-        {textbook_html}
         {ai_challenge_html}
+        {textbook_html}
         """
         summary_body = extract_record_summary_html(record) or "<p>No chapter summary is available yet. Start with the class note, then move into practice.</p>"
         learn_cards_html = "\n".join(prompt_groups["learn"])
@@ -210,8 +221,8 @@ def render_document_page_content(
           </div>
           <div class="prompt-grid">{learn_cards_html}</div>
         </section>
-        {textbook_html}
         {ai_challenge_html}
+        {textbook_html}
         """
         practice_cards_html = "\n".join(prompt_groups["practice"])
         resource_cards_html = "\n".join(prompt_groups["resources"] + prompt_groups["extras"])
@@ -351,8 +362,8 @@ def render_document_page_content(
         {prompt_cards_html}
       </div>
       {chapter_challenge_html}
-      {textbook_html}
       {ai_challenge_html}
+      {textbook_html}
     </section>
     """
 

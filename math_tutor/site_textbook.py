@@ -6,7 +6,12 @@ from dataclasses import dataclass
 import html
 from urllib.parse import parse_qsl, urlsplit
 
-from math_tutor.course_curriculum import AP_CALCULUS_CHAPTER_2
+from math_tutor.calculus_chapters import (
+    AP_CALCULUS_CHAPTER_2_MANIFEST,
+    CALCULUS_CHAPTER_MANIFESTS,
+    CalculusChapterManifest,
+    validate_calculus_chapter_manifest,
+)
 
 
 CANVAS_HOST = "mitty.instructure.com"
@@ -36,42 +41,35 @@ def _canvas_assignment_url(assignment_id: str) -> str:
     return f"https://{CANVAS_HOST}/courses/4446/assignments/{assignment_id}"
 
 
-_CHAPTER_2_ASSIGNMENTS = {
-    "2.1": "299777",
-    "2.2": "299778",
-    "2.3": "299779",
-    "2.5": "299780",
-    "2.6": "299781",
-    "2.7": "299782",
-    "2.8": "299783",
-}
+def build_textbook_navigation(manifest: CalculusChapterManifest) -> TextbookNavigation:
+    validate_calculus_chapter_manifest(manifest)
+    return TextbookNavigation(
+        course_id=manifest.course_id,
+        chapter=manifest.chapter,
+        title=f"Chapter {manifest.chapter}: {manifest.title}",
+        reader_url=manifest.reader_url,
+        access_bootstrap_url=_canvas_assignment_url(manifest.access_bootstrap_assignment_id),
+        sections=tuple(
+            TextbookSection(
+                section.section_id,
+                section.title,
+                (
+                    _canvas_assignment_url(section.canvas_assignment_id)
+                    if section.canvas_assignment_id is not None
+                    else None
+                ),
+            )
+            for section in manifest.sections
+        ),
+    )
 
 
-AP_CALCULUS_CHAPTER_2_TEXTBOOK = TextbookNavigation(
-    course_id=AP_CALCULUS_CHAPTER_2.course_id,
-    chapter=AP_CALCULUS_CHAPTER_2.chapter,
-    title=AP_CALCULUS_CHAPTER_2.display_label,
-    reader_url=(
-        "https://ng.cengage.com/static/nb/ui/evo/index.html"
-        "?snapshotId=1529049&id=677758950&eISBN=9780357049105"
-    ),
-    access_bootstrap_url=_canvas_assignment_url("299777"),
-    sections=tuple(
-        TextbookSection(
-            section.section_id,
-            section.title,
-            (
-                None
-                if section.section_id not in _CHAPTER_2_ASSIGNMENTS
-                else _canvas_assignment_url(_CHAPTER_2_ASSIGNMENTS[section.section_id])
-            ),
-        )
-        for section in AP_CALCULUS_CHAPTER_2.sections
-    ),
+AP_CALCULUS_CHAPTER_2_TEXTBOOK = build_textbook_navigation(AP_CALCULUS_CHAPTER_2_MANIFEST)
+
+
+TEXTBOOK_NAVIGATION: tuple[TextbookNavigation, ...] = tuple(
+    build_textbook_navigation(manifest) for manifest in CALCULUS_CHAPTER_MANIFESTS
 )
-
-
-TEXTBOOK_NAVIGATION: tuple[TextbookNavigation, ...] = (AP_CALCULUS_CHAPTER_2_TEXTBOOK,)
 
 
 def validate_textbook_navigation(navigation: TextbookNavigation) -> None:
@@ -136,13 +134,15 @@ def render_textbook_navigation(navigation: TextbookNavigation) -> str:
     validate_textbook_navigation(navigation)
     sections_html = "\n".join(_render_textbook_section(section) for section in navigation.sections)
     bootstrap_url = html.escape(navigation.access_bootstrap_url, quote=True)
+    chapter_label = f"Chapter {navigation.chapter}"
     return f"""
     <section class="content-card section-card section-surface textbook-panel" id="textbook">
       <div class="textbook-heading">
         <div>
           <span class="eyebrow">Cengage reference</span>
-          <h3>Chapter 2 textbook</h3>
+          <h3>{html.escape(chapter_label)} textbook</h3>
           <p class="page-intro">Open the protected textbook through the school&apos;s normal Canvas launch.</p>
+          <div class="chip-row"><span class="chip chip-lock"><span class="auth-icon" aria-hidden="true">&#128737;&#65038;</span>Authorization Required</span></div>
         </div>
         <span class="textbook-edition">{html.escape(navigation.title)}</span>
       </div>
@@ -150,15 +150,15 @@ def render_textbook_navigation(navigation: TextbookNavigation) -> str:
         <div class="textbook-access-step">
           <span class="textbook-step-number">1</span>
           <div>
-            <strong>Open Chapter 2 through Canvas</strong>
+            <strong>Open {html.escape(chapter_label)} through Canvas</strong>
             <p>Canvas opens the entitled WebAssign course. In WebAssign, choose <strong>Read It</strong> beside a problem to open the textbook.</p>
-            <a class="hero-action primary" href="{bootstrap_url}" target="_blank" rel="noopener noreferrer">Open Chapter 2 through Canvas</a>
+            <a class="hero-action primary" href="{bootstrap_url}" target="_blank" rel="noopener noreferrer">Open {html.escape(chapter_label)} through Canvas</a>
           </div>
         </div>
       </div>
       <div class="textbook-section-head">
         <span class="eyebrow">Chapter map</span>
-        <p>Choose a section below. For 2.4, open <strong>Full Book</strong> in MindTap after using a Canvas launch.</p>
+        <p>Choose a section below. For a textbook-only section, open <strong>Full Book</strong> in MindTap after using a Canvas launch.</p>
       </div>
       <div class="textbook-sections">
         {sections_html}

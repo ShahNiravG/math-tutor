@@ -67,11 +67,31 @@ class DryRunFlagTests(unittest.TestCase):
             with self.subTest(command=command), self.assertRaises(SystemExit):
                 _parse(command)
 
-    def test_calculus_requires_exactly_chapter_two_during_fetch_phase(self) -> None:
-        with self.assertRaises(SystemExit):
-            _parse(["--course", "ap-calculus-ab", "--fetch-only"])
-        with self.assertRaises(SystemExit):
-            _parse(["--course", "ap-calculus-ab", "--chapter", "3", "--fetch-only"])
+    def test_calculus_fetch_only_without_chapter_discovers_all_course_notes(self) -> None:
+        args = _parse(["--course", "ap-calculus-ab", "--fetch-only"])
+
+        self.assertTrue(args.fetch_only)
+        self.assertIsNone(args.chapter_filters)
+
+    def test_calculus_fetch_only_accepts_any_numeric_chapter_for_future_onboarding(self) -> None:
+        args = _parse(["--course", "ap-calculus-ab", "--chapter", "3", "--fetch-only"])
+
+        self.assertEqual(args.chapter_filters, ["3"])
+
+    def test_calculus_generation_accepts_any_reviewed_manifest_chapter(self) -> None:
+        args = _parse(
+            [
+                "--course",
+                "ap-calculus-ab",
+                "--skip-fetch",
+                "--chapter",
+                "3",
+                "--prompt",
+                "study-guide",
+            ]
+        )
+
+        self.assertEqual(args.chapter_filters, ["3"])
 
     def test_calculus_rejects_assignment_fetch_during_chapter_note_phase(self) -> None:
         with self.assertRaises(SystemExit):

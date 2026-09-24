@@ -83,18 +83,38 @@ Typical variables:
 .venv/bin/math-tutor --course algebra-2-trig --fetch-assignments
 ```
 
-### Fetch AP Calculus AB Chapter 2 only
+### Fetch an AP Calculus AB chapter note
 
 ```bash
-.venv/bin/math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
+.venv/bin/math-tutor --course ap-calculus-ab --chapter 3 --fetch-only
 ```
 
-Other Calculus chapters and assignment mode remain disabled.
+Any whole-number chapter may be fetched without model calls. Assignment-PDF mode remains
+disabled for Calculus.
 
-### Preview the AP Calculus AB Chapter 2 study guide
+### Prepare a future AP Calculus AB chapter page
+
+After the chapter note is available in Canvas, discover its Cengage/WebAssign assignment
+metadata with:
 
 ```bash
-.venv/bin/math-tutor --course ap-calculus-ab --skip-fetch --chapter 2 --prompt study-guide --dry-run
+.venv/bin/python -m math_tutor.calculus_onboarding --chapter 4
+```
+
+This authenticated discovery is read-only. It writes a `review-required` candidate under
+`output/courses/ap-calculus-ab/metadata/` containing only section labels, numeric assignment
+IDs, assignment names, and allowlisted Canvas URLs. It never stores cookies, passwords,
+tokens, or transient Cengage/LTI URLs.
+
+Review the candidate against the school PDF, then add one entry to
+`calculus_chapters.py`. That manifest is the only chapter-specific source: curriculum titles,
+Cengage cards, AI Challenge prompts, and study-guide scope are derived from it automatically.
+Build a scratch preview and inspect the chapter page before any production deployment.
+
+### Preview an AP Calculus AB study guide
+
+```bash
+.venv/bin/math-tutor --course ap-calculus-ab --skip-fetch --chapter 3 --prompt study-guide --dry-run
 ```
 
 Dry-run mode does not resolve model credentials, initialize provider clients, launch Chromium,
@@ -102,7 +122,8 @@ or call Canvas. Remove `--dry-run` only after explicit approval for the model co
 non-force command is idempotent and skips the saved guide. Do not pass `--force`,
 `--force-generation`, or `--force-prompt study-guide` without separate approval.
 
-The Calculus response is validated before persistence. Invalid title, mastery headings,
+Only chapters with reviewed manifests can generate a study guide. The Calculus response is
+validated before persistence. Invalid title, mastery headings,
 section order, coverage fields, supplemental-aid disclosures, not-covered topic leakage,
 incomplete 1–10 practice/answer sets, empty content, or provider-error output leaves prior
 artifacts and generated state unchanged.

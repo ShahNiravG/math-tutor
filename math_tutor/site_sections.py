@@ -112,21 +112,18 @@ def render_index_card(
     practice_href: str | None = None,
     challenge_href: str | None = None,
     experience_variant: str = "default",
-    learning_only: bool = False,
+    readiness_label: str | None = None,
 ) -> str:
     if experience_variant == "staging":
         source_only = prompt_count == 0
-        action_links: list[str] = (
-            [f'<a href="{html.escape(page_href)}">Open Chapter</a>']
-            if source_only
-            else [f'<a href="{html.escape(page_href)}">Open Study Guide</a>']
-            if learning_only
-            else [
-                f'<a href="{html.escape(page_href)}">Learn</a>',
-                f'<a href="{html.escape(practice_href or page_href)}">Practice</a>',
-                f'<a href="{html.escape(challenge_href or page_href)}">Challenge</a>',
-            ]
-        )
+        if source_only:
+            action_links = [f'<a href="{html.escape(page_href)}">Open Chapter</a>']
+        else:
+            action_links = [f'<a href="{html.escape(page_href)}">Learn</a>']
+            if practice_href:
+                action_links.append(f'<a href="{html.escape(practice_href)}">Practice</a>')
+            if challenge_href:
+                action_links.append(f'<a href="{html.escape(challenge_href)}">Challenge</a>')
         if class_note_link:
             action_links.append(class_note_link)
         return f"""
@@ -136,7 +133,7 @@ def render_index_card(
               <h3>{html.escape(heading)}</h3>
             </div>
             <div class="chip-row">
-              <span class="chip">{'Class note ready' if source_only else f'{prompt_count} study tools ready'}</span>
+              <span class="chip">{html.escape(readiness_label or ('Class note ready' if source_only else f'{prompt_count} study tools ready'))}</span>
             </div>
             {summary_html}
             <div class="link-row">

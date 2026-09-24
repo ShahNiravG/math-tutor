@@ -376,10 +376,10 @@ def prompt_title_from_slug(prompt_slug: str) -> str:
     return prompt_slug.replace("-", " ").title()
 
 
-def _calculus_study_guide_prompt() -> PromptSpec:
-    curriculum = get_chapter_curriculum("ap-calculus-ab", "2")
+def _calculus_study_guide_prompt(chapter: str = "2") -> PromptSpec:
+    curriculum = get_chapter_curriculum("ap-calculus-ab", chapter)
     if curriculum is None:
-        raise ValueError("Verified AP Calculus AB Chapter 2 metadata is required.")
+        raise ValueError(f"Verified AP Calculus AB Chapter {chapter} metadata is required.")
     outline = "\n".join(
         f"- {section.section_id}: {section.title}" for section in curriculum.sections
     )
@@ -445,9 +445,8 @@ For every in-scope concept, give an accurate statement, student-friendly meaning
 required conditions, and frequent mistakes. Distinguish intuition from formal statements.
 
 ## Conceptual Connections
-Explain how the covered ideas connect, including nearby function behavior, limits, continuity,
-average rate of change, tangent-line slope, instantaneous rate of change, and derivatives only
-to the extent those topics are in scope. Carefully distinguish implications from converses.
+Explain how the covered ideas connect to one another and to prerequisite ideas, but only to the
+extent those topics are supported by the PDF. Carefully distinguish implications from converses.
 
 ## Worked Study Guide
 Teach the in-scope material in a logical sequence. For each major concept, explain the
@@ -493,13 +492,14 @@ def resolve_selected_prompts(
     prompt_slugs: list[str] | None,
     *,
     course_id: str = "algebra-2-trig",
+    chapter: str | None = None,
 ) -> tuple[PromptSpec, ...]:
     if course_id == "ap-calculus-ab":
         if not prompt_slugs:
             raise ValueError("AP Calculus AB requires an explicit study-guide prompt.")
         if prompt_slugs != ["study-guide"]:
             raise ValueError("AP Calculus AB only supports study-guide generation.")
-        return (_calculus_study_guide_prompt(),)
+        return (_calculus_study_guide_prompt(chapter or "2"),)
     if not prompt_slugs:
         return tuple(prompt for prompt in PROMPTS if not prompt.explicit_only)
 

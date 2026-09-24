@@ -43,21 +43,25 @@ math-tutor --course algebra-2-trig
 
 The CLI automatically loads `.env` from the repository root. Canvas credentials use `MATH_TUTOR_USERNAME` and `MATH_TUTOR_PASSWORD`; command-line credentials remain available as explicit overrides. Course selection is required.
 
-Fetch the currently enabled AP Calculus AB chapter without any model calls:
+Fetch an AP Calculus AB chapter without any model calls:
 
 ```bash
-math-tutor --course ap-calculus-ab --chapter 2 --fetch-only
+math-tutor --course ap-calculus-ab --chapter 3 --fetch-only
 ```
 
-Preview the only enabled Calculus generation without credentials, browser launch, or a model call:
+Preview generation for a reviewed Calculus chapter without credentials, browser launch, or a model call:
 
 ```bash
-math-tutor --course ap-calculus-ab --skip-fetch --chapter 2 --prompt study-guide --dry-run
+math-tutor --course ap-calculus-ab --skip-fetch --chapter 3 --prompt study-guide --dry-run
 ```
 
-The corresponding command without `--dry-run` generates the mastery-oriented Chapter 2 study guide. Run it
+The corresponding command without `--dry-run` generates the mastery-oriented chapter study guide. Run it
 only with explicit approval because it incurs model cost. If the saved output already exists,
 the normal command skips it; never use force-generation for Calculus without renewed approval.
+
+Future Calculus pages use the review-first `math_tutor.calculus_onboarding` workflow documented
+in the operations guide. One reviewed chapter manifest automatically supplies curriculum,
+Cengage navigation, AI Challenge scope, and study-guide scope without editing the site renderer.
 
 For exact operator workflows, recovery steps, and deploy commands, see [docs/OPERATIONS.md](/home/nshah/projects/math-tutor/math_tutor/docs/OPERATIONS.md).
 

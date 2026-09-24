@@ -6,6 +6,12 @@ import html
 from dataclasses import dataclass
 from urllib.parse import urlparse
 
+from math_tutor.calculus_chapters import (
+    CalculusChapterManifest,
+    get_calculus_chapter_manifest,
+    validate_calculus_chapter_manifest,
+)
+
 
 @dataclass(frozen=True)
 class AIChallengeProvider:
@@ -58,6 +64,52 @@ Difficulty: HARD.
 Use multi-step reasoning, connections among verbal, numerical, graphical descriptions expressed in words, and symbolic representations, plus meaningful domain, endpoint, one-sided-limit, and infinite-limit subtleties. Use plausible misconception-based distractors. Stay strictly within the allowed Chapter 2 scope; do not make a question hard by introducing a later calculus topic. A strong student should need careful reasoning, not obscure tricks."""
 
 
+def build_ai_challenge_prompts(manifest: CalculusChapterManifest) -> tuple[str, str]:
+    validate_calculus_chapter_manifest(manifest)
+    allowed_topics = "\n".join(
+        f"- {section.section_id}: {section.title}"
+        + (f" ({section.challenge_note})" if section.challenge_status == "limited" else "")
+        for section in manifest.sections
+        if section.challenge_status != "excluded"
+    )
+    restrictions = " ".join(
+        section.challenge_note or ""
+        for section in manifest.sections
+        if section.challenge_status in {"limited", "excluded"}
+    ).strip()
+    shared = f"""You are running a private AP Calculus AB-style practice challenge for one student.
+
+Create and administer exactly 10 original multiple-choice questions for Chapter {manifest.chapter}: {manifest.title}.
+
+Allowed topics:
+{allowed_topics}
+
+{restrictions} Do not introduce topics outside this reviewed chapter scope or later AP Calculus topics.
+
+Create every question from first principles. Do not quote, reproduce, paraphrase, imitate, or transform an actual College Board, AP Classroom, Bluebook, textbook, Khan Academy, or other published question. Describe this only as original AP Calculus AB-style practice.
+
+Use the strongest reasoning model available in this account. Before presenting each question, privately solve it, verify all domain and endpoint conditions, verify that exactly one option is correct, and discard any ambiguous draft or draft with equivalent choices.
+
+Ask one question at a time with exactly four choices labeled A through D. Do not reveal the answer before the student responds. After each response, say whether it is correct, give a concise but complete explanation, explain the likely misconception when incorrect, update the score, and then ask the next question. Use exact values unless approximation and rounding are explicitly requested. State every necessary domain, interval, unit, and assumption. Do not require an image or unstated graph. Do not repeat the same problem structure with only different numbers.
+
+After question 10, show the score out of 10, percentage, performance by topic, and a short list of topics to review. Begin immediately with: "Chapter {manifest.chapter} Challenge — Question 1 of 10"."""
+    medium = f"""{shared}
+
+Difficulty: MEDIUM.
+Use a balanced mix of direct interpretation, foundational conceptual checks, standard representations, and one- or two-step calculations. Keep algebra clean and avoid trick wording. A prepared student who understands the chapter fundamentals should be able to solve each problem in roughly two to four minutes."""
+    hard = f"""{shared}
+
+Difficulty: HARD.
+Use multi-step reasoning, connections among verbal, numerical, graphical descriptions expressed in words, and symbolic representations, plus meaningful domain and endpoint subtleties. Use plausible misconception-based distractors. Stay strictly within the reviewed chapter scope; do not make a question hard by introducing a later calculus topic. A strong student should need careful reasoning, not obscure tricks."""
+    return medium, hard
+
+
+def has_ai_challenge(*, course_id: str | None, chapter: str | None) -> bool:
+    if course_id is None or chapter is None:
+        return False
+    return get_calculus_chapter_manifest(course_id, chapter) is not None
+
+
 def _validate_provider(provider: AIChallengeProvider) -> None:
     parsed = urlparse(provider.url)
     if (parsed.scheme, parsed.hostname, parsed.path) not in _ALLOWED_PROVIDER_TARGETS:
@@ -67,8 +119,12 @@ def _validate_provider(provider: AIChallengeProvider) -> None:
 
 
 def render_ai_challenge_section(*, course_id: str | None, chapter: str | None) -> str:
-    if course_id != "ap-calculus-ab" or chapter != "2":
+    if course_id is None or chapter is None:
         return ""
+    manifest = get_calculus_chapter_manifest(course_id, chapter)
+    if manifest is None:
+        return ""
+    medium_prompt, hard_prompt = build_ai_challenge_prompts(manifest)
 
     cards = (
         (
@@ -76,14 +132,14 @@ def render_ai_challenge_section(*, course_id: str | None, chapter: str | None) -
             "Medium Challenge",
             "Build confidence with clear conceptual checks and focused one- or two-step problems.",
             "Medium",
-            MEDIUM_CHALLENGE_PROMPT,
+            medium_prompt,
         ),
         (
             "hard",
             "Hard Challenge",
             "Stretch your reasoning with multi-step questions and subtle domain or limit behavior.",
             "Hard",
-            HARD_CHALLENGE_PROMPT,
+            hard_prompt,
         ),
     )
     rendered_cards: list[str] = []

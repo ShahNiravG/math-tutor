@@ -130,6 +130,8 @@ class SiteRecordsTests(unittest.TestCase):
                 site_page_href=site_page_href,
                 experience_variant="staging",
                 textbook_navigation=AP_CALCULUS_CHAPTER_2_TEXTBOOK,
+                course_id="ap-calculus-ab",
+                supports_challenges=False,
             )
 
             self.assertIn("Chapter 2", html)
@@ -143,19 +145,35 @@ class SiteRecordsTests(unittest.TestCase):
             self.assertIn("Open Chapter 2 through Canvas", html)
             self.assertNotIn("Open the textbook", html)
             self.assertIn("2.4", html)
+            self.assertLess(html.index('id="ai-challenge"'), html.index('id="textbook"'))
 
     def test_calculus_chapter_two_offers_external_medium_and_hard_ai_challenges(self) -> None:
         with TemporaryDirectory() as temp_dir:
             root = Path(temp_dir)
             pdf_path = root / "4839635_chapter-2-notetakers.pdf"
+            response_html_path = root / "4839635_study-guide.html"
+            response_pdf_path = root / "4839635_study-guide.pdf"
             pdf_path.write_bytes(b"%PDF-1.7\nchapter two")
+            response_html_path.write_text("<html><body>Study guide</body></html>", encoding="utf-8")
+            response_pdf_path.write_bytes(b"%PDF-1.7\nstudy guide")
             record = DocumentRecord(
                 file_id="4839635",
                 display_name="Chapter 2 Notetakers.pdf",
                 pdf_path=pdf_path,
                 download_url=None,
                 fetched_at="2026-09-19T12:00:00Z",
-                prompt_outputs=[],
+                prompt_outputs=[
+                    PromptOutputRecord(
+                        slug="study-guide",
+                        title="Study Guide",
+                        response_path=root / "4839635_study-guide.md",
+                        response_html_path=response_html_path,
+                        response_pdf_path=response_pdf_path,
+                        metadata_path=None,
+                        processed_at="2026-09-19T13:00:00Z",
+                        response_markdown="## Short Summary\nLimits become derivatives.\n",
+                    )
+                ],
             )
 
             html = render_document_page_content(
@@ -177,6 +195,7 @@ class SiteRecordsTests(unittest.TestCase):
             self.assertEqual(html.count("https://gemini.google.com/app"), 2)
             self.assertEqual(html.count("https://chatgpt.com/"), 2)
             self.assertIn("Results are not saved in Math Delight", html)
+            self.assertLess(html.index('id="ai-challenge"'), html.index('id="textbook"'))
 
 
 if __name__ == "__main__":

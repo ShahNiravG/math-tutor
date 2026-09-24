@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from math_tutor.calculus_chapters import get_calculus_chapter_manifest
 from math_tutor.cli_auth import resolve_canvas_credentials
 from math_tutor.cli_commands import (
     build_guided_learning_site,
@@ -187,8 +188,20 @@ def parse_args() -> argparse.Namespace:
     if args.course_id == "ap-calculus-ab":
         if args.fetch_assignments:
             parser.error("AP Calculus AB assignment fetching is not enabled.")
-        if normalize_cli_chapter_filters(args.chapter_filters) != ["2"]:
-            parser.error("AP Calculus AB currently requires exactly --chapter 2.")
+        normalized_chapter_filters = normalize_cli_chapter_filters(args.chapter_filters)
+        if args.fetch_only and (
+            len(normalized_chapter_filters) > 1
+            or any(not chapter.isdigit() for chapter in normalized_chapter_filters)
+        ):
+            parser.error("AP Calculus AB fetch-only accepts at most one whole-number chapter.")
+        if not args.fetch_only and (
+            len(normalized_chapter_filters) != 1
+            or get_calculus_chapter_manifest(
+                "ap-calculus-ab", normalized_chapter_filters[0]
+            )
+            is None
+        ):
+            parser.error("AP Calculus AB generation requires exactly one reviewed chapter.")
         if args.build_site_guided_learning:
             parser.error("AP Calculus AB guided-learning site generation is not enabled.")
         if not args.fetch_only:

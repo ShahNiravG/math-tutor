@@ -3,10 +3,12 @@ from __future__ import annotations
 import unittest
 from dataclasses import replace
 
+from math_tutor.calculus_chapters import AP_CALCULUS_CHAPTER_2_MANIFEST
 from math_tutor.site_textbook import (
     AP_CALCULUS_CHAPTER_2_TEXTBOOK,
     TextbookNavigation,
     TextbookSection,
+    build_textbook_navigation,
     get_textbook_navigation,
     render_textbook_navigation,
     validate_textbook_navigation,
@@ -15,6 +17,25 @@ from math_tutor.site_theme import BASE_SITE_PAGE_STYLES
 
 
 class SiteTextbookTests(unittest.TestCase):
+    def test_navigation_and_labels_are_built_from_a_chapter_manifest(self) -> None:
+        chapter_three = replace(
+            AP_CALCULUS_CHAPTER_2_MANIFEST,
+            chapter="3",
+            title="Differentiation Rules",
+            sections=tuple(
+                replace(section, section_id=section.section_id.replace("2.", "3."))
+                for section in AP_CALCULUS_CHAPTER_2_MANIFEST.sections
+            ),
+        )
+
+        navigation = build_textbook_navigation(chapter_three)
+        rendered = render_textbook_navigation(navigation)
+
+        self.assertEqual(navigation.chapter, "3")
+        self.assertIn("Chapter 3 textbook", rendered)
+        self.assertIn("Open Chapter 3 through Canvas", rendered)
+        self.assertNotIn("Chapter 2 textbook", rendered)
+
     def test_chapter_two_navigation_is_complete_and_course_scoped(self) -> None:
         navigation = get_textbook_navigation("ap-calculus-ab", "2")
 
@@ -25,7 +46,15 @@ class SiteTextbookTests(unittest.TestCase):
         )
         self.assertIsNone(navigation.sections[3].canvas_assignment_url)
         self.assertIsNone(get_textbook_navigation("algebra-2-trig", "2"))
-        self.assertIsNone(get_textbook_navigation("ap-calculus-ab", "3"))
+
+    def test_chapter_three_navigation_uses_discovered_canvas_assignments(self) -> None:
+        navigation = get_textbook_navigation("ap-calculus-ab", "3")
+
+        self.assertIsNotNone(navigation)
+        assert navigation is not None
+        self.assertEqual(len(navigation.sections), 10)
+        self.assertTrue(navigation.access_bootstrap_url.endswith("/299784"))
+        self.assertTrue(navigation.sections[-1].canvas_assignment_url.endswith("/299793"))
 
     def test_assignment_links_remain_matched_to_verified_sections(self) -> None:
         assignments = {
@@ -84,6 +113,9 @@ class SiteTextbookTests(unittest.TestCase):
 
         self.assertIn('id="textbook"', html)
         self.assertIn("Chapter 2 textbook", html)
+        self.assertIn("Authorization Required", html)
+        self.assertIn('class="chip chip-lock"', html)
+        self.assertIn('class="auth-icon" aria-hidden="true"', html)
         self.assertIn("Open Chapter 2 through Canvas", html)
         self.assertIn("Read It", html)
         self.assertIn("Full Book", html)

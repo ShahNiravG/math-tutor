@@ -2,8 +2,10 @@
 
 ## Status
 
-Phases 1 through 5 are completed. Phase 6A and the Phase 6B study-guide pilot were
-approved on 2026-09-19. Later Calculus prompt families remain unapproved.
+Phases 1 through 8 are completed and deployed. Phase 8 adds AP Calculus AB Chapter 3 and the
+reusable future-chapter onboarding workflow. It was approved, implemented, validated, and
+deployed on 2026-09-23. A Chapter 3 study-guide model call remains unapproved. Later Calculus
+prompt families remain unapproved.
 
 This document is the durable checkpoint for continuing the work in a future session.
 
@@ -12,7 +14,8 @@ This document is the durable checkpoint for continuing the work in a future sess
 Reorganize Math Delight into a course-aware site. The initial portal offers:
 
 - Algebra II / Trigonometry, containing all existing site content
-- AP Calculus AB, present as an empty course with no units, documents, assignments, or challenges yet
+- AP Calculus AB, with reviewed chapter pages sourced from isolated school artifacts and
+  chapter-specific manifests
 
 ## Approved Compatibility Decision
 
@@ -52,7 +55,7 @@ site/
 - Course-owned links remain inside the selected course.
 - The empty Calculus course does not build Algebra challenges or copy Algebra artifacts.
 
-## Deferred Work
+## Original Deferred Work
 
 - Canvas configuration and fetching for AP Calculus AB
 - Course-specific output and state storage
@@ -567,6 +570,214 @@ The feature is a deterministic site-rendering component with no stored questions
 database changes, or generated model artifacts. Rollback removes the isolated renderer and its
 Chapter 2 wiring, then rebuilds the site. Existing course content and challenge results are
 unchanged.
+
+## Phase 8: Chapter 3 and Repeatable Calculus Chapter Onboarding
+
+Approved, implemented, locally verified, deployed, and live-verified on 2026-09-23. This
+phase made no Chapter 3 model call.
+
+### Problem Statement
+
+Chapter 2 depended on chapter-specific constants and CLI gates. Preparing every later
+Calculus chapter that way would require repeated edits across curriculum, textbook, challenge,
+prompt, and page-rendering modules. Chapter 3 also needed to be published from the already
+fetched school PDF with reviewed Cengage homework navigation and AI Challenge cards.
+
+The approved direction is data-driven: a reviewed chapter manifest is the only
+chapter-specific input. Shared code derives all student-facing components from that manifest.
+Future work must not add another chapter-specific branch to a renderer or prompt module.
+
+### Requirements and Scope
+
+- Use Canvas course `4446` and the isolated `ap-calculus-ab` output tree.
+- Preserve the fetched Chapter 3 class note exactly; do not regenerate or rewrite it.
+- Establish the canonical identity `Chapter 3: Differentiation Rules` with sections 3.1
+  through 3.10 in school-PDF order.
+- Discover normal Canvas external-tool assignment links for Cengage/WebAssign access.
+- Publish a Cengage card for every reviewed section and a normal Canvas bootstrap link.
+- Publish Medium and Hard external AI Challenge cards scoped to the reviewed chapter.
+- Allow fetch-only operation for any single whole-number Calculus chapter before its manifest
+  exists.
+- Allow study-guide generation only for exactly one reviewed chapter, while continuing to
+  require `--skip-fetch --prompt study-guide`.
+- Make later chapters a repeatable fetch, discover, review, manifest, and preview workflow
+  requiring no site-renderer edits.
+- Preserve Chapter 2 behavior and artifacts, Algebra behavior, generated formats, canonical
+  domain-root URLs, and production deployment guardrails.
+
+### Explicit Exclusions
+
+- No Chapter 3 study-guide model call or saved generated guide in this phase.
+- Production deployment was outside the initial implementation pass and required a separate
+  explicit approval after local validation.
+- No Calculus assignment-PDF workflow, internal exam bank, Live Tutor, mental math, olympiad,
+  or additional prompt family.
+- No direct MindTap deep links, transient `gateway.cengage.com` links, LTI/OIDC parameters,
+  credentials, cookies, tokens, signed requests, or protected textbook content.
+- No automatic promotion of unreviewed discovery output into source-controlled metadata.
+
+### Canonical Chapter 3 Manifest
+
+`calculus_chapters.py` owns reviewed non-secret chapter manifests. Chapter 3 contains:
+
+| Section | Canonical title | Canvas assignment |
+|---|---|---:|
+| 3.1 | Derivatives of Polynomials and Exponential Functions | 299784 |
+| 3.2 | Product and Quotient Rules | 299785 |
+| 3.3 | Derivatives of Trigonometric Functions | 299786 |
+| 3.4 | The Chain Rule | 299787 |
+| 3.5 | Implicit Differentiation | 299788 |
+| 3.6 | Derivatives of Logarithmic and Inverse Trigonometric Functions | 299789 |
+| 3.7 | Rates of Change and Physics Applications | 299790 |
+| 3.8 | Exponential Growth and Decay | 299791 |
+| 3.9 | Related Rates | 299792 |
+| 3.10 | Linear Approximations and Differentials | 299793 |
+
+The school PDF establishes mathematical scope and order. Authenticated Canvas discovery
+establishes the safe homework IDs. The common reader identity remains the previously verified
+Cengage edition, but generated pages do not expose its query-bearing URL.
+
+### Architecture and Interfaces
+
+The dependency direction is intentionally one-way:
+
+```text
+reviewed CalculusChapterManifest
+├── course_curriculum.py      canonical titles and ordered outline
+├── site_textbook.py          Canvas bootstrap and section homework cards
+├── site_ai_challenges.py     Medium/Hard prompts and availability
+├── prompt_catalog.py         selected chapter's study-guide prompt scope
+└── site pages/records        titles, readiness, anchors, and rendered sections
+```
+
+`CalculusChapterManifest` contains the course ID, chapter number, canonical title, ordered
+sections, optional assignment IDs, challenge inclusion metadata, approved reader identity,
+bootstrap assignment, provenance, and verification date. Validation rejects incomplete
+identity, nonnumeric or mismatched chapter/section IDs, duplicate or unordered sections,
+invalid assignment IDs, a bootstrap absent from the sections, and unsupported challenge
+statuses.
+
+`get_calculus_chapter_manifest(course_id, chapter)` is the shared lookup boundary. Unknown or
+cross-course chapters return `None`; downstream components render nothing rather than
+guessing. Curriculum and textbook registries are derived from the same manifests during
+import, preventing title or section drift.
+
+The Calculus CLI has two distinct trust states:
+
+- `--fetch-only` accepts no chapter filter or one whole-number chapter. This permits a new
+  school PDF to be obtained before metadata review and makes no model call.
+- Generation requires exactly one reviewed chapter plus
+  `--skip-fetch --prompt study-guide`. The chapter is passed into prompt construction so a
+  later chapter cannot accidentally receive Chapter 2's title or outline.
+
+### Reusable Onboarding Workflow
+
+For a future chapter `N`:
+
+1. Fetch the note without generation:
+
+   ```bash
+   .venv/bin/math-tutor --course ap-calculus-ab --chapter N --fetch-only
+   ```
+
+2. Run authenticated, read-only metadata discovery:
+
+   ```bash
+   .venv/bin/python -m math_tutor.calculus_onboarding --chapter N
+   ```
+
+3. The command uses an ephemeral Playwright context, follows the approved Canvas login flow,
+   fetches all paginated assignments, and retains only external-tool assignments whose names
+   contain section `N.x`.
+4. Every emitted URL must be parameter-free HTTPS on
+   `mitty.instructure.com/courses/4446/assignments/<numeric-id>`.
+5. The command atomically writes a `review-required` candidate under
+   `output/courses/ap-calculus-ab/metadata/chapter-N-onboarding-candidate.json`.
+6. Review the candidate against the school PDF, then add one manifest with canonical titles,
+   section order, any challenge limits/exclusions, and provenance.
+7. Run focused tests, the full suite, a no-model dry run, and a scratch site build. Inspect
+   the page before requesting a model call or deployment.
+
+The candidate deliberately cannot publish itself. Human review prevents ambiguous Canvas
+names, missing sections, or inappropriate challenge scope from becoming canonical. This is
+the only expected content checkpoint; later chapters need no page-specific renderer design.
+
+### Security and Data-Integrity Design
+
+- Credentials are sourced opaquely from the existing environment and are never printed,
+  embedded in commands, stored in candidates, or committed.
+- The browser context is ephemeral and downloads are disabled during assignment discovery.
+- Candidates contain only schema/status, course/chapter identity, section labels, numeric
+  assignment IDs, assignment names, and allowlisted Canvas URLs.
+- Discovery never records the external-tool target, gateway URL, OIDC request, cookies,
+  textbook body, or browser storage.
+- A discovery failure cannot modify reviewed manifests or erase saved metadata.
+- Generated pages link to ordinary Canvas assignments so Canvas and Cengage continue
+  enforcing authentication and entitlement.
+- Existing Chapter 2 manifests and generated artifacts remain unchanged.
+
+### Failure Modes, Rollback, and Recovery
+
+- **Canvas login or browser failure:** no candidate is published; rerun after the environment
+  is healthy. The school PDF and reviewed manifests remain untouched.
+- **No assignments found:** keep the PDF, but do not add a manifest or publish Cengage/AI
+  cards until safe metadata is established.
+- **Malformed, parameterized, or off-course assignment:** validation stops instead of emitting
+  unsafe navigation.
+- **Partial section coverage:** a reviewed section may have no assignment ID and render as
+  textbook-only; never invent an ID or deep link.
+- **Incorrect manifest:** correct or remove that manifest and rebuild. No database or artifact
+  migration is needed.
+- **Bad preview:** discard the scratch build and rebuild after correction; production remains
+  unchanged.
+- **Rollback:** revert the Chapter 3 manifest and generalized wiring, then rebuild. Preserve
+  the fetched PDF and candidate for diagnosis; Chapter 2 needs no regeneration.
+
+### TDD and Verification Evidence
+
+The initial focused baseline passed 43 tests. A first Chapter 3 test attempt caused an import
+error and was rejected as an invalid red. Corrected tests exercised public lookups and produced
+seven expected behavioral failures: missing Chapter 3 metadata, Chapter 2-only CLI gates,
+absent Chapter 3 curriculum/textbook/challenge registration, and a Chapter 2-scoped prompt.
+
+After implementation:
+
+- focused Chapter 3, CLI, curriculum, textbook, AI Challenge, prompt, and context tests passed
+  `50/50`;
+- the full offline suite passed `338/338`;
+- `git diff --check` passed;
+- the no-model command selected exactly `Chapter 3 Notetakers.pdf` and reported that it would
+  generate the Chapter 3 Study Guide via GPT-5.4;
+- the scratch build at `/tmp/math-tutor-chapter3-preview-20260923/` generated
+  `courses/ap-calculus-ab/doc-4839646.html` with ten ordered textbook cards and two AI
+  Challenge modes;
+- the first and last homework links use normal Canvas assignments `299784` and `299793`;
+- generated Chapter 3 HTML contains no `gateway.cengage.com`, `ltioidc`, or `token=` value.
+
+### Acceptance and Deployment Status
+
+All Phase 8 acceptance criteria are satisfied. The Chapter 3 source is Canvas file ID
+`4839646`, `Chapter 3 Notetakers.pdf`, with 29 pages. The deployed page intentionally contains
+the class note, AI Challenge cards, and Cengage navigation without a generated study guide.
+
+The guarded production builder wrote and validated the canonical domain-root tree at
+`output/deploy/math_tutor/`. A pre-sync invariant check confirmed ten textbook cards, two AI
+Challenge modes, and no gateway/OIDC/token or stale `/site/courses/` material on the Chapter 3
+page. The first guarded deployment attempt reached the hosting endpoint but its SSH connection
+was reset during key exchange before `rsync` transferred bytes. One explicitly approved retry
+succeeded, and `math-tutor-deploy-production --confirm-production` reported successful live
+verification.
+
+### Remaining Approval Gates
+
+The remaining approval gates are:
+
+1. A Chapter 3 study-guide model call requires explicit approval because it incurs model cost
+   and creates a new canonical artifact.
+2. Any later production deployment still requires explicit approval and must use only the
+   guarded domain-root build and deployment commands.
+3. Any later Calculus prompt family or internal assessment workflow requires a new approved
+   specification.
 
 ## Course Visual Identity
 

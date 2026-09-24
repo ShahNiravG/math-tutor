@@ -61,6 +61,17 @@ class PromptCatalogTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "only supports study-guide"):
             resolve_selected_prompts(["mental-math"], course_id="ap-calculus-ab")
 
+    def test_calculus_study_guide_uses_the_selected_reviewed_chapter(self) -> None:
+        prompt = resolve_selected_prompts(
+            ["study-guide"],
+            course_id="ap-calculus-ab",
+            chapter="3",
+        )[0]
+
+        self.assertIn("## Title\nDifferentiation Rules", prompt.text)
+        self.assertIn("3.1: Derivatives of Polynomials and Exponential Functions", prompt.text)
+        self.assertIn("3.10: Linear Approximations and Differentials", prompt.text)
+
     def test_default_algebra_prompt_resolution_remains_the_existing_catalog(self) -> None:
         self.assertIs(resolve_selected_prompts(["study-guide"])[0], STUDY_GUIDE_PROMPT)
 

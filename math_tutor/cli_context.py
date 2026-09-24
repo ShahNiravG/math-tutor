@@ -36,10 +36,18 @@ def build_command_context(
     generated_output_state = load_generated_output_state(
         canonical_generated_output_state_path(output_dir)
     )
-    selected_prompts = resolve_selected_prompts(args.prompt_slugs, course_id=course.course_id)
+    normalized_chapter_filters = normalize_cli_chapter_filters(args.chapter_filters)
+    selected_prompts = (
+        ()
+        if args.fetch_only and not args.prompt_slugs
+        else resolve_selected_prompts(
+            args.prompt_slugs,
+            course_id=course.course_id,
+            chapter=(normalized_chapter_filters[0] if len(normalized_chapter_filters) == 1 else None),
+        )
+    )
     forced_prompt_slugs = resolve_prompt_slug_set(args.force_prompt_slugs)
     requested_prompt_slugs = resolve_prompt_slug_set(args.prompt_slugs)
-    normalized_chapter_filters = normalize_cli_chapter_filters(args.chapter_filters)
 
     ensure_output_layout(output_layout)
 

@@ -1,24 +1,50 @@
 from __future__ import annotations
 
 import unittest
+from dataclasses import replace
 
+from math_tutor.calculus_chapters import AP_CALCULUS_CHAPTER_2_MANIFEST
 from math_tutor.site_ai_challenges import (
     AI_CHALLENGE_PROVIDERS,
     HARD_CHALLENGE_PROMPT,
     MEDIUM_CHALLENGE_PROMPT,
+    build_ai_challenge_prompts,
     render_ai_challenge_section,
 )
 
 
 class SiteAIChallengesTests(unittest.TestCase):
-    def test_component_is_isolated_to_ap_calculus_chapter_two(self) -> None:
+    def test_prompt_builder_uses_manifest_chapter_scope_and_exclusions(self) -> None:
+        chapter_three = replace(
+            AP_CALCULUS_CHAPTER_2_MANIFEST,
+            chapter="3",
+            title="Differentiation Rules",
+            sections=tuple(
+                replace(
+                    section,
+                    section_id=section.section_id.replace("2.", "3."),
+                    challenge_status="excluded" if index == 0 else "included",
+                    challenge_note="Do not test section 3.1." if index == 0 else None,
+                )
+                for index, section in enumerate(AP_CALCULUS_CHAPTER_2_MANIFEST.sections)
+            ),
+        )
+
+        medium, hard = build_ai_challenge_prompts(chapter_three)
+
+        for prompt in (medium, hard):
+            self.assertIn("Chapter 3: Differentiation Rules", prompt)
+            self.assertIn("3.2", prompt)
+            self.assertIn("Do not test section 3.1.", prompt)
+            self.assertNotIn("Chapter 2: Limits and Derivatives", prompt)
+
+    def test_component_is_isolated_to_reviewed_ap_calculus_chapters(self) -> None:
         self.assertEqual(
             render_ai_challenge_section(course_id="algebra-2-trig", chapter="2"),
             "",
         )
-        self.assertEqual(
-            render_ai_challenge_section(course_id="ap-calculus-ab", chapter="3"),
-            "",
+        self.assertNotEqual(
+            render_ai_challenge_section(course_id="ap-calculus-ab", chapter="3"), ""
         )
         self.assertNotEqual(
             render_ai_challenge_section(course_id="ap-calculus-ab", chapter="2"),

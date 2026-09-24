@@ -4,6 +4,11 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from math_tutor.calculus_chapters import (
+    AP_CALCULUS_CHAPTER_2_MANIFEST,
+    CALCULUS_CHAPTER_MANIFESTS,
+)
+
 
 @dataclass(frozen=True)
 class CurriculumSection:
@@ -25,26 +30,26 @@ class ChapterCurriculum:
         return f"Chapter {self.chapter}: {self.title}"
 
 
-AP_CALCULUS_CHAPTER_2 = ChapterCurriculum(
-    course_id="ap-calculus-ab",
-    chapter="2",
-    title="Limits and Derivatives",
-    sections=(
-        CurriculumSection("2.1", "The Tangent and Velocity Problems"),
-        CurriculumSection("2.2", "The Limit of a Function"),
-        CurriculumSection("2.3", "Calculating Limits Using the Limit Laws"),
-        CurriculumSection("2.4", "The Precise Definition of a Limit"),
-        CurriculumSection("2.5", "Continuity"),
-        CurriculumSection("2.6", "Limits at Infinity; Horizontal Asymptotes"),
-        CurriculumSection("2.7", "Derivatives and Rates of Change"),
-        CurriculumSection("2.8", "The Derivative as a Function"),
-    ),
-    provenance="authenticated-cengage-toc",
-    verified_at="2026-09-19",
+def _curriculum_from_manifest(manifest) -> ChapterCurriculum:
+    return ChapterCurriculum(
+        course_id=manifest.course_id,
+        chapter=manifest.chapter,
+        title=manifest.title,
+        sections=tuple(
+            CurriculumSection(section.section_id, section.title)
+            for section in manifest.sections
+        ),
+        provenance=manifest.provenance,
+        verified_at=manifest.verified_at,
+    )
+
+
+AP_CALCULUS_CHAPTER_2 = _curriculum_from_manifest(AP_CALCULUS_CHAPTER_2_MANIFEST)
+
+
+CHAPTER_CURRICULA: tuple[ChapterCurriculum, ...] = tuple(
+    _curriculum_from_manifest(manifest) for manifest in CALCULUS_CHAPTER_MANIFESTS
 )
-
-
-CHAPTER_CURRICULA: tuple[ChapterCurriculum, ...] = (AP_CALCULUS_CHAPTER_2,)
 
 
 def _section_sort_key(section_id: str) -> tuple[int, ...]:

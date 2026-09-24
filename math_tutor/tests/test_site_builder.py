@@ -187,7 +187,16 @@ class SiteBuilderTests(unittest.TestCase):
                 self.assertNotIn(unsupported, course_html)
                 self.assertNotIn(unsupported, record_html)
             library_html = (calculus_dir / "library.html").read_text(encoding="utf-8")
-            self.assertNotIn(">Challenge<", library_html)
+            self.assertIn("Choose a chapter, then pick your mode", library_html)
+            self.assertIn(">Learn<", library_html)
+            self.assertIn(">Challenge<", library_html)
+            self.assertIn(
+                'href="/site/courses/ap-calculus-ab/doc-4839635.html#ai-challenge"',
+                library_html,
+            )
+            self.assertIn("Study guide and AI challenge ready", library_html)
+            self.assertNotIn("1 study tools ready", library_html)
+            self.assertNotIn(">Practice<", library_html)
             self.assertNotIn("#challenge", library_html)
             self.assertNotIn("#practice", library_html)
             self.assertNotIn("#practice", record_html)

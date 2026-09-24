@@ -25,7 +25,7 @@ class CourseCurriculumTests(unittest.TestCase):
 
     def test_chapter_number_does_not_cross_course_boundary(self) -> None:
         self.assertIsNone(get_chapter_curriculum("algebra-2-trig", "2"))
-        self.assertIsNone(get_chapter_curriculum("ap-calculus-ab", "3"))
+        self.assertIsNotNone(get_chapter_curriculum("ap-calculus-ab", "3"))
 
     def test_validation_rejects_duplicate_or_unordered_sections(self) -> None:
         invalid = ChapterCurriculum(
