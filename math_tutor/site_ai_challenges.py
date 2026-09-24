@@ -67,16 +67,22 @@ Use multi-step reasoning, connections among verbal, numerical, graphical descrip
 def build_ai_challenge_prompts(manifest: CalculusChapterManifest) -> tuple[str, str]:
     validate_calculus_chapter_manifest(manifest)
     allowed_topics = "\n".join(
-        f"- {section.section_id}: {section.title}"
-        + (f" ({section.challenge_note})" if section.challenge_status == "limited" else "")
+        f"- {section.section_id} {section.challenge_topic_label or section.title}"
         for section in manifest.sections
         if section.challenge_status != "excluded"
     )
-    restrictions = " ".join(
+    restrictions = [
         section.challenge_note or ""
         for section in manifest.sections
-        if section.challenge_status in {"limited", "excluded"}
-    ).strip()
+        if section.challenge_status == "excluded"
+    ]
+    if manifest.challenge_forbidden_topics:
+        topics = manifest.challenge_forbidden_topics
+        forbidden = topics[0] if len(topics) == 1 else "; ".join(topics[:-1]) + "; or " + topics[-1]
+        restrictions.append(f"Do not introduce {forbidden}.")
+    else:
+        restrictions.append("Do not introduce topics outside this reviewed chapter scope or later AP Calculus topics.")
+    restriction_text = " ".join(restrictions)
     shared = f"""You are running a private AP Calculus AB-style practice challenge for one student.
 
 Create and administer exactly 10 original multiple-choice questions for Chapter {manifest.chapter}: {manifest.title}.
@@ -84,7 +90,7 @@ Create and administer exactly 10 original multiple-choice questions for Chapter 
 Allowed topics:
 {allowed_topics}
 
-{restrictions} Do not introduce topics outside this reviewed chapter scope or later AP Calculus topics.
+{restriction_text}
 
 Create every question from first principles. Do not quote, reproduce, paraphrase, imitate, or transform an actual College Board, AP Classroom, Bluebook, textbook, Khan Academy, or other published question. Describe this only as original AP Calculus AB-style practice.
 
@@ -97,10 +103,17 @@ After question 10, show the score out of 10, percentage, performance by topic, a
 
 Difficulty: MEDIUM.
 Use a balanced mix of direct interpretation, foundational conceptual checks, standard representations, and one- or two-step calculations. Keep algebra clean and avoid trick wording. A prepared student who understands the chapter fundamentals should be able to solve each problem in roughly two to four minutes."""
+    hard_guidance = manifest.challenge_hard_guidance or (
+        "Use multi-step reasoning, connections among verbal, numerical, graphical descriptions "
+        "expressed in words, and symbolic representations, plus meaningful domain and endpoint "
+        "subtleties. Use plausible misconception-based distractors. Stay strictly within the "
+        "reviewed chapter scope; do not make a question hard by introducing a later calculus "
+        "topic. A strong student should need careful reasoning, not obscure tricks."
+    )
     hard = f"""{shared}
 
 Difficulty: HARD.
-Use multi-step reasoning, connections among verbal, numerical, graphical descriptions expressed in words, and symbolic representations, plus meaningful domain and endpoint subtleties. Use plausible misconception-based distractors. Stay strictly within the reviewed chapter scope; do not make a question hard by introducing a later calculus topic. A strong student should need careful reasoning, not obscure tricks."""
+{hard_guidance}"""
     return medium, hard
 
 
@@ -137,7 +150,7 @@ def render_ai_challenge_section(*, course_id: str | None, chapter: str | None) -
         (
             "hard",
             "Hard Challenge",
-            "Stretch your reasoning with multi-step questions and subtle domain or limit behavior.",
+            "Stretch your reasoning with multi-step questions and subtle conditions or representations.",
             "Hard",
             hard_prompt,
         ),

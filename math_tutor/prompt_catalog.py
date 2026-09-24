@@ -27,6 +27,8 @@ class PromptSpec:
     required_filename_substrings: tuple[str, ...] = ()
     explicit_only: bool = False
     validation_profile: str | None = None
+    validation_course_id: str | None = None
+    validation_chapter: str | None = None
 
 
 @dataclass(frozen=True)
@@ -376,7 +378,7 @@ def prompt_title_from_slug(prompt_slug: str) -> str:
     return prompt_slug.replace("-", " ").title()
 
 
-def _calculus_study_guide_prompt(chapter: str = "2") -> PromptSpec:
+def _calculus_study_guide_prompt(chapter: str) -> PromptSpec:
     curriculum = get_chapter_curriculum("ap-calculus-ab", chapter)
     if curriculum is None:
         raise ValueError(f"Verified AP Calculus AB Chapter {chapter} metadata is required.")
@@ -485,6 +487,8 @@ practice; and preserve the exact title, headings, section order, and coverage la
         STUDY_GUIDE_PROMPT,
         text=text,
         validation_profile="calculus-study-guide-v1",
+        validation_course_id="ap-calculus-ab",
+        validation_chapter=chapter,
     )
 
 
@@ -499,7 +503,9 @@ def resolve_selected_prompts(
             raise ValueError("AP Calculus AB requires an explicit study-guide prompt.")
         if prompt_slugs != ["study-guide"]:
             raise ValueError("AP Calculus AB only supports study-guide generation.")
-        return (_calculus_study_guide_prompt(chapter or "2"),)
+        if chapter is None:
+            raise ValueError("AP Calculus AB requires an explicit reviewed chapter.")
+        return (_calculus_study_guide_prompt(chapter),)
     if not prompt_slugs:
         return tuple(prompt for prompt in PROMPTS if not prompt.explicit_only)
 

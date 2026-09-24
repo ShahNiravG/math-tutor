@@ -1,20 +1,16 @@
 from dataclasses import replace
 import unittest
 
+from math_tutor.course_curriculum import get_chapter_curriculum
 from math_tutor.prompt_catalog import PROMPTS_BY_SLUG, resolve_selected_prompts
 from math_tutor.study_guide_validation import validate_prompt_output
 
 
-def valid_calculus_study_guide() -> str:
-    section_titles = (
-        ("2.1", "The Tangent and Velocity Problems"),
-        ("2.2", "The Limit of a Function"),
-        ("2.3", "Calculating Limits Using the Limit Laws"),
-        ("2.4", "The Precise Definition of a Limit"),
-        ("2.5", "Continuity"),
-        ("2.6", "Limits at Infinity; Horizontal Asymptotes"),
-        ("2.7", "Derivatives and Rates of Change"),
-        ("2.8", "The Derivative as a Function"),
+def valid_calculus_study_guide(chapter: str = "2") -> str:
+    curriculum = get_chapter_curriculum("ap-calculus-ab", chapter)
+    assert curriculum is not None
+    section_titles = tuple(
+        (section.section_id, section.title) for section in curriculum.sections
     )
     coverage = "\n\n".join(
         f"### {section_id}: {title}\n"
@@ -25,7 +21,7 @@ def valid_calculus_study_guide() -> str:
         for section_id, title in section_titles
     )
     return f"""## Title
-Limits and Derivatives
+{curriculum.title}
 
 ## Mastery Goals
 Master limits and derivatives covered by the PDF.
@@ -86,11 +82,20 @@ Section 2.4 is not covered and is intentionally excluded from teaching and pract
 class StudyGuideValidationTests(unittest.TestCase):
     def setUp(self) -> None:
         self.prompt = resolve_selected_prompts(
-            ["study-guide"], course_id="ap-calculus-ab"
+            ["study-guide"], course_id="ap-calculus-ab", chapter="2"
         )[0]
 
     def test_valid_calculus_study_guide_passes(self) -> None:
         validate_prompt_output(self.prompt, valid_calculus_study_guide())
+
+    def test_chapter_three_validation_uses_chapter_three_curriculum(self) -> None:
+        chapter_three_prompt = resolve_selected_prompts(
+            ["study-guide"], course_id="ap-calculus-ab", chapter="3"
+        )[0]
+
+        validate_prompt_output(chapter_three_prompt, valid_calculus_study_guide("3"))
+        with self.assertRaisesRegex(ValueError, "canonical title"):
+            validate_prompt_output(chapter_three_prompt, valid_calculus_study_guide("2"))
 
     def test_rejects_wrong_or_duplicate_title(self) -> None:
         with self.assertRaisesRegex(ValueError, "canonical title"):

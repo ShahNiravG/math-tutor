@@ -40,6 +40,7 @@ class PromptCatalogTests(unittest.TestCase):
         prompt = resolve_selected_prompts(
             ["study-guide"],
             course_id="ap-calculus-ab",
+            chapter="2",
         )[0]
 
         self.assertEqual(prompt.slug, "study-guide")
@@ -60,6 +61,10 @@ class PromptCatalogTests(unittest.TestCase):
             resolve_selected_prompts(None, course_id="ap-calculus-ab")
         with self.assertRaisesRegex(ValueError, "only supports study-guide"):
             resolve_selected_prompts(["mental-math"], course_id="ap-calculus-ab")
+
+    def test_calculus_rejects_a_missing_chapter_instead_of_falling_back(self) -> None:
+        with self.assertRaisesRegex(ValueError, "explicit reviewed chapter"):
+            resolve_selected_prompts(["study-guide"], course_id="ap-calculus-ab")
 
     def test_calculus_study_guide_uses_the_selected_reviewed_chapter(self) -> None:
         prompt = resolve_selected_prompts(

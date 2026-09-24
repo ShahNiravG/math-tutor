@@ -768,6 +768,49 @@ was reset during key exchange before `rsync` transferred bytes. One explicitly a
 succeeded, and `math-tutor-deploy-production --confirm-production` reported successful live
 verification.
 
+### Post-Deployment Prompt-Scope Hotfix
+
+A review after the initial deployment found that the manifest-driven challenge builder had
+not preserved all of Chapter 2's reviewed wording. The live prompt still used the correct
+chapter and sections, but it had lost explicit infinite-limit coverage, named later-topic
+exclusions, and the Hard prompt's one-sided/infinite-limit requirements. The old constants
+remained under test while production rendered newly built prompts, so the suite did not detect
+the regression.
+
+The approved hotfix makes prompt scope fully manifest-driven without weakening the reviewed
+contract:
+
+- each section may carry a reviewed challenge topic label distinct from its textbook title;
+- each chapter carries an explicit forbidden-topic list and reviewed Hard-mode guidance;
+- Chapter 2's generated Medium and Hard prompts must exactly equal the frozen previously
+  reviewed prompts;
+- Chapter 3 explicitly excludes the Mean Value Theorem/Rolle's Theorem, L'Hôpital's Rule,
+  curve sketching, optimization, antiderivatives/integration, differential-equation methods
+  beyond its stated exponential models, and later AP Calculus topics;
+- visible challenge-card language is chapter-neutral rather than limit-specific.
+
+The same audit found two study-guide safety defects before any Chapter 3 model call: prompt
+resolution still had an implicit Chapter 2 fallback, and output validation was hard-coded to
+the Chapter 2 curriculum. The hotfix removes both defaults. A Calculus prompt now requires an
+explicit reviewed chapter and carries course/chapter validation context; the validator resolves
+and enforces that exact curriculum. Tests prove a Chapter 3-shaped guide passes Chapter 3
+validation and a Chapter 2-shaped guide fails it.
+
+Strict red/green/refactor evidence:
+
+- five focused tests first failed for the expected behaviors: Chapter 2 drift, missing Chapter
+  3 exclusions, limit-specific UI text, silent Chapter 2 fallback, and Chapter 2-only output
+  validation;
+- the focused slice passed `36/36` after implementation;
+- the full offline suite passed `343/343` with `git diff --check`;
+- the guarded production build passed;
+- extracted textareas from both production-shaped chapter pages exactly matched the prompts
+  built from their reviewed manifests, with two cards per page;
+- the generated pages contained no gateway/OIDC/token or stale `/site/` material.
+
+This hotfix does not address the separately planned Chapter 4 onboarding hardening or the
+candidate-review/publication automation. No model call or saved artifact regeneration occurred.
+
 ### Remaining Approval Gates
 
 The remaining approval gates are:

@@ -247,7 +247,7 @@ Architecture and validation references:
   study-guide`.
 - One validated mastery-oriented GPT-5.4 study guide is saved under the isolated Calculus output tree. It uses authoritative supplemental teaching only within PDF-established topics, includes 15 worked examples and ten fully solved mastery problems, marks section 2.4 `Not covered`, and marks section 2.8 `Partially covered`.
 - Never regenerate the Calculus study guide without explicit approval; site builds and recovery must reuse the saved Markdown/HTML/PDF.
-- Local validation baseline is `338` passing tests plus `git diff --check`.
+- Local validation baseline is `343` passing tests plus `git diff --check`.
   The brand/navigation pass added `tests/test_site_brand.py` and `tests/test_site_navigation.py`,
   including a drift guard that fails if `challenges_src/*.html` diverges from the canonical mark
   in `site_brand.py`.
@@ -262,6 +262,18 @@ Architecture and validation references:
   confirmed ten textbook cards, two AI Challenge modes, and no gateway/OIDC/token or stale
   `/site/` material. The first SSH connection reset during key exchange before transfer; one
   retry completed and the guarded command reported successful live verification.
+- A post-deployment audit found that the new manifest-driven AI Challenge builder had weakened
+  Chapter 2's reviewed prompt contract even though the old constants still passed tests. The
+  hotfix makes challenge topic labels, forbidden topics, and hard-mode guidance reviewed
+  manifest data. Chapter 2's built Medium and Hard prompts are now byte-for-byte identical to
+  the prior reviewed prompts; Chapter 3 explicitly forbids the Mean Value Theorem/Rolle's
+  Theorem, L'Hôpital's Rule, curve sketching, optimization, integration, out-of-scope
+  differential-equation methods, and later topics. Tests compare the actual built prompts.
+- Calculus study-guide prompt selection no longer defaults or falls back to Chapter 2. Every
+  call requires an explicit reviewed chapter, and the prompt carries course/chapter validation
+  context. Output validation now resolves that curriculum instead of hard-coding Chapter 2.
+  A correct Chapter 3-shaped guide passes validation and a Chapter 2-shaped guide fails. No
+  Chapter 3 model call has occurred.
 - Challenge exams were restored after generated public JSON was written as mode `0600` and
   `rsync -a` preserved that unreadable mode on production. Public challenge JSON is now created
   as `0644`, unchanged files have their mode repaired during builds, and production validation

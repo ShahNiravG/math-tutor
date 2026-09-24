@@ -3,7 +3,10 @@ from __future__ import annotations
 import unittest
 from dataclasses import replace
 
-from math_tutor.calculus_chapters import AP_CALCULUS_CHAPTER_2_MANIFEST
+from math_tutor.calculus_chapters import (
+    AP_CALCULUS_CHAPTER_2_MANIFEST,
+    AP_CALCULUS_CHAPTER_3_MANIFEST,
+)
 from math_tutor.site_ai_challenges import (
     AI_CHALLENGE_PROVIDERS,
     HARD_CHALLENGE_PROMPT,
@@ -14,6 +17,26 @@ from math_tutor.site_ai_challenges import (
 
 
 class SiteAIChallengesTests(unittest.TestCase):
+    def test_chapter_two_manifest_prompts_preserve_the_reviewed_contract_exactly(self) -> None:
+        medium, hard = build_ai_challenge_prompts(AP_CALCULUS_CHAPTER_2_MANIFEST)
+
+        self.assertEqual(medium, MEDIUM_CHALLENGE_PROMPT)
+        self.assertEqual(hard, HARD_CHALLENGE_PROMPT)
+
+    def test_chapter_three_prompts_explicitly_forbid_later_calculus_topics(self) -> None:
+        medium, hard = build_ai_challenge_prompts(AP_CALCULUS_CHAPTER_3_MANIFEST)
+
+        for prompt in (medium, hard):
+            self.assertIn("Mean Value Theorem", prompt)
+            self.assertIn("L'Hôpital", prompt)
+            self.assertIn("optimization", prompt)
+            self.assertIn("integration", prompt)
+
+    def test_chapter_three_card_description_is_not_limit_specific(self) -> None:
+        rendered = render_ai_challenge_section(course_id="ap-calculus-ab", chapter="3")
+
+        self.assertNotIn("subtle domain or limit behavior", rendered)
+
     def test_prompt_builder_uses_manifest_chapter_scope_and_exclusions(self) -> None:
         chapter_three = replace(
             AP_CALCULUS_CHAPTER_2_MANIFEST,

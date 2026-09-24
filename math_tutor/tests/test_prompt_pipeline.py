@@ -32,7 +32,7 @@ class PromptPipelineTests(unittest.TestCase):
                 updated_at=None,
             )
             prompt = resolve_selected_prompts(
-                ["study-guide"], course_id="ap-calculus-ab"
+                ["study-guide"], course_id="ap-calculus-ab", chapter="2"
             )[0]
             state = GeneratedOutputState(path=root / "state.json", processed={})
 

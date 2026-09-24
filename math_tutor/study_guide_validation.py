@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import re
 
-from math_tutor.course_curriculum import AP_CALCULUS_CHAPTER_2
+from math_tutor.course_curriculum import ChapterCurriculum, get_chapter_curriculum
 from math_tutor.prompt_catalog import PromptSpec
 
 
@@ -34,10 +34,21 @@ def validate_prompt_output(prompt_spec: PromptSpec, output_text: str) -> None:
         return
     if profile != "calculus-study-guide-v1":
         raise ValueError(f"Unknown output validation profile: {profile}")
-    _validate_calculus_study_guide(output_text)
+    if prompt_spec.validation_course_id is None or prompt_spec.validation_chapter is None:
+        raise ValueError("Calculus study guide validation requires explicit course and chapter context.")
+    curriculum = get_chapter_curriculum(
+        prompt_spec.validation_course_id,
+        prompt_spec.validation_chapter,
+    )
+    if curriculum is None:
+        raise ValueError("Calculus study guide validation requires reviewed chapter metadata.")
+    _validate_calculus_study_guide(output_text, curriculum)
 
 
-def _validate_calculus_study_guide(output_text: str) -> None:
+def _validate_calculus_study_guide(
+    output_text: str,
+    curriculum: ChapterCurriculum,
+) -> None:
     if not output_text.strip():
         raise ValueError("Calculus study guide output must not be empty.")
     if _PROVIDER_ERROR.search(output_text):
@@ -55,7 +66,7 @@ def _validate_calculus_study_guide(output_text: str) -> None:
         output_text,
     )
     title_lines = [line.strip() for line in title_match.group(1).splitlines() if line.strip()]
-    if title_lines != [AP_CALCULUS_CHAPTER_2.title]:
+    if title_lines != [curriculum.title]:
         raise ValueError("Calculus study guide must contain the exact canonical title.")
 
     section_match = re.search(
@@ -66,7 +77,7 @@ def _validate_calculus_study_guide(output_text: str) -> None:
     section_headings = re.findall(r"(?m)^### (.+?)\s*$", section_body)
     expected_headings = [
         f"{section.section_id}: {section.title}"
-        for section in AP_CALCULUS_CHAPTER_2.sections
+        for section in curriculum.sections
     ]
     if section_headings != expected_headings:
         raise ValueError("Calculus study guide must contain exact ordered section coverage entries.")
@@ -90,7 +101,7 @@ def _validate_calculus_study_guide(output_text: str) -> None:
 
     not_covered_sections = [
         section
-        for section, chunk in zip(AP_CALCULUS_CHAPTER_2.sections, section_chunks, strict=True)
+        for section, chunk in zip(curriculum.sections, section_chunks, strict=True)
         if status_pattern.findall(chunk) == ["Not covered"]
     ]
     instructional_headings = (

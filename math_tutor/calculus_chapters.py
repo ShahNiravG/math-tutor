@@ -12,6 +12,7 @@ class CalculusSectionManifest:
     canvas_assignment_id: str | None = None
     challenge_status: str = "included"
     challenge_note: str | None = None
+    challenge_topic_label: str | None = None
 
 
 @dataclass(frozen=True)
@@ -24,6 +25,8 @@ class CalculusChapterManifest:
     access_bootstrap_assignment_id: str
     provenance: str
     verified_at: str
+    challenge_forbidden_topics: tuple[str, ...] = ()
+    challenge_hard_guidance: str | None = None
 
 
 AP_CALCULUS_CHAPTER_2_MANIFEST = CalculusChapterManifest(
@@ -31,24 +34,46 @@ AP_CALCULUS_CHAPTER_2_MANIFEST = CalculusChapterManifest(
     chapter="2",
     title="Limits and Derivatives",
     sections=(
-        CalculusSectionManifest("2.1", "The Tangent and Velocity Problems", "299777"),
-        CalculusSectionManifest("2.2", "The Limit of a Function", "299778"),
-        CalculusSectionManifest("2.3", "Calculating Limits Using the Limit Laws", "299779"),
+        CalculusSectionManifest(
+            "2.1", "The Tangent and Velocity Problems", "299777",
+            challenge_topic_label="tangent and velocity problems",
+        ),
+        CalculusSectionManifest(
+            "2.2", "The Limit of a Function", "299778",
+            challenge_topic_label="the limit of a function",
+        ),
+        CalculusSectionManifest(
+            "2.3", "Calculating Limits Using the Limit Laws", "299779",
+            challenge_topic_label="calculating limits using the limit laws",
+        ),
         CalculusSectionManifest(
             "2.4",
             "The Precise Definition of a Limit",
             challenge_status="excluded",
-            challenge_note="Do not test the formal epsilon-delta definition.",
+            challenge_note="Do not test the formal epsilon-delta definition in section 2.4.",
         ),
-        CalculusSectionManifest("2.5", "Continuity", "299780"),
-        CalculusSectionManifest("2.6", "Limits at Infinity; Horizontal Asymptotes", "299781"),
-        CalculusSectionManifest("2.7", "Derivatives and Rates of Change", "299782"),
+        CalculusSectionManifest(
+            "2.5", "Continuity", "299780", challenge_topic_label="continuity"
+        ),
+        CalculusSectionManifest(
+            "2.6",
+            "Limits at Infinity; Horizontal Asymptotes",
+            "299781",
+            challenge_topic_label="infinite limits, limits at infinity, and horizontal asymptotes",
+        ),
+        CalculusSectionManifest(
+            "2.7",
+            "Derivatives and Rates of Change",
+            "299782",
+            challenge_topic_label="derivatives and rates of change",
+        ),
         CalculusSectionManifest(
             "2.8",
             "The Derivative as a Function",
             "299783",
             challenge_status="limited",
             challenge_note="Use introductory derivative-as-a-function concepts only.",
+            challenge_topic_label="introductory derivative-as-a-function concepts only",
         ),
     ),
     reader_url=(
@@ -58,6 +83,23 @@ AP_CALCULUS_CHAPTER_2_MANIFEST = CalculusChapterManifest(
     access_bootstrap_assignment_id="299777",
     provenance="authenticated-cengage-toc",
     verified_at="2026-09-19",
+    challenge_forbidden_topics=(
+        "product, quotient, or chain rules",
+        "implicit differentiation",
+        "related rates",
+        "optimization",
+        "integration",
+        "differential equations",
+        "later AP Calculus topics",
+    ),
+    challenge_hard_guidance=(
+        "Use multi-step reasoning, connections among verbal, numerical, graphical descriptions "
+        "expressed in words, and symbolic representations, plus meaningful domain, endpoint, "
+        "one-sided-limit, and infinite-limit subtleties. Use plausible misconception-based "
+        "distractors. Stay strictly within the allowed Chapter 2 scope; do not make a question "
+        "hard by introducing a later calculus topic. A strong student should need careful "
+        "reasoning, not obscure tricks."
+    ),
 )
 
 
@@ -88,6 +130,23 @@ AP_CALCULUS_CHAPTER_3_MANIFEST = CalculusChapterManifest(
     access_bootstrap_assignment_id="299784",
     provenance="school-pdf-and-authenticated-canvas-cengage-assignments",
     verified_at="2026-09-23",
+    challenge_forbidden_topics=(
+        "the Mean Value Theorem or Rolle's Theorem",
+        "L'Hôpital's Rule",
+        "curve sketching",
+        "optimization",
+        "antiderivatives or integration",
+        "differential-equation methods beyond the stated exponential growth and decay models",
+        "later AP Calculus topics",
+    ),
+    challenge_hard_guidance=(
+        "Use multi-step reasoning, connections among verbal, numerical, graphical descriptions "
+        "expressed in words, and symbolic representations, plus meaningful domain, endpoint, "
+        "unit, implicit-variable, and approximation-error subtleties. Use plausible "
+        "misconception-based distractors. Stay strictly within the allowed Chapter 3 scope; do "
+        "not make a question hard by introducing a later calculus topic. A strong student should "
+        "need careful reasoning, not obscure tricks."
+    ),
 )
 
 
@@ -143,6 +202,12 @@ def validate_calculus_chapter_manifest(manifest: CalculusChapterManifest) -> Non
             raise ValueError(f"Invalid challenge status: {section.challenge_status}")
         if section.challenge_status != "included" and not section.challenge_note:
             raise ValueError("Limited or excluded challenge sections require a review note.")
+        if section.challenge_topic_label is not None and not section.challenge_topic_label.strip():
+            raise ValueError("Challenge topic labels must not be blank.")
+    if any(not topic.strip() for topic in manifest.challenge_forbidden_topics):
+        raise ValueError("Challenge forbidden topics must not be blank.")
+    if manifest.challenge_hard_guidance is not None and not manifest.challenge_hard_guidance.strip():
+        raise ValueError("Challenge hard guidance must not be blank.")
 
 
 def get_calculus_chapter_manifest(
