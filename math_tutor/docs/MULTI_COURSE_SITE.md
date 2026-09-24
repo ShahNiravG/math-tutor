@@ -891,11 +891,22 @@ token/OIDC or stale `/site/` material. Their unchanged SHA-256 values are
 `62d35d221ff9c3e31674faa943230f812e6e38d2bbebbf89108936aef49126a9` for Chapter 3.
 
 The preliminary follow-up prompt output was deployed from an uncommitted tree before this final
-design review. The revised implementation is locally validated, but production must be rebuilt
-from its committed tree and deployed under a separate explicit approval before that deployment is
-treated as canonical. Rollback is to build the prior commit with `math-tutor-build-production`
-and redeploy it with `math-tutor-deploy-production --confirm-production`; no generated source
-artifact or model output needs migration.
+design review. The revised implementation was committed as `42ebf4f` and reconciled with
+production on 2026-09-23 without a redeploy. A guarded `math-tutor-build-production
+--deploy-root <scratch>` build of the clean `42ebf4f` tree produced both prompt-bearing
+Calculus pages byte-identical to the live pages:
+
+| Live page | SHA-256 (live = `42ebf4f` build) |
+|---|---|
+| `courses/ap-calculus-ab/doc-4839635.html` (Chapter 2) | `21d5ed64a6a9796cc1dce2b93447166585c688ecb4571deedb7bfea12bb621b1` |
+| `courses/ap-calculus-ab/doc-4839646.html` (Chapter 3) | `62d35d221ff9c3e31674faa943230f812e6e38d2bbebbf89108936aef49126a9` |
+
+Only these two pages were compared because they are the only pages the prompt changes affect.
+Commit `42ebf4f` is therefore the canonical source of the live Calculus challenge prompts.
+Future deployments must run from a clean, committed tree. Rollback is to build the prior commit
+with `math-tutor-build-production` and redeploy it with
+`math-tutor-deploy-production --confirm-production`; no generated source artifact or model
+output needs migration.
 
 The Chapter 4 assignment-name matcher, candidate promotion, explicit publication state,
 multi-chapter operation, and smaller onboarding configuration cleanup remain deferred to the
