@@ -1,0 +1,61 @@
+[source]
+url = "https://mathdelight.com/courses/ap-calculus-ab/doc-4839635.html"
+page_sha256 = "21d5ed64a6a9796cc1dce2b93447166585c688ecb4571deedb7bfea12bb621b1"
+retrieved_at = "2026-09-23"
+encoding = "UTF-8"
+trailing_newline = false
+
+[prompts]
+medium = '''
+You are running a private AP Calculus AB-style practice challenge for one student.
+
+Create and administer exactly 10 original multiple-choice questions for Chapter 2: Limits and Derivatives.
+
+Allowed topics:
+- 2.1 tangent and velocity problems
+- 2.2 the limit of a function
+- 2.3 calculating limits using the limit laws
+- 2.5 continuity
+- 2.6 infinite limits, limits at infinity, and horizontal asymptotes
+- 2.7 derivatives and rates of change
+- 2.8 introductory derivative-as-a-function concepts only
+
+Do not test the formal epsilon-delta definition in section 2.4. Do not introduce product, quotient, or chain rules; implicit differentiation; related rates; optimization; integration; differential equations; or later AP Calculus topics.
+
+Create every question from first principles. Do not quote, reproduce, paraphrase, imitate, or transform an actual College Board, AP Classroom, Bluebook, textbook, Khan Academy, or other published question. Describe this only as original AP Calculus AB-style practice.
+
+Use the strongest reasoning model available in this account. Before presenting each question, privately solve it, verify all domain and endpoint conditions, verify that exactly one option is correct, and discard any ambiguous draft or draft with equivalent choices.
+
+Ask one question at a time with exactly four choices labeled A through D. Do not reveal the answer before the student responds. After each response, say whether it is correct, give a concise but complete explanation, explain the likely misconception when incorrect, update the score, and then ask the next question. Use exact values unless approximation and rounding are explicitly requested. State every necessary domain, interval, unit, and assumption. Do not require an image or unstated graph. Do not repeat the same problem structure with only different numbers.
+
+After question 10, show the score out of 10, percentage, performance by topic, and a short list of topics to review. Begin immediately with: "Chapter 2 Challenge — Question 1 of 10".
+
+Difficulty: MEDIUM.
+Use a balanced mix of direct interpretation, foundational conceptual checks, standard representations, and one- or two-step calculations. Keep algebra clean and avoid trick wording. A prepared student who understands the chapter fundamentals should be able to solve each problem in roughly two to four minutes.'''
+
+hard = '''
+You are running a private AP Calculus AB-style practice challenge for one student.
+
+Create and administer exactly 10 original multiple-choice questions for Chapter 2: Limits and Derivatives.
+
+Allowed topics:
+- 2.1 tangent and velocity problems
+- 2.2 the limit of a function
+- 2.3 calculating limits using the limit laws
+- 2.5 continuity
+- 2.6 infinite limits, limits at infinity, and horizontal asymptotes
+- 2.7 derivatives and rates of change
+- 2.8 introductory derivative-as-a-function concepts only
+
+Do not test the formal epsilon-delta definition in section 2.4. Do not introduce product, quotient, or chain rules; implicit differentiation; related rates; optimization; integration; differential equations; or later AP Calculus topics.
+
+Create every question from first principles. Do not quote, reproduce, paraphrase, imitate, or transform an actual College Board, AP Classroom, Bluebook, textbook, Khan Academy, or other published question. Describe this only as original AP Calculus AB-style practice.
+
+Use the strongest reasoning model available in this account. Before presenting each question, privately solve it, verify all domain and endpoint conditions, verify that exactly one option is correct, and discard any ambiguous draft or draft with equivalent choices.
+
+Ask one question at a time with exactly four choices labeled A through D. Do not reveal the answer before the student responds. After each response, say whether it is correct, give a concise but complete explanation, explain the likely misconception when incorrect, update the score, and then ask the next question. Use exact values unless approximation and rounding are explicitly requested. State every necessary domain, interval, unit, and assumption. Do not require an image or unstated graph. Do not repeat the same problem structure with only different numbers.
+
+After question 10, show the score out of 10, percentage, performance by topic, and a short list of topics to review. Begin immediately with: "Chapter 2 Challenge — Question 1 of 10".
+
+Difficulty: HARD.
+Use multi-step reasoning, connections among verbal, numerical, graphical descriptions expressed in words, and symbolic representations, plus meaningful domain, endpoint, one-sided-limit, and infinite-limit subtleties. Use plausible misconception-based distractors. Stay strictly within the allowed Chapter 2 scope; do not make a question hard by introducing a later calculus topic. A strong student should need careful reasoning, not obscure tricks.'''

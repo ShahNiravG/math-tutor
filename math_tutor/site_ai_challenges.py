@@ -30,38 +30,21 @@ _ALLOWED_PROVIDER_TARGETS = {
     ("https", "chatgpt.com", "/"),
 }
 
-_SHARED_CHALLENGE_INSTRUCTIONS = """You are running a private AP Calculus AB-style practice challenge for one student.
 
-Create and administer exactly 10 original multiple-choice questions for Chapter 2: Limits and Derivatives.
-
-Allowed topics:
-- 2.1 tangent and velocity problems
-- 2.2 the limit of a function
-- 2.3 calculating limits using the limit laws
-- 2.5 continuity
-- 2.6 infinite limits, limits at infinity, and horizontal asymptotes
-- 2.7 derivatives and rates of change
-- 2.8 introductory derivative-as-a-function concepts only
-
-Do not test the formal epsilon-delta definition in section 2.4. Do not introduce product, quotient, or chain rules; implicit differentiation; related rates; optimization; integration; differential equations; or later AP Calculus topics.
-
-Create every question from first principles. Do not quote, reproduce, paraphrase, imitate, or transform an actual College Board, AP Classroom, Bluebook, textbook, Khan Academy, or other published question. Describe this only as original AP Calculus AB-style practice.
-
-Use the strongest reasoning model available in this account. Before presenting each question, privately solve it, verify all domain and endpoint conditions, verify that exactly one option is correct, and discard any ambiguous draft or draft with equivalent choices.
-
-Ask one question at a time with exactly four choices labeled A through D. Do not reveal the answer before the student responds. After each response, say whether it is correct, give a concise but complete explanation, explain the likely misconception when incorrect, update the score, and then ask the next question. Use exact values unless approximation and rounding are explicitly requested. State every necessary domain, interval, unit, and assumption. Do not require an image or unstated graph. Do not repeat the same problem structure with only different numbers.
-
-After question 10, show the score out of 10, percentage, performance by topic, and a short list of topics to review. Begin immediately with: "Chapter 2 Challenge — Question 1 of 10"."""
-
-MEDIUM_CHALLENGE_PROMPT = f"""{_SHARED_CHALLENGE_INSTRUCTIONS}
-
-Difficulty: MEDIUM.
-Use a balanced mix of direct interpretation, foundational conceptual checks, standard representations, and one- or two-step calculations. Keep algebra clean and avoid trick wording. A prepared student who understands the chapter fundamentals should be able to solve each problem in roughly two to four minutes."""
-
-HARD_CHALLENGE_PROMPT = f"""{_SHARED_CHALLENGE_INSTRUCTIONS}
-
-Difficulty: HARD.
-Use multi-step reasoning, connections among verbal, numerical, graphical descriptions expressed in words, and symbolic representations, plus meaningful domain, endpoint, one-sided-limit, and infinite-limit subtleties. Use plausible misconception-based distractors. Stay strictly within the allowed Chapter 2 scope; do not make a question hard by introducing a later calculus topic. A strong student should need careful reasoning, not obscure tricks."""
+def format_reviewed_list(
+    items: tuple[str, ...],
+    *,
+    separator: str = ",",
+    conjunction: str = "and",
+) -> str:
+    """Format reviewed prompt fragments; full validation is owned by the manifest."""
+    if not items:
+        raise ValueError("A reviewed list must contain at least one item.")
+    if len(items) == 1:
+        return items[0]
+    if len(items) == 2:
+        return f"{items[0]} {conjunction} {items[1]}"
+    return f"{separator} ".join(items[:-1]) + f"{separator} {conjunction} {items[-1]}"
 
 
 def build_ai_challenge_prompts(manifest: CalculusChapterManifest) -> tuple[str, str]:
@@ -76,12 +59,12 @@ def build_ai_challenge_prompts(manifest: CalculusChapterManifest) -> tuple[str, 
         for section in manifest.sections
         if section.challenge_status == "excluded"
     ]
-    if manifest.challenge_forbidden_topics:
-        topics = manifest.challenge_forbidden_topics
-        forbidden = topics[0] if len(topics) == 1 else "; ".join(topics[:-1]) + "; or " + topics[-1]
-        restrictions.append(f"Do not introduce {forbidden}.")
-    else:
-        restrictions.append("Do not introduce topics outside this reviewed chapter scope or later AP Calculus topics.")
+    forbidden = format_reviewed_list(
+        manifest.challenge_forbidden_topics,
+        separator=";",
+        conjunction="or",
+    )
+    restrictions.append(f"Do not introduce {forbidden}.")
     restriction_text = " ".join(restrictions)
     shared = f"""You are running a private AP Calculus AB-style practice challenge for one student.
 
@@ -103,12 +86,14 @@ After question 10, show the score out of 10, percentage, performance by topic, a
 
 Difficulty: MEDIUM.
 Use a balanced mix of direct interpretation, foundational conceptual checks, standard representations, and one- or two-step calculations. Keep algebra clean and avoid trick wording. A prepared student who understands the chapter fundamentals should be able to solve each problem in roughly two to four minutes."""
-    hard_guidance = manifest.challenge_hard_guidance or (
+    hard_guidance = (
         "Use multi-step reasoning, connections among verbal, numerical, graphical descriptions "
-        "expressed in words, and symbolic representations, plus meaningful domain and endpoint "
-        "subtleties. Use plausible misconception-based distractors. Stay strictly within the "
-        "reviewed chapter scope; do not make a question hard by introducing a later calculus "
-        "topic. A strong student should need careful reasoning, not obscure tricks."
+        "expressed in words, and symbolic representations, plus meaningful "
+        f"{format_reviewed_list(manifest.challenge_hard_subtleties)} subtleties. Use plausible "
+        "misconception-based "
+        f"distractors. Stay strictly within the allowed Chapter {manifest.chapter} scope; do not "
+        "make a question hard by introducing a later calculus topic. A strong student should "
+        "need careful reasoning, not obscure tricks."
     )
     hard = f"""{shared}
 

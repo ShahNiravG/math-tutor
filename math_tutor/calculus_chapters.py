@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import re
 
 
 @dataclass(frozen=True)
@@ -25,8 +26,8 @@ class CalculusChapterManifest:
     access_bootstrap_assignment_id: str
     provenance: str
     verified_at: str
-    challenge_forbidden_topics: tuple[str, ...] = ()
-    challenge_hard_guidance: str | None = None
+    challenge_hard_subtleties: tuple[str, ...]
+    challenge_forbidden_topics: tuple[str, ...]
 
 
 AP_CALCULUS_CHAPTER_2_MANIFEST = CalculusChapterManifest(
@@ -83,6 +84,12 @@ AP_CALCULUS_CHAPTER_2_MANIFEST = CalculusChapterManifest(
     access_bootstrap_assignment_id="299777",
     provenance="authenticated-cengage-toc",
     verified_at="2026-09-19",
+    challenge_hard_subtleties=(
+        "domain",
+        "endpoint",
+        "one-sided-limit",
+        "infinite-limit",
+    ),
     challenge_forbidden_topics=(
         "product, quotient, or chain rules",
         "implicit differentiation",
@@ -91,14 +98,6 @@ AP_CALCULUS_CHAPTER_2_MANIFEST = CalculusChapterManifest(
         "integration",
         "differential equations",
         "later AP Calculus topics",
-    ),
-    challenge_hard_guidance=(
-        "Use multi-step reasoning, connections among verbal, numerical, graphical descriptions "
-        "expressed in words, and symbolic representations, plus meaningful domain, endpoint, "
-        "one-sided-limit, and infinite-limit subtleties. Use plausible misconception-based "
-        "distractors. Stay strictly within the allowed Chapter 2 scope; do not make a question "
-        "hard by introducing a later calculus topic. A strong student should need careful "
-        "reasoning, not obscure tricks."
     ),
 )
 
@@ -130,22 +129,22 @@ AP_CALCULUS_CHAPTER_3_MANIFEST = CalculusChapterManifest(
     access_bootstrap_assignment_id="299784",
     provenance="school-pdf-and-authenticated-canvas-cengage-assignments",
     verified_at="2026-09-23",
+    challenge_hard_subtleties=(
+        "domain",
+        "endpoint",
+        "unit",
+        "implicit-variable",
+        "approximation-error",
+    ),
     challenge_forbidden_topics=(
         "the Mean Value Theorem or Rolle's Theorem",
         "L'Hôpital's Rule",
         "curve sketching",
         "optimization",
         "antiderivatives or integration",
+        "hyperbolic functions",
         "differential-equation methods beyond the stated exponential growth and decay models",
         "later AP Calculus topics",
-    ),
-    challenge_hard_guidance=(
-        "Use multi-step reasoning, connections among verbal, numerical, graphical descriptions "
-        "expressed in words, and symbolic representations, plus meaningful domain, endpoint, "
-        "unit, implicit-variable, and approximation-error subtleties. Use plausible "
-        "misconception-based distractors. Stay strictly within the allowed Chapter 3 scope; do "
-        "not make a question hard by introducing a later calculus topic. A strong student should "
-        "need careful reasoning, not obscure tricks."
     ),
 )
 
@@ -161,6 +160,19 @@ def _section_sort_key(section_id: str) -> tuple[int, ...]:
         return tuple(int(part) for part in section_id.split("."))
     except ValueError as exc:
         raise ValueError(f"Invalid section ID: {section_id}") from exc
+
+
+_CHAPTER_REFERENCE = re.compile(r"\bchapter\s+(\d+)\b", re.IGNORECASE)
+_SECTION_REFERENCE = re.compile(r"(?<!\d)(\d+)\.(?:\d+|x)\b", re.IGNORECASE)
+
+
+def _validate_reviewed_text_chapter(text: str, *, chapter: str) -> None:
+    referenced_chapters = {
+        *_CHAPTER_REFERENCE.findall(text),
+        *_SECTION_REFERENCE.findall(text),
+    }
+    if any(reference != chapter for reference in referenced_chapters):
+        raise ValueError("Reviewed challenge text must not reference another chapter.")
 
 
 def validate_calculus_chapter_manifest(manifest: CalculusChapterManifest) -> None:
@@ -202,12 +214,26 @@ def validate_calculus_chapter_manifest(manifest: CalculusChapterManifest) -> Non
             raise ValueError(f"Invalid challenge status: {section.challenge_status}")
         if section.challenge_status != "included" and not section.challenge_note:
             raise ValueError("Limited or excluded challenge sections require a review note.")
+        if section.challenge_status == "limited" and not section.challenge_topic_label:
+            raise ValueError("Limited challenge sections require a reviewed topic label.")
         if section.challenge_topic_label is not None and not section.challenge_topic_label.strip():
             raise ValueError("Challenge topic labels must not be blank.")
-    if any(not topic.strip() for topic in manifest.challenge_forbidden_topics):
-        raise ValueError("Challenge forbidden topics must not be blank.")
-    if manifest.challenge_hard_guidance is not None and not manifest.challenge_hard_guidance.strip():
-        raise ValueError("Challenge hard guidance must not be blank.")
+        for reviewed_text in (section.challenge_note, section.challenge_topic_label):
+            if reviewed_text is not None:
+                _validate_reviewed_text_chapter(reviewed_text, chapter=manifest.chapter)
+    if not manifest.challenge_forbidden_topics or any(
+        not topic.strip() for topic in manifest.challenge_forbidden_topics
+    ):
+        raise ValueError("Challenge forbidden topics must contain reviewed nonblank values.")
+    if not manifest.challenge_hard_subtleties or any(
+        not subtlety.strip() for subtlety in manifest.challenge_hard_subtleties
+    ):
+        raise ValueError("Challenge hard subtleties must contain reviewed nonblank values.")
+    for reviewed_text in (
+        *manifest.challenge_forbidden_topics,
+        *manifest.challenge_hard_subtleties,
+    ):
+        _validate_reviewed_text_chapter(reviewed_text, chapter=manifest.chapter)
 
 
 def get_calculus_chapter_manifest(

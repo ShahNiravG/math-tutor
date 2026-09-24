@@ -23,7 +23,15 @@ class SiteTextbookTests(unittest.TestCase):
             chapter="3",
             title="Differentiation Rules",
             sections=tuple(
-                replace(section, section_id=section.section_id.replace("2.", "3."))
+                replace(
+                    section,
+                    section_id=section.section_id.replace("2.", "3."),
+                    challenge_note=(
+                        section.challenge_note.replace("2.", "3.")
+                        if section.challenge_note is not None
+                        else None
+                    ),
+                )
                 for section in AP_CALCULUS_CHAPTER_2_MANIFEST.sections
             ),
         )

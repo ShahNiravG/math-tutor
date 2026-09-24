@@ -811,6 +811,96 @@ Strict red/green/refactor evidence:
 This hotfix does not address the separately planned Chapter 4 onboarding hardening or the
 candidate-review/publication automation. No model call or saved artifact regeneration occurred.
 
+The hotfix was subsequently deployed with
+`math-tutor-deploy-production --confirm-production`. Live Chapter 2 and Chapter 3 pages were
+downloaded after deployment and matched the guarded production tree byte-for-byte.
+
+### Follow-Up Challenge Manifest Hardening
+
+A second review identified ways a copied or incompletely reviewed manifest could weaken prompt
+scope:
+
+- a `limited` section could provide a review note without a prompt-facing topic label, causing
+  the limitation to disappear from the built prompt;
+- complete free-form Hard guidance could retain a copied chapter number after chapter and
+  section identities were updated;
+- optional Hard guidance or forbidden topics could fall back to generic, unreviewed wording;
+- free-text topic labels, notes, forbidden topics, or subtleties could refer to another chapter.
+
+The approved fail-closed design requires every limited section to provide a nonblank
+`challenge_topic_label`. Every manifest must also provide nonempty, nonblank tuples for
+`challenge_hard_subtleties` and `challenge_forbidden_topics`; there is no generic fallback.
+Hard guidance is assembled from one shared template, the actual `manifest.chapter`, and the
+reviewed subtleties tuple. A shared English-list formatter preserves the exact reviewed lists:
+Chapter 2 uses `domain, endpoint, one-sided-limit, and infinite-limit`, while Chapter 3 uses
+`domain, endpoint, unit, implicit-variable, and approximation-error`. The formatter is specified
+for one, two, and three-or-more values.
+
+Manifest validation scans topic labels, notes, forbidden topics, and subtleties for `Chapter N`
+and section-number references. Any reference whose chapter differs from `manifest.chapter` is
+rejected, including copied text such as `section 3.x` in a Chapter 4 manifest. This complements
+the generated chapter wording by catching drift that is still possible in reviewed free text.
+
+The matching Stewart/Kokoska chapter sequence includes section 3.11, Hyperbolic Functions,
+while the school Chapter 3 PDF ends at 3.10. Because the school PDF remains the content-scope
+authority, Chapter 3's forbidden-topic list explicitly names hyperbolic functions. The external
+provenance check used Cengage's official identification of *Calculus for AP: A Complete Course*,
+Stewart/Kokoska 1e, together with Stewart's published Chapter 3 sequence; the school PDF defines
+the narrower 3.1-through-3.10 course scope.
+
+The frozen reviewed Chapter 2 Medium and Hard prompts were moved from production constants to
+the UTF-8 fixture `tests/fixtures/calculus-chapter-2-ai-challenges.toml`. Its provenance records
+the canonical live page URL, retrieval date, SHA-256, and explicit no-trailing-newline semantics.
+The fixture was captured from the reviewed live output rather than generated from the current
+builder. Production contains only the general manifest-driven builder, and tests compare its
+Chapter 2 output to that independent golden source byte for byte.
+
+Acceptance criteria are:
+
+- both manifests fail validation without at least one reviewed forbidden topic and Hard subtlety;
+- all four free-text field families reject cross-chapter references;
+- Chapter 2's built prompts and deployed textareas match the fixture exactly, including newline
+  semantics, and Chapter 3 explicitly excludes hyperbolic functions;
+- both generated chapter pages contain two cards whose textareas exactly match the manifest-built
+  prompts, with no unsafe provider URL, token material, or stale `/site/` link;
+- the complete offline suite, `git diff --check`, guarded production build, and live verification
+  pass without a model call or artifact regeneration.
+
+Failure modes and compatibility:
+
+- manifests are deliberately validated at import time. A malformed Calculus manifest therefore
+  stops every CLI entry point, including Algebra commands. This fail-closed behavior is accepted;
+  tests and the guarded build must catch it before commit or deployment;
+- the `CalculusChapterManifest` constructor replaces optional free-form
+  `challenge_hard_guidance` with required structured tuples. This is an internal manifest API;
+  all in-repository instances are migrated, while generated URLs, saved artifacts, CLI behavior,
+  and the reviewed Chapter 2 prompt text remain compatible;
+- removing `MEDIUM_CHALLENGE_PROMPT` and `HARD_CHALLENGE_PROMPT` is intentional because they were
+  test-only production constants. The fixture is now the sole reviewed expected-text source.
+
+Strict red/green/refactor evidence recorded during implementation includes expected initial
+failures for missing limited-label validation, copied chapter wording, the absent hyperbolic
+exclusion, optional reviewed lists, cross-chapter free text, and incorrect reviewed-list joining.
+The focused manifest/challenge slice passed `20/20`. The first full-suite run then rejected an
+older navigation-test fixture that copied Chapter 2's `section 2.4` note into a synthetic Chapter
+3 manifest, proving the cross-chapter guard applies across consumers; correcting that fixture
+produced `350/350` passing tests. `git diff --check` and the guarded production build passed.
+Both locally generated chapter pages retained two exact manifest-built prompts and contained no
+token/OIDC or stale `/site/` material. Their unchanged SHA-256 values are
+`21d5ed64a6a9796cc1dce2b93447166585c688ecb4571deedb7bfea12bb621b1` for Chapter 2 and
+`62d35d221ff9c3e31674faa943230f812e6e38d2bbebbf89108936aef49126a9` for Chapter 3.
+
+The preliminary follow-up prompt output was deployed from an uncommitted tree before this final
+design review. The revised implementation is locally validated, but production must be rebuilt
+from its committed tree and deployed under a separate explicit approval before that deployment is
+treated as canonical. Rollback is to build the prior commit with `math-tutor-build-production`
+and redeploy it with `math-tutor-deploy-production --confirm-production`; no generated source
+artifact or model output needs migration.
+
+The Chapter 4 assignment-name matcher, candidate promotion, explicit publication state,
+multi-chapter operation, and smaller onboarding configuration cleanup remain deferred to the
+separate automation phase.
+
 ### Remaining Approval Gates
 
 The remaining approval gates are:

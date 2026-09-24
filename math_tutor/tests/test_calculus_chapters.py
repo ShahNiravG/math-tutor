@@ -5,6 +5,7 @@ from dataclasses import replace
 
 from math_tutor.calculus_chapters import (
     AP_CALCULUS_CHAPTER_2_MANIFEST,
+    AP_CALCULUS_CHAPTER_3_MANIFEST,
     CalculusSectionManifest,
     get_calculus_chapter_manifest,
     validate_calculus_chapter_manifest,
@@ -62,6 +63,82 @@ class CalculusChapterManifestTests(unittest.TestCase):
             validate_calculus_chapter_manifest(invalid_assignment)
         with self.assertRaisesRegex(ValueError, "challenge status"):
             validate_calculus_chapter_manifest(invalid_status)
+
+    def test_limited_challenge_section_requires_a_reviewed_topic_label(self) -> None:
+        limited_without_label = replace(
+            AP_CALCULUS_CHAPTER_2_MANIFEST,
+            sections=(
+                replace(
+                    AP_CALCULUS_CHAPTER_2_MANIFEST.sections[0],
+                    challenge_status="limited",
+                    challenge_note="Use only the reviewed subset.",
+                    challenge_topic_label=None,
+                ),
+                *AP_CALCULUS_CHAPTER_2_MANIFEST.sections[1:],
+            ),
+        )
+
+        with self.assertRaisesRegex(ValueError, "reviewed topic label"):
+            validate_calculus_chapter_manifest(limited_without_label)
+
+    def test_challenge_scope_requires_forbidden_topics(self) -> None:
+        with self.assertRaisesRegex(ValueError, "forbidden topics"):
+            validate_calculus_chapter_manifest(
+                replace(AP_CALCULUS_CHAPTER_2_MANIFEST, challenge_forbidden_topics=())
+            )
+
+    def test_challenge_scope_requires_hard_subtleties(self) -> None:
+        with self.assertRaisesRegex(ValueError, "hard subtleties"):
+            validate_calculus_chapter_manifest(
+                replace(AP_CALCULUS_CHAPTER_2_MANIFEST, challenge_hard_subtleties=())
+            )
+
+    def test_reviewed_free_text_rejects_references_to_another_chapter(self) -> None:
+        chapter_four_sections = tuple(
+            replace(section, section_id=section.section_id.replace("3.", "4.", 1))
+            for section in AP_CALCULUS_CHAPTER_3_MANIFEST.sections
+        )
+        chapter_four = replace(
+            AP_CALCULUS_CHAPTER_3_MANIFEST,
+            chapter="4",
+            sections=chapter_four_sections,
+        )
+        unsafe_manifests = (
+            replace(
+                chapter_four,
+                sections=(
+                    replace(
+                        chapter_four.sections[0],
+                        challenge_topic_label="review section 3.10",
+                    ),
+                    *chapter_four.sections[1:],
+                ),
+            ),
+            replace(
+                chapter_four,
+                sections=(
+                    replace(
+                        chapter_four.sections[0],
+                        challenge_note="Do not use Chapter 3 shortcuts.",
+                    ),
+                    *chapter_four.sections[1:],
+                ),
+            ),
+            replace(
+                chapter_four,
+                challenge_forbidden_topics=("section 3.x review",),
+            ),
+            replace(
+                chapter_four,
+                challenge_hard_subtleties=("domain", "Chapter 3 behavior"),
+            ),
+        )
+
+        for manifest in unsafe_manifests:
+            with self.subTest(manifest=manifest), self.assertRaisesRegex(
+                ValueError, "another chapter"
+            ):
+                validate_calculus_chapter_manifest(manifest)
 
 
 if __name__ == "__main__":

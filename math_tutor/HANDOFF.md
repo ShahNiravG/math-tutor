@@ -247,7 +247,8 @@ Architecture and validation references:
   study-guide`.
 - One validated mastery-oriented GPT-5.4 study guide is saved under the isolated Calculus output tree. It uses authoritative supplemental teaching only within PDF-established topics, includes 15 worked examples and ten fully solved mastery problems, marks section 2.4 `Not covered`, and marks section 2.8 `Partially covered`.
 - Never regenerate the Calculus study guide without explicit approval; site builds and recovery must reuse the saved Markdown/HTML/PDF.
-- Local validation baseline is `343` passing tests plus `git diff --check`.
+- Local validation baseline is `350` passing tests plus `git diff --check`. The guarded local
+  production build also passes.
   The brand/navigation pass added `tests/test_site_brand.py` and `tests/test_site_navigation.py`,
   including a drift guard that fails if `challenges_src/*.html` diverges from the canonical mark
   in `site_brand.py`.
@@ -274,6 +275,29 @@ Architecture and validation references:
   context. Output validation now resolves that curriculum instead of hard-coding Chapter 2.
   A correct Chapter 3-shaped guide passes validation and a Chapter 2-shaped guide fails. No
   Chapter 3 model call has occurred.
+- The committed prompt-scope hotfix (`1f46118`) is deployed. Chapter 2 retained SHA-256
+  `21d5ed64a6a9796cc1dce2b93447166585c688ecb4571deedb7bfea12bb621b1` and exact reviewed prompt
+  text.
+- A preliminary follow-up was also deployed before it was committed. Its output added limited
+  section labels, generated Hard-mode chapter wording, and the Chapter 3 hyperbolic-functions
+  exclusion; the Chapter 3 page matched that production build at
+  `62d35d221ff9c3e31674faa943230f812e6e38d2bbebbf89108936aef49126a9`.
+- The revised follow-up is implemented and locally validated. It requires nonempty reviewed
+  forbidden-topic and Hard-subtlety tuples, generates the exact Chapter 2 and Chapter 3 subtlety
+  lists with a tested English-list formatter, and rejects cross-chapter references in topic
+  labels, notes, forbidden topics, and subtleties. It removes the test-only prompt constants
+  from production. Its committed tree still requires a separately approved production deploy.
+- Chapter 2's independent UTF-8 golden source is
+  `tests/fixtures/calculus-chapter-2-ai-challenges.toml`, captured from the canonical live page
+  with its URL, retrieval date, SHA-256, and no-trailing-newline semantics. The revised work must
+  be committed with explicit approval, then built from a clean committed tree; production
+  deployment requires a second explicit approval.
+- Revised local verification passed `20/20` focused tests and `350/350` full-suite tests. The
+  cross-chapter validator also caught one stale synthetic test manifest before its fixture was
+  corrected. The guarded build retained Chapter 2 SHA-256 `21d5ed64a6a9796cc1dce2b93447166585c688ecb4571deedb7bfea12bb621b1`
+  and Chapter 3 SHA-256 `62d35d221ff9c3e31674faa943230f812e6e38d2bbebbf89108936aef49126a9`;
+  both pages have two exact manifest-built prompt textareas and no token/OIDC or stale `/site/`
+  material.
 - Challenge exams were restored after generated public JSON was written as mode `0600` and
   `rsync -a` preserved that unreadable mode on production. Public challenge JSON is now created
   as `0644`, unchanged files have their mode repaired during builds, and production validation

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import unittest
 from dataclasses import replace
+from pathlib import Path
+import tomllib
 
 from math_tutor.calculus_chapters import (
     AP_CALCULUS_CHAPTER_2_MANIFEST,
@@ -9,19 +11,59 @@ from math_tutor.calculus_chapters import (
 )
 from math_tutor.site_ai_challenges import (
     AI_CHALLENGE_PROVIDERS,
-    HARD_CHALLENGE_PROMPT,
-    MEDIUM_CHALLENGE_PROMPT,
     build_ai_challenge_prompts,
+    format_reviewed_list,
     render_ai_challenge_section,
 )
 
 
+FIXTURE_DIR = Path(__file__).resolve().parent / "fixtures"
+
+
+def _reviewed_chapter_two_prompts() -> tuple[str, str]:
+    fixture = tomllib.loads(
+        (FIXTURE_DIR / "calculus-chapter-2-ai-challenges.toml").read_text(encoding="utf-8")
+    )
+    self_contained = fixture["prompts"]
+    assert fixture["source"]["trailing_newline"] is False
+    return self_contained["medium"], self_contained["hard"]
+
+
 class SiteAIChallengesTests(unittest.TestCase):
+    def test_chapter_two_fixture_records_the_reviewed_live_source_exactly(self) -> None:
+        fixture = tomllib.loads(
+            (FIXTURE_DIR / "calculus-chapter-2-ai-challenges.toml").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        self.assertEqual(
+            fixture["source"]["url"],
+            "https://mathdelight.com/courses/ap-calculus-ab/doc-4839635.html",
+        )
+        self.assertEqual(
+            fixture["source"]["page_sha256"],
+            "21d5ed64a6a9796cc1dce2b93447166585c688ecb4571deedb7bfea12bb621b1",
+        )
+        self.assertFalse(fixture["source"]["trailing_newline"])
+        for prompt in _reviewed_chapter_two_prompts():
+            self.assertFalse(prompt.endswith("\n"))
+
+    def test_reviewed_list_formatter_handles_one_two_and_many_items(self) -> None:
+        self.assertEqual(format_reviewed_list(("domain",)), "domain")
+        self.assertEqual(
+            format_reviewed_list(("domain", "endpoint")),
+            "domain and endpoint",
+        )
+        self.assertEqual(
+            format_reviewed_list(("domain", "endpoint", "infinite-limit")),
+            "domain, endpoint, and infinite-limit",
+        )
+
     def test_chapter_two_manifest_prompts_preserve_the_reviewed_contract_exactly(self) -> None:
         medium, hard = build_ai_challenge_prompts(AP_CALCULUS_CHAPTER_2_MANIFEST)
 
-        self.assertEqual(medium, MEDIUM_CHALLENGE_PROMPT)
-        self.assertEqual(hard, HARD_CHALLENGE_PROMPT)
+        self.assertEqual((medium, hard), _reviewed_chapter_two_prompts())
 
     def test_chapter_three_prompts_explicitly_forbid_later_calculus_topics(self) -> None:
         medium, hard = build_ai_challenge_prompts(AP_CALCULUS_CHAPTER_3_MANIFEST)
@@ -31,6 +73,22 @@ class SiteAIChallengesTests(unittest.TestCase):
             self.assertIn("L'Hôpital", prompt)
             self.assertIn("optimization", prompt)
             self.assertIn("integration", prompt)
+            self.assertIn("hyperbolic functions", prompt)
+
+    def test_hard_guidance_uses_the_manifest_chapter_instead_of_copied_free_text(self) -> None:
+        chapter_four = replace(
+            AP_CALCULUS_CHAPTER_3_MANIFEST,
+            chapter="4",
+            sections=tuple(
+                replace(section, section_id=section.section_id.replace("3.", "4.", 1))
+                for section in AP_CALCULUS_CHAPTER_3_MANIFEST.sections
+            ),
+        )
+
+        _medium, hard = build_ai_challenge_prompts(chapter_four)
+
+        self.assertIn("allowed Chapter 4 scope", hard)
+        self.assertNotIn("allowed Chapter 3 scope", hard)
 
     def test_chapter_three_card_description_is_not_limit_specific(self) -> None:
         rendered = render_ai_challenge_section(course_id="ap-calculus-ab", chapter="3")
@@ -75,7 +133,8 @@ class SiteAIChallengesTests(unittest.TestCase):
         )
 
     def test_prompts_are_original_scoped_sequential_ten_question_challenges(self) -> None:
-        for prompt in (MEDIUM_CHALLENGE_PROMPT, HARD_CHALLENGE_PROMPT):
+        medium_prompt, hard_prompt = _reviewed_chapter_two_prompts()
+        for prompt in (medium_prompt, hard_prompt):
             self.assertIn("exactly 10 original multiple-choice questions", prompt)
             self.assertIn("Ask one question at a time", prompt)
             self.assertIn("Do not reveal the answer before the student responds", prompt)
@@ -83,10 +142,10 @@ class SiteAIChallengesTests(unittest.TestCase):
             self.assertIn("Do not quote, reproduce, paraphrase, imitate, or transform", prompt)
             self.assertIn("exactly one option is correct", prompt)
             self.assertIn("After question 10", prompt)
-        self.assertIn("Difficulty: MEDIUM", MEDIUM_CHALLENGE_PROMPT)
-        self.assertIn("one- or two-step calculations", MEDIUM_CHALLENGE_PROMPT)
-        self.assertIn("Difficulty: HARD", HARD_CHALLENGE_PROMPT)
-        self.assertIn("multi-step reasoning", HARD_CHALLENGE_PROMPT)
+        self.assertIn("Difficulty: MEDIUM", medium_prompt)
+        self.assertIn("one- or two-step calculations", medium_prompt)
+        self.assertIn("Difficulty: HARD", hard_prompt)
+        self.assertIn("multi-step reasoning", hard_prompt)
 
     def test_provider_destinations_are_exact_parameter_free_https_urls(self) -> None:
         self.assertEqual(
