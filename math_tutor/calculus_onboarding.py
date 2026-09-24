@@ -18,9 +18,12 @@ from math_tutor.canvas_course import build_canvas_client
 from math_tutor.canvas_login import perform_login
 from math_tutor.cli_auth import resolve_canvas_credentials
 from math_tutor.env_config import load_dotenv_if_present
+from math_tutor.site_courses import canvas_course_location, get_course
 
 
-COURSE_URL = "https://mitty.instructure.com/courses/4446"
+COURSE_ID = "ap-calculus-ab"
+COURSE_URL = get_course(COURSE_ID).canvas_course_url
+CANVAS_HOST, CANVAS_COURSE_NUMBER = canvas_course_location(COURSE_ID)
 
 
 @dataclass(frozen=True)
@@ -36,13 +39,13 @@ def extract_chapter_assignment_candidates(
     *,
     chapter: str,
 ) -> tuple[CanvasAssignmentCandidate, ...]:
-    section_pattern = re.compile(rf"(?<!\d)({re.escape(chapter)}\.\d+)(?!\d)")
+    section_pattern = _leading_section_pattern(chapter)
     candidates: list[CanvasAssignmentCandidate] = []
     for item in items:
         if "external_tool" not in (item.get("submission_types") or []):
             continue
         name = str(item.get("name") or "").strip()
-        section_match = section_pattern.search(name)
+        section_match = section_pattern.match(name)
         if section_match is None:
             continue
         assignment_id = str(item.get("id") or "")
@@ -59,9 +62,36 @@ def extract_chapter_assignment_candidates(
     return tuple(sorted(candidates, key=lambda candidate: _section_sort_key(candidate.section_id)))
 
 
+def _leading_section_pattern(chapter: str) -> re.Pattern[str]:
+    # The section must lead the name (after an optional "Chp"/"Ch."/"Chapter" prefix) and must
+    # not be a sub-section or the start of a range such as "3.1-3.3".
+    return re.compile(
+        rf"\s*(?:(?:chp|ch|chapter)\.?\s*)?({re.escape(chapter)}\.\d+)(?![\d.])(?!\s*[-–]\s*\d)",
+        re.IGNORECASE,
+    )
+
+
+def find_unmatched_section_mentions(
+    items: list[dict[str, Any]],
+    *,
+    chapter: str,
+) -> tuple[dict[str, str], ...]:
+    """Return external-tool assignments that mention a chapter section but were not matched."""
+    leading_pattern = _leading_section_pattern(chapter)
+    mention_pattern = re.compile(rf"(?<![\d.]){re.escape(chapter)}\.\d+(?!\d)")
+    mentions: list[dict[str, str]] = []
+    for item in items:
+        if "external_tool" not in (item.get("submission_types") or []):
+            continue
+        name = str(item.get("name") or "").strip()
+        if mention_pattern.search(name) and leading_pattern.match(name) is None:
+            mentions.append({"assignment_id": str(item.get("id") or ""), "name": name})
+    return tuple(mentions)
+
+
 def fetch_canvas_assignment_items(client: Any) -> list[dict[str, Any]]:
     items: list[dict[str, Any]] = []
-    next_url: str | None = "/api/v1/courses/4446/assignments?per_page=100"
+    next_url: str | None = f"/api/v1/courses/{CANVAS_COURSE_NUMBER}/assignments?per_page=100"
     while next_url:
         response = client.get(next_url)
         response.raise_for_status()
@@ -77,14 +107,16 @@ def build_candidate_payload(
     *,
     chapter: str,
     assignments: tuple[CanvasAssignmentCandidate, ...],
+    unmatched_mentions: tuple[dict[str, str], ...],
 ) -> dict[str, Any]:
     if not chapter.isdigit():
         raise ValueError("Calculus chapter must be a positive integer.")
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "status": "review-required",
-        "course_id": "ap-calculus-ab",
+        "course_id": COURSE_ID,
         "chapter": chapter,
+        "issues": _candidate_issues(assignments, unmatched_mentions),
         "assignments": [
             {
                 "section_id": assignment.section_id,
@@ -94,27 +126,73 @@ def build_candidate_payload(
             }
             for assignment in assignments
         ],
+        "unmatched_mentions": [dict(mention) for mention in unmatched_mentions],
     }
+
+
+def candidate_exit_status(payload: dict[str, Any]) -> int:
+    return 1 if payload["issues"] else 0
+
+
+def _candidate_issues(
+    assignments: tuple[CanvasAssignmentCandidate, ...],
+    unmatched_mentions: tuple[dict[str, str], ...],
+) -> list[dict[str, Any]]:
+    if not assignments:
+        issues: list[dict[str, Any]] = [{"code": "no-assignments"}]
+    else:
+        issues = []
+    assignment_ids_by_section: dict[str, list[str]] = {}
+    for assignment in assignments:
+        assignment_ids_by_section.setdefault(assignment.section_id, []).append(
+            assignment.assignment_id
+        )
+    for section_id, assignment_ids in assignment_ids_by_section.items():
+        if len(assignment_ids) > 1:
+            issues.append(
+                {
+                    "code": "duplicate-section",
+                    "section_id": section_id,
+                    "assignment_ids": assignment_ids,
+                }
+            )
+    if unmatched_mentions:
+        issues.append(
+            {
+                "code": "unmatched-section-mentions",
+                "assignment_ids": [mention["assignment_id"] for mention in unmatched_mentions],
+            }
+        )
+    return issues
 
 
 def _validate_canvas_assignment_url(url: str, *, assignment_id: str) -> None:
     parsed = urlsplit(url)
-    expected_path = f"/courses/4446/assignments/{assignment_id}"
+    expected_path = f"/courses/{CANVAS_COURSE_NUMBER}/assignments/{assignment_id}"
     if (
         not assignment_id.isdigit()
         or parsed.scheme != "https"
-        or parsed.hostname != "mitty.instructure.com"
+        or parsed.hostname != CANVAS_HOST
         or parsed.path != expected_path
         or parsed.query
         or parsed.fragment
         or parsed.username
         or parsed.password
     ):
-        raise ValueError("Candidate must use a safe Canvas assignment URL.")
+        # Name only the assignment ID: an unsafe URL may itself carry a token.
+        raise ValueError(
+            f"Candidate must use a safe Canvas assignment URL (assignment {assignment_id!s:.32})."
+        )
 
 
 def _section_sort_key(section_id: str) -> tuple[int, ...]:
     return tuple(int(part) for part in section_id.split("."))
+
+
+def require_canvas_credentials(credentials: tuple[str, str] | None) -> tuple[str, str]:
+    if credentials is None:
+        raise SystemExit("Canvas credentials are required for Calculus onboarding discovery.")
+    return credentials
 
 
 def _default_candidate_path(chapter: str) -> Path:
@@ -122,7 +200,7 @@ def _default_candidate_path(chapter: str) -> Path:
         Path(__file__).resolve().parent
         / "output"
         / "courses"
-        / "ap-calculus-ab"
+        / COURSE_ID
         / "metadata"
         / f"chapter-{chapter}-onboarding-candidate.json"
     )
@@ -140,13 +218,14 @@ def main() -> None:
         parser.error("--chapter must be a positive integer")
 
     load_dotenv_if_present()
-    credentials = resolve_canvas_credentials(
-        username=None,
-        password=None,
-        skip_fetch=False,
-        env=os.environ,
+    credentials = require_canvas_credentials(
+        resolve_canvas_credentials(
+            username=None,
+            password=None,
+            skip_fetch=False,
+            env=os.environ,
+        )
     )
-    assert credentials is not None
     candidate_path = args.candidate_output or _default_candidate_path(args.chapter)
 
     with sync_playwright() as playwright:
@@ -164,7 +243,12 @@ def main() -> None:
             with build_canvas_client(context, COURSE_URL) as client:
                 items = fetch_canvas_assignment_items(client)
             assignments = extract_chapter_assignment_candidates(items, chapter=args.chapter)
-            payload = build_candidate_payload(chapter=args.chapter, assignments=assignments)
+            unmatched_mentions = find_unmatched_section_mentions(items, chapter=args.chapter)
+            payload = build_candidate_payload(
+                chapter=args.chapter,
+                assignments=assignments,
+                unmatched_mentions=unmatched_mentions,
+            )
             atomic_write_json(candidate_path, payload, indent=2)
         finally:
             browser.close()
@@ -173,6 +257,11 @@ def main() -> None:
     print(f"Found {len(assignments)} safe Chapter {args.chapter} Canvas assignment(s).")
     for assignment in assignments:
         print(f"  {assignment.section_id}: {assignment.name} (assignment {assignment.assignment_id})")
+    for mention in unmatched_mentions:
+        print(f"  UNMATCHED: {mention['name']} (assignment {mention['assignment_id']})")
+    for issue in payload["issues"]:
+        print(f"REVIEW ISSUE: {issue}")
+    raise SystemExit(candidate_exit_status(payload))
 
 
 if __name__ == "__main__":

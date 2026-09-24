@@ -12,9 +12,10 @@ from math_tutor.calculus_chapters import (
     CalculusChapterManifest,
     validate_calculus_chapter_manifest,
 )
+from math_tutor.site_courses import canvas_course_location
 
 
-CANVAS_HOST = "mitty.instructure.com"
+CANVAS_HOST, CANVAS_COURSE_NUMBER = canvas_course_location("ap-calculus-ab")
 CENGAGE_READER_HOST = "ng.cengage.com"
 CENGAGE_READER_PATH = "/static/nb/ui/evo/index.html"
 ALLOWED_READER_QUERY_KEYS = {"snapshotId", "id", "eISBN"}
@@ -38,7 +39,7 @@ class TextbookNavigation:
 
 
 def _canvas_assignment_url(assignment_id: str) -> str:
-    return f"https://{CANVAS_HOST}/courses/4446/assignments/{assignment_id}"
+    return f"https://{CANVAS_HOST}/courses/{CANVAS_COURSE_NUMBER}/assignments/{assignment_id}"
 
 
 def build_textbook_navigation(manifest: CalculusChapterManifest) -> TextbookNavigation:
@@ -109,7 +110,7 @@ def _validate_canvas_assignment_url(url: str) -> None:
         or parsed.query
         or parsed.fragment
         or len(path_parts) != 4
-        or path_parts[:3] != ["courses", "4446", "assignments"]
+        or path_parts[:3] != ["courses", CANVAS_COURSE_NUMBER, "assignments"]
         or not path_parts[3].isdigit()
     ):
         raise ValueError("Canvas assignment URL must use the approved course assignment path.")

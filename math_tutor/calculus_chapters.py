@@ -162,17 +162,18 @@ def _section_sort_key(section_id: str) -> tuple[int, ...]:
         raise ValueError(f"Invalid section ID: {section_id}") from exc
 
 
-_CHAPTER_REFERENCE = re.compile(r"\bchapter\s+(\d+)\b", re.IGNORECASE)
+_CHAPTER_REFERENCE = re.compile(r"\b(?:chapter|chp|ch)\.?\s*(\d+)\b", re.IGNORECASE)
 _SECTION_REFERENCE = re.compile(r"(?<!\d)(\d+)\.(?:\d+|x)\b", re.IGNORECASE)
 
 
-def _validate_reviewed_text_chapter(text: str, *, chapter: str) -> None:
-    referenced_chapters = {
-        *_CHAPTER_REFERENCE.findall(text),
-        *_SECTION_REFERENCE.findall(text),
-    }
-    if any(reference != chapter for reference in referenced_chapters):
-        raise ValueError("Reviewed challenge text must not reference another chapter.")
+def _validate_reviewed_text_chapter(text: str, *, chapter: str, field: str) -> None:
+    for pattern in (_CHAPTER_REFERENCE, _SECTION_REFERENCE):
+        for match in pattern.finditer(text):
+            if match.group(1) != chapter:
+                raise ValueError(
+                    f"Reviewed challenge text must not reference another chapter: {field} "
+                    f"contains {match.group(0)!r} in {text!r}."
+                )
 
 
 def validate_calculus_chapter_manifest(manifest: CalculusChapterManifest) -> None:
@@ -218,9 +219,16 @@ def validate_calculus_chapter_manifest(manifest: CalculusChapterManifest) -> Non
             raise ValueError("Limited challenge sections require a reviewed topic label.")
         if section.challenge_topic_label is not None and not section.challenge_topic_label.strip():
             raise ValueError("Challenge topic labels must not be blank.")
-        for reviewed_text in (section.challenge_note, section.challenge_topic_label):
+        for field, reviewed_text in (
+            ("challenge_note", section.challenge_note),
+            ("challenge_topic_label", section.challenge_topic_label),
+        ):
             if reviewed_text is not None:
-                _validate_reviewed_text_chapter(reviewed_text, chapter=manifest.chapter)
+                _validate_reviewed_text_chapter(
+                    reviewed_text,
+                    chapter=manifest.chapter,
+                    field=f"{field} for section {section.section_id}",
+                )
     if not manifest.challenge_forbidden_topics or any(
         not topic.strip() for topic in manifest.challenge_forbidden_topics
     ):
@@ -229,11 +237,12 @@ def validate_calculus_chapter_manifest(manifest: CalculusChapterManifest) -> Non
         not subtlety.strip() for subtlety in manifest.challenge_hard_subtleties
     ):
         raise ValueError("Challenge hard subtleties must contain reviewed nonblank values.")
-    for reviewed_text in (
-        *manifest.challenge_forbidden_topics,
-        *manifest.challenge_hard_subtleties,
+    for field, reviewed_texts in (
+        ("challenge_forbidden_topics", manifest.challenge_forbidden_topics),
+        ("challenge_hard_subtleties", manifest.challenge_hard_subtleties),
     ):
-        _validate_reviewed_text_chapter(reviewed_text, chapter=manifest.chapter)
+        for reviewed_text in reviewed_texts:
+            _validate_reviewed_text_chapter(reviewed_text, chapter=manifest.chapter, field=field)
 
 
 def get_calculus_chapter_manifest(

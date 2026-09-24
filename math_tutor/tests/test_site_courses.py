@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import unittest
 
-from math_tutor.site_courses import COURSE_REGISTRY, get_course, matches_course_document
+from math_tutor.site_courses import (
+    COURSE_REGISTRY,
+    canvas_course_location,
+    get_course,
+    matches_course_document,
+)
 
 
 class SiteCoursesTests(unittest.TestCase):
@@ -53,6 +58,16 @@ class SiteCoursesTests(unittest.TestCase):
         )
         self.assertFalse(
             matches_course_document("algebra-2-trig", "Chapter 2 Notetakers.pdf")
+        )
+
+    def test_canvas_course_location_is_derived_from_the_course_url(self) -> None:
+        self.assertEqual(
+            canvas_course_location("ap-calculus-ab"),
+            ("mitty.instructure.com", "4446"),
+        )
+        self.assertEqual(
+            canvas_course_location("algebra-2-trig"),
+            ("mitty.instructure.com", "4187"),
         )
 
     def test_unknown_course_is_rejected(self) -> None:

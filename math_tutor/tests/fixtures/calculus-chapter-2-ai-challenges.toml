@@ -1,5 +1,6 @@
 [source]
-url = "https://mathdelight.com/courses/ap-calculus-ab/doc-4839635.html"
+reviewed_source_commit = "7c214f8"
+url ="https://mathdelight.com/courses/ap-calculus-ab/doc-4839635.html"
 page_sha256 = "21d5ed64a6a9796cc1dce2b93447166585c688ecb4571deedb7bfea12bb621b1"
 retrieved_at = "2026-09-23"
 encoding = "UTF-8"

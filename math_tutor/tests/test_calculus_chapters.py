@@ -140,6 +140,44 @@ class CalculusChapterManifestTests(unittest.TestCase):
             ):
                 validate_calculus_chapter_manifest(manifest)
 
+    def test_cross_chapter_error_names_the_field_and_matched_text(self) -> None:
+        sections = list(AP_CALCULUS_CHAPTER_3_MANIFEST.sections)
+        sections[9] = replace(sections[9], challenge_topic_label="error within 0.1")
+        decimal_label = replace(AP_CALCULUS_CHAPTER_3_MANIFEST, sections=tuple(sections))
+        copied_subtlety = replace(
+            AP_CALCULUS_CHAPTER_3_MANIFEST,
+            challenge_hard_subtleties=("domain", "Chapter 2 behavior"),
+        )
+
+        with self.assertRaisesRegex(
+            ValueError, r"challenge_topic_label for section 3\.10 .*'0\.1'.*'error within 0\.1'"
+        ):
+            validate_calculus_chapter_manifest(decimal_label)
+        with self.assertRaisesRegex(
+            ValueError, r"challenge_hard_subtleties .*'Chapter 2'.*'Chapter 2 behavior'"
+        ):
+            validate_calculus_chapter_manifest(copied_subtlety)
+
+    def test_cross_chapter_check_recognizes_chapter_abbreviations(self) -> None:
+        for subtlety in ("Ch. 2 behavior", "Chp 2 behavior", "ch 2 behavior"):
+            with self.subTest(subtlety=subtlety), self.assertRaisesRegex(
+                ValueError, "another chapter"
+            ):
+                validate_calculus_chapter_manifest(
+                    replace(
+                        AP_CALCULUS_CHAPTER_3_MANIFEST,
+                        challenge_hard_subtleties=("domain", subtlety),
+                    )
+                )
+        for subtlety in ("Ch. 3 behavior", "Chain 2-step rule", "each 2 steps"):
+            with self.subTest(subtlety=subtlety):
+                validate_calculus_chapter_manifest(
+                    replace(
+                        AP_CALCULUS_CHAPTER_3_MANIFEST,
+                        challenge_hard_subtleties=("domain", subtlety),
+                    )
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

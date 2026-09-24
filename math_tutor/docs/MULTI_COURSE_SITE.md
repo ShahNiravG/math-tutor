@@ -908,9 +908,31 @@ with `math-tutor-build-production` and redeploy it with
 `math-tutor-deploy-production --confirm-production`; no generated source artifact or model
 output needs migration.
 
-The Chapter 4 assignment-name matcher, candidate promotion, explicit publication state,
-multi-chapter operation, and smaller onboarding configuration cleanup remain deferred to the
-separate automation phase.
+### Onboarding Hardening
+
+The onboarding matcher now requires the section number to lead the assignment name, after an
+optional `Chp`/`Ch.`/`Chapter` prefix; this matches all ten real Chapter 3 names and rejects
+ranges, sub-sections, and names led by another chapter. Unmatched section mentions are listed
+for review. Candidates use schema version 2 with an `issues` list (`no-assignments`,
+`duplicate-section`, `unmatched-section-mentions`), and the command exits `1` whenever review
+issues exist. Unsafe-URL errors name only the assignment ID, never the URL. Missing
+credentials fail explicitly instead of through `assert`. The Canvas host and course number
+are derived once from the course configuration by `site_courses.canvas_course_location`.
+
+The cross-chapter manifest check remains strict: decimals such as `0.1` are still rejected, but
+the error now names the field and the matched text, and `Ch.`/`Chp` abbreviations are
+recognized. Spelled-out chapter numbers (`chapter two`) remain undetected. The Chapter 2
+prompt fixture records its reviewed source commit, `7c214f8`, and its test checks provenance
+structure instead of repeating literal values.
+
+Verification: `358/358` tests and `git diff --check` pass. A guarded scratch build reproduced
+Chapter 2 `21d5ed64…bb621b1` and Chapter 3 `62d35d22…49126a9` exactly; the only other
+differences from the local deploy tree were the build timestamps on the two course index pages.
+No deployment is needed.
+
+An explicit publication gate was considered and declined on 2026-09-23: fetched Calculus
+chapters continue to publish at the next deploy. Candidate promotion and multi-chapter operation
+remain deferred to the separate automation phase.
 
 ### Remaining Approval Gates
 

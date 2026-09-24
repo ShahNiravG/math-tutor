@@ -106,6 +106,14 @@ This authenticated discovery is read-only. It writes a `review-required` candida
 IDs, assignment names, and allowlisted Canvas URLs. It never stores cookies, passwords,
 tokens, or transient Cengage/LTI URLs.
 
+An external-tool assignment is matched to a section only when the section number leads its
+name, optionally after `Chp`, `Ch.`, or `Chapter` (for example `Chp 3.10 Hmwk - Linear
+Approximation,Differentials`). Ranges such as `Quiz 3.1-3.3`, sub-sections, and names led by
+another chapter are not matched; any that still mention a chapter section are listed under
+`unmatched_mentions`. The schema-version-2 candidate records problems under `issues`
+(`no-assignments`, `duplicate-section`, `unmatched-section-mentions`). The command always writes
+the candidate, then exits `0` when `issues` is empty and `1` when it needs review.
+
 Review the candidate against the school PDF, then add one entry to
 `calculus_chapters.py`. That manifest is the only chapter-specific source: curriculum titles,
 Cengage cards, AI Challenge prompts, and study-guide scope are derived from it automatically.

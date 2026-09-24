@@ -247,7 +247,7 @@ Architecture and validation references:
   study-guide`.
 - One validated mastery-oriented GPT-5.4 study guide is saved under the isolated Calculus output tree. It uses authoritative supplemental teaching only within PDF-established topics, includes 15 worked examples and ten fully solved mastery problems, marks section 2.4 `Not covered`, and marks section 2.8 `Partially covered`.
 - Never regenerate the Calculus study guide without explicit approval; site builds and recovery must reuse the saved Markdown/HTML/PDF.
-- Local validation baseline is `350` passing tests plus `git diff --check`. The guarded local
+- Local validation baseline is `358` passing tests plus `git diff --check`. The guarded local
   production build also passes.
   The brand/navigation pass added `tests/test_site_brand.py` and `tests/test_site_navigation.py`,
   including a drift guard that fails if `challenges_src/*.html` diverges from the canonical mark
@@ -297,6 +297,12 @@ Architecture and validation references:
 - Verification for `42ebf4f`: `350/350` full-suite tests, `git diff --check`, and the guarded
   production build pass. Both chapter pages have two exact manifest-built prompt textareas and
   no token/OIDC or stale `/site/` material.
+- Calculus onboarding is hardened for Chapter 4: section numbers must lead assignment names
+  (optionally after `Chp`/`Ch.`/`Chapter`), unmatched mentions are listed, schema-version-2
+  candidates carry an `issues` list, and the command exits `1` when review is needed. The
+  Canvas host/course number come from `site_courses.canvas_course_location`. Generated pages
+  are unchanged, so no deploy is required. Fetched Calculus chapters still publish at the next
+  deploy by design; there is no publication gate.
 - Challenge exams were restored after generated public JSON was written as mode `0600` and
   `rsync -a` preserved that unreadable mode on production. Public challenge JSON is now created
   as `0644`, unchanged files have their mode repaired during builds, and production validation

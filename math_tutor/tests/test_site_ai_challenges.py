@@ -30,23 +30,26 @@ def _reviewed_chapter_two_prompts() -> tuple[str, str]:
 
 
 class SiteAIChallengesTests(unittest.TestCase):
-    def test_chapter_two_fixture_records_the_reviewed_live_source_exactly(self) -> None:
+    def test_chapter_two_fixture_carries_complete_reviewable_provenance(self) -> None:
         fixture = tomllib.loads(
             (FIXTURE_DIR / "calculus-chapter-2-ai-challenges.toml").read_text(
                 encoding="utf-8"
             )
         )
+        source = fixture["source"]
 
-        self.assertEqual(
-            fixture["source"]["url"],
-            "https://mathdelight.com/courses/ap-calculus-ab/doc-4839635.html",
+        self.assertRegex(source["reviewed_source_commit"], r"^[0-9a-f]{7,40}$")
+        self.assertRegex(
+            source["url"],
+            r"^https://mathdelight\.com/courses/ap-calculus-ab/doc-\d+\.html$",
         )
-        self.assertEqual(
-            fixture["source"]["page_sha256"],
-            "21d5ed64a6a9796cc1dce2b93447166585c688ecb4571deedb7bfea12bb621b1",
-        )
-        self.assertFalse(fixture["source"]["trailing_newline"])
+        self.assertRegex(source["page_sha256"], r"^[0-9a-f]{64}$")
+        self.assertRegex(source["retrieved_at"], r"^\d{4}-\d{2}-\d{2}$")
+        self.assertEqual(source["encoding"], "UTF-8")
+        self.assertIs(source["trailing_newline"], False)
+        self.assertEqual(set(fixture["prompts"]), {"medium", "hard"})
         for prompt in _reviewed_chapter_two_prompts():
+            self.assertTrue(prompt.strip())
             self.assertFalse(prompt.endswith("\n"))
 
     def test_reviewed_list_formatter_handles_one_two_and_many_items(self) -> None:

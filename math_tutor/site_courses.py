@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 import re
+from urllib.parse import urlsplit
 
 
 @dataclass(frozen=True)
@@ -56,6 +57,23 @@ def get_course(course_id: str) -> CourseConfig:
         if course.course_id == course_id:
             return course
     raise ValueError(f"Unknown course: {course_id}")
+
+
+def canvas_course_location(course_id: str) -> tuple[str, str]:
+    """Return the (host, numeric course ID) of a course's Canvas URL."""
+    parsed = urlsplit(get_course(course_id).canvas_course_url)
+    course_match = re.fullmatch(r"/courses/(\d+)", parsed.path)
+    if (
+        parsed.scheme != "https"
+        or not parsed.hostname
+        or course_match is None
+        or parsed.query
+        or parsed.fragment
+        or parsed.username
+        or parsed.password
+    ):
+        raise ValueError(f"Invalid Canvas course URL for {course_id}.")
+    return parsed.hostname, course_match.group(1)
 
 
 def matches_course_document(course_id: str, display_name: str) -> bool:
